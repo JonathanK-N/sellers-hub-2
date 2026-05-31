@@ -41,9 +41,11 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (!user) return;
     if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
-    import("../lib/push").then(({ enablePushNotifications }) => {
-      enablePushNotifications().catch(() => {});
-    }).catch(() => {});
+    try {
+      import("../lib/push").then(({ enablePushNotifications }) => {
+        enablePushNotifications().catch(() => {});
+      }).catch(() => {});
+    } catch {}
   }, [user]);
 
   const setSession = (token, userObj) => {
