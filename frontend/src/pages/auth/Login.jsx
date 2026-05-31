@@ -16,7 +16,8 @@ export default function Login() {
   }, []);
 
   const submit = async () => {
-    const full = `${dial}${phone.replace(/^0+/, "")}`;
+    const localPart = phone.trim();
+    const full = `${dial}${localPart}`;
     setLoading(true);
     try {
       const { data } = await api.post("/auth/send-otp", { phone: full });

@@ -155,7 +155,7 @@ export default function Checkout() {
         </section>
       </div>
 
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 z-50 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 pb-5 z-50 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
         <button
           data-testid="checkout-pay-btn"
           disabled={loading}
