@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Circle, ShieldCheck, Package, Truck, Lock } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Circle, ShieldCheck, Package, Truck, Lock, Bike } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
 import { formatPrice, photoUrl } from "../../lib/format";
 import { useAuth } from "../../context/AuthContext";
@@ -26,14 +26,44 @@ export default function OrderDetail() {
   const [order, setOrder] = useState(null);
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
+  const [deliverers, setDeliverers] = useState([]);
+  const [showAssign, setShowAssign] = useState(false);
 
   const load = () => api.get(`/orders/${id}`).then(({ data }) => setOrder(data));
   useEffect(() => { load(); }, [id]);
 
+  const loadDeliverers = async () => {
+    try {
+      const { data } = await api.get("/deliverers/available");
+      setDeliverers(data);
+      setShowAssign(true);
+    } catch (e) {
+      toast.error(formatApiError(e.response?.data?.detail));
+    }
+  };
+
+  const assign = async (delivererId) => {
+    setBusy(true);
+    try {
+      await api.post(`/orders/${id}/assign`, { deliverer_id: delivererId });
+      toast.success("Livreur assigné");
+      setShowAssign(false);
+      await load();
+    } catch (e) {
+      toast.error(formatApiError(e.response?.data?.detail));
+    } finally { setBusy(false); }
+  };
+
   if (!order) return <div className="mobile-shell pt-24 text-center text-gray-500">Chargement…</div>;
 
   const steps = order.delivery_mode === "delivery" ? STEPS_DELIVERY : STEPS_COLLECT;
-  const currentIdx = Math.max(0, steps.findIndex((s) => s.key === order.status));
+  const STATUS_TO_STEP = {
+    assigned: "out_for_delivery",
+    picked_up: "out_for_delivery",
+    out_for_delivery: "out_for_delivery",
+  };
+  const effectiveStatus = STATUS_TO_STEP[order.status] || order.status;
+  const currentIdx = Math.max(0, steps.findIndex((s) => s.key === effectiveStatus));
 
   const advance = async () => {
     setBusy(true);
@@ -218,8 +248,59 @@ export default function OrderDetail() {
           </section>
         )}
 
+        {/* Seller: assign deliverer (home delivery only) */}
+        {isSeller && order.delivery_mode === "delivery" && ["confirmed", "preparing"].includes(order.status) && (
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+            <div className="flex items-center gap-2 mb-1">
+              <Bike size={18} className="text-[#1D9E75]" />
+              <h3 className="text-sm font-semibold text-gray-900">Livreur</h3>
+            </div>
+            {order.deliverer_name ? (
+              <p className="text-sm text-gray-600">
+                Assigné à <span className="font-semibold text-gray-900">{order.deliverer_name}</span>. Il gère la suite de la livraison.
+              </p>
+            ) : !showAssign ? (
+              <>
+                <p className="text-xs text-gray-500 mb-3">Assignez un livreur pour récupérer et livrer ce colis.</p>
+                <button
+                  data-testid="load-deliverers-btn"
+                  onClick={loadDeliverers}
+                  className="w-full border border-[#1D9E75] text-[#1D9E75] rounded-lg py-2.5 font-semibold text-sm hover:bg-[#E1F5EE]"
+                >
+                  Assigner un livreur
+                </button>
+              </>
+            ) : deliverers.length === 0 ? (
+              <p className="text-sm text-gray-500">Aucun livreur disponible dans votre zone.</p>
+            ) : (
+              <div className="space-y-2">
+                {deliverers.map((d) => (
+                  <button
+                    key={d.id}
+                    onClick={() => assign(d.id)}
+                    disabled={busy}
+                    data-testid={`assign-deliverer-${d.id}`}
+                    className="w-full flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-[#1D9E75] disabled:opacity-50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
+                        <Bike size={15} />
+                      </div>
+                      <div className="text-left">
+                        <div className="text-sm font-semibold text-gray-900">{d.name}</div>
+                        <div className="text-xs text-gray-500">{d.vehicle} · {d.active_deliveries} en cours</div>
+                      </div>
+                    </div>
+                    <span className="text-xs text-[#1D9E75] font-medium">Choisir</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
         {/* Seller advance */}
-        {isSeller && ["confirmed", "preparing"].includes(order.status) && (
+        {isSeller && ["confirmed", "preparing"].includes(order.status) && !(order.delivery_mode === "delivery" && order.deliverer_id && order.status === "preparing") && (
           <button
             data-testid="advance-order-btn"
             disabled={busy}

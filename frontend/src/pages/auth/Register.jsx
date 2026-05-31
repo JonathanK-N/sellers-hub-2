@@ -86,20 +86,20 @@ export default function Register() {
 
             <div>
               <label className="text-sm font-medium text-gray-700">Je suis</label>
-              <div className="mt-1.5 grid grid-cols-2 gap-2">
-                {["buyer", "seller"].map((r) => (
+              <div className="mt-1.5 grid grid-cols-3 gap-2">
+                {["buyer", "seller", "deliverer"].map((r) => (
                   <button
                     type="button"
                     key={r}
                     data-testid={`register-role-${r}`}
                     onClick={() => setForm({ ...form, role: r })}
-                    className={`py-3 px-4 rounded-lg font-semibold text-sm border-2 transition-all ${
+                    className={`py-3 px-2 rounded-lg font-semibold text-sm border-2 transition-all ${
                       form.role === r
                         ? "border-[#1D9E75] bg-[#E1F5EE] text-[#085041]"
                         : "border-gray-200 bg-white text-gray-600"
                     }`}
                   >
-                    {r === "buyer" ? "Acheter" : "Vendre"}
+                    {r === "buyer" ? "Acheter" : r === "seller" ? "Vendre" : "Livrer"}
                   </button>
                 ))}
               </div>

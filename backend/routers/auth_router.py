@@ -27,7 +27,7 @@ def _strip_user(user: dict) -> dict:
 async def register(req: RegisterRequest):
     db = get_db()
     phone = normalize_phone(req.phone)
-    if req.role not in ("buyer", "seller"):
+    if req.role not in ("buyer", "seller", "deliverer"):
         raise HTTPException(status_code=400, detail="Rôle invalide")
 
     country = await db.countries.find_one({"code": req.country_code}, {"_id": 0})

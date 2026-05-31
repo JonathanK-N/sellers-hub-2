@@ -248,6 +248,10 @@ async def advance_order(order_id: str, user: dict = Depends(require_role("seller
             else ("ready_for_pickup", "Prêt pour retrait")
         ),
     }
+    # If a deliverer is assigned, the seller stops after "preparing":
+    # the deliverer drives the pickup -> en-route -> delivered transitions.
+    if o["delivery_mode"] == "delivery" and o.get("deliverer_id") and o["status"] == "preparing":
+        raise HTTPException(status_code=400, detail="Un livreur est assigné : il gère la suite de la livraison")
     next_state = transitions.get(o["status"])
     if not next_state:
         raise HTTPException(status_code=400, detail="Transition impossible")
