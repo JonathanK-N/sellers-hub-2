@@ -19,13 +19,6 @@ export function CartProvider({ children }) {
 
   const addItem = (product, qty = 1) => {
     setItems((prev) => {
-      // MVP: enforce single seller per cart
-      if (prev.length > 0 && prev[0].seller_id !== product.seller_id) {
-        if (!window.confirm("Votre panier contient un produit d'un autre vendeur. Le remplacer ?")) {
-          return prev;
-        }
-        return [{ ...product, quantity: qty }];
-      }
       const existing = prev.find((i) => i.id === product.id);
       if (existing) {
         return prev.map((i) =>
@@ -45,8 +38,24 @@ export function CartProvider({ children }) {
   const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
+  const groupedBySeller = items.reduce((acc, i) => {
+    const key = i.seller_id;
+    if (!acc[key]) {
+      acc[key] = {
+        seller_id: i.seller_id,
+        seller_name: i.seller_name || "Boutique",
+        items: [],
+        subtotal: 0,
+      };
+    }
+    acc[key].items.push(i);
+    acc[key].subtotal += i.price * i.quantity;
+    return acc;
+  }, {});
+  const sellerGroups = Object.values(groupedBySeller);
+
   return (
-    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clear, total, count }}>
+    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clear, total, count, sellerGroups }}>
       {children}
     </CartContext.Provider>
   );

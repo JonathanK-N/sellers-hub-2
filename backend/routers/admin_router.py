@@ -307,3 +307,97 @@ async def export_orders_csv(_: dict = Depends(require_role("admin"))):
         writer.writerow([o.get("id"), o.get("buyer_id"), o.get("seller_id"), o.get("country_code"), o.get("total_amount"), o.get("commission_amount"), o.get("currency"), o.get("status"), o.get("escrow_status"), o.get("delivery_mode"), o.get("payment_method"), o.get("created_at")])
     output.seek(0)
     return StreamingResponse(iter([output.getvalue()]), media_type="text/csv", headers={"Content-Disposition": "attachment; filename=orders.csv"})
+
+
+# ---------- Fraud detection ----------
+class FraudActionRequest(BaseModel):
+    action: str  # ignore | warn | suspend | ban
+
+
+@router.get("/fraud/alerts")
+async def fraud_alerts(_: dict = Depends(require_role("admin"))):
+    """List open fraud alerts, enriched with user info, sorted by score desc."""
+    db = get_db()
+    alerts = await db.fraud_alerts.find({}, {"_id": 0}).sort("score", -1).to_list(200)
+    user_ids = list({a["user_id"] for a in alerts})
+    users = {u["id"]: u async for u in db.users.find({"id": {"$in": user_ids}}, {"_id": 0, "otp_code": 0})}
+    for a in alerts:
+        u = users.get(a["user_id"]) or {}
+        a["user_name"] = u.get("name")
+        a["user_phone"] = u.get("phone")
+        a["user_role"] = u.get("role")
+        a["user_country"] = u.get("country_code")
+        a["user_suspended"] = u.get("suspended", False)
+    return alerts
+
+
+@router.get("/fraud/stats")
+async def fraud_stats(_: dict = Depends(require_role("admin"))):
+    """Summary counts + 7-day alert trend."""
+    db = get_db()
+    total = await db.fraud_alerts.count_documents({})
+    open_count = await db.fraud_alerts.count_documents({"status": "open"})
+    danger = await db.fraud_alerts.count_documents({"level": "danger"})
+    suspended = await db.users.count_documents({"suspended": True})
+
+    trend = []
+    today = datetime.now(timezone.utc).date()
+    for i in range(6, -1, -1):
+        day = today - timedelta(days=i)
+        start = datetime(day.year, day.month, day.day, tzinfo=timezone.utc).isoformat()
+        end = (datetime(day.year, day.month, day.day, tzinfo=timezone.utc) + timedelta(days=1)).isoformat()
+        c = await db.fraud_alerts.count_documents({"created_at": {"$gte": start, "$lt": end}})
+        trend.append({"day": day.strftime("%a"), "count": c})
+
+    return {
+        "total_alerts": total,
+        "open_alerts": open_count,
+        "danger_alerts": danger,
+        "suspended_users": suspended,
+        "trend": trend,
+    }
+
+
+@router.post("/fraud/scan")
+async def fraud_scan(_: dict = Depends(require_role("admin"))):
+    """Re-evaluate all non-admin users and refresh alerts."""
+    from fraud import evaluate_and_log
+    db = get_db()
+    scanned = 0
+    flagged = 0
+    async for u in db.users.find({"role": {"$ne": "admin"}}, {"_id": 0, "id": 1}):
+        res = await evaluate_and_log(u["id"])
+        scanned += 1
+        if res.get("action") not in (None, "none"):
+            flagged += 1
+    return {"scanned": scanned, "flagged": flagged}
+
+
+@router.post("/fraud/{user_id}/action")
+async def fraud_action(user_id: str, req: FraudActionRequest, _: dict = Depends(require_role("admin"))):
+    """Admin decision on a flagged account."""
+    db = get_db()
+    user = await db.users.find_one({"id": user_id}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur introuvable")
+
+    now = datetime.now(timezone.utc).isoformat()
+    if req.action == "ignore":
+        await db.fraud_alerts.update_one({"user_id": user_id, "status": "open"}, {"$set": {"status": "dismissed", "resolved_at": now}})
+    elif req.action == "warn":
+        await db.fraud_alerts.update_one({"user_id": user_id, "status": "open"}, {"$set": {"status": "warned", "resolved_at": now}})
+        try:
+            from notifications import create_notification
+            await create_notification(user_id, "fraud_alert", "Avertissement", "Votre activité a été signalée. Merci de respecter les règles de la plateforme.", {})
+        except Exception:
+            pass
+    elif req.action in ("suspend", "ban"):
+        await db.users.update_one(
+            {"id": user_id},
+            {"$set": {"suspended": True, "suspended_at": now, "suspended_reason": f"Admin: {req.action}", "banned": req.action == "ban"}},
+        )
+        await db.fraud_alerts.update_one({"user_id": user_id, "status": "open"}, {"$set": {"status": "actioned", "action_taken": req.action, "resolved_at": now}})
+    else:
+        raise HTTPException(status_code=400, detail="Action invalide")
+
+    return {"ok": True, "action": req.action, "user_id": user_id}

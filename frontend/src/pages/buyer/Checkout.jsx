@@ -59,8 +59,14 @@ export default function Checkout() {
       };
       const { data } = await api.post("/orders", payload);
       clear();
-      toast.success("Commande créée. Paiement bloqué en escrow.");
-      nav(`/buyer/orders/${data.id}`);
+      const n = data.seller_count || (data.orders ? data.orders.length : 1);
+      if (n > 1) {
+        toast.success(`${n} commandes créées. Paiement unique bloqué en escrow.`);
+        nav(`/buyer/order-group/${data.order_group_id}`);
+      } else {
+        toast.success("Commande créée. Paiement bloqué en escrow.");
+        nav(`/buyer/orders/${data.orders[0].id}`);
+      }
     } catch (e) {
       toast.error(formatApiError(e.response?.data?.detail));
     } finally {

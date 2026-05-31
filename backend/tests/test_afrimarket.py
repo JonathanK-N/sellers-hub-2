@@ -211,7 +211,10 @@ def test_create_order():
         "payment_method": "mtn",
     }, headers=_sh(state["buyer_token"]), timeout=15)
     assert r.status_code == 201, r.text
-    o = r.json()
+    resp = r.json()
+    assert "order_group_id" in resp
+    assert resp["seller_count"] == 1
+    o = resp["orders"][0]
     assert o["status"] == "confirmed"
     assert o["escrow_status"] == "held"
     assert len(o["confirmation_code"]) == 6
@@ -269,7 +272,7 @@ def test_my_orders():
     assert any(o["id"] == state["order_id"] for o in r.json())
 
 
-def test_multi_seller_cart_rejected():
+def test_multi_seller_cart_splits_into_suborders():
     # Create another seller w/ product
     phone2 = f"+24389{int(time.time()) % 10000000:07d}"
     r = requests.post(f"{API}/auth/register", json={
@@ -292,7 +295,21 @@ def test_multi_seller_cart_rejected():
         "delivery_mode": "delivery",
         "payment_method": "mtn",
     }, headers=_sh(state["buyer_token"]), timeout=15)
-    assert r.status_code == 400
+    assert r.status_code == 201, r.text
+    resp = r.json()
+    # Two sellers -> two sub-orders under one group
+    assert resp["seller_count"] == 2
+    assert len(resp["orders"]) == 2
+    group_id = resp["order_group_id"]
+    # Each sub-order has its own escrow + confirmation code
+    for o in resp["orders"]:
+        assert o["order_group_id"] == group_id
+        assert o["escrow_status"] == "held"
+        assert len(o["confirmation_code"]) == 6
+    # Group recap endpoint works
+    g = requests.get(f"{API}/order-groups/{group_id}", headers=_sh(state["buyer_token"]), timeout=15)
+    assert g.status_code == 200, g.text
+    assert g.json()["seller_count"] == 2
 
 
 # ---------- Admin ----------

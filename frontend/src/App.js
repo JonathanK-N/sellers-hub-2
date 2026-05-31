@@ -17,6 +17,7 @@ import Cart from "./pages/buyer/Cart";
 import Checkout from "./pages/buyer/Checkout";
 import BuyerOrders from "./pages/buyer/Orders";
 import OrderDetail from "./pages/buyer/OrderDetail";
+import OrderGroup from "./pages/buyer/OrderGroup";
 import Profile from "./pages/buyer/Profile";
 
 import SellerSetup from "./pages/seller/Setup";
@@ -34,6 +35,7 @@ import AdminSellers from "./pages/admin/Sellers";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminKyc from "./pages/admin/Kyc";
 import AdminDisputes from "./pages/admin/Disputes";
+import AdminFraud from "./pages/admin/Fraud";
 import AdminGeo from "./pages/admin/Geo";
 
 import Messages from "./pages/Messages";
@@ -89,6 +91,7 @@ function App() {
             <Route path="/buyer/checkout" element={<ProtectedRoute roles={["buyer"]}><Checkout /></ProtectedRoute>} />
             <Route path="/buyer/orders" element={<ProtectedRoute roles={["buyer"]}><BuyerOrders /></ProtectedRoute>} />
             <Route path="/buyer/orders/:id" element={<ProtectedRoute roles={["buyer", "seller"]}><OrderDetail /></ProtectedRoute>} />
+            <Route path="/buyer/order-group/:groupId" element={<ProtectedRoute roles={["buyer"]}><OrderGroup /></ProtectedRoute>} />
             <Route path="/buyer/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
             <Route path="/seller/setup" element={<ProtectedRoute roles={["seller"]}><SellerSetup /></ProtectedRoute>} />
@@ -110,6 +113,7 @@ function App() {
             <Route path="/admin/orders" element={<ProtectedRoute roles={["admin"]}><AdminOrders /></ProtectedRoute>} />
             <Route path="/admin/kyc" element={<ProtectedRoute roles={["admin"]}><AdminKyc /></ProtectedRoute>} />
             <Route path="/admin/disputes" element={<ProtectedRoute roles={["admin"]}><AdminDisputes /></ProtectedRoute>} />
+            <Route path="/admin/fraud" element={<ProtectedRoute roles={["admin"]}><AdminFraud /></ProtectedRoute>} />
             <Route path="/admin/geo" element={<ProtectedRoute roles={["admin"]}><AdminGeo /></ProtectedRoute>} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
