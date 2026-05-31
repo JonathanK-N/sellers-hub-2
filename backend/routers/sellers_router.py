@@ -1,0 +1,129 @@
+"""Seller boutique + profile management."""
+import uuid
+import logging
+from datetime import datetime, timezone
+
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
+
+from db import get_db
+from models import SellerSetupRequest
+from auth import require_role
+from storage import put_object
+
+logger = logging.getLogger(__name__)
+router = APIRouter(prefix="/seller", tags=["seller"])
+APP_NAME = "afrimarket"
+
+
+@router.get("/me")
+async def get_my_boutique(user: dict = Depends(require_role("seller"))):
+    db = get_db()
+    seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    return seller  # may be None -> setup needed
+
+
+@router.post("/setup")
+async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_role("seller"))):
+    db = get_db()
+    existing = await db.sellers.find_one({"user_id": user["id"]})
+    payload = {
+        "shop_name": req.shop_name,
+        "description": req.description,
+        "category": req.category,
+        "address": req.address,
+        "neighborhood": req.neighborhood,
+        "opening_hours": req.opening_hours,
+        "shop_logo_url": req.shop_logo_url,
+        "country_code": user["country_code"],
+        "location": {
+            "type": "Point",
+            "coordinates": [req.longitude, req.latitude],
+        },
+    }
+    if existing:
+        await db.sellers.update_one({"user_id": user["id"]}, {"$set": payload})
+        seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+        return seller
+
+    seller = {
+        "id": str(uuid.uuid4()),
+        "user_id": user["id"],
+        "kyc_status": "level1",
+        "badge_verified": False,
+        "rating": 0.0,
+        "commission_rate": 0.07,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        **payload,
+    }
+    await db.sellers.insert_one(seller)
+    seller.pop("_id", None)
+    return seller
+
+
+@router.post("/upload-photo")
+async def upload_photo(file: UploadFile = File(...), user: dict = Depends(require_role("seller"))):
+    """Upload a single product/shop photo to object storage. Returns public URL via our backend."""
+    ext = "jpg"
+    if file.filename and "." in file.filename:
+        ext = file.filename.rsplit(".", 1)[-1].lower()
+    if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
+        ext = "jpg"
+    path = f"{APP_NAME}/photos/{user['id']}/{uuid.uuid4()}.{ext}"
+    data = await file.read()
+    try:
+        result = put_object(path, data, file.content_type or "image/jpeg")
+    except Exception as e:
+        logger.error(f"Upload failed: {e}")
+        raise HTTPException(status_code=500, detail="Échec du téléversement")
+
+    db = get_db()
+    file_id = str(uuid.uuid4())
+    await db.files.insert_one({
+        "id": file_id,
+        "storage_path": result["path"],
+        "owner_id": user["id"],
+        "content_type": file.content_type or f"image/{ext}",
+        "size": result.get("size", 0),
+        "is_deleted": False,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+    return {"id": file_id, "url": f"/api/files/{file_id}", "path": result["path"]}
+
+
+@router.get("/dashboard")
+async def dashboard(user: dict = Depends(require_role("seller"))):
+    db = get_db()
+    seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    if not seller:
+        return {
+            "shop": None,
+            "revenue": 0,
+            "orders_total": 0,
+            "orders_pending": 0,
+            "orders_completed": 0,
+            "products_active": 0,
+            "products_oos": 0,
+            "rating": 0.0,
+            "recent_orders": [],
+        }
+
+    products = await db.products.find({"seller_id": seller["id"]}, {"_id": 0}).to_list(1000)
+    products_active = sum(1 for p in products if p.get("is_active") and p.get("stock", 0) > 0)
+    products_oos = sum(1 for p in products if p.get("stock", 0) <= 0)
+
+    orders = await db.orders.find({"seller_id": seller["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    revenue = sum(o["total_amount"] - o["commission_amount"] for o in orders if o.get("escrow_status") == "released")
+    orders_pending = sum(1 for o in orders if o["status"] in ("confirmed", "preparing", "out_for_delivery"))
+    orders_completed = sum(1 for o in orders if o["status"] in ("delivered", "collected"))
+
+    return {
+        "shop": seller,
+        "revenue": revenue,
+        "orders_total": len(orders),
+        "orders_pending": orders_pending,
+        "orders_completed": orders_completed,
+        "products_active": products_active,
+        "products_oos": products_oos,
+        "rating": seller.get("rating", 0.0),
+        "recent_orders": orders[:10],
+    }
