@@ -58,11 +58,29 @@ export default function Checkout() {
         payment_method: payment,
       };
       const { data } = await api.post("/orders", payload);
-      clear();
+      const groupId = data.order_group_id;
       const n = data.seller_count || (data.orders ? data.orders.length : 1);
+
+      // Initiate hosted-checkout payment (CinetPay aggregator if configured).
+      let paymentUrl = null;
+      try {
+        const initRes = await api.post("/payments/init", { order_group_id: groupId });
+        paymentUrl = initRes.data?.payment_url || null;
+      } catch {
+        // If init fails (or sandbox), fall back to escrow-simulated flow.
+      }
+
+      clear();
+
+      if (paymentUrl) {
+        toast.success("Redirection vers le paiement sécurisé…");
+        window.location.href = paymentUrl;
+        return;
+      }
+
       if (n > 1) {
         toast.success(`${n} commandes créées. Paiement unique bloqué en escrow.`);
-        nav(`/buyer/order-group/${data.order_group_id}`);
+        nav(`/buyer/order-group/${groupId}`);
       } else {
         toast.success("Commande créée. Paiement bloqué en escrow.");
         nav(`/buyer/orders/${data.orders[0].id}`);
