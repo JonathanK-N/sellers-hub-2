@@ -60,6 +60,12 @@ export default function SellerDashboard() {
           <Plus size={18} /> Ajouter un produit
         </button>
 
+        <div className="grid grid-cols-3 gap-2">
+          <QuickAction icon={Wallet} label="Portefeuille" onClick={() => nav("/seller/wallet")} testid="quick-wallet" />
+          <QuickAction icon={ScanLine} label="Scanner QR" onClick={() => nav("/seller/scan")} testid="quick-scan" />
+          <QuickAction icon={ShieldCheck} label="KYC" onClick={() => nav("/seller/kyc")} testid="quick-kyc" />
+        </div>
+
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Commandes récentes</h3>
           {data.recent_orders.length === 0 ? (
