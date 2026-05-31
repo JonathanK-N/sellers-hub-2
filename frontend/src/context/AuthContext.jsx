@@ -38,6 +38,14 @@ export function AuthProvider({ children }) {
     refresh();
   }, [refresh]);
 
+  useEffect(() => {
+    if (!user) return;
+    if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
+    import("../lib/push").then(({ enablePushNotifications }) => {
+      enablePushNotifications().catch(() => {});
+    }).catch(() => {});
+  }, [user]);
+
   const setSession = (token, userObj) => {
     localStorage.setItem("afri_token", token);
     localStorage.setItem("afri_user", JSON.stringify(userObj));
@@ -45,6 +53,9 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
+    import("../lib/push").then(({ disablePushNotifications }) => {
+      disablePushNotifications().catch(() => {});
+    }).catch(() => {});
     localStorage.removeItem("afri_token");
     localStorage.removeItem("afri_user");
     setUser(null);

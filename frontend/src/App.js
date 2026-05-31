@@ -43,6 +43,7 @@ import Messages from "./pages/Messages";
 import ChatThread from "./pages/ChatThread";
 import OpenDispute from "./pages/buyer/OpenDispute";
 import DelivererDashboard from "./pages/deliverer/Dashboard";
+import Notifications from "./pages/Notifications";
 
 function ProtectedRoute({ children, roles }) {
   const { user, loading } = useAuth();
@@ -111,6 +112,7 @@ function App() {
             <Route path="/buyer/dispute/:orderId" element={<ProtectedRoute roles={["buyer"]}><OpenDispute /></ProtectedRoute>} />
 
             <Route path="/livreur" element={<ProtectedRoute roles={["deliverer"]}><DelivererDashboard /></ProtectedRoute>} />
+            <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
 
             <Route path="/admin/overview" element={<ProtectedRoute roles={["admin"]}><AdminOverview /></ProtectedRoute>} />
             <Route path="/admin/users" element={<ProtectedRoute roles={["admin"]}><AdminUsers /></ProtectedRoute>} />
