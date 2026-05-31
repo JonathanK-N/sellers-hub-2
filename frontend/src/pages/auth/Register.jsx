@@ -17,7 +17,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    api.get("/countries").then(({ data }) => setCountries(data)).catch(() => {});
+    api.get("/countries").then(({ data }) => setCountries(Array.isArray(data) ? data : [])).catch(() => {});
   }, []);
 
   const current = countries.find((c) => c.code === form.country_code);
