@@ -1,0 +1,60 @@
+{
+  "summary": "Comprehensive backend + frontend testing of AfriMarket PWA. Backend: 28/28 pytest cases pass (100%) covering health, countries, OTP register/login, JWT auth, seller setup, products + geo filters, order escrow lifecycle (create -> advance -> confirm-delivery), multi-seller cart rejection, admin overview/users/sellers/KYC approve, role-based 403s, photo upload. Frontend: Landing, Register (buyer), VerifyOtp, Buyer Home (product cards), Product Detail (add-to-cart), Cart, Checkout (delivery + MoMo), Order Detail (4-step timeline + 6-digit confirmation code) all working end-to-end with real backend integration. Two frontend issues found.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "auth/Login.jsx (line 19)",
+        "issue": "Phone normalization strips ALL leading zeros from local part: `phone.replace(/^0+/, '')`. This is OK for normal phones written as 0XXXXXXXXX but it corrupts the admin phone +243000000001 -> +2431, causing admin login to fail with 404 'Aucun compte trouvé pour ce numéro'. Either change strip to remove only ONE leading 0 (^0), or document an alternative admin phone. As tested: backend admin login via POST /api/auth/send-otp + verify-otp with +243000000001 works perfectly (28/28 backend tests pass including admin flows).",
+        "selector": "[data-testid=\"login-phone-input\"]",
+        "priority": "HIGH"
+      },
+      {
+        "component": "ProductDetail.jsx / Cart.jsx / Checkout.jsx bottom CTAs",
+        "issue": "The 'Made with Emergent' floating badge at the bottom-right intercepts pointer events on sticky bottom-action buttons (add-to-cart-btn, cart-checkout-btn, checkout-pay-btn) at mobile viewport 390px. Playwright clicks (even with force=True) were intercepted; only native DOM .click() worked. Real users on mobile tapping near the bottom-right corner could miss the CTA. Consider increasing bottom padding on mobile-shell or moving the badge.",
+        "selector": "[data-testid=\"add-to-cart-btn\"], [data-testid=\"cart-checkout-btn\"], [data-testid=\"checkout-pay-btn\"]",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Checkout",
+        "issues": [
+          "data-testid for payment methods are 'payment-MTN-MoMo', 'payment-Airtel-Money', 'payment-Orange-Money' (contains hyphenated provider name with capitals). Convention used elsewhere is kebab-case lowercase. Recommend normalizing to e.g. payment-method-mtn / payment-method-airtel / payment-method-orange.",
+          "Submit button is 'checkout-pay-btn' while review request expected 'checkout-submit-btn'. Either is fine; flagging mismatch for documentation."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_afrimarket.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Fix /app/frontend/src/pages/auth/Login.jsx phone normalization so the admin phone +243000000001 (and any phone whose local part starts with multiple zeros) is not corrupted. Suggested fix: replace `phone.replace(/^0+/, '')` with `phone.replace(/^0/, '')` (strip only a single leading 0) OR remove the strip entirely and let the user input the full local number.",
+    "Same leading-zero stripping logic should be reviewed in /app/frontend/src/pages/auth/Register.jsx (it currently works because random test phones don't start with 0, but admin-like phones would also be corrupted at registration).",
+    "Add bottom safe-area padding on mobile-shell or move 'Made with Emergent' badge so it doesn't overlap sticky CTA buttons on Product Detail, Cart and Checkout pages at 390px width.",
+    "Optional: normalize payment-method test-id naming convention to kebab-case lowercase."
+  ],
+  "critical_code_review_comments": [
+    "AuthContext stores JWT in localStorage (afri_token) which is XSS-vulnerable. Acceptable for MVP but document follow-up to httpOnly cookies.",
+    "OTP returned in response (otp_dev) is intentional per spec but ensure this flag is gated behind ENV==dev before going to prod.",
+    "Single-seller cart enforced both client-side (CartContext) and server-side (orders_router) - good defense in depth.",
+    "MongoDB _id properly excluded throughout API responses (no leakage observed)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_afrimarket.py (new)",
+    "/app/test_reports/pytest/pytest_results.xml (generated)"
+  ],
+  "success_rate": {"backend": "100% (28/28)", "frontend": "~90% (login admin path broken, all other critical flows pass)"},
+  "test_credentials": "Admin: +243000000001 (backend works via direct API; frontend login UI is broken due to zero-stripping bug). New buyers/sellers register via UI with role selector; OTP appears in toast as 'Demo: XXXXXX'.",
+  "seed_data_creation": "Tests create TEST_-prefixed users/sellers/products/orders per run with unique phone numbers. Cleanup not implemented (idempotent run via unique RUN_TAG).",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend test suite at /app/backend/tests/test_afrimarket.py is the regression suite - run: pytest /app/backend/tests/test_afrimarket.py -v. For frontend testing, prefer native DOM click via page.evaluate(\"document.querySelector('...').click()\") for any sticky bottom CTAs because the Made-with-Emergent badge overlaps. Admin login from the UI is currently broken (zero-strip bug); use API directly to obtain admin JWT and inject into localStorage('afri_token') if you need to test admin pages. Test IDs available on checkout: mode-delivery, mode-collect, checkout-neighborhood-input, checkout-landmark-input, checkout-city-input, payment-MTN-MoMo, payment-Airtel-Money, payment-Orange-Money, checkout-pay-btn. Order detail testids: timeline-step-{confirmed,preparing,out_for_delivery,delivered}, confirmation-code-display, confirm-code-input, confirm-delivery-btn.",
+  "rca_of_the_issue": "Admin login UI bug RCA: /app/frontend/src/pages/auth/Login.jsx line ~19 does `const full = `${dial}${phone.replace(/^0+/, '')}``. The regex `/^0+/` strips every leading zero. For admin phone +243000000001, the user types local part '000000001'; after stripping all leading zeros it becomes '1', so the full phone sent to /api/auth/send-otp is '+2431' which doesn't exist in DB -> 404. Fix: use `/^0/` to strip only the first leading zero (matching common African mobile conventions like '0812345678' -> '812345678') or remove the strip entirely. Reproduction: open /auth/login, type 000000001, click Receive code -> toast shows 'Aucun compte trouvé pour ce numéro'. Backend confirmed working via curl: POST /api/auth/send-otp {\"phone\":\"+243000000001\"} returns 200 with otp_dev."
+}

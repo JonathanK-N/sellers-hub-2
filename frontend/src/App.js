@@ -1,55 +1,104 @@
-import { useEffect } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import { HOME } from "@/constants/testIds";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "sonner";
+import "./App.css";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+import Landing from "./pages/Landing";
+import Register from "./pages/auth/Register";
+import Login from "./pages/auth/Login";
+import VerifyOtp from "./pages/auth/VerifyOtp";
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
+import BuyerHome from "./pages/buyer/Home";
+import SearchPage from "./pages/buyer/Search";
+import ProductDetail from "./pages/buyer/ProductDetail";
+import Cart from "./pages/buyer/Cart";
+import Checkout from "./pages/buyer/Checkout";
+import BuyerOrders from "./pages/buyer/Orders";
+import OrderDetail from "./pages/buyer/OrderDetail";
+import Profile from "./pages/buyer/Profile";
 
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+import SellerSetup from "./pages/seller/Setup";
+import SellerDashboard from "./pages/seller/Dashboard";
+import SellerProducts from "./pages/seller/Products";
+import SellerAddProduct from "./pages/seller/AddProduct";
+import SellerOrders from "./pages/seller/SellerOrders";
+
+import AdminOverview from "./pages/admin/Overview";
+import AdminUsers from "./pages/admin/Users";
+import AdminSellers from "./pages/admin/Sellers";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminKyc from "./pages/admin/Kyc";
+
+function ProtectedRoute({ children, roles }) {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        Chargement…
+      </div>
+    );
+  }
+  if (!user) return <Navigate to="/auth/login" replace />;
+  if (roles && !roles.includes(user.role))
+    return <Navigate to="/" replace />;
+  return children;
+}
+
+function RoleRedirect() {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        Chargement…
+      </div>
+    );
+  }
+  if (!user) return <Landing />;
+  if (user.role === "admin") return <Navigate to="/admin/overview" replace />;
+  if (user.role === "seller") return <Navigate to="/seller/dashboard" replace />;
+  return <Navigate to="/buyer/home" replace />;
+}
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <AuthProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <Toaster position="top-center" richColors />
+          <Routes>
+            <Route path="/" element={<RoleRedirect />} />
+            <Route path="/auth/register" element={<Register />} />
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/verify" element={<VerifyOtp />} />
+
+            <Route path="/buyer/home" element={<ProtectedRoute roles={["buyer", "seller", "admin"]}><BuyerHome /></ProtectedRoute>} />
+            <Route path="/buyer/search" element={<ProtectedRoute roles={["buyer", "seller", "admin"]}><SearchPage /></ProtectedRoute>} />
+            <Route path="/buyer/product/:id" element={<ProtectedRoute roles={["buyer", "seller", "admin"]}><ProductDetail /></ProtectedRoute>} />
+            <Route path="/buyer/cart" element={<ProtectedRoute roles={["buyer"]}><Cart /></ProtectedRoute>} />
+            <Route path="/buyer/checkout" element={<ProtectedRoute roles={["buyer"]}><Checkout /></ProtectedRoute>} />
+            <Route path="/buyer/orders" element={<ProtectedRoute roles={["buyer"]}><BuyerOrders /></ProtectedRoute>} />
+            <Route path="/buyer/orders/:id" element={<ProtectedRoute roles={["buyer", "seller"]}><OrderDetail /></ProtectedRoute>} />
+            <Route path="/buyer/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+
+            <Route path="/seller/setup" element={<ProtectedRoute roles={["seller"]}><SellerSetup /></ProtectedRoute>} />
+            <Route path="/seller/dashboard" element={<ProtectedRoute roles={["seller"]}><SellerDashboard /></ProtectedRoute>} />
+            <Route path="/seller/products" element={<ProtectedRoute roles={["seller"]}><SellerProducts /></ProtectedRoute>} />
+            <Route path="/seller/products/new" element={<ProtectedRoute roles={["seller"]}><SellerAddProduct /></ProtectedRoute>} />
+            <Route path="/seller/orders" element={<ProtectedRoute roles={["seller"]}><SellerOrders /></ProtectedRoute>} />
+
+            <Route path="/admin/overview" element={<ProtectedRoute roles={["admin"]}><AdminOverview /></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute roles={["admin"]}><AdminUsers /></ProtectedRoute>} />
+            <Route path="/admin/sellers" element={<ProtectedRoute roles={["admin"]}><AdminSellers /></ProtectedRoute>} />
+            <Route path="/admin/orders" element={<ProtectedRoute roles={["admin"]}><AdminOrders /></ProtectedRoute>} />
+            <Route path="/admin/kyc" element={<ProtectedRoute roles={["admin"]}><AdminKyc /></ProtectedRoute>} />
+
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
