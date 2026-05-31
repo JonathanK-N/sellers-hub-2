@@ -1,0 +1,137 @@
+{
+  "project_name": "AfriMarket",
+  "theme": "light",
+  "archetype": "Archetype 1: Organic & Earthy (Adapted for Trust-focused Marketplace)",
+  "design_philosophy": {
+    "core_principles": [
+      "Trust & Verification: Emphasize verified seller badges and escrow.",
+      "Mobile-First Performance: UI optimized for 360px viewport and 3G networks. Minimal decorative animations.",
+      "Clarity & Contrast: Green headers (#085041), earthy/clean backgrounds, high contrast text.",
+      "Hyper-Local Focus: Proximity and distance metrics integrated seamlessly into product cards."
+    ]
+  },
+  "colors": {
+    "primary": "#1D9E75",
+    "primary_hover": "#168260",
+    "secondary": "#085041",
+    "accent": "#EF9F27",
+    "error": "#E24B4A",
+    "success_bg": "#E1F5EE",
+    "background": "#F9FAFB",
+    "surface": "#FFFFFF",
+    "border": "#E5E7EB",
+    "text": {
+      "main": "#111827",
+      "muted": "#4B5563",
+      "inverse": "#FFFFFF"
+    }
+  },
+  "typography": {
+    "heading_font": "Manrope",
+    "body_font": "IBM Plex Sans",
+    "scale": {
+      "h1": "text-2xl sm:text-3xl tracking-tight font-black text-gray-900",
+      "h2": "text-xl sm:text-2xl tracking-tight font-bold text-gray-900",
+      "h3": "text-lg sm:text-xl font-bold text-gray-900",
+      "body": "text-sm sm:text-base leading-relaxed text-gray-700",
+      "small": "text-xs sm:text-sm text-gray-500",
+      "micro": "text-[10px] uppercase tracking-wider font-bold text-gray-500"
+    }
+  },
+  "spacing_and_layout": {
+    "container_mobile": "w-full max-w-md mx-auto min-h-screen bg-gray-50 pb-20 relative overflow-x-hidden",
+    "container_desktop": "grid grid-cols-[250px_1fr] min-h-screen bg-gray-50",
+    "padding": {
+      "section": "p-4",
+      "card": "p-3"
+    },
+    "border_radius": {
+      "card": "rounded-xl",
+      "button": "rounded-lg",
+      "pill": "rounded-full"
+    },
+    "shadows": {
+      "card": "shadow-sm",
+      "floating_nav": "shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]",
+      "dropdown": "shadow-lg"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#1D9E75] text-white hover:bg-[#168260] rounded-lg py-3 px-4 font-semibold w-full transition-colors flex justify-center items-center gap-2",
+      "secondary": "bg-white text-[#1D9E75] border border-[#1D9E75] hover:bg-[#E1F5EE] rounded-lg py-3 px-4 font-semibold w-full transition-colors flex justify-center items-center gap-2",
+      "danger": "bg-[#E24B4A] text-white hover:bg-red-600 rounded-lg py-3 px-4 font-semibold transition-colors"
+    },
+    "cards": {
+      "product": "bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group",
+      "seller": "bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center gap-3",
+      "dashboard_widget": "bg-white rounded-xl shadow-sm border border-gray-200 p-5"
+    },
+    "badges": {
+      "verified": "flex items-center gap-1 text-[#1D9E75] bg-[#E1F5EE] px-2 py-1 rounded-full text-[10px] font-bold uppercase",
+      "distance": "flex items-center gap-1 bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs font-medium",
+      "category": "px-4 py-2 rounded-full bg-white border border-gray-200 text-sm font-medium whitespace-nowrap text-gray-700 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-colors"
+    },
+    "inputs": {
+      "standard": "w-full border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none transition-shadow",
+      "search": "w-full bg-gray-100 rounded-full py-2.5 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-[#1D9E75] outline-none transition-all"
+    },
+    "navigation": {
+      "bottom_bar": "fixed bottom-0 w-full max-w-md mx-auto bg-white border-t border-gray-200 flex justify-around items-center h-16 px-2 z-50 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]",
+      "top_header": "sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex justify-between items-center shadow-md",
+      "desktop_sidebar": "bg-[#085041] text-white w-[250px] flex flex-col h-screen fixed"
+    }
+  },
+  "media": {
+    "promos": [
+      {
+        "url": "https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxhZnJpY2FuJTIwbWFya2V0fGVufDB8fHx8MTc4MDIwMTgzOXww&ixlib=rb-4.1.0&q=85",
+        "description": "African market scene for hero banner"
+      },
+      {
+        "url": "https://images.pexels.com/photos/36827830/pexels-photo-36827830.jpeg",
+        "description": "Street market vendor for category promos"
+      }
+    ],
+    "products": [
+      {
+        "url": "https://images.unsplash.com/photo-1483478550801-ceba5fe50e8e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxlbGVjdHJvbmljcyUyMHNtYXJ0cGhvbmV8ZW58MHx8fHwxNzgwMjAxODM5fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Smartphone device listing"
+      },
+      {
+        "url": "https://images.pexels.com/photos/9799706/pexels-photo-9799706.jpeg",
+        "description": "Solar panel product listing"
+      }
+    ],
+    "avatars": [
+      {
+        "url": "https://images.unsplash.com/photo-1573497019418-b400bb3ab074?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzV8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwYnVzaW5lc3MlMjB3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTc4MDIwMTgzOXww&ixlib=rb-4.1.0&q=85",
+        "description": "Seller profile avatar 1"
+      },
+      {
+        "url": "https://images.pexels.com/photos/31307734/pexels-photo-31307734.jpeg",
+        "description": "Seller profile avatar 2"
+      }
+    ]
+  },
+  "interactions": {
+    "hover_states": "Hover states should visibly shift color depth (e.g., bg-[#1D9E75] to bg-[#168260]).",
+    "focus_states": "Use focus:ring-2 focus:ring-[#1D9E75] focus:ring-offset-1 for accessibility on all inputs and buttons.",
+    "animations": "Subtle and functional only. Avoid heavy layout shifts or 3D effects. Use transition-all duration-200 ease-in-out."
+  },
+  "icons": {
+    "library": "lucide-react",
+    "instructions": "Use lucide-react. Standard sizes: 20px for nav/buttons, 16px for inline data (like distance map-pin), 24px for main bottom navigation icons."
+  },
+  "testing": {
+    "rules": "All interactive elements MUST include data-testid attributes (e.g., data-testid='bottom-nav-home', data-testid='add-to-cart-btn')."
+  },
+  "instructions_to_main_agent": [
+    "Ensure 'Manrope' and 'IBM Plex Sans' are added to the head of index.html via Google Fonts.",
+    "Implement the mobile layout wrapping the main PWA screens in `<div className='w-full max-w-md mx-auto min-h-screen relative'>` to enforce the 360px targeted mobile-first aesthetic on desktop displays.",
+    "Use Shadcn UI components for complex interactions: Slider for proximity (1-50km), Dialog for Mobile Money operator selection, and Tabs for Admin dashboard navigation.",
+    "Do NOT use transparent backgrounds for the top header. It must be solid `#085041`.",
+    "Build the 2-column product grid with `grid-cols-2 gap-3`. Product cards must show: Photo, Title, Seller Name, Verified Badge (if applicable), Price (in FC/XAF/XOF), Rating, and Distance.",
+    "Integrate the provided real media URLs for banners, products, and user avatars to maintain high-quality aesthetic output. Do NOT use dummyimage placeholders."
+  ]
+}
