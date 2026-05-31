@@ -24,6 +24,7 @@ from routers.reviews_router import router as reviews_router
 from routers.disputes_router import router as disputes_router
 from routers.wallet_router import router as wallet_router
 from routers.delivery_router import router as delivery_router
+from routers.notifications_router import router as notifications_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -56,6 +57,7 @@ api_router.include_router(reviews_router)
 api_router.include_router(disputes_router)
 api_router.include_router(wallet_router)
 api_router.include_router(delivery_router)
+api_router.include_router(notifications_router)
 
 app.include_router(api_router)
 
