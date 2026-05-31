@@ -7,7 +7,7 @@ Full-stack mobile-first marketplace PWA connecting buyers/sellers across francop
 - Backend: FastAPI + MongoDB (motor) + JWT
 - Frontend: React 19 PWA (mobile-first 360px) + Tailwind + Shadcn UI + recharts + qrcode.react + html5-qrcode
 - Auth: Phone + simulated SMS OTP (`otp_dev` field)
-- Storage: Emergent object storage for product photos & KYC docs
+- Storage: object storage for product photos & KYC docs
 - Geo: Haversine distance computation + MongoDB 2dsphere index ready
 - Payment: SIMULATED Mobile Money (no real provider call)
 
@@ -19,7 +19,7 @@ Full-stack mobile-first marketplace PWA connecting buyers/sellers across francop
 ## Phase 1 MVP — DONE ✅
 - Registration with country selection + simulated OTP
 - Login + JWT auth
-- Seller boutique + product listing with photos (Emergent storage)
+- Seller boutique + product listing with photos (object storage)
 - Buyer home, category pills, search with GPS radius filter
 - Cart, checkout (delivery + Mobile Money simulated)
 - Escrow + 6-digit code confirmation
@@ -30,7 +30,7 @@ Full-stack mobile-first marketplace PWA connecting buyers/sellers across francop
 1. **Click & Collect + QR**: Buyer order shows QR via qrcode.react. Seller `/seller/scan` page uses html5-qrcode camera OR manual token. Backend `POST /api/orders/{id}/scan-qr` releases escrow → status=collected.
 2. **Messaging buyer↔seller**: `/messages` conversations list, `/messages/{convId}` chat (polls every 3s). Unread badge in TopBar. Conversation id format `buyerId__sellerId`.
 3. **Reviews & ratings**: ReviewPrompt on OrderDetail after delivery; star rating 1-5 + comment. Only buyers of `delivered`/`collected` orders, one review per order. Seller.rating recomputed.
-4. **KYC documents upload**: `/seller/kyc` 3-step page (id → selfie → address). Files stored in Emergent private folder. Submit sets `kyc_status=pending_review`. Admin approves with appropriate level (2 or 3), badge granted at level 3.
+4. **KYC documents upload**: `/seller/kyc` 3-step page (id → selfie → address). Files stored in private storage folder. Submit sets `kyc_status=pending_review`. Admin approves with appropriate level (2 or 3), badge granted at level 3.
 5. **Disputes**: Buyer button on OrderDetail → `/buyer/dispute/{orderId}`. Backend freezes `escrow_status=frozen`. Admin `/admin/disputes` page lists with priority (urgent if > 5 days). 3 decisions: refund_buyer / partial_refund / release_seller.
 6. **Seller wallet**: `/seller/wallet` shows available balance (net = gross − commission − withdrawn). Withdraw modal posts to Mobile Money. Withdrawal status auto-completes after 2 min.
 7. **Geographic admin dashboard**: `/admin/geo` — 5 country cards (users, sellers, orders, commission), 6-month bar chart (recharts), alerts panel, toggle country active/inactive, export CSV (users, orders).

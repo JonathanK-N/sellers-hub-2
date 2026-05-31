@@ -1,4 +1,4 @@
-"""Emergent object storage helper for product photos."""
+"""Object storage helper for product photos."""
 import os
 import logging
 import requests
