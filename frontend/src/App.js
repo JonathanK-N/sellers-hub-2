@@ -36,11 +36,13 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminKyc from "./pages/admin/Kyc";
 import AdminDisputes from "./pages/admin/Disputes";
 import AdminFraud from "./pages/admin/Fraud";
+import AdminDeliverers from "./pages/admin/Deliverers";
 import AdminGeo from "./pages/admin/Geo";
 
 import Messages from "./pages/Messages";
 import ChatThread from "./pages/ChatThread";
 import OpenDispute from "./pages/buyer/OpenDispute";
+import DelivererDashboard from "./pages/deliverer/Dashboard";
 
 function ProtectedRoute({ children, roles }) {
   const { user, loading } = useAuth();
@@ -69,6 +71,7 @@ function RoleRedirect() {
   if (!user) return <Landing />;
   if (user.role === "admin") return <Navigate to="/admin/overview" replace />;
   if (user.role === "seller") return <Navigate to="/seller/dashboard" replace />;
+  if (user.role === "deliverer") return <Navigate to="/livreur" replace />;
   return <Navigate to="/buyer/home" replace />;
 }
 
@@ -107,6 +110,8 @@ function App() {
             <Route path="/messages/:conversationId" element={<ProtectedRoute roles={["buyer", "seller"]}><ChatThread /></ProtectedRoute>} />
             <Route path="/buyer/dispute/:orderId" element={<ProtectedRoute roles={["buyer"]}><OpenDispute /></ProtectedRoute>} />
 
+            <Route path="/livreur" element={<ProtectedRoute roles={["deliverer"]}><DelivererDashboard /></ProtectedRoute>} />
+
             <Route path="/admin/overview" element={<ProtectedRoute roles={["admin"]}><AdminOverview /></ProtectedRoute>} />
             <Route path="/admin/users" element={<ProtectedRoute roles={["admin"]}><AdminUsers /></ProtectedRoute>} />
             <Route path="/admin/sellers" element={<ProtectedRoute roles={["admin"]}><AdminSellers /></ProtectedRoute>} />
@@ -114,6 +119,7 @@ function App() {
             <Route path="/admin/kyc" element={<ProtectedRoute roles={["admin"]}><AdminKyc /></ProtectedRoute>} />
             <Route path="/admin/disputes" element={<ProtectedRoute roles={["admin"]}><AdminDisputes /></ProtectedRoute>} />
             <Route path="/admin/fraud" element={<ProtectedRoute roles={["admin"]}><AdminFraud /></ProtectedRoute>} />
+            <Route path="/admin/deliverers" element={<ProtectedRoute roles={["admin"]}><AdminDeliverers /></ProtectedRoute>} />
             <Route path="/admin/geo" element={<ProtectedRoute roles={["admin"]}><AdminGeo /></ProtectedRoute>} />
 
             <Route path="*" element={<Navigate to="/" replace />} />

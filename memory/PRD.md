@@ -37,14 +37,14 @@ Full-stack mobile-first marketplace PWA connecting buyers/sellers across francop
 
 ## Backlog (P2 — Phase 3)
 - Real Mobile Money integration (MTN MoMo, Wave, Orange) — needs provider keys
-- Push notifications via Firebase
+- Push notifications via Firebase (device token registration + prefs UI)
 - Sponsored products / Premium seller badge
-- Delivery partner (livreur) app
-- Cron job for wallet withdrawal completion instead of read-triggered
 
 ## Phase 3 — IN PROGRESS
 - **Multi-seller cart — DONE ✅**: Cart can hold products from several sellers. `POST /orders` splits into one sub-order per seller under a shared `order_group_id`; each sub-order has its own escrow, confirmation code / QR, and commission (per-seller rate). Single Mobile Money charge for the whole cart (`order_groups` collection). New endpoint `GET /order-groups/{id}` returns the recap. Frontend: `CartContext.sellerGroups`, Cart groups by seller, new `OrderGroup.jsx` recap page at `/buyer/order-group/:groupId`. Seller notified per sub-order.
 - **AI fraud detection UI — DONE ✅**: `fraud.py` scoring now wired up. Admin routes: `GET /admin/fraud/alerts`, `GET /admin/fraud/stats` (+ 7-day trend), `POST /admin/fraud/scan` (re-evaluate all), `POST /admin/fraud/{user_id}/action` (ignore/warn/suspend/ban). Evaluation auto-triggered on order creation. Frontend: `/admin/fraud` page with stat cards, 7-day bar chart (recharts), per-account score ring, signal chips, action buttons. Sidebar link added.
+- **Withdrawal cron — DONE ✅**: `start_scheduler()` now called on startup in `server.py` (stopped on shutdown). `_compute_balance` no longer auto-completes on read; the APScheduler job (`process_pending_withdrawals`, every 1 min) is the single source of truth, with retry x3 → `manual_review`. Balance counts in_progress/processing/completed against available.
+- **Delivery partner (livreur) app — DONE ✅**: New `deliverer` role allowed at registration. `delivery_router.py`: seller assigns via `GET /deliverers/available` + `POST /orders/{id}/assign`; deliverer uses `GET /deliverer/deliveries`, `/deliverer/earnings`, `POST /deliverer/orders/{id}/picked-up|en-route|confirm` (confirm takes the buyer's 6-digit code → escrow released). Admin: `GET /admin/deliverers`, `PATCH /admin/deliverers/{id}` (activate/deactivate). Order status flow for delivery now: confirmed → preparing → assigned → picked_up → out_for_delivery → delivered. Seller is blocked from advancing once a deliverer is assigned. Frontend: `/livreur` mobile dashboard (active deliveries, pickup/dropoff, status actions, code entry, earnings, history), assign-deliverer block in `OrderDetail`, `/admin/deliverers` management page. Registration adds a "Livrer" role option; role redirect sends deliverers to `/livreur`.
 
 ## Architectural Notes
 - All API routes prefixed `/api`

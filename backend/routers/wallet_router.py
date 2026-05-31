@@ -38,14 +38,11 @@ async def _compute_balance(db, seller_id: str) -> dict:
         commission = 0
     net_earnings = gross - commission
 
-    # Auto-complete withdrawals older than 2 minutes
-    cutoff = (datetime.now(timezone.utc) - timedelta(minutes=2)).isoformat()
-    await db.withdrawals.update_many(
-        {"seller_id": seller_id, "status": "in_progress", "created_at": {"$lt": cutoff}},
-        {"$set": {"status": "completed", "completed_at": _now()}},
-    )
+    # Withdrawals are finalized by the background scheduler (cron), not on read.
+    # Count in-progress/processing/completed against the balance so a seller can't
+    # double-withdraw funds that are mid-flight.
     withdrawn = 0
-    async for w in db.withdrawals.find({"seller_id": seller_id, "status": {"$in": ["in_progress", "completed"]}}):
+    async for w in db.withdrawals.find({"seller_id": seller_id, "status": {"$in": ["in_progress", "processing", "completed"]}}):
         withdrawn += w["amount"]
 
     return {
@@ -74,7 +71,6 @@ async def list_transactions(user: dict = Depends(require_role("seller"))):
     seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
     if not seller:
         return []
-    await _compute_balance(db, seller["id"])  # trigger auto-completion
 
     # Sales transactions (released orders)
     sales = []

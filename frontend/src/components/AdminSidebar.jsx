@@ -9,6 +9,7 @@ import {
   AlertTriangle,
   ShieldAlert,
   Globe2,
+  Bike,
   LogOut,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -21,6 +22,7 @@ const items = [
   { to: "/admin/kyc", icon: ShieldCheck, label: "KYC", testid: "admin-nav-kyc" },
   { to: "/admin/disputes", icon: AlertTriangle, label: "Litiges", testid: "admin-nav-disputes" },
   { to: "/admin/fraud", icon: ShieldAlert, label: "Fraude", testid: "admin-nav-fraud" },
+  { to: "/admin/deliverers", icon: Bike, label: "Livreurs", testid: "admin-nav-deliverers" },
   { to: "/admin/geo", icon: Globe2, label: "Géographie", testid: "admin-nav-geo" },
 ];
 

@@ -23,6 +23,7 @@ from routers.messages_router import router as messages_router
 from routers.reviews_router import router as reviews_router
 from routers.disputes_router import router as disputes_router
 from routers.wallet_router import router as wallet_router
+from routers.delivery_router import router as delivery_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -54,6 +55,7 @@ api_router.include_router(messages_router)
 api_router.include_router(reviews_router)
 api_router.include_router(disputes_router)
 api_router.include_router(wallet_router)
+api_router.include_router(delivery_router)
 
 app.include_router(api_router)
 
@@ -77,8 +79,18 @@ async def on_startup():
         init_storage()
     except Exception as e:
         logger.error(f"Storage init failed: {e}")
+    try:
+        from scheduler import start_scheduler
+        start_scheduler()
+    except Exception as e:
+        logger.error(f"Scheduler start failed: {e}")
 
 
 @app.on_event("shutdown")
 async def on_shutdown():
+    try:
+        from scheduler import stop_scheduler
+        stop_scheduler()
+    except Exception as e:
+        logger.error(f"Scheduler stop failed: {e}")
     close_db()
