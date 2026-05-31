@@ -120,7 +120,7 @@ export default function ProductDetail() {
       </div>
 
       {user?.role === "buyer" && p.stock > 0 && (
-        <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 z-50 flex items-center gap-3 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
+        <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 pb-5 z-50 flex items-center gap-3 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
           <div className="flex items-center gap-1 border border-gray-200 rounded-lg">
             <button
               data-testid="qty-decrease"
