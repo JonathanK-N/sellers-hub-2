@@ -43,6 +43,16 @@ async def overview(_: dict = Depends(require_role("admin"))):
     by_country = {r["_id"]: {"commission": r["commission"], "orders": r["count"]} for r in rows}
     total_commission = sum(r["commission"] for r in rows)
 
+    # Premium subscription revenue + active count
+    premium_active = await db.sellers.count_documents({"premium": True})
+    prem_pipeline = [
+        {"$match": {"status": "active"}},
+        {"$group": {"_id": None, "total": {"$sum": "$amount"}, "count": {"$sum": 1}}},
+    ]
+    prem_rows = await db.premium_subscriptions.aggregate(prem_pipeline).to_list(1)
+    premium_revenue = prem_rows[0]["total"] if prem_rows else 0
+    premium_subs = prem_rows[0]["count"] if prem_rows else 0
+
     return {
         "users_count": users_count,
         "buyers_count": buyers,
@@ -52,6 +62,9 @@ async def overview(_: dict = Depends(require_role("admin"))):
         "open_kyc": open_kyc,
         "total_commission": total_commission,
         "by_country": by_country,
+        "premium_active": premium_active,
+        "premium_revenue": premium_revenue,
+        "premium_subscriptions": premium_subs,
     }
 
 

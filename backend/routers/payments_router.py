@@ -81,6 +81,20 @@ async def cinetpay_webhook(request: Request):
     provider = CinetPayProvider()
     verified = await provider.check(transaction_id)
 
+    # Premium subscription payments use a "premium_<sub_id>" external ref.
+    if transaction_id.startswith("premium_"):
+        sub_id = transaction_id[len("premium_"):]
+        sub = await db.premium_subscriptions.find_one({"id": sub_id}, {"_id": 0})
+        if not sub:
+            return {"ok": True}
+        if verified.status == "SUCCESS":
+            from routers.premium_router import _activate_premium
+            await _activate_premium(db, sub["seller_id"], sub["user_id"], sub_id)
+            logger.info(f"[CINETPAY] premium {sub_id} activated")
+        elif verified.status == "FAILED":
+            await db.premium_subscriptions.update_one({"id": sub_id}, {"$set": {"status": "failed"}})
+        return {"ok": True}
+
     group = await db.order_groups.find_one({"id": transaction_id}, {"_id": 0})
     if not group:
         logger.warning(f"[CINETPAY] webhook for unknown group {transaction_id}")

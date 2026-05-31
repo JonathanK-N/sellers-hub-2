@@ -26,6 +26,20 @@ def _haversine_km(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
     return 2 * R * math.asin(math.sqrt(a))
 
 
+def _is_premium_active(seller: dict) -> bool:
+    """A seller is Premium if flagged and the subscription hasn't expired."""
+    if not seller.get("premium"):
+        return False
+    expires = seller.get("premium_expires_at")
+    if not expires:
+        return False
+    try:
+        exp = datetime.fromisoformat(expires.replace("Z", "+00:00"))
+        return exp > datetime.now(timezone.utc)
+    except Exception:
+        return False
+
+
 @router.get("/products")
 async def list_products(
     q: Optional[str] = None,
@@ -79,18 +93,21 @@ async def list_products(
         p["seller_name"] = s.get("shop_name")
         p["seller_verified"] = s.get("badge_verified", False)
         p["seller_rating"] = s.get("rating", 0.0)
+        p["seller_premium"] = _is_premium_active(s)
         p["distance_km"] = round(distance, 1) if distance is not None else None
         enriched.append(p)
 
-    # Sort
+    # Sort — Premium sellers get a visibility boost on discovery sorts
+    # (nearest / rating / newest), but never override an explicit price sort.
     if sort == "nearest":
-        enriched.sort(key=lambda x: (x["distance_km"] is None, x["distance_km"] or 0))
+        enriched.sort(key=lambda x: (not x.get("seller_premium"), x["distance_km"] is None, x["distance_km"] or 0))
     elif sort == "rating":
-        enriched.sort(key=lambda x: -(x.get("seller_rating") or 0))
+        enriched.sort(key=lambda x: (not x.get("seller_premium"), -(x.get("seller_rating") or 0)))
     elif sort == "price":
         enriched.sort(key=lambda x: x["price"])
     elif sort == "newest":
         enriched.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+        enriched.sort(key=lambda x: not x.get("seller_premium"))
 
     return enriched[:limit]
 
@@ -118,11 +135,11 @@ async def create_product(req: ProductCreateRequest, user: dict = Depends(require
     if not seller:
         raise HTTPException(status_code=400, detail="Créez d'abord votre boutique")
 
-    # KYC level 1 = max 10 products
-    if user.get("kyc_level", 1) < 2:
+    # Product limit: KYC level 1 caps at 10 products, UNLESS the seller is Premium.
+    if user.get("kyc_level", 1) < 2 and not _is_premium_active(seller):
         count = await db.products.count_documents({"seller_id": seller["id"]})
         if count >= 10:
-            raise HTTPException(status_code=403, detail="Limite de 10 produits atteinte. Validez votre KYC pour en ajouter plus.")
+            raise HTTPException(status_code=403, detail="Limite de 10 produits atteinte. Validez votre KYC ou passez Premium pour en ajouter plus.")
 
     product = {
         "id": str(uuid.uuid4()),

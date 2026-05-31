@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Star, MapPin, ShieldCheck } from "lucide-react";
+import { Star, MapPin, ShieldCheck, Crown } from "lucide-react";
 import { formatPrice, formatDistance, photoUrl } from "../lib/format";
 
 export default function ProductCard({ product }) {
@@ -24,6 +24,11 @@ export default function ProductCard({ product }) {
           <div className="w-full h-full flex items-center justify-center text-gray-300 text-4xl font-black font-display">
             A
           </div>
+        )}
+        {product.seller_premium && (
+          <span className="absolute top-2 left-2 flex items-center gap-1 bg-[#EF9F27] text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm">
+            <Crown size={11} /> Premium
+          </span>
         )}
         {distance && (
           <span className="absolute top-2 right-2 flex items-center gap-1 bg-white/95 backdrop-blur text-gray-700 px-2 py-0.5 rounded-full text-[11px] font-medium shadow-sm">

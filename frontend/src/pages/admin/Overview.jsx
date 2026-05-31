@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Users, Store, ShoppingBag, ShieldCheck, TrendingUp, Package } from "lucide-react";
+import { Users, Store, ShoppingBag, ShieldCheck, TrendingUp, Package, Crown } from "lucide-react";
 import api from "../../lib/api";
 import AdminSidebar from "../../components/AdminSidebar";
 import { formatPrice } from "../../lib/format";
@@ -37,15 +37,32 @@ export default function AdminOverview() {
               <Stat icon={ShieldCheck} label="KYC en attente" value={data.open_kyc} highlight={data.open_kyc > 0} />
             </section>
 
-            <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
-                  <TrendingUp size={20} />
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
+                    <TrendingUp size={20} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold uppercase tracking-wide text-gray-500">Commission totale (escrow libéré)</div>
+                    <div className="font-display font-black text-3xl text-[#085041] mt-1">
+                      {formatPrice(data.total_commission, "FC")}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-wide text-gray-500">Commission totale (escrow libéré)</div>
-                  <div className="font-display font-black text-3xl text-[#085041] mt-1">
-                    {formatPrice(data.total_commission, "FC")}
+              </div>
+
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#FAEEDA] text-[#BA7517] flex items-center justify-center">
+                    <Crown size={20} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold uppercase tracking-wide text-gray-500">Revenus Premium</div>
+                    <div className="font-display font-black text-3xl text-[#085041] mt-1">
+                      {formatPrice(data.premium_revenue || 0, "FC")}
+                    </div>
+                    <div className="text-xs text-gray-500 mt-0.5">{data.premium_active || 0} boutiques Premium actives</div>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Package, ShoppingBag, Star, TrendingUp, ShieldCheck, AlertCircle, Wallet, ScanLine } from "lucide-react";
+import { Plus, Package, ShoppingBag, Star, TrendingUp, ShieldCheck, AlertCircle, Wallet, ScanLine, Crown } from "lucide-react";
 import api from "../../lib/api";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
@@ -44,7 +44,31 @@ export default function SellerDashboard() {
           </button>
         )}
 
-        {/* Stats grid */}
+        {/* Premium banner */}
+        <button
+          onClick={() => nav("/seller/premium")}
+          data-testid="premium-banner"
+          className="w-full text-left rounded-xl p-3 flex items-center gap-3 transition-opacity hover:opacity-90"
+          style={{ background: data.shop.premium ? "linear-gradient(135deg, #EF9F27 0%, #BA7517 100%)" : "#085041" }}
+        >
+          <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+            <Crown size={18} className="text-white" />
+          </div>
+          <div className="text-xs text-white flex-1">
+            {data.shop.premium ? (
+              <>
+                <p className="font-semibold">Boutique Premium active</p>
+                <p className="opacity-90 mt-0.5">Visibilité prioritaire + produits illimités →</p>
+              </>
+            ) : (
+              <>
+                <p className="font-semibold">Passez Premium</p>
+                <p className="opacity-90 mt-0.5">Plus de visibilité, badge, produits illimités →</p>
+              </>
+            )}
+          </div>
+        </button>
+
         <div className="grid grid-cols-2 gap-3">
           <Stat icon={TrendingUp} label="Revenus" value={formatPrice(data.revenue, user?.currency)} />
           <Stat icon={ShoppingBag} label="Commandes" value={data.orders_total} sub={`${data.orders_pending} en cours`} />

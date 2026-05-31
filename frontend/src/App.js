@@ -28,6 +28,7 @@ import SellerOrders from "./pages/seller/SellerOrders";
 import SellerWallet from "./pages/seller/Wallet";
 import SellerKyc from "./pages/seller/Kyc";
 import SellerScan from "./pages/seller/Scan";
+import SellerPremium from "./pages/seller/Premium";
 
 import AdminOverview from "./pages/admin/Overview";
 import AdminUsers from "./pages/admin/Users";
@@ -106,6 +107,7 @@ function App() {
             <Route path="/seller/wallet" element={<ProtectedRoute roles={["seller"]}><SellerWallet /></ProtectedRoute>} />
             <Route path="/seller/kyc" element={<ProtectedRoute roles={["seller"]}><SellerKyc /></ProtectedRoute>} />
             <Route path="/seller/scan" element={<ProtectedRoute roles={["seller"]}><SellerScan /></ProtectedRoute>} />
+            <Route path="/seller/premium" element={<ProtectedRoute roles={["seller"]}><SellerPremium /></ProtectedRoute>} />
 
             <Route path="/messages" element={<ProtectedRoute roles={["buyer", "seller"]}><Messages /></ProtectedRoute>} />
             <Route path="/messages/:conversationId" element={<ProtectedRoute roles={["buyer", "seller"]}><ChatThread /></ProtectedRoute>} />

@@ -67,12 +67,30 @@ async def process_pending_withdrawals():
                 logger.warning(f"[CRON] Withdrawal {w['id']} retry {new_count}: {e}")
 
 
+async def expire_premium_subscriptions():
+    """Deactivate Premium for sellers whose subscription has expired."""
+    db = get_db()
+    now = datetime.now(timezone.utc).isoformat()
+    async for s in db.sellers.find({"premium": True, "premium_expires_at": {"$lt": now}}, {"_id": 0, "id": 1, "user_id": 1}):
+        await db.sellers.update_one({"id": s["id"]}, {"$set": {"premium": False}})
+        try:
+            await create_notification(
+                s["user_id"], "kyc_rejected", "Premium expiré",
+                "Votre abonnement Premium a expiré. Renouvelez pour garder vos avantages.",
+                {"seller_id": s["id"]},
+            )
+        except Exception:
+            pass
+        logger.info(f"[CRON] Premium expired for seller {s['id']}")
+
+
 def start_scheduler():
     global _scheduler
     if _scheduler:
         return
     _scheduler = AsyncIOScheduler(timezone="UTC")
     _scheduler.add_job(process_pending_withdrawals, "interval", minutes=1, id="withdrawals")
+    _scheduler.add_job(expire_premium_subscriptions, "interval", hours=6, id="premium_expiry")
     _scheduler.start()
     logger.info("Scheduler started")
 
