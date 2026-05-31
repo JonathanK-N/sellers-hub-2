@@ -15,9 +15,11 @@ export default function ProductDetail() {
   const [p, setP] = useState(null);
   const [photoIdx, setPhotoIdx] = useState(0);
   const [qty, setQty] = useState(1);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     api.get(`/products/${id}`).then(({ data }) => setP(data));
+    api.get(`/products/${id}/reviews`).then(({ data }) => setReviews(data)).catch(() => {});
   }, [id]);
 
   if (!p) return <div className="mobile-shell flex items-center justify-center text-gray-500 pt-24">Chargement…</div>;
@@ -117,6 +119,37 @@ export default function ProductDetail() {
             <Store size={16} className="text-[#1D9E75]" /> Retrait en boutique (Click & Collect)
           </div>
         </div>
+
+        {user?.role === "buyer" && (
+          <button
+            data-testid="chat-seller-product-btn"
+            onClick={() => nav(`/messages/${user.id}__${p.seller_id}`, { state: { other_name: p.seller_name } })}
+            className="w-full bg-white border border-[#1D9E75] text-[#1D9E75] hover:bg-[#E1F5EE] rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm"
+          >
+            <MessageSquare size={16} /> Poser une question au vendeur
+          </button>
+        )}
+
+        {reviews.length > 0 && (
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+            <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Avis ({reviews.length})</h3>
+            <div className="space-y-3">
+              {reviews.slice(0, 5).map((r) => (
+                <div key={r.id} className="border-b last:border-b-0 border-gray-100 pb-3 last:pb-0">
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-0.5">
+                      {[1,2,3,4,5].map((n) => (
+                        <Star key={n} size={12} className={n <= r.rating ? "text-[#EF9F27] fill-[#EF9F27]" : "text-gray-200"} />
+                      ))}
+                    </div>
+                    <span className="text-xs text-gray-500">{r.buyer_name} · {timeAgo(r.created_at)}</span>
+                  </div>
+                  {r.comment && <p className="text-sm text-gray-700 mt-1">{r.comment}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
       {user?.role === "buyer" && p.stock > 0 && (

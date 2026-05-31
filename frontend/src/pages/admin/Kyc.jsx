@@ -24,8 +24,10 @@ export default function AdminKyc() {
     }
   };
   const reject = async (id) => {
+    const reason = window.prompt("Motif du rejet (visible par le vendeur) :", "");
+    if (reason === null) return;
     try {
-      await api.post(`/admin/kyc/${id}/reject`);
+      await api.post(`/admin/kyc/${id}/reject`, { reason });
       toast.success("KYC rejeté");
       load();
     } catch (e) {

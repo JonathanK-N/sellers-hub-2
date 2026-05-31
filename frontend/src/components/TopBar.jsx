@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ShoppingCart, Bell } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import MessagesIndicator from "./MessagesIndicator";
 
 export default function TopBar({ title = "AfriMarket", showCart = true }) {
   const { count } = useCart();
@@ -15,7 +16,8 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
         </div>
         <span className="font-display font-black text-lg tracking-tight">{title}</span>
       </Link>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1">
+        <MessagesIndicator />
         <button
           aria-label="Notifications"
           data-testid="notifications-btn"

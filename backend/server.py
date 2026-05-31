@@ -19,6 +19,10 @@ from routers.sellers_router import router as sellers_router
 from routers.products_router import router as products_router
 from routers.orders_router import router as orders_router
 from routers.admin_router import router as admin_router
+from routers.messages_router import router as messages_router
+from routers.reviews_router import router as reviews_router
+from routers.disputes_router import router as disputes_router
+from routers.wallet_router import router as wallet_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -46,6 +50,10 @@ api_router.include_router(sellers_router)
 api_router.include_router(products_router)
 api_router.include_router(orders_router)
 api_router.include_router(admin_router)
+api_router.include_router(messages_router)
+api_router.include_router(reviews_router)
+api_router.include_router(disputes_router)
+api_router.include_router(wallet_router)
 
 app.include_router(api_router)
 
