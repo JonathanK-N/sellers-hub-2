@@ -3,69 +3,54 @@
 ## Original Problem Statement
 Full-stack mobile-first marketplace PWA connecting buyers/sellers across francophone Africa (RD Congo, Cameroun, Côte d'Ivoire, Sénégal, Bénin). Buyers find products with GPS proximity radius filter, pay via Mobile Money (simulated), with escrow protection. Sellers run boutiques with KYC verification badges. Admin panel manages users, sellers, KYC, commissions. Everything in French. Platform commission 7%.
 
-## Tech Stack (Adapted)
+## Tech Stack
 - Backend: FastAPI + MongoDB (motor) + JWT
-- Frontend: React 19 PWA (mobile-first 360px) + Tailwind + Shadcn UI
-- Auth: Phone + simulated SMS OTP (code returned in `otp_dev` API field for demo)
-- Storage: Emergent object storage for product photos
-- Geo: Haversine distance computation on backend (MongoDB 2dsphere index ready)
+- Frontend: React 19 PWA (mobile-first 360px) + Tailwind + Shadcn UI + recharts + qrcode.react + html5-qrcode
+- Auth: Phone + simulated SMS OTP (`otp_dev` field)
+- Storage: Emergent object storage for product photos & KYC docs
+- Geo: Haversine distance computation + MongoDB 2dsphere index ready
 - Payment: SIMULATED Mobile Money (no real provider call)
 
 ## User Personas
-1. **Buyer**: Discovers products near them, orders via Mobile Money, tracks delivery
-2. **Seller**: Creates boutique, lists products (max 10 without KYC), receives orders, advances status
-3. **Admin**: Manages platform, validates KYC, monitors commissions per country
+1. **Buyer**: Discovers products near them, orders via Mobile Money, tracks delivery, leaves reviews, opens disputes
+2. **Seller**: Creates boutique, lists products (max 10 without KYC), receives orders, advances status, scans QR for pickup, manages wallet & withdraws
+3. **Admin**: Manages platform, validates KYC, monitors commissions per country, resolves disputes, toggles countries
 
-## Core Requirements (Phase 1 MVP — IMPLEMENTED)
-- [x] Registration with country selection + SMS OTP (simulated)
-- [x] Login flow phone+OTP → JWT
-- [x] Seller boutique creation + product listing with photo uploads (Emergent storage)
-- [x] Buyer home + category pills + product grid
-- [x] Search with proximity GPS radius slider (1-50 km) + filters
-- [x] Cart with single-seller enforcement
-- [x] Checkout with delivery (quartier + repère) OR Click & Collect (slot)
-- [x] Mobile Money payment selection (simulated)
-- [x] Escrow hold + 6-digit confirmation code → release
-- [x] Order tracking timeline (4 steps)
-- [x] Seller dashboard: revenue, orders breakdown, KYC notice
-- [x] Admin overview: users/sellers/products/orders stats + commission per country
-- [x] Admin KYC queue with approve/reject
+## Phase 1 MVP — DONE ✅
+- Registration with country selection + simulated OTP
+- Login + JWT auth
+- Seller boutique + product listing with photos (Emergent storage)
+- Buyer home, category pills, search with GPS radius filter
+- Cart, checkout (delivery + Mobile Money simulated)
+- Escrow + 6-digit code confirmation
+- Order tracking timeline
+- Seller dashboard, admin overview (users/sellers/products/orders + commission per country), admin KYC queue
 
-## Implemented Endpoints
-- `/api/auth/{register, send-otp, verify-otp, me}`
-- `/api/countries`
-- `/api/products` (GET with q, category, lat, lng, radius_km, verified_only, sort)
-- `/api/products/{id}` (GET, DELETE)
-- `/api/products` (POST seller)
-- `/api/seller/{me, setup, upload-photo, dashboard, products}`
-- `/api/orders` (POST), `/api/orders/my`, `/api/orders/{id}`
-- `/api/orders/{id}/advance`, `/api/orders/{id}/confirm-delivery`
-- `/api/admin/{overview, users, sellers, orders, kyc/pending}`
-- `/api/admin/kyc/{seller_id}/{approve|reject}`
-- `/api/files/{id}` (public photo serving)
-
-## Backlog (P1 — Phase 2)
-- Click & Collect QR scanner (UI exists, no real scan yet)
-- In-app messaging buyer ↔ seller
-- Reviews & ratings (post-delivery)
-- KYC document upload UI (ID, selfie) — currently 1-click approval
-- Dispute management workflow
-- Geographic dashboard with growth charts (recharts)
-- Seller wallet & Mobile Money withdrawal
-- Multi-seller cart (MVP enforces single seller)
+## Phase 2 — DONE ✅
+1. **Click & Collect + QR**: Buyer order shows QR via qrcode.react. Seller `/seller/scan` page uses html5-qrcode camera OR manual token. Backend `POST /api/orders/{id}/scan-qr` releases escrow → status=collected.
+2. **Messaging buyer↔seller**: `/messages` conversations list, `/messages/{convId}` chat (polls every 3s). Unread badge in TopBar. Conversation id format `buyerId__sellerId`.
+3. **Reviews & ratings**: ReviewPrompt on OrderDetail after delivery; star rating 1-5 + comment. Only buyers of `delivered`/`collected` orders, one review per order. Seller.rating recomputed.
+4. **KYC documents upload**: `/seller/kyc` 3-step page (id → selfie → address). Files stored in Emergent private folder. Submit sets `kyc_status=pending_review`. Admin approves with appropriate level (2 or 3), badge granted at level 3.
+5. **Disputes**: Buyer button on OrderDetail → `/buyer/dispute/{orderId}`. Backend freezes `escrow_status=frozen`. Admin `/admin/disputes` page lists with priority (urgent if > 5 days). 3 decisions: refund_buyer / partial_refund / release_seller.
+6. **Seller wallet**: `/seller/wallet` shows available balance (net = gross − commission − withdrawn). Withdraw modal posts to Mobile Money. Withdrawal status auto-completes after 2 min.
+7. **Geographic admin dashboard**: `/admin/geo` — 5 country cards (users, sellers, orders, commission), 6-month bar chart (recharts), alerts panel, toggle country active/inactive, export CSV (users, orders).
 
 ## Backlog (P2 — Phase 3)
+- Real Mobile Money integration (MTN MoMo, Wave, Orange) — needs provider keys
 - Push notifications via Firebase
 - AI fraud detection
 - Sponsored products / Premium seller badge
 - Delivery partner (livreur) app
-- Real Mobile Money integration (MTN MoMo, Wave, Orange Money) — needs provider keys
+- Order multi-seller support (currently 1 seller per cart)
+- Cron job for wallet withdrawal completion instead of read-triggered
 
-## Key Architectural Notes
+## Architectural Notes
 - All API routes prefixed `/api`
-- Phone is primary identifier (no email)
-- OTP is simulated; backend returns `otp_dev` field and logs `[OTP-SIMULATED]`
-- JWT in `Authorization: Bearer` header, 7-day expiry
-- Currency never auto-converted between countries
-- Commission rate stored per seller (default 7%)
-- Escrow tracked as `escrow_status` field on order (held/released/refunded)
+- Phone is primary identifier
+- OTP simulated; returned as `otp_dev` field
+- JWT 7-day expiry in `Authorization: Bearer`
+- Currency never auto-converted
+- Commission auto-deducted at escrow release
+- Order timeline append-only via `$push`
+- Reviews bound to order_id (verified purchase only)
+- KYC docs stored in private storage folder, file IDs in seller.kyc_docs map
