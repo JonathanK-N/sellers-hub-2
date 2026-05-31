@@ -6,6 +6,8 @@ import {
   Package,
   ShoppingBag,
   ShieldCheck,
+  AlertTriangle,
+  Globe2,
   LogOut,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -16,6 +18,8 @@ const items = [
   { to: "/admin/sellers", icon: Store, label: "Vendeurs", testid: "admin-nav-sellers" },
   { to: "/admin/orders", icon: ShoppingBag, label: "Commandes", testid: "admin-nav-orders" },
   { to: "/admin/kyc", icon: ShieldCheck, label: "KYC", testid: "admin-nav-kyc" },
+  { to: "/admin/disputes", icon: AlertTriangle, label: "Litiges", testid: "admin-nav-disputes" },
+  { to: "/admin/geo", icon: Globe2, label: "Géographie", testid: "admin-nav-geo" },
 ];
 
 export default function AdminSidebar() {

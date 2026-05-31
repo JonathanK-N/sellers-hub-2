@@ -90,6 +90,84 @@ async def upload_photo(file: UploadFile = File(...), user: dict = Depends(requir
     return {"id": file_id, "url": f"/api/files/{file_id}", "path": result["path"]}
 
 
+@router.post("/kyc/upload")
+async def upload_kyc_doc(
+    file: UploadFile = File(...),
+    doc_type: str = "id",  # id | selfie | address
+    user: dict = Depends(require_role("seller")),
+):
+    """Upload a KYC document to private folder."""
+    if doc_type not in {"id", "selfie", "address"}:
+        raise HTTPException(status_code=400, detail="Type de document invalide")
+    ext = "jpg"
+    if file.filename and "." in file.filename:
+        ext = file.filename.rsplit(".", 1)[-1].lower()
+    path = f"{APP_NAME}/kyc/{user['id']}/{doc_type}_{uuid.uuid4()}.{ext}"
+    data = await file.read()
+    try:
+        result = put_object(path, data, file.content_type or "image/jpeg")
+    except Exception as e:
+        logger.error(f"KYC upload failed: {e}")
+        raise HTTPException(status_code=500, detail="Échec du téléversement")
+    db = get_db()
+    file_id = str(uuid.uuid4())
+    await db.files.insert_one({
+        "id": file_id,
+        "storage_path": result["path"],
+        "owner_id": user["id"],
+        "doc_type": doc_type,
+        "is_private": True,
+        "content_type": file.content_type or f"image/{ext}",
+        "size": result.get("size", 0),
+        "is_deleted": False,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+
+    seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    if seller:
+        kyc_docs = seller.get("kyc_docs") or {}
+        kyc_docs[doc_type] = {"file_id": file_id, "uploaded_at": datetime.now(timezone.utc).isoformat()}
+        await db.sellers.update_one({"id": seller["id"]}, {"$set": {"kyc_docs": kyc_docs}})
+
+    return {"id": file_id, "doc_type": doc_type}
+
+
+@router.post("/kyc/submit")
+async def submit_kyc(user: dict = Depends(require_role("seller"))):
+    """Submit KYC for admin review. Requires at least 'id' doc; selfie+address for level3."""
+    db = get_db()
+    seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    if not seller:
+        raise HTTPException(status_code=400, detail="Boutique introuvable")
+    docs = seller.get("kyc_docs") or {}
+    if "id" not in docs:
+        raise HTTPException(status_code=400, detail="Pièce d'identité requise (Niveau 2)")
+    requested_level = 2
+    if "selfie" in docs and "address" in docs:
+        requested_level = 3
+    await db.sellers.update_one(
+        {"id": seller["id"]},
+        {"$set": {"kyc_status": "pending_review", "kyc_requested_level": requested_level, "kyc_submitted_at": datetime.now(timezone.utc).isoformat()}},
+    )
+    return {"ok": True, "kyc_status": "pending_review", "kyc_requested_level": requested_level}
+
+
+@router.get("/kyc/status")
+async def kyc_status(user: dict = Depends(require_role("seller"))):
+    db = get_db()
+    seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    if not seller:
+        return {"kyc_status": "none", "kyc_level": 1, "docs": {}}
+    return {
+        "kyc_status": seller.get("kyc_status", "level1"),
+        "kyc_level": user.get("kyc_level", 1),
+        "badge_verified": seller.get("badge_verified", False),
+        "kyc_requested_level": seller.get("kyc_requested_level"),
+        "docs": {k: {"uploaded_at": v.get("uploaded_at")} for k, v in (seller.get("kyc_docs") or {}).items()},
+        "kyc_reject_reason": seller.get("kyc_reject_reason"),
+    }
+
+
 @router.get("/dashboard")
 async def dashboard(user: dict = Depends(require_role("seller"))):
     db = get_db()

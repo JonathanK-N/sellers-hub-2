@@ -24,12 +24,21 @@ import SellerDashboard from "./pages/seller/Dashboard";
 import SellerProducts from "./pages/seller/Products";
 import SellerAddProduct from "./pages/seller/AddProduct";
 import SellerOrders from "./pages/seller/SellerOrders";
+import SellerWallet from "./pages/seller/Wallet";
+import SellerKyc from "./pages/seller/Kyc";
+import SellerScan from "./pages/seller/Scan";
 
 import AdminOverview from "./pages/admin/Overview";
 import AdminUsers from "./pages/admin/Users";
 import AdminSellers from "./pages/admin/Sellers";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminKyc from "./pages/admin/Kyc";
+import AdminDisputes from "./pages/admin/Disputes";
+import AdminGeo from "./pages/admin/Geo";
+
+import Messages from "./pages/Messages";
+import ChatThread from "./pages/ChatThread";
+import OpenDispute from "./pages/buyer/OpenDispute";
 
 function ProtectedRoute({ children, roles }) {
   const { user, loading } = useAuth();
@@ -87,12 +96,21 @@ function App() {
             <Route path="/seller/products" element={<ProtectedRoute roles={["seller"]}><SellerProducts /></ProtectedRoute>} />
             <Route path="/seller/products/new" element={<ProtectedRoute roles={["seller"]}><SellerAddProduct /></ProtectedRoute>} />
             <Route path="/seller/orders" element={<ProtectedRoute roles={["seller"]}><SellerOrders /></ProtectedRoute>} />
+            <Route path="/seller/wallet" element={<ProtectedRoute roles={["seller"]}><SellerWallet /></ProtectedRoute>} />
+            <Route path="/seller/kyc" element={<ProtectedRoute roles={["seller"]}><SellerKyc /></ProtectedRoute>} />
+            <Route path="/seller/scan" element={<ProtectedRoute roles={["seller"]}><SellerScan /></ProtectedRoute>} />
+
+            <Route path="/messages" element={<ProtectedRoute roles={["buyer", "seller"]}><Messages /></ProtectedRoute>} />
+            <Route path="/messages/:conversationId" element={<ProtectedRoute roles={["buyer", "seller"]}><ChatThread /></ProtectedRoute>} />
+            <Route path="/buyer/dispute/:orderId" element={<ProtectedRoute roles={["buyer"]}><OpenDispute /></ProtectedRoute>} />
 
             <Route path="/admin/overview" element={<ProtectedRoute roles={["admin"]}><AdminOverview /></ProtectedRoute>} />
             <Route path="/admin/users" element={<ProtectedRoute roles={["admin"]}><AdminUsers /></ProtectedRoute>} />
             <Route path="/admin/sellers" element={<ProtectedRoute roles={["admin"]}><AdminSellers /></ProtectedRoute>} />
             <Route path="/admin/orders" element={<ProtectedRoute roles={["admin"]}><AdminOrders /></ProtectedRoute>} />
             <Route path="/admin/kyc" element={<ProtectedRoute roles={["admin"]}><AdminKyc /></ProtectedRoute>} />
+            <Route path="/admin/disputes" element={<ProtectedRoute roles={["admin"]}><AdminDisputes /></ProtectedRoute>} />
+            <Route path="/admin/geo" element={<ProtectedRoute roles={["admin"]}><AdminGeo /></ProtectedRoute>} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

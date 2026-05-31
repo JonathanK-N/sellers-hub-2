@@ -22,6 +22,7 @@ const STEPS_COLLECT = [
 export default function OrderDetail() {
   const { id } = useParams();
   const { user } = useAuth();
+  const nav = useNavigate();
   const [order, setOrder] = useState(null);
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
@@ -141,6 +142,46 @@ export default function OrderDetail() {
           </div>
         </section>
 
+        {/* QR code for Click & Collect (buyer view) */}
+        {isBuyer && order.delivery_mode === "collect" && order.qr_code && order.escrow_status === "held" && (
+          <section className="bg-white rounded-xl border-2 border-[#1D9E75] shadow-sm p-4 text-center" data-testid="qr-code-section">
+            <h3 className="text-xs font-bold uppercase tracking-wide text-[#1D9E75] mb-2">
+              Présentez ce QR au vendeur
+            </h3>
+            <div className="inline-block bg-white p-3 rounded-lg">
+              <QRCodeSVG value={order.qr_code} size={200} fgColor="#085041" />
+            </div>
+            <p className="text-xs text-gray-600 mt-3 leading-relaxed">
+              Le vendeur scanne ce code à votre arrivée. Le paiement sera libéré automatiquement.
+            </p>
+            {order.pickup_slot && (
+              <p className="text-xs text-[#085041] mt-2 font-semibold">Créneau : {order.pickup_slot}</p>
+            )}
+          </section>
+        )}
+
+        {/* Seller QR scanner shortcut */}
+        {isSeller && order.delivery_mode === "collect" && order.status === "ready_for_pickup" && order.escrow_status === "held" && (
+          <button
+            data-testid="goto-scanner-btn"
+            onClick={() => nav("/seller/scan")}
+            className="w-full bg-[#085041] hover:bg-[#063b30] text-white rounded-lg py-3 font-semibold flex items-center justify-center gap-2"
+          >
+            <ScanLine size={18} /> Scanner QR retrait
+          </button>
+        )}
+
+        {/* Chat with seller (buyer) */}
+        {isBuyer && (
+          <button
+            data-testid="chat-with-seller-btn"
+            onClick={() => nav(`/messages/${order.buyer_id}__${order.seller_id}`, { state: { other_name: order.seller_name } })}
+            className="w-full bg-white border border-[#1D9E75] text-[#1D9E75] hover:bg-[#E1F5EE] rounded-lg py-2.5 font-semibold transition-colors flex items-center justify-center gap-2 text-sm"
+          >
+            <MessageSquare size={16} /> Discuter avec le vendeur
+          </button>
+        )}
+
         {/* Buyer: confirmation code */}
         {isBuyer && order.delivery_mode === "delivery" && order.escrow_status === "held" && (
           <section className="bg-white rounded-xl border-2 border-[#EF9F27] shadow-sm p-4">
@@ -207,6 +248,22 @@ export default function OrderDetail() {
             <div className="text-xs text-gray-500">Mobile Money (simulé)</div>
           </div>
         </section>
+
+        {/* Review prompt (buyer, post-delivery) */}
+        {isBuyer && (order.status === "delivered" || order.status === "collected") && order.escrow_status === "released" && (
+          <ReviewPrompt orderId={order.id} sellerName={order.seller_name} />
+        )}
+
+        {/* Open dispute button */}
+        {isBuyer && order.escrow_status !== "refunded" && (
+          <button
+            data-testid="open-dispute-btn"
+            onClick={() => nav(`/buyer/dispute/${order.id}`)}
+            className="w-full text-sm text-[#E24B4A] border border-[#E24B4A]/30 hover:bg-red-50 rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2"
+          >
+            <AlertTriangle size={16} /> Ouvrir un litige
+          </button>
+        )}
       </div>
     </div>
   );

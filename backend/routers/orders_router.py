@@ -4,6 +4,7 @@ import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException, Depends
+from pydantic import BaseModel
 
 from db import get_db
 from models import OrderCreateRequest, ConfirmDeliveryRequest
@@ -208,3 +209,49 @@ async def confirm_delivery(order_id: str, req: ConfirmDeliveryRequest, user: dic
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
     )
     return {"ok": True, "status": "delivered", "escrow_status": "released"}
+
+
+class ScanQrRequest(BaseModel):
+    qr_token: str
+
+
+@router.post("/orders/{order_id}/scan-qr")
+async def scan_qr(order_id: str, req: ScanQrRequest, user: dict = Depends(require_role("seller"))):
+    """Seller scans buyer's QR code -> escrow released for Click & Collect."""
+    db = get_db()
+    o = await db.orders.find_one({"id": order_id}, {"_id": 0})
+    if not o:
+        raise HTTPException(status_code=404, detail="Commande introuvable")
+    my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    if not my_seller or my_seller["id"] != o["seller_id"]:
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    if o["delivery_mode"] != "collect":
+        raise HTTPException(status_code=400, detail="Cette commande n'est pas en Click & Collect")
+    if o["escrow_status"] != "held":
+        raise HTTPException(status_code=400, detail="Escrow déjà libéré")
+    if o.get("qr_code") != req.qr_token.strip():
+        raise HTTPException(status_code=400, detail="QR code invalide")
+
+    event = _timeline_event("collected", "Retiré et paiement libéré")
+    await db.orders.update_one(
+        {"id": order_id},
+        {"$set": {"status": "collected", "escrow_status": "released"}, "$push": {"timeline": event}},
+    )
+    await db.transactions.update_one(
+        {"order_id": order_id},
+        {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
+    )
+    return {"ok": True, "status": "collected", "escrow_status": "released"}
+
+
+@router.get("/orders/by-qr/{qr_token}")
+async def get_order_by_qr(qr_token: str, user: dict = Depends(require_role("seller"))):
+    """Lookup order by QR token (seller-side scanner uses this)."""
+    db = get_db()
+    o = await db.orders.find_one({"qr_code": qr_token}, {"_id": 0})
+    if not o:
+        raise HTTPException(status_code=404, detail="QR introuvable")
+    my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    if not my_seller or my_seller["id"] != o["seller_id"]:
+        raise HTTPException(status_code=403, detail="Cette commande n'appartient pas à votre boutique")
+    return o

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Package, ShoppingBag, Star, TrendingUp, ShieldCheck, AlertCircle } from "lucide-react";
+import { Plus, Package, ShoppingBag, Star, TrendingUp, ShieldCheck, AlertCircle, Wallet, ScanLine } from "lucide-react";
 import api from "../../lib/api";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
@@ -31,13 +31,17 @@ export default function SellerDashboard() {
       <div className="px-4 mt-4 space-y-3">
         {/* KYC notice */}
         {!data.shop.badge_verified && (
-          <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 flex items-start gap-3" data-testid="kyc-notice">
+          <button
+            onClick={() => nav("/seller/kyc")}
+            className="w-full text-left rounded-xl bg-amber-50 border border-amber-200 p-3 flex items-start gap-3 hover:bg-amber-100 transition-colors"
+            data-testid="kyc-notice"
+          >
             <AlertCircle size={18} className="text-amber-600 shrink-0 mt-0.5" />
             <div className="text-xs text-amber-900">
               <p className="font-semibold">Validez votre KYC pour devenir Vendeur Vérifié</p>
-              <p className="opacity-80 mt-0.5">Limité à 10 produits sans KYC. Demandez la vérification depuis votre profil.</p>
+              <p className="opacity-80 mt-0.5">Limité à 10 produits sans KYC. Téléversez vos documents →</p>
             </div>
-          </div>
+          </button>
         )}
 
         {/* Stats grid */}
@@ -110,5 +114,18 @@ function Stat({ icon: Icon, label, value, sub }) {
       <div className="text-xs text-gray-600">{label}</div>
       {sub && <div className="text-[10px] text-gray-400 mt-0.5">{sub}</div>}
     </div>
+  );
+}
+
+function QuickAction({ icon: Icon, label, onClick, testid }) {
+  return (
+    <button
+      onClick={onClick}
+      data-testid={testid}
+      className="bg-white rounded-xl border border-gray-100 shadow-sm py-3 flex flex-col items-center gap-1.5 text-xs font-semibold text-gray-700 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-colors"
+    >
+      <Icon size={20} className="text-[#1D9E75]" />
+      {label}
+    </button>
   );
 }
