@@ -7,6 +7,7 @@ import {
   ShoppingBag,
   ShieldCheck,
   AlertTriangle,
+  ShieldAlert,
   Globe2,
   LogOut,
 } from "lucide-react";
@@ -19,6 +20,7 @@ const items = [
   { to: "/admin/orders", icon: ShoppingBag, label: "Commandes", testid: "admin-nav-orders" },
   { to: "/admin/kyc", icon: ShieldCheck, label: "KYC", testid: "admin-nav-kyc" },
   { to: "/admin/disputes", icon: AlertTriangle, label: "Litiges", testid: "admin-nav-disputes" },
+  { to: "/admin/fraud", icon: ShieldAlert, label: "Fraude", testid: "admin-nav-fraud" },
   { to: "/admin/geo", icon: Globe2, label: "Géographie", testid: "admin-nav-geo" },
 ];
 
