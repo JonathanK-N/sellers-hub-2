@@ -6,7 +6,14 @@ import api, { formatApiError } from "../../lib/api";
 
 export default function Register() {
   const nav = useNavigate();
-  const [countries, setCountries] = useState([]);
+  const DEFAULT_COUNTRIES = [
+    { code: "CD", name: "RD Congo", currency_symbol: "FC", dial_code: "+243", flag: "🇨🇩", mobile_money_operators: ["MTN MoMo", "Airtel Money", "Orange Money"] },
+    { code: "CM", name: "Cameroun", currency_symbol: "FCFA", dial_code: "+237", flag: "🇨🇲", mobile_money_operators: ["MTN MoMo", "Orange Money"] },
+    { code: "CI", name: "Côte d'Ivoire", currency_symbol: "FCFA", dial_code: "+225", flag: "🇨🇮", mobile_money_operators: ["MTN MoMo", "Orange Money", "Wave"] },
+    { code: "SN", name: "Sénégal", currency_symbol: "FCFA", dial_code: "+221", flag: "🇸🇳", mobile_money_operators: ["Wave", "Orange Money", "Free Money"] },
+    { code: "BJ", name: "Bénin", currency_symbol: "FCFA", dial_code: "+229", flag: "🇧🇯", mobile_money_operators: ["MTN MoMo", "Moov Money"] },
+  ];
+  const [countries, setCountries] = useState(DEFAULT_COUNTRIES);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     name: "",
@@ -17,7 +24,9 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    api.get("/countries").then(({ data }) => setCountries(Array.isArray(data) ? data : [])).catch(() => {});
+    api.get("/countries").then(({ data }) => {
+      if (Array.isArray(data) && data.length > 0) setCountries(data);
+    }).catch(() => {});
   }, []);
 
   const current = countries.find((c) => c.code === form.country_code);
