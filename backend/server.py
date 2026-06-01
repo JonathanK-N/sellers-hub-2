@@ -81,6 +81,13 @@ async def on_startup():
         await seed_all()
     except Exception as e:
         logger.error(f"Seed failed: {e}")
+    if os.environ.get("SEED_DEMO") == "1":
+        try:
+            from seed_demo import seed_demo
+            result = await seed_demo()
+            logger.info(f"Demo seed: {result}")
+        except Exception as e:
+            logger.error(f"Demo seed failed: {e}")
     try:
         init_storage()
     except Exception as e:
