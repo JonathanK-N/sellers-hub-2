@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Star } from "lucide-react";
-import api, { formatApiError } from "../../lib/api";
+import api, { formatApiError } from "../lib/api";
 
 export default function ReviewPrompt({ orderId, sellerName, onSubmitted }) {
   const [canReview, setCanReview] = useState(false);

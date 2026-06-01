@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, ShieldCheck, MapPin, Star, Truck, Store, Plus, Minus } from "lucide-react";
+import { ArrowLeft, ShieldCheck, MapPin, Star, Truck, Store, Plus, Minus, MessageSquare, Crown } from "lucide-react";
 import api from "../../lib/api";
-import { formatPrice, formatDistance, photoUrl } from "../../lib/format";
+import { formatPrice, formatDistance, photoUrl, timeAgo } from "../../lib/format";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 

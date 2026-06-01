@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Circle, ShieldCheck, Package, Truck, Lock, Bike } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Circle, ShieldCheck, Package, Truck, Lock, Bike, AlertTriangle, MessageSquare, ScanLine } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 import api, { formatApiError } from "../../lib/api";
 import { formatPrice, photoUrl } from "../../lib/format";
 import { useAuth } from "../../context/AuthContext";
+import ReviewPrompt from "../../components/ReviewPrompt";
 
 const STEPS_DELIVERY = [
   { key: "confirmed", icon: CheckCircle2, label: "Commande confirmée" },

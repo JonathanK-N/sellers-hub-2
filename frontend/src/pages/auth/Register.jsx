@@ -25,7 +25,14 @@ export default function Register() {
   const submit = async () => {
     setLoading(true);
     try {
-      const { data } = await api.post("/auth/register", form);
+      // Build the full international number with the country dial code, exactly
+      // like the login flow does, so register and login produce the SAME phone.
+      const dial = current?.dial_code || "+243";
+      let local = form.phone.trim().replace(/[^0-9]/g, "");
+      local = local.replace(/^0+/, ""); // drop leading 0 (local trunk prefix)
+      const fullPhone = `${dial}${local}`;
+      const payload = { ...form, phone: fullPhone };
+      const { data } = await api.post("/auth/register", payload);
       toast.success(`Code envoyé. (Demo: ${data.otp_dev})`);
       nav(`/auth/verify?phone=${encodeURIComponent(data.phone)}&from=register`);
     } catch (e) {

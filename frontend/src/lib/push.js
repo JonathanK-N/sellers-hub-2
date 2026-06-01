@@ -32,8 +32,13 @@ async function getFirebaseToken() {
     return t;
   }
   try {
-    const { initializeApp } = await import("firebase/app");
-    const { getMessaging, getToken } = await import("firebase/messaging");
+    // Indirect dynamic import so the bundler doesn't hard-require firebase at
+    // build time. Firebase is an optional runtime dependency: install it and set
+    // REACT_APP_FIREBASE_CONFIG to enable real push. In demo mode this branch is
+    // never reached (isFirebaseConfigured() is false).
+    const dynImport = new Function("m", "return import(m)");
+    const { initializeApp } = await dynImport("firebase/app");
+    const { getMessaging, getToken } = await dynImport("firebase/messaging");
     const app = initializeApp(JSON.parse(FIREBASE_CONFIG));
     const messaging = getMessaging(app);
     let swReg;
