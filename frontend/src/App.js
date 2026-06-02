@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
+import InstallPrompt from "./components/InstallPrompt";
 import "./App.css";
 
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -85,6 +86,7 @@ function App() {
       <CartProvider>
         <BrowserRouter>
           <Toaster position="top-center" richColors />
+          <InstallPrompt />
           <Routes>
             <Route path="/" element={<RoleRedirect />} />
             <Route path="/auth/register" element={<Register />} />

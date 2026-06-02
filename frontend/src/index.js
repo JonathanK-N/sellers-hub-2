@@ -21,3 +21,11 @@ root.render(
     </QueryClientProvider>
   </React.StrictMode>,
 );
+
+// Register the PWA service worker (production only) so AfriMarket is installable
+// and works partially offline.
+if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js").catch(() => {});
+  });
+}
