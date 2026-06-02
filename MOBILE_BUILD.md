@@ -65,5 +65,31 @@ Dans Android Studio :
 - L'app exige une connexion Internet (elle charge le site distant).
 - Pour une version qui embarque le code (fonctionne hors-ligne au démarrage),
   retire le bloc `server.url` de `capacitor.config.json` et refais un `cap sync`.
-- iOS : la même base Capacitor permet d'ajouter iOS (`npx cap add ios`), mais la
-  compilation iOS nécessite un Mac avec Xcode + un compte Apple Developer (99 USD/an).
+
+## iOS (nécessite un Mac)
+
+La plateforme iOS est déjà ajoutée (dossier `frontend/ios/`). La compilation iOS
+**exige obligatoirement un Mac** avec Xcode + un compte Apple Developer (99 USD/an).
+
+Sur un Mac, depuis `frontend/` :
+
+```bash
+# 1. Installer CocoaPods (une seule fois)
+sudo gem install cocoapods
+
+# 2. Builder le web + synchroniser
+REACT_APP_BACKEND_URL=https://sellers-hub-2-production.up.railway.app yarn build
+npx cap sync ios
+
+# 3. Ouvrir dans Xcode
+npx cap open ios
+```
+
+Dans Xcode :
+- Sélectionne ton équipe de développement (Signing & Capabilities).
+- Choisis un simulateur ou un iPhone connecté, puis **Run ▶**.
+- Pour publier : **Product → Archive**, puis distribue via l'App Store Connect.
+
+- **App ID iOS** : `cd.cognito.afrimarket`
+- **Nom** : AfriMarket
+- L'icône et le splash iOS sont déjà aux couleurs AfriMarket.
