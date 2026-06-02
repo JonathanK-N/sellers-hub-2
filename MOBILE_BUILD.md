@@ -7,7 +7,7 @@ mobile se met à jour automatiquement, **sans republier sur le Play Store**.
 - **App ID** : `cd.cognito.afrimarket`
 - **Nom** : AfriMarket
 - **URL chargée** : définie dans `frontend/capacitor.config.json` → `server.url`
-  (actuellement `https://sellers-hub-2-production.up.railway.app`).
+  (actuellement `https://afrimarket.up.railway.app`).
   ⚠️ Mets ici l'URL **publique de ton frontend Railway** si elle diffère, puis
   relance `npx cap sync android`.
 
@@ -27,7 +27,7 @@ Depuis le dossier `frontend/` :
 yarn install
 
 # 2. Builder le frontend web (nécessaire même en option A, pour le webDir)
-REACT_APP_BACKEND_URL=https://TON-BACKEND.up.railway.app yarn build
+REACT_APP_BACKEND_URL=https://sellers-hub-2-production.up.railway.app yarn build
 
 # 3. Synchroniser avec le projet Android
 npx cap sync android

@@ -3,7 +3,7 @@
   "appName": "AfriMarket",
   "webDir": "build",
   "server": {
-    "url": "https://sellers-hub-2-production.up.railway.app",
+    "url": "https://afrimarket.up.railway.app",
     "cleartext": false,
     "androidScheme": "https"
   },
