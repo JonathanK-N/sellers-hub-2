@@ -9,6 +9,8 @@ import Landing from "./pages/Landing";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import VerifyOtp from "./pages/auth/VerifyOtp";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import AdminLogin from "./pages/admin/AdminLogin";
 
 import BuyerHome from "./pages/buyer/Home";
 import SearchPage from "./pages/buyer/Search";
@@ -88,6 +90,8 @@ function App() {
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/verify" element={<VerifyOtp />} />
+            <Route path="/auth/forgot" element={<ForgotPassword />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
 
             <Route path="/buyer/home" element={<ProtectedRoute roles={["buyer", "seller", "admin"]}><BuyerHome /></ProtectedRoute>} />
             <Route path="/buyer/search" element={<ProtectedRoute roles={["buyer", "seller", "admin"]}><SearchPage /></ProtectedRoute>} />

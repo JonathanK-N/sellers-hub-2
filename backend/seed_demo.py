@@ -11,9 +11,10 @@ import logging
 from datetime import datetime, timezone, timedelta
 
 from db import get_db
-from auth import normalize_phone
+from auth import normalize_phone, hash_password
 
 logger = logging.getLogger(__name__)
+_DEMO_PWD = hash_password("demo1234")  # all demo accounts share this password
 
 
 def _now_iso(days_ago=0):
@@ -120,6 +121,7 @@ async def seed_demo():
         phone = normalize_phone(f"+24381020{i:04d}")
         await db.users.insert_one({
             "id": user_id, "name": f"Gérant {s['shop']}", "phone": phone, "role": "seller",
+            "password_hash": _DEMO_PWD, "phone_verified": True,
             "country_code": "CD", "currency": "FC", "kyc_level": 2 if s["verified"] else 1,
             "created_at": _now_iso(60 - i), "demo": True,
         })
@@ -159,6 +161,7 @@ async def seed_demo():
         bid = _uid()
         await db.users.insert_one({
             "id": bid, "name": name, "phone": normalize_phone(phone), "role": "buyer",
+            "password_hash": _DEMO_PWD, "phone_verified": True,
             "country_code": "CD", "currency": "FC", "kyc_level": 1,
             "created_at": _now_iso(random.randint(5, 50)), "demo": True,
         })
@@ -170,7 +173,7 @@ async def seed_demo():
         did = _uid()
         await db.users.insert_one({
             "id": did, "name": f"Livreur {['Moïse','Chris'][i]}", "phone": normalize_phone(f"+24381030{i:04d}"),
-            "role": "deliverer", "country_code": "CD", "currency": "FC", "created_at": _now_iso(30), "demo": True,
+            "role": "deliverer", "country_code": "CD", "currency": "FC", "password_hash": _DEMO_PWD, "phone_verified": True, "created_at": _now_iso(30), "demo": True,
         })
         await db.deliverers.insert_one({
             "id": _uid(), "user_id": did, "vehicle": "moto", "is_active": True,

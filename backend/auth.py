@@ -6,6 +6,7 @@ from datetime import datetime, timezone, timedelta
 from typing import Optional
 
 import jwt
+import bcrypt
 from fastapi import HTTPException, Request, Depends
 
 logger = logging.getLogger(__name__)
@@ -13,6 +14,21 @@ logger = logging.getLogger(__name__)
 JWT_ALGORITHM = "HS256"
 ACCESS_TOKEN_DAYS = 7
 OTP_EXPIRY_MINUTES = 10
+
+
+def hash_password(password: str) -> str:
+    """Hash a password with bcrypt; returns a UTF-8 string for storage."""
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+def verify_password(password: str, hashed: str) -> bool:
+    """Check a plaintext password against a stored bcrypt hash."""
+    if not hashed:
+        return False
+    try:
+        return bcrypt.checkpw(password.encode("utf-8"), hashed.encode("utf-8"))
+    except (ValueError, TypeError):
+        return False
 
 
 def get_jwt_secret() -> str:
@@ -70,7 +86,7 @@ async def get_current_user_dep(request: Request):
         raise HTTPException(status_code=401, detail="Token invalide")
 
     db = get_db()
-    user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0})
+    user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0, "password_hash": 0})
     if not user:
         raise HTTPException(status_code=401, detail="Utilisateur introuvable")
     return user

@@ -79,9 +79,12 @@ async def seed_countries():
 
 async def seed_admin():
     import uuid
+    from auth import hash_password
     db = get_db()
     admin_phone = normalize_phone(os.environ.get("ADMIN_PHONE", "+243000000001"))
     admin_name = os.environ.get("ADMIN_NAME", "Admin AfriMarket")
+    admin_password = os.environ.get("ADMIN_PASSWORD", "")
+    pwd_hash = hash_password(admin_password) if admin_password else None
     existing = await db.users.find_one({"phone": admin_phone})
     if not existing:
         await db.users.insert_one({
@@ -92,11 +95,18 @@ async def seed_admin():
             "country_code": "CD",
             "currency": "FC",
             "kyc_level": 3,
+            "password_hash": pwd_hash,
+            "phone_verified": True,
             "created_at": datetime.now(timezone.utc).isoformat(),
         })
         logger.info(f"Admin seeded: {admin_phone}")
     else:
-        logger.info(f"Admin already exists: {admin_phone}")
+        # Keep the admin password in sync with the env var, and ensure role=admin.
+        updates = {"role": "admin"}
+        if pwd_hash:
+            updates["password_hash"] = pwd_hash
+        await db.users.update_one({"phone": admin_phone}, {"$set": updates})
+        logger.info(f"Admin updated: {admin_phone}")
 
 
 async def create_indexes():

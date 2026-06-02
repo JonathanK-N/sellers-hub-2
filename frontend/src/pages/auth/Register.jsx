@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, User, Phone, ChevronRight } from "lucide-react";
+import { ArrowLeft, User, Phone, ChevronRight, Lock } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
 
 export default function Register() {
@@ -13,6 +13,7 @@ export default function Register() {
     phone: "",
     role: "buyer",
     country_code: "CD",
+    password: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -92,6 +93,21 @@ export default function Register() {
             </div>
 
             <div>
+              <label className="text-sm font-medium text-gray-700">Mot de passe</label>
+              <div className="relative mt-1.5">
+                <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  data-testid="register-password-input"
+                  type="password"
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  placeholder="Au moins 6 caractères"
+                  className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
               <label className="text-sm font-medium text-gray-700">Je suis</label>
               <div className="mt-1.5 grid grid-cols-3 gap-2">
                 {["buyer", "seller", "deliverer"].map((r) => (
@@ -114,7 +130,7 @@ export default function Register() {
 
             <button
               data-testid="register-step-next"
-              disabled={!form.name || !form.phone}
+              disabled={!form.name || !form.phone || form.password.length < 6}
               onClick={() => setStep(2)}
               className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50 flex justify-center items-center gap-2"
             >

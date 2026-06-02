@@ -46,8 +46,9 @@ class UserPublic(BaseModel):
 class RegisterRequest(BaseModel):
     name: str
     phone: str
-    role: str  # buyer | seller
+    role: str  # buyer | seller | deliverer
     country_code: str
+    password: str
 
 
 class SendOtpRequest(BaseModel):
@@ -57,6 +58,22 @@ class SendOtpRequest(BaseModel):
 class VerifyOtpRequest(BaseModel):
     phone: str
     code: str
+
+
+class LoginRequest(BaseModel):
+    phone: str
+    password: str
+
+
+class AdminLoginRequest(BaseModel):
+    phone: str
+    password: str
+
+
+class SetPasswordRequest(BaseModel):
+    phone: str
+    code: str
+    new_password: str
 
 
 # ---------- Sellers ----------
