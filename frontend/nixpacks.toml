@@ -6,7 +6,7 @@ nixPkgs = ["nodejs_20", "yarn"]
 cmds = ["yarn install --frozen-lockfile"]
 
 [phases.build]
-cmds = ["yarn build"]
+cmds = ["CI=false yarn build"]
 
 [start]
 cmd = "yarn serve"

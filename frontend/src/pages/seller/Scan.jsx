@@ -41,6 +41,7 @@ export default function SellerScan() {
       }
       startedRef.current = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode]);
 
   const process = async (token) => {

@@ -32,6 +32,7 @@ export default function OrderDetail() {
   const [showAssign, setShowAssign] = useState(false);
 
   const load = () => api.get(`/orders/${id}`).then(({ data }) => setOrder(data));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { load(); }, [id]);
 
   const loadDeliverers = async () => {
