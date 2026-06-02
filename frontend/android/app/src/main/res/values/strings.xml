@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AfriMarket</string>
+    <string name="title_activity_main">AfriMarket</string>
+    <string name="package_name">cd.cognito.afrimarket</string>
+    <string name="custom_url_scheme">cd.cognito.afrimarket</string>
+</resources>

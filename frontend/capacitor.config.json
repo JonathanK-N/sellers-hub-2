@@ -1,0 +1,14 @@
+{
+  "appId": "cd.cognito.afrimarket",
+  "appName": "AfriMarket",
+  "webDir": "build",
+  "server": {
+    "url": "https://sellers-hub-2-production.up.railway.app",
+    "cleartext": false,
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#085041"
+  }
+}
