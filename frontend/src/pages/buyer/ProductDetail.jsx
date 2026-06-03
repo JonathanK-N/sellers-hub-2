@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, ShieldCheck, MapPin, Star, Truck, Store, Plus, Minus, MessageSquare, Crown } from "lucide-react";
+import { ArrowLeft, ShieldCheck, MapPin, Star, Truck, Store, Plus, Minus, MessageSquare, Crown, ChevronRight } from "lucide-react";
 import api from "../../lib/api";
 import { formatPrice, formatDistance, photoUrl, timeAgo } from "../../lib/format";
 import { useCart } from "../../context/CartContext";
@@ -78,9 +78,9 @@ export default function ProductDetail() {
       </div>
 
       <div className="px-4 mt-1">
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
-            <Store size={20} />
+        <Link to={`/shop/${p.seller_id}`} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors block">
+          <div className="w-12 h-12 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center overflow-hidden shrink-0">
+            {p.seller_logo ? <img src={p.seller_logo} alt="" className="w-full h-full object-cover" /> : <Store size={20} />}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5">
@@ -106,7 +106,8 @@ export default function ProductDetail() {
               {formatDistance(p.distance_km)}
             </span>
           )}
-        </div>
+          <ChevronRight size={16} className="text-gray-400 shrink-0" />
+        </Link>
       </div>
 
       <div className="px-4 mt-3 space-y-2">

@@ -258,3 +258,26 @@ async def get_public_profile(seller_id: str):
     ).sort("created_at", -1).to_list(50)
     reviews = await db.reviews.find({"seller_id": seller_id}, {"_id": 0}).sort("created_at", -1).to_list(20)
     return {"seller": seller, "products": products, "reviews": reviews}
+
+
+@router.get("/buyer-profile/{buyer_id}")
+async def get_buyer_profile(buyer_id: str, user: dict = Depends(require_role("seller"))):
+    """Seller sees a buyer's profile: shared orders + name."""
+    db = get_db()
+    seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    if not seller:
+        raise HTTPException(status_code=400, detail="Boutique manquante")
+    buyer = await db.users.find_one({"id": buyer_id}, {"_id": 0, "password_hash": 0, "otp_code": 0})
+    if not buyer:
+        raise HTTPException(status_code=404, detail="Acheteur introuvable")
+    orders = await db.orders.find(
+        {"buyer_id": buyer_id, "seller_id": seller["id"]},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(50)
+    total_spent = sum(o["total_amount"] for o in orders if o.get("escrow_status") == "released")
+    return {
+        "buyer": {"name": buyer.get("name"), "created_at": buyer.get("created_at"), "id": buyer_id},
+        "orders": orders,
+        "total_orders": len(orders),
+        "total_spent": total_spent,
+    }
