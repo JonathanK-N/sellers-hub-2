@@ -123,4 +123,4 @@ watchfiles==1.2.0
 websockets==16.0
 yarl==1.24.2
 zipp==4.1.0
-africastalking==1.2.12
+africastalking==2.0.2
