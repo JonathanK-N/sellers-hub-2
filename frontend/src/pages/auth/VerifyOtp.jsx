@@ -23,7 +23,7 @@ export default function VerifyOtp() {
   const resend = async () => {
     try {
       const { data } = await api.post("/auth/send-otp", { phone });
-      toast.success(`Nouveau code envoyé. (Demo: ${data.otp_dev})`);
+      const otp_suffix2 = data.otp_dev ? ` (Demo: ${data.otp_dev})` : ''; toast.success(`Nouveau code envoyé.${otp_suffix2}`);
       setResendIn(30);
     } catch (e) {
       toast.error(formatApiError(e.response?.data?.detail));

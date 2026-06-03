@@ -26,7 +26,7 @@ export default function ForgotPassword() {
     setLoading(true);
     try {
       const { data } = await api.post("/auth/send-otp", { phone: fullPhone() });
-      toast.success(`Code envoyé. (Demo: ${data.otp_dev})`);
+      const otp_suffix = data.otp_dev ? ` (Demo: ${data.otp_dev})` : ''; toast.success(`Code envoyé.${otp_suffix}`);
       setStage("reset");
     } catch (e) {
       toast.error(formatApiError(e.response?.data?.detail));

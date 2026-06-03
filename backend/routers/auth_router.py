@@ -20,6 +20,7 @@ from auth import (
     verify_password,
     OTP_EXPIRY_MINUTES,
 )
+from sms import send_otp_sms, is_sms_configured
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -68,12 +69,11 @@ async def register(req: RegisterRequest):
         {"$set": {"phone": phone, "code": code, "expires_at": expires}},
         upsert=True,
     )
-    logger.info(f"[OTP-SIMULATED] phone={phone} code={code}")
-    return {
-        "message": "Compte créé. Vérifiez votre numéro avec le code envoyé.",
-        "phone": phone,
-        "otp_dev": code,  # SIMULATED - only for dev/demo
-    }
+    await send_otp_sms(phone, code)
+    resp = {"message": "Compte créé. Vérifiez votre numéro avec le code envoyé.", "phone": phone}
+    if not is_sms_configured():
+        resp["otp_dev"] = code  # visible only in simulation mode
+    return resp
 
 
 @router.post("/send-otp")
@@ -91,12 +91,11 @@ async def send_otp(req: SendOtpRequest):
         {"$set": {"phone": phone, "code": code, "expires_at": expires}},
         upsert=True,
     )
-    logger.info(f"[OTP-SIMULATED] phone={phone} code={code}")
-    return {
-        "message": "Code envoyé.",
-        "phone": phone,
-        "otp_dev": code,  # SIMULATED
-    }
+    await send_otp_sms(phone, code)
+    resp = {"message": "Code envoyé.", "phone": phone}
+    if not is_sms_configured():
+        resp["otp_dev"] = code  # visible only in simulation mode
+    return resp
 
 
 @router.post("/verify-otp")
@@ -152,7 +151,7 @@ async def login(req: LoginRequest):
         code = generate_otp()
         expires = datetime.now(timezone.utc) + timedelta(minutes=OTP_EXPIRY_MINUTES)
         await db.otp_codes.update_one({"phone": phone}, {"$set": {"phone": phone, "code": code, "expires_at": expires}}, upsert=True)
-        logger.info(f"[OTP-SIMULATED] phone={phone} code={code}")
+        await send_otp_sms(phone, code)
         raise HTTPException(status_code=403, detail="VERIFY_REQUIRED")
 
     token = create_access_token(user["id"], user["role"])

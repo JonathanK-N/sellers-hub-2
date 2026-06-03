@@ -34,7 +34,7 @@ export default function Register() {
       const fullPhone = `${dial}${local}`;
       const payload = { ...form, phone: fullPhone };
       const { data } = await api.post("/auth/register", payload);
-      toast.success(`Code envoyé. (Demo: ${data.otp_dev})`);
+      const otp_suffix = data.otp_dev ? ` (Demo: ${data.otp_dev})` : ''; toast.success(`Code envoyé.${otp_suffix}`);
       nav(`/auth/verify?phone=${encodeURIComponent(data.phone)}&from=register`);
     } catch (e) {
       toast.error(formatApiError(e.response?.data?.detail));
