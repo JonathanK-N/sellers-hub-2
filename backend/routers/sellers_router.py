@@ -29,11 +29,15 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
     payload = {
         "shop_name": req.shop_name,
         "description": req.description,
+        "long_description": req.long_description,
+        "product_specialties": req.product_specialties,
         "category": req.category,
         "address": req.address,
         "neighborhood": req.neighborhood,
         "opening_hours": req.opening_hours,
         "shop_logo_url": req.shop_logo_url,
+        "shop_banner_url": req.shop_banner_url,
+        "social_links": req.social_links.model_dump() if req.social_links else {},
         "country_code": user["country_code"],
         "location": {
             "type": "Point",
@@ -205,3 +209,52 @@ async def dashboard(user: dict = Depends(require_role("seller"))):
         "rating": seller.get("rating", 0.0),
         "recent_orders": orders[:10],
     }
+
+
+@router.post("/upload-logo")
+async def upload_logo(file: UploadFile = File(...), user: dict = Depends(require_role("seller"))):
+    """Upload the shop profile picture and save the URL on the seller document."""
+    db = get_db()
+    seller = await db.sellers.find_one({"user_id": user["id"]})
+    if not seller:
+        raise HTTPException(status_code=400, detail="Boutique manquante")
+    data = await file.read()
+    file_id = str(uuid.uuid4())
+    ext = (file.filename or "img").rsplit(".", 1)[-1].lower()
+    path = f"shop-logos/{seller['id']}/{file_id}.{ext}"
+    result = await put_object(f"{APP_NAME}-private", path, data, file.content_type or "image/jpeg")
+    url = f"/api/files/{result['id']}"
+    await db.sellers.update_one({"user_id": user["id"]}, {"$set": {"shop_logo_url": url}})
+    return {"url": url, "id": result["id"]}
+
+
+@router.post("/upload-banner")
+async def upload_banner(file: UploadFile = File(...), user: dict = Depends(require_role("seller"))):
+    """Upload the shop banner/cover image."""
+    db = get_db()
+    seller = await db.sellers.find_one({"user_id": user["id"]})
+    if not seller:
+        raise HTTPException(status_code=400, detail="Boutique manquante")
+    data = await file.read()
+    file_id = str(uuid.uuid4())
+    ext = (file.filename or "img").rsplit(".", 1)[-1].lower()
+    path = f"shop-banners/{seller['id']}/{file_id}.{ext}"
+    result = await put_object(f"{APP_NAME}-private", path, data, file.content_type or "image/jpeg")
+    url = f"/api/files/{result['id']}"
+    await db.sellers.update_one({"user_id": user["id"]}, {"$set": {"shop_banner_url": url}})
+    return {"url": url, "id": result["id"]}
+
+
+@router.get("/public/{seller_id}")
+async def get_public_profile(seller_id: str):
+    """Public shop profile visible to buyers."""
+    db = get_db()
+    seller = await db.sellers.find_one({"id": seller_id}, {"_id": 0, "commission_rate": 0})
+    if not seller:
+        raise HTTPException(status_code=404, detail="Boutique introuvable")
+    products = await db.products.find(
+        {"seller_id": seller_id, "is_active": True, "stock": {"$gt": 0}},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(50)
+    reviews = await db.reviews.find({"seller_id": seller_id}, {"_id": 0}).sort("created_at", -1).to_list(20)
+    return {"seller": seller, "products": products, "reviews": reviews}

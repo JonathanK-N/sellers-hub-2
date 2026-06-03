@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Plus, Package, ShoppingBag, Star, TrendingUp, ShieldCheck, AlertCircle, Wallet, ScanLine, Crown } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Plus, Package, ShoppingBag, Star, TrendingUp, ShieldCheck, AlertCircle, Wallet, ScanLine, Crown, Pencil, Eye } from "lucide-react";
 import api from "../../lib/api";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
@@ -43,6 +43,16 @@ export default function SellerDashboard() {
             </div>
           </button>
         )}
+
+        {/* Profile quick actions */}
+        <div className="flex gap-2">
+          <Link to="/seller/edit-profile" className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-[#085041] shadow-sm">
+            <Pencil size={15} /> Modifier le profil
+          </Link>
+          <Link to={`/shop/${data.shop?.id}`} className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-[#085041] shadow-sm">
+            <Eye size={15} /> Voir ma boutique
+          </Link>
+        </div>
 
         {/* Premium banner */}
         <button

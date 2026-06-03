@@ -77,10 +77,27 @@ class SetPasswordRequest(BaseModel):
 
 
 # ---------- Sellers ----------
+class SocialLinks(BaseModel):
+    facebook: Optional[str] = None
+    tiktok: Optional[str] = None
+    whatsapp_business: Optional[str] = None
+    instagram: Optional[str] = None
+
+
 class SellerSetupRequest(BaseModel):
     shop_name: str
     description: str = ""
+    long_description: str = ""           # texte long (histoire, valeurs, expertise)
     category: str = "Général"
+    product_specialties: list = []       # ["Téléphones", "Accessoires", ...]
+    address: str = ""
+    neighborhood: str = ""
+    opening_hours: str = ""
+    shop_logo_url: Optional[str] = None
+    shop_banner_url: Optional[str] = None  # photo de couverture
+    latitude: float = 0.0
+    longitude: float = 0.0
+    social_links: Optional[SocialLinks] = None
     address: str = ""
     neighborhood: str = ""
     opening_hours: str = "08:00-18:00"
@@ -95,24 +112,35 @@ class SellerPublic(BaseModel):
     user_id: str
     shop_name: str
     description: str
+    long_description: str = ""
+    product_specialties: list = []
     category: str
     address: str
     neighborhood: str
     opening_hours: str
     shop_logo_url: Optional[str] = None
-    kyc_status: str = "pending"  # pending | level2 | level3
+    shop_banner_url: Optional[str] = None
+    social_links: Optional[Dict[str, Any]] = None
+    kyc_status: str = "pending"
     badge_verified: bool = False
     rating: float = 0.0
     commission_rate: float = 0.07
     country_code: str
-    location: Optional[Dict[str, Any]] = None  # GeoJSON
+    location: Optional[Dict[str, Any]] = None
     created_at: str
 
 
 # ---------- Products ----------
+class ProductSpec(BaseModel):
+    label: str
+    value: str
+
+
 class ProductCreateRequest(BaseModel):
     name: str
     description: str = ""
+    long_description: str = ""   # description détaillée du produit
+    specs: List[ProductSpec] = Field(default_factory=list)  # ex: [{"label":"Couleur","value":"Vert"}]
     price: float
     stock: int = 0
     category: str = "Général"
