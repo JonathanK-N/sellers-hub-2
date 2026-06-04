@@ -1,5 +1,6 @@
 """Seed countries and admin user on startup."""
 import os
+import uuid
 import logging
 from datetime import datetime, timezone
 
@@ -77,7 +78,41 @@ async def seed_countries():
     logger.info(f"Seeded {len(COUNTRIES)} countries")
 
 
-async def seed_admin():
+async def seed_test_accounts():
+    """Crée 3 comptes de test fixes (acheteur, vendeur, livreur) s'ils n'existent pas."""
+    from auth import hash_password
+    db = get_db()
+    PWD_HASH = hash_password("Afrimarket2026!")
+    TEST_ACCOUNTS = [
+        {"id": str(uuid.uuid4()), "name": "Béatrice Mutombo", "phone": normalize_phone("+243890000001"),
+         "role": "buyer",     "country_code": "CD", "currency": "FC", "kyc_level": 1,
+         "password_hash": PWD_HASH, "phone_verified": True, "test_account": True,
+         "created_at": datetime.now(timezone.utc).isoformat()},
+        {"id": str(uuid.uuid4()), "name": "Patrick Luzolo",   "phone": normalize_phone("+243890000002"),
+         "role": "seller",    "country_code": "CD", "currency": "FC", "kyc_level": 1,
+         "password_hash": PWD_HASH, "phone_verified": True, "test_account": True,
+         "created_at": datetime.now(timezone.utc).isoformat()},
+        {"id": str(uuid.uuid4()), "name": "Moïse Kabongo",    "phone": normalize_phone("+243890000003"),
+         "role": "deliverer", "country_code": "CD", "currency": "FC", "kyc_level": 1,
+         "password_hash": PWD_HASH, "phone_verified": True, "test_account": True,
+         "created_at": datetime.now(timezone.utc).isoformat()},
+    ]
+    for acc in TEST_ACCOUNTS:
+        existing = await db.users.find_one({"phone": acc["phone"]})
+        if not existing:
+            await db.users.insert_one(acc)
+            # Créer le doc deliverer si besoin
+            if acc["role"] == "deliverer":
+                await db.deliverers.insert_one({
+                    "id": str(uuid.uuid4()), "user_id": acc["id"],
+                    "vehicle": "moto", "is_active": True,
+                    "country_code": "CD", "created_at": acc["created_at"], "test_account": True,
+                })
+            logger.info(f"Compte test créé: {acc['role']} {acc['phone']}")
+        else:
+            # Mise à jour du mot de passe si le compte existait déjà
+            await db.users.update_one({"phone": acc["phone"]}, {"$set": {"password_hash": PWD_HASH, "phone_verified": True}})
+            logger.info(f"Compte test mis à jour: {acc['role']} {acc['phone']}")
     import uuid
     from auth import hash_password
     db = get_db()
@@ -135,3 +170,4 @@ async def seed_all():
     await create_indexes()
     await seed_countries()
     await seed_admin()
+    await seed_test_accounts()

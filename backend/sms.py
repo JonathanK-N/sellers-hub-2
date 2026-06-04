@@ -55,6 +55,8 @@ async def send_otp_sms(phone: str, code: str) -> bool:
         return True
 
     sender_id = os.environ.get("AT_SENDER_ID", "").strip() or None
+    # NOTE: In production, AT_SENDER_ID must be approved by Africa's Talking.
+    # Leave it empty to use the default short code (works immediately).
     try:
         response = sms.send(message, [phone], sender_id=sender_id)
         recipients = response.get("SMSMessageData", {}).get("Recipients", [])
