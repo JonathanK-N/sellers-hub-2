@@ -345,17 +345,17 @@ async def reset_db():
 
 
 async def _refresh_product_images(db):
-    """Met à jour les photos et descriptions manquantes des produits de démo."""
-    # Index des produits avec leurs images: nom -> données
-    product_index = {}
+    """Met à jour les photos manquantes des produits de démo.
+    Stratégie: par nom exact d'abord, puis par catégorie si aucun match.
+    Met aussi à jour logos/bannières des sellers.
+    """
+    # Index nom -> données produit
+    product_by_name = {}
+    # Index catégorie -> liste d'images disponibles
+    images_by_category = {}
+
     for shop in SHOPS:
-        for p in shop["products"]:
-            product_index[p["name"]] = {
-                "photos": p.get("photos", []),
-                "long_description": p.get("long_description", ""),
-                "specs": p.get("specs", []),
-            }
-        # Mise à jour du seller (logo + bannière)
+        # Mise à jour sellers (logo + bannière + description)
         await db.sellers.update_one(
             {"shop_name": shop["shop_name"], "demo": True},
             {"$set": {
@@ -366,21 +366,64 @@ async def _refresh_product_images(db):
                 "social_links": shop.get("social_links", {}),
             }}
         )
+        for p in shop["products"]:
+            photos = p.get("photos", [])
+            product_by_name[p["name"]] = photos
+            cat = p.get("category", shop["category"])
+            if cat not in images_by_category:
+                images_by_category[cat] = []
+            images_by_category[cat].extend(photos)
 
+    # Fallback: pool d'images par catégorie parente
+    cat_fallbacks = {
+        "Électronique": images_by_category.get("Électronique", []),
+        "Vêtements": images_by_category.get("Vêtements", []) + images_by_category.get("Maroquinerie", []),
+        "Alimentation": images_by_category.get("Alimentation", []),
+        "Énergie": images_by_category.get("Énergie", []),
+        "Maison": images_by_category.get("Maison", []) + images_by_category.get("Cuisine", []) + images_by_category.get("Art de la table", []) + images_by_category.get("Décoration", []),
+    }
+
+    import random
     updated = 0
     async for prod in db.products.find({"demo": True}):
-        data = product_index.get(prod["name"])
-        if data and not prod.get("photos"):
+        if prod.get("photos"):
+            continue  # déjà des photos, on ne touche pas
+        name = prod.get("name", "")
+        cat = prod.get("category", "")
+
+        # 1. Match exact par nom
+        photos = product_by_name.get(name)
+
+        # 2. Match partiel par nom (sous-chaîne)
+        if not photos:
+            for seed_name, seed_photos in product_by_name.items():
+                key = seed_name.lower().split()[0]  # premier mot
+                if key in name.lower() and seed_photos:
+                    photos = seed_photos
+                    break
+
+        # 3. Fallback par catégorie
+        if not photos:
+            for cat_key, pool in cat_fallbacks.items():
+                if cat_key.lower() in cat.lower() and pool:
+                    photos = random.sample(pool, min(2, len(pool)))
+                    break
+
+        # 4. Fallback universel
+        if not photos:
+            all_photos = [p for photos_list in product_by_name.values() for p in photos_list]
+            if all_photos:
+                photos = random.sample(all_photos, min(2, len(all_photos)))
+
+        if photos:
             await db.products.update_one(
                 {"id": prod["id"]},
-                {"$set": {
-                    "photos": data["photos"],
-                    "long_description": data["long_description"],
-                    "specs": data["specs"],
-                }}
+                {"$set": {"photos": photos}}
             )
             updated += 1
-    logger.info(f"Images mises à jour: {updated} produits")
+            logger.info(f"Images mises à jour: {name[:40]}")
+
+    logger.info(f"Total images refresh: {updated} produits")
 
 
 
