@@ -386,8 +386,11 @@ async def _refresh_product_images(db):
     import random
     updated = 0
     async for prod in db.products.find({"demo": True}):
-        if prod.get("photos"):
-            continue  # déjà des photos, on ne touche pas
+        # Considérer comme "sans image" si: pas de photos, liste vide, ou liste avec URLs vides/nulles
+        photos_raw = prod.get("photos", [])
+        valid_photos = [p for p in photos_raw if p and isinstance(p, str) and p.startswith("http")]
+        if valid_photos:
+            continue  # a déjà des vraies photos, on ne touche pas
         name = prod.get("name", "")
         cat = prod.get("category", "")
 
