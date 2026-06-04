@@ -344,16 +344,63 @@ async def reset_db():
     logger.info("Base de données réinitialisée (admin conservé)")
 
 
-async def seed_demo():
+async def _refresh_product_images(db):
+    """Met à jour les photos et descriptions manquantes des produits de démo."""
+    # Index des produits avec leurs images: nom -> données
+    product_index = {}
+    for shop in SHOPS:
+        for p in shop["products"]:
+            product_index[p["name"]] = {
+                "photos": p.get("photos", []),
+                "long_description": p.get("long_description", ""),
+                "specs": p.get("specs", []),
+            }
+        # Mise à jour du seller (logo + bannière)
+        await db.sellers.update_one(
+            {"shop_name": shop["shop_name"], "demo": True},
+            {"$set": {
+                "shop_logo_url": shop.get("shop_logo_url"),
+                "shop_banner_url": shop.get("shop_banner_url"),
+                "long_description": shop.get("long_description", ""),
+                "product_specialties": shop.get("specialties", []),
+                "social_links": shop.get("social_links", {}),
+            }}
+        )
+
+    updated = 0
+    async for prod in db.products.find({"demo": True}):
+        data = product_index.get(prod["name"])
+        if data and not prod.get("photos"):
+            await db.products.update_one(
+                {"id": prod["id"]},
+                {"$set": {
+                    "photos": data["photos"],
+                    "long_description": data["long_description"],
+                    "specs": data["specs"],
+                }}
+            )
+            updated += 1
+    logger.info(f"Images mises à jour: {updated} produits")
+
+
+
     db = get_db()
 
     # Reset si demandé
+async def seed_demo():
+    db = get_db()
+
+    # Reset complet si demandé
     if os.environ.get("RESET_DB") == "1":
         await reset_db()
 
+    # Si les données démo existent déjà, on met à jour les images/descriptions
+    # des produits sans tout recréer (fix pour les anciens seeds sans images)
     if await db.sellers.count_documents({"demo": True}) > 0:
-        logger.info("Demo data already present, skipping.")
-        return {"skipped": True}
+        logger.info("Demo data present — mise à jour des images produits...")
+        await _refresh_product_images(db)
+        return {"refreshed": True}
+
 
     created = {"sellers": 0, "products": 0, "buyers": 0, "orders": 0, "reviews": 0, "deliverers": 0}
     all_products = []
