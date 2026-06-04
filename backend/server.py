@@ -83,11 +83,15 @@ async def on_startup():
         logger.error(f"Seed failed: {e}")
     if os.environ.get("SEED_DEMO") == "1":
         try:
-            from seed_demo import seed_demo
+            from seed_demo import seed_demo, _refresh_product_images
+            from db import get_db as _get_db
             result = await seed_demo()
             logger.info(f"Demo seed: {result}")
+            # Toujours forcer le refresh des images au démarrage
+            await _refresh_product_images(_get_db())
+            logger.info("Demo images refresh: done")
         except Exception as e:
-            logger.error(f"Demo seed failed: {e}")
+            logger.error(f"Demo seed failed: {e}", exc_info=True)
     try:
         init_storage()
     except Exception as e:
