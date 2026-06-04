@@ -28,23 +28,23 @@ def _uid(): return str(uuid.uuid4())
 # Images Unsplash — URLs directes (libres de droits, pas de token requis)
 # Format: https://images.unsplash.com/photo-<id>?w=800&q=80&fit=crop
 # ---------------------------------------------------------------------------
-def img(picsum_id, w=800, h=600):
-    """Picsum Photos - free placeholder images, no API key needed, work in all browsers."""
-    return f"https://picsum.photos/id/{picsum_id}/{w}/{h}"
+def img(filename):
+    """Images hébergées sur GitHub — accessibles sans restriction."""
+    return f"https://raw.githubusercontent.com/JonathanK-N/sellers-hub-2/main/public/images/products/{filename}.jpg"
 
 # Logos boutiques (carrés)
-LOGO_ELECTRO   = img(1054, 200, 200)
-LOGO_MODE      = img(669, 200, 200)
-LOGO_AGRI      = img(184, 200, 200)
-LOGO_SOLAR     = img(414, 200, 200)
-LOGO_MAISON    = img(683, 200, 200)
+LOGO_ELECTRO   = img("logo_electro")
+LOGO_MODE      = img("logo_mode")
+LOGO_AGRI      = img("logo_agri")
+LOGO_SOLAR     = img("logo_solar")
+LOGO_MAISON    = img("logo_maison")
 
 # Bannières boutiques (paysage)
-BAN_ELECTRO    = img(0, 1200, 400)
-BAN_MODE       = img(669, 1200, 400)
-BAN_AGRI       = img(184, 1200, 400)
-BAN_SOLAR      = img(414, 1200, 400)
-BAN_MAISON     = img(683, 1200, 400)
+BAN_ELECTRO    = img("logo_electro")
+BAN_MODE       = img("logo_mode")
+BAN_AGRI       = img("logo_agri")
+BAN_SOLAR      = img("logo_solar")
+BAN_MAISON     = img("logo_maison")
 
 # ---------------------------------------------------------------------------
 # BOUTIQUES avec leurs produits
@@ -70,9 +70,9 @@ SHOPS = [
         "long_description": "Ce smartphone offre une expérience fluide avec son processeur octa-core et ses 4 Go de RAM. L'écran HD+ de 6,5 pouces est idéal pour les vidéos et les réseaux sociaux. La batterie de 5000mAh vous accompagne toute la journée. Livré avec chargeur, coque de protection et verre trempé. Garantie 3 mois en boutique.",
         "price": 285000, "stock": 14, "category": "Électronique",
         "photos": [
-          img(1054),
-          img(160),
-          img(48),
+          img("smartphone"),
+          img("chargeur"),
+          img("powerbank"),
         ],
         "specs": [{"label":"Stockage","value":"128 Go"},{"label":"RAM","value":"4 Go"},{"label":"Batterie","value":"5000 mAh"},{"label":"Écran","value":"6.5 pouces HD+"}],
       },
@@ -82,8 +82,8 @@ SHOPS = [
         "long_description": "Ces écouteurs True Wireless offrent un son de qualité avec une réduction active du bruit. Le boîtier de charge compact vous permet d'avoir jusqu'à 20 heures d'autonomie totale. Résistants à la transpiration (IPX4), ils sont parfaits pour le sport. Connexion Bluetooth 5.0 stable jusqu'à 10 mètres.",
         "price": 35000, "stock": 40, "category": "Électronique",
         "photos": [
-          img(116),
-          img(1054),
+          img("ecouteurs"),
+          img("smartphone"),
         ],
         "specs": [{"label":"Autonomie","value":"20h (boîtier inclus)"},{"label":"Bluetooth","value":"5.0"},{"label":"Résistance","value":"IPX4"}],
       },
@@ -92,7 +92,7 @@ SHOPS = [
         "description": "Charge rapide compatible tous téléphones et laptops USB-C. Câble inclus.",
         "long_description": "Ce chargeur universel 65W est compatible avec la quasi-totalité des smartphones, tablettes et laptops USB-C du marché. La technologie GaN (nitrure de gallium) le rend compact et moins chaud que les chargeurs traditionnels. Livré avec un câble USB-C tressé de 1,5 mètre.",
         "price": 22000, "stock": 55, "category": "Électronique",
-        "photos": [img(160), img(48)],
+        "photos": [img("chargeur"), img("powerbank")],
         "specs": [{"label":"Puissance","value":"65W"},{"label":"Ports","value":"USB-C + USB-A"},{"label":"Câble","value":"Inclus 1.5m"}],
       },
       {
@@ -100,7 +100,7 @@ SHOPS = [
         "description": "Batterie externe ultra-capacité, 2 ports USB-A + 1 USB-C, charge rapide 22W.",
         "long_description": "Ce power bank de 20000mAh peut recharger votre téléphone plus de 4 fois complètement. Deux ports USB-A et un port USB-C vous permettent de charger jusqu'à 3 appareils simultanément. La charge rapide 22W est compatible avec les derniers smartphones. Indicateur LED de niveau de charge.",
         "price": 45000, "stock": 20, "category": "Électronique",
-        "photos": [img(116), img(160)],
+        "photos": [img("ecouteurs"), img("chargeur")],
         "specs": [{"label":"Capacité","value":"20000 mAh"},{"label":"Charge rapide","value":"22W"},{"label":"Ports","value":"2×USB-A + 1×USB-C"}],
       },
     ],
@@ -125,9 +125,9 @@ SHOPS = [
         "long_description": "Ce pagne wax hollandais est fabriqué avec du coton 100% certifié, teint à la cire véritable pour des couleurs durables qui ne déteindront pas au lavage. Le motif est exclusif à notre boutique pour cette saison. 6 yards suffisent pour une robe longue et une tête. Lavage à 30°C recommandé.",
         "price": 28000, "stock": 30, "category": "Vêtements",
         "photos": [
-          img(669),
-          img(325),
-          img(192),
+          img("pagne"),
+          img("robe"),
+          img("sac"),
         ],
         "specs": [{"label":"Longueur","value":"6 yards (5.5m)"},{"label":"Matière","value":"100% coton"},{"label":"Origine","value":"Ghana"},{"label":"Lavage","value":"30°C max"}],
       },
@@ -137,8 +137,8 @@ SHOPS = [
         "long_description": "Cette robe longue est confectionnée sur place par nos couturières expérimentées. La coupe moderne valorise toutes les morphologies. Le tissu wax utilisé est de qualité supérieure. Disponible en plusieurs tailles (S à 3XL) et en plusieurs coloris. Le délai de confection est de 5 à 7 jours ouvrables. Photos sur commande.",
         "price": 55000, "stock": 15, "category": "Vêtements",
         "photos": [
-          img(669),
-          img(192),
+          img("pagne"),
+          img("sac"),
         ],
         "specs": [{"label":"Tailles","value":"S à 3XL"},{"label":"Délai","value":"5-7 jours"},{"label":"Tissu","value":"Wax premium"}],
       },
@@ -148,8 +148,8 @@ SHOPS = [
         "long_description": "Ce sac à main est entièrement fabriqué à la main par nos artisans locaux, combinant tissu wax africain et cuir synthétique de qualité. L'intérieur est doublé avec une poche zippée et deux poches latérales. La bandoulière est amovible et ajustable. Chaque sac est unique — aucun modèle identique n'est produit deux fois.",
         "price": 32000, "stock": 18, "category": "Maroquinerie",
         "photos": [
-          img(325),
-          img(192),
+          img("robe"),
+          img("sac"),
         ],
         "specs": [{"label":"Dimensions","value":"35×25×12 cm"},{"label":"Bandoulière","value":"Amovible, ajustable"},{"label":"Fabrication","value":"Artisanale locale"}],
       },
@@ -175,8 +175,8 @@ SHOPS = [
         "long_description": "Ce riz est cultivé par nos partenaires agriculteurs du Bas-Congo, selon des pratiques respectueuses de l'environnement. Il est décortiqué et nettoyé sur place avant emballage. Le riz long grain est idéal pour toutes les préparations : riz sauté, riz au gras, accompagnement de sauces. Conditionnement en sac tissé respirant de 25 kg.",
         "price": 52000, "stock": 45, "category": "Alimentation",
         "photos": [
-          img(184),
-          img(139),
+          img("riz"),
+          img("haricots"),
         ],
         "specs": [{"label":"Poids","value":"25 kg"},{"label":"Origine","value":"Bas-Congo"},{"label":"Grain","value":"Long grain"},{"label":"Traitement","value":"Sans pesticides"}],
       },
@@ -185,7 +185,7 @@ SHOPS = [
         "description": "Huile de palme rouge naturelle, pressée à froid, non raffinée. Riche en vitamines A et E.",
         "long_description": "Notre huile de palme rouge est extraite par pression à froid des régimes de palmiers sélectionnés. Non raffinée, elle conserve toutes ses propriétés nutritives, notamment sa richesse en bêta-carotène (vitamine A) et en vitamine E. Idéale pour la cuisine traditionnelle : sauces, fritures, ragouts. Conditionnée en bidon hermétique de 5 litres.",
         "price": 18000, "stock": 38, "category": "Alimentation",
-        "photos": [img(139), img(683)],
+        "photos": [img("haricots"), img("ventilateur")],
         "specs": [{"label":"Volume","value":"5 litres"},{"label":"Type","value":"Non raffinée"},{"label":"Extraction","value":"Pression à froid"}],
       },
       {
@@ -193,7 +193,7 @@ SHOPS = [
         "description": "Farine de manioc finement moulue, pour fufu, chikwangue et autres préparations traditionnelles.",
         "long_description": "Cette farine de manioc est produite à partir de manioc doux soigneusement sélectionné, fermenté selon la méthode traditionnelle puis séché et moulu finement. Elle est idéale pour préparer le fufu, le chikwangue ou le bâton de manioc. Conditionnée en sac de 10 kg avec fermeture hermétique pour une meilleure conservation.",
         "price": 14000, "stock": 60, "category": "Alimentation",
-        "photos": [img(184), img(139)],
+        "photos": [img("riz"), img("haricots")],
         "specs": [{"label":"Poids","value":"10 kg"},{"label":"Type","value":"Manioc fermenté"},{"label":"Mouture","value":"Fine"}],
       },
       {
@@ -201,7 +201,7 @@ SHOPS = [
         "description": "Haricots rouges sélectionnés, séchés naturellement. Protéines végétales de qualité.",
         "long_description": "Ces haricots rouges sont cultivés dans la région de Goma, connue pour la richesse de ses terres volcaniques. Triés à la main et séchés naturellement, ils sont exempts de cailloux et d'impuretés. Riches en protéines et en fibres, ils constituent un aliment de base essentiel. Temps de cuisson : environ 45 minutes après trempage de 8h.",
         "price": 16000, "stock": 40, "category": "Alimentation",
-        "photos": [img(184), img(139)],
+        "photos": [img("riz"), img("haricots")],
         "specs": [{"label":"Poids","value":"5 kg"},{"label":"Origine","value":"Région de Goma"},{"label":"Conservation","value":"12 mois à l'abri de l'humidité"}],
       },
     ],
@@ -226,9 +226,9 @@ SHOPS = [
         "long_description": "Ce kit solaire complet est conçu pour alimenter un foyer de 4 à 6 personnes. Il inclut un panneau monocristallin de 200W, une batterie AGM de 100Ah (sans entretien), un régulateur de charge MPPT intelligent, 4 ampoules LED 9W, et tout le câblage nécessaire. L'installation est assurée par nos techniciens certifiés (dans un rayon de 30 km de Kinshasa). Autonomie de 2 jours sans soleil.",
         "price": 420000, "stock": 6, "category": "Énergie",
         "photos": [
-          img(414),
-          img(976),
-          img(109),
+          img("kit_solaire"),
+          img("panneau"),
+          img("lampe"),
         ],
         "specs": [{"label":"Panneau","value":"200W monocristallin"},{"label":"Batterie","value":"100Ah AGM"},{"label":"Régulateur","value":"MPPT 20A"},{"label":"Installation","value":"Incluse (30km)"},{"label":"Garantie","value":"2 ans"}],
       },
@@ -237,7 +237,7 @@ SHOPS = [
         "description": "Panneau photovoltaïque monocristallin 100W, cadre aluminium anodisé, garantie 5 ans.",
         "long_description": "Ce panneau solaire monocristallin de 100W offre un excellent rendement même par temps nuageux. Son cadre en aluminium anodisé est conçu pour résister aux conditions climatiques tropicales. La vitre trempée anti-reflet maximise la captation lumineuse. Compatible avec tous les régulateurs MPPT et PWM du marché. Idéal pour les petites installations ou en complément d'un système existant.",
         "price": 195000, "stock": 12, "category": "Énergie",
-        "photos": [img(109), img(976)],
+        "photos": [img("lampe"), img("panneau")],
         "specs": [{"label":"Puissance","value":"100W"},{"label":"Type","value":"Monocristallin"},{"label":"Garantie","value":"5 ans puissance"},{"label":"Dimensions","value":"1050×660×35 mm"}],
       },
       {
@@ -245,7 +245,7 @@ SHOPS = [
         "description": "Lampe solaire rechargeable, autonomie 12h, avec panneau intégré et port USB de charge.",
         "long_description": "Cette lampe solaire tout-en-un est idéale comme éclairage de secours ou principal. Elle se recharge en 6 à 8 heures de soleil et offre jusqu'à 12 heures d'éclairage en mode économique. Le port USB intégré permet de charger un téléphone simultanément. Résistante à la pluie (IP44) et aux chocs. Légère et transportable, elle fonctionne aussi comme lampe torche.",
         "price": 32000, "stock": 30, "category": "Énergie",
-        "photos": [img(160), img(116)],
+        "photos": [img("chargeur"), img("ecouteurs")],
         "specs": [{"label":"Autonomie","value":"12h (mode éco)"},{"label":"Recharge","value":"6-8h soleil"},{"label":"Port USB","value":"5V/2A"},{"label":"Résistance","value":"IP44"}],
       },
     ],
@@ -270,7 +270,7 @@ SHOPS = [
         "long_description": "Ce ventilateur sur pied de 16 pouces est idéal pour lutter contre la chaleur kinoise. Avec ses 3 vitesses réglables et son oscillation à 90°, il distribue l'air frais dans toute la pièce. La télécommande vous permet de le contrôler sans vous lever. Son moteur à faible consommation (45W) est particulièrement économique. Pied stable et antidérapant, démontable pour un rangement facile.",
         "price": 65000, "stock": 18, "category": "Électroménager",
         "photos": [
-          img(683),
+          img("ventilateur"),
           img("1558618666-fcd25c85cd64"),
         ],
         "specs": [{"label":"Diamètre","value":"16 pouces (40 cm)"},{"label":"Vitesses","value":"3"},{"label":"Consommation","value":"45W"},{"label":"Télécommande","value":"Incluse"}],
@@ -280,7 +280,7 @@ SHOPS = [
         "description": "Ensemble 6 casseroles en acier inoxydable 304, fond épais, poignées ergonomiques, tous feux.",
         "long_description": "Ce set de 6 casseroles en inox 304 (qualité alimentaire) comprend 3 casseroles (16/18/20 cm) et 3 marmites (22/24/26 cm), toutes avec couvercles. Le fond triple épaisseur garantit une diffusion homogène de la chaleur et une résistance durable. Compatible tous feux (gaz, électrique, induction). Passe au lave-vaisselle. La qualité professionnelle à prix accessible.",
         "price": 78000, "stock": 12, "category": "Cuisine",
-        "photos": [img(683), img(201)],
+        "photos": [img("ventilateur"), img("casseroles")],
         "specs": [{"label":"Nombre","value":"6 pièces + 6 couvercles"},{"label":"Matière","value":"Inox 304"},{"label":"Compatibilité","value":"Tous feux + induction"},{"label":"Lave-vaisselle","value":"Oui"}],
       },
       {
@@ -288,7 +288,7 @@ SHOPS = [
         "description": "Assiettes plates en verre trempé, résistantes aux chocs et à la chaleur, design élégant.",
         "long_description": "Ces assiettes en verre trempé allient élégance et résistance. Le verre trempé est 5 fois plus résistant que le verre ordinaire et supporte des températures jusqu'à 150°C. Leur design sobre et contemporain s'adapte à toutes les tables. Idéales pour le quotidien comme pour les occasions spéciales. Empilables pour un rangement optimisé.",
         "price": 18000, "stock": 35, "category": "Art de la table",
-        "photos": [img(201), img(683)],
+        "photos": [img("casseroles"), img("ventilateur")],
         "specs": [{"label":"Nombre","value":"6 assiettes"},{"label":"Matière","value":"Verre trempé"},{"label":"Résistance","value":"Jusqu'à 150°C"},{"label":"Diamètre","value":"26 cm"}],
       },
       {
@@ -296,7 +296,7 @@ SHOPS = [
         "description": "Miroir avec cadre en bois naturel, design africain, livré avec fixations incluses.",
         "long_description": "Ce miroir mural est encadré d'un bois naturel sculpté selon des motifs africains traditionnels. Sa taille généreuse (60×80 cm) en fait un élément décoratif fort pour votre salon, entrée ou chambre. Le verre argent de haute qualité offre un reflet fidèle sans distorsion. Les fixations murales sont incluses. Fabriqué par des artisans congolais.",
         "price": 45000, "stock": 10, "category": "Décoration",
-        "photos": [img("1558618666-fcd25c85cd64"), img(201)],
+        "photos": [img("1558618666-fcd25c85cd64"), img("casseroles")],
         "specs": [{"label":"Dimensions","value":"60×80 cm"},{"label":"Cadre","value":"Bois naturel sculpté"},{"label":"Fixations","value":"Incluses"},{"label":"Fabrication","value":"Artisanale locale"}],
       },
     ],
@@ -388,12 +388,12 @@ async def _refresh_product_images(db):
     updated = 0
     async for prod in db.products.find({"demo": True}):
         photos_raw = prod.get("photos", [])
-        # Remplacer si: vide, null, /api/files/, ou URL Unsplash (403 en production)
+        # Remplacer si: vide, null, /api/files/, Unsplash (403), Picsum (403) ou toute URL non-GitHub
         valid_photos = [
             p for p in photos_raw
             if p and isinstance(p, str)
-            and p.startswith("http")
-            and "picsum.photos" in p  # uniquement les vraies URLs Picsum
+            and "raw.githubusercontent.com" in p
+            and "sellers-hub-2" in p
         ]
         if valid_photos:
             continue  # déjà de vraies photos Unsplash, on ne touche pas
