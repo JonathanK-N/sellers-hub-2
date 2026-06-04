@@ -386,11 +386,16 @@ async def _refresh_product_images(db):
     import random
     updated = 0
     async for prod in db.products.find({"demo": True}):
-        # Considérer comme "sans image" si: pas de photos, liste vide, ou liste avec URLs vides/nulles
         photos_raw = prod.get("photos", [])
-        valid_photos = [p for p in photos_raw if p and isinstance(p, str) and p.startswith("http")]
+        # Considérer comme invalide: vide, null, ou pointant vers /api/files/ (storage désactivé)
+        valid_photos = [
+            p for p in photos_raw
+            if p and isinstance(p, str)
+            and p.startswith("http")
+            and "unsplash.com" in p  # uniquement les vraies URLs Unsplash
+        ]
         if valid_photos:
-            continue  # a déjà des vraies photos, on ne touche pas
+            continue  # déjà de vraies photos Unsplash, on ne touche pas
         name = prod.get("name", "")
         cat = prod.get("category", "")
 
