@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, Camera, Facebook, Globe, Phone, Plus, X, Save } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
+import { photoUrl } from "../../lib/format";
 import BottomNav from "../../components/BottomNav";
 
 const CATEGORIES = ["Général","Électronique","Vêtements","Alimentation","Maison","Énergie / Solaire","Agriculture","Beauté","Santé","Matériaux","Services","Autre"];
@@ -98,7 +99,7 @@ export default function EditProfile() {
       {/* BANNIÈRE + LOGO */}
       <div className="relative">
         <div onClick={() => bannerRef.current?.click()} className="w-full h-32 bg-gradient-to-r from-[#085041] to-[#1D9E75] flex items-center justify-center cursor-pointer overflow-hidden relative group">
-          {form.shop_banner_url ? <img src={form.shop_banner_url} alt="bannière" className="w-full h-full object-cover" /> : null}
+          {form.shop_banner_url ? <img src={photoUrl(form.shop_banner_url)} alt="bannière" className="w-full h-full object-cover" /> : null}
           <div className={`${form.shop_banner_url ? "absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100" : ""} flex items-center justify-center flex-col gap-1`}>
             <Camera size={20} className="text-white" />
             <span className="text-white text-xs font-medium">Photo de couverture</span>
@@ -107,7 +108,7 @@ export default function EditProfile() {
         <input ref={bannerRef} type="file" accept="image/*" className="hidden" onChange={e => uploadFile(e, "banner")} />
         <div className="absolute -bottom-10 left-4">
           <button onClick={() => logoRef.current?.click()} className="relative w-20 h-20 rounded-full border-4 border-white bg-gray-200 overflow-hidden shadow-md group">
-            {form.shop_logo_url ? <img src={form.shop_logo_url} alt="logo" className="w-full h-full object-cover" /> : <Camera size={22} className="absolute inset-0 m-auto text-gray-500" />}
+            {form.shop_logo_url ? <img src={photoUrl(form.shop_logo_url)} alt="logo" className="w-full h-full object-cover" /> : <Camera size={22} className="absolute inset-0 m-auto text-gray-500" />}
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center"><Camera size={16} className="text-white" /></div>
           </button>
           <input ref={logoRef} type="file" accept="image/*" className="hidden" onChange={e => uploadFile(e, "logo")} />

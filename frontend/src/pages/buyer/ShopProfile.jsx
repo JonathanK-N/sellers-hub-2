@@ -29,12 +29,12 @@ export default function ShopProfile() {
       {/* BANNIÈRE */}
       <div className="relative">
         <div className="w-full h-36 overflow-hidden bg-gradient-to-r from-[#085041] to-[#1D9E75]">
-          {seller.shop_banner_url && <img src={seller.shop_banner_url} alt="bannière" className="w-full h-full object-cover" />}
+          {seller.shop_banner_url && <img src={photoUrl(seller.shop_banner_url)} alt="bannière" className="w-full h-full object-cover" />}
         </div>
         {/* Logo flottant */}
         <div className="absolute left-4 -bottom-10 w-20 h-20 rounded-full border-4 border-white bg-gray-100 shadow-lg overflow-hidden">
           {seller.shop_logo_url
-            ? <img src={seller.shop_logo_url} alt="logo" className="w-full h-full object-cover" />
+            ? <img src={photoUrl(seller.shop_logo_url)} alt="logo" className="w-full h-full object-cover" />
             : <div className="w-full h-full bg-[#085041] flex items-center justify-center"><span className="text-white text-3xl font-black">{seller.shop_name[0]}</span></div>}
         </div>
         {/* Bouton retour */}
