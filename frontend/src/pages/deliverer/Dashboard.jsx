@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "../../context/AuthContext";
 import api, { formatApiError } from "../../lib/api";
-import { formatPrice, timeAgo } from "../../lib/format";
+import { formatPrice, timeAgo, photoUrl } from "../../lib/format";
 import {
-  Bike, Package, MapPin, Navigation, CheckCircle2, LogOut, TrendingUp, Clock,
+  Bike, Package, MapPin, Navigation, CheckCircle2, LogOut, TrendingUp, Clock, Camera,
 } from "lucide-react";
 
 const STATUS_FLOW = {
@@ -15,13 +15,39 @@ const STATUS_FLOW = {
 };
 
 export default function DelivererDashboard() {
-  const { user, logout } = useAuth();
+  const { user, logout, refresh } = useAuth();
   const [deliveries, setDeliveries] = useState([]);
   const [earnings, setEarnings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [codeFor, setCodeFor] = useState(null);
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(null);
+  const fileRef = useRef(null);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+
+  const onPickPhoto = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    uploadPhoto(file);
+    e.target.value = "";
+  };
+
+  const uploadPhoto = async (file) => {
+    setUploadingPhoto(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      await api.post("/auth/me/photo", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      await refresh();
+      toast.success("Photo de profil mise à jour");
+    } catch (e) {
+      toast.error(formatApiError(e.response?.data?.detail));
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
 
   const load = () => {
     api.get("/deliverer/deliveries").then(({ data }) => setDeliveries(data)).catch(() => {});
@@ -74,9 +100,23 @@ export default function DelivererDashboard() {
       <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 shadow-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg bg-[#1D9E75] flex items-center justify-center">
-              <Bike size={20} />
-            </div>
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={uploadingPhoto}
+              data-testid="upload-avatar-btn"
+              className="relative w-9 h-9 rounded-lg bg-[#1D9E75] flex items-center justify-center overflow-hidden shrink-0"
+            >
+              {user?.profile_photo_url ? (
+                <img src={photoUrl(user.profile_photo_url)} alt="Photo de profil" className="w-full h-full object-cover" />
+              ) : (
+                <Bike size={20} />
+              )}
+              <span className="absolute bottom-0 right-0 w-4 h-4 bg-[#085041] rounded-full flex items-center justify-center border border-white">
+                <Camera size={9} className="text-white" />
+              </span>
+            </button>
+            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPickPhoto} data-testid="avatar-file-input" />
             <div>
               <div className="font-display font-black text-lg leading-tight">Livreur</div>
               <div className="text-xs text-emerald-200/80">{user?.name}</div>

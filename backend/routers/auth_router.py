@@ -4,7 +4,7 @@ import uuid
 import logging
 from datetime import datetime, timezone, timedelta
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
 
 from db import get_db
 from models import (
@@ -21,6 +21,9 @@ from auth import (
     OTP_EXPIRY_MINUTES,
 )
 from sms import send_otp_sms, is_sms_configured
+from storage import put_object
+
+APP_NAME = "afrimarket"
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -217,3 +220,35 @@ async def reset_password(req: SetPasswordRequest):
 @router.get("/me")
 async def me(user: dict = Depends(get_current_user_dep)):
     return _strip_user(user)
+
+
+@router.post("/me/photo")
+async def upload_profile_photo(file: UploadFile = File(...), user: dict = Depends(get_current_user_dep)):
+    """Upload a profile photo for the current user (buyer, seller, deliverer, admin)."""
+    ext = "jpg"
+    if file.filename and "." in file.filename:
+        ext = file.filename.rsplit(".", 1)[-1].lower()
+    if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
+        ext = "jpg"
+    path = f"{APP_NAME}/avatars/{user['id']}/{uuid.uuid4()}.{ext}"
+    data = await file.read()
+    try:
+        result = put_object(path, data, file.content_type or "image/jpeg")
+    except Exception as e:
+        logger.error(f"Profile photo upload failed: {e}")
+        raise HTTPException(status_code=500, detail="Échec du téléversement")
+
+    db = get_db()
+    file_id = str(uuid.uuid4())
+    await db.files.insert_one({
+        "id": file_id,
+        "storage_path": result["path"],
+        "owner_id": user["id"],
+        "content_type": file.content_type or f"image/{ext}",
+        "size": result.get("size", 0),
+        "is_deleted": False,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+    url = f"/api/files/{file_id}"
+    await db.users.update_one({"id": user["id"]}, {"$set": {"profile_photo_url": url}})
+    return {"url": url, "id": file_id}

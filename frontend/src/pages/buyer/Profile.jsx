@@ -1,13 +1,43 @@
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, User, MapPin, Phone, Store, LayoutDashboard } from "lucide-react";
+import { toast } from "sonner";
+import { LogOut, User, MapPin, Phone, Store, LayoutDashboard, Camera } from "lucide-react";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
 import { useAuth } from "../../context/AuthContext";
+import api, { formatApiError } from "../../lib/api";
+import { photoUrl } from "../../lib/format";
 
 export default function Profile() {
-  const { user, logout } = useAuth();
+  const { user, logout, refresh } = useAuth();
   const nav = useNavigate();
+  const fileRef = useRef(null);
+  const [uploading, setUploading] = useState(false);
   if (!user) return null;
+
+  const onPickPhoto = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    uploadPhoto(file);
+    e.target.value = "";
+  };
+
+  const uploadPhoto = async (file) => {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      await api.post("/auth/me/photo", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      await refresh();
+      toast.success("Photo de profil mise à jour");
+    } catch (e) {
+      toast.error(formatApiError(e.response?.data?.detail));
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <div className="mobile-shell">
@@ -15,9 +45,23 @@ export default function Profile() {
 
       <div className="px-4 mt-4 space-y-3">
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
-          <div className="w-14 h-14 rounded-full bg-[#1D9E75] text-white flex items-center justify-center font-display font-black text-xl">
-            {user.name.charAt(0).toUpperCase()}
-          </div>
+          <button
+            type="button"
+            onClick={() => fileRef.current?.click()}
+            disabled={uploading}
+            data-testid="upload-avatar-btn"
+            className="relative w-14 h-14 rounded-full bg-[#1D9E75] text-white flex items-center justify-center font-display font-black text-xl overflow-hidden shrink-0"
+          >
+            {user.profile_photo_url ? (
+              <img src={photoUrl(user.profile_photo_url)} alt="Photo de profil" className="w-full h-full object-cover" />
+            ) : (
+              user.name.charAt(0).toUpperCase()
+            )}
+            <span className="absolute bottom-0 right-0 w-5 h-5 bg-[#085041] rounded-full flex items-center justify-center border-2 border-white">
+              <Camera size={11} className="text-white" />
+            </span>
+          </button>
+          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPickPhoto} data-testid="avatar-file-input" />
           <div className="flex-1">
             <div className="font-display font-bold text-gray-900">{user.name}</div>
             <div className="text-xs text-gray-500">{user.phone}</div>
