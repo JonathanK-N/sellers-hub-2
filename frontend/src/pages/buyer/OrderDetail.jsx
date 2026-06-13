@@ -115,7 +115,7 @@ export default function OrderDetail() {
             <p className="font-semibold">
               {order.escrow_status === "released"
                 ? `${formatPrice(order.total_amount, order.currency)} libéré au vendeur`
-                : `${formatPrice(order.total_amount, order.currency)} bloqué en escrow`}
+                : `${formatPrice(order.amount_due ?? order.total_amount, order.currency)} bloqué en escrow`}
             </p>
             <p className="opacity-80">
               {order.escrow_status === "released"
@@ -169,9 +169,15 @@ export default function OrderDetail() {
               </div>
             ))}
           </div>
-          <div className="border-t border-gray-100 mt-3 pt-3 flex justify-between font-display font-bold text-base text-[#085041]">
+          {order.delivery_fee > 0 && (
+            <div className="border-t border-gray-100 mt-3 pt-3 flex justify-between text-sm text-gray-500">
+              <span>Frais de livraison (7%)</span>
+              <span>{formatPrice(order.delivery_fee, order.currency)}</span>
+            </div>
+          )}
+          <div className={`${order.delivery_fee > 0 ? "mt-1" : "border-t border-gray-100 mt-3 pt-3"} flex justify-between font-display font-bold text-base text-[#085041]`}>
             <span>Total</span>
-            <span>{formatPrice(order.total_amount, order.currency)}</span>
+            <span>{formatPrice(order.amount_due ?? order.total_amount, order.currency)}</span>
           </div>
         </section>
 

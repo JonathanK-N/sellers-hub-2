@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 COUNTRIES = [
-    {"code": "CD", "name": "RD Congo",       "currency": "FC",  "currency_symbol": "FC",   "dial_code": "+243", "flag": "🇨🇩", "mobile_money_operators": ["MTN MoMo", "Airtel Money", "Orange Money"], "commission_rate": 0.07, "is_active": True},
+    {"code": "CD", "name": "RD Congo",       "currency": "FC",  "currency_symbol": "FC",   "dial_code": "+243", "flag": "🇨🇩", "mobile_money_operators": ["MTN MoMo", "Airtel Money", "Orange Money", "M-Pesa"], "commission_rate": 0.07, "is_active": True},
     {"code": "CM", "name": "Cameroun",        "currency": "XAF", "currency_symbol": "FCFA", "dial_code": "+237", "flag": "🇨🇲", "mobile_money_operators": ["MTN MoMo", "Orange Money"], "commission_rate": 0.07, "is_active": True},
     {"code": "CI", "name": "Côte d'Ivoire",   "currency": "XOF", "currency_symbol": "FCFA", "dial_code": "+225", "flag": "🇨🇮", "mobile_money_operators": ["MTN MoMo", "Orange Money", "Wave"], "commission_rate": 0.07, "is_active": True},
     {"code": "SN", "name": "Sénégal",         "currency": "XOF", "currency_symbol": "FCFA", "dial_code": "+221", "flag": "🇸🇳", "mobile_money_operators": ["Wave", "Orange Money", "Free Money"], "commission_rate": 0.07, "is_active": True},

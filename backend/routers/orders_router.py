@@ -88,8 +88,11 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
 
         commission_rate = seller.get("commission_rate", 0.07)
         commission_amount = round(sub_total * commission_rate, 2)
+        # Service fee charged to the buyer for home delivery (none for in-store pickup).
+        delivery_fee = round(sub_total * commission_rate, 2) if req.delivery_mode == "delivery" else 0.0
+        amount_due = sub_total + delivery_fee
         qr_token = str(uuid.uuid4()) if req.delivery_mode == "collect" else None
-        grand_total += sub_total
+        grand_total += amount_due
 
         order = {
             "id": str(uuid.uuid4()),
@@ -100,6 +103,8 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
             "items": items_full,
             "total_amount": sub_total,
             "commission_amount": commission_amount,
+            "delivery_fee": delivery_fee,
+            "amount_due": amount_due,
             "currency": currency,
             "delivery_mode": req.delivery_mode,
             "delivery_address": req.delivery_address,
@@ -128,7 +133,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
             "id": str(uuid.uuid4()),
             "order_id": order["id"],
             "order_group_id": group_id,
-            "amount": sub_total,
+            "amount": amount_due,
             "currency": currency,
             "payment_method": req.payment_method,
             "payment_status": "captured_in_escrow",

@@ -110,7 +110,7 @@ export default function OrderGroup() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-display font-black text-base text-[#085041]">
-                    {formatPrice(o.total_amount, currency)}
+                    {formatPrice(o.amount_due ?? o.total_amount, currency)}
                   </span>
                   <span className="text-[#1D9E75] flex items-center gap-1 text-sm font-medium">
                     Suivre <ChevronRight size={16} />

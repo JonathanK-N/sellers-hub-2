@@ -92,7 +92,8 @@ export default function Checkout() {
     }
   };
 
-  const commission = total * 0.07;
+  const deliveryFee = mode === "delivery" ? total * 0.07 : 0;
+  const payableTotal = total + deliveryFee;
 
   return (
     <div className="mobile-shell">
@@ -164,17 +165,19 @@ export default function Checkout() {
           <div className="text-xs text-[#085041]">
             <p className="font-semibold">Paiement sécurisé (Escrow)</p>
             <p className="mt-0.5 leading-relaxed">
-              {formatPrice(total, items[0]?.currency)} sera bloqué et libéré au vendeur uniquement à la confirmation de réception.
+              {formatPrice(payableTotal, items[0]?.currency)} sera bloqué et libéré au vendeur uniquement à la confirmation de réception.
             </p>
           </div>
         </section>
 
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 space-y-1.5 text-sm">
           <Row label="Sous-total" value={formatPrice(total, items[0]?.currency)} />
-          <Row label="Frais plateforme (7%)" value={formatPrice(commission, items[0]?.currency)} muted />
+          {mode === "delivery" && (
+            <Row label="Frais de livraison (7%)" value={formatPrice(deliveryFee, items[0]?.currency)} muted />
+          )}
           <div className="border-t border-gray-100 pt-2 mt-2 flex justify-between font-display font-black text-lg text-[#085041]">
             <span>Total</span>
-            <span data-testid="checkout-total">{formatPrice(total, items[0]?.currency)}</span>
+            <span data-testid="checkout-total">{formatPrice(payableTotal, items[0]?.currency)}</span>
           </div>
         </section>
       </div>
@@ -187,7 +190,7 @@ export default function Checkout() {
           className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
         >
           <Lock size={16} />
-          {loading ? "Traitement…" : `Payer ${formatPrice(total, items[0]?.currency)}`}
+          {loading ? "Traitement…" : `Payer ${formatPrice(payableTotal, items[0]?.currency)}`}
         </button>
       </div>
     </div>
