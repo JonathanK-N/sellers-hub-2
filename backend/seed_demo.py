@@ -354,6 +354,8 @@ async def _refresh_product_images(db):
     product_by_name = {}
     # Index catégorie -> liste d'images disponibles
     images_by_category = {}
+    # Noms de fichiers actuellement utilisés dans SHOPS (pour invalider les anciennes images de placeholder)
+    current_filenames = set()
 
     for shop in SHOPS:
         # Mise à jour sellers (logo + bannière + description)
@@ -374,6 +376,8 @@ async def _refresh_product_images(db):
             if cat not in images_by_category:
                 images_by_category[cat] = []
             images_by_category[cat].extend(photos)
+            for photo in photos:
+                current_filenames.add(photo.rsplit("/", 1)[-1])
 
     # Fallback: pool d'images par catégorie parente
     cat_fallbacks = {
@@ -388,15 +392,17 @@ async def _refresh_product_images(db):
     updated = 0
     async for prod in db.products.find({"demo": True}):
         photos_raw = prod.get("photos", [])
-        # Remplacer si: vide, null, /api/files/, Unsplash (403), Picsum (403) ou toute URL non-GitHub
+        # Remplacer si: vide, null, /api/files/, URL non-GitHub, ou image de placeholder
+        # qui n'est plus référencée dans SHOPS (ancien nom de fichier remplacé)
         valid_photos = [
             p for p in photos_raw
             if p and isinstance(p, str)
             and "raw.githubusercontent.com" in p
             and "sellers-hub-2" in p
+            and p.rsplit("/", 1)[-1] in current_filenames
         ]
         if valid_photos:
-            continue  # déjà de vraies photos Unsplash, on ne touche pas
+            continue  # déjà de vraies photos à jour, on ne touche pas
         name = prod.get("name", "")
         cat = prod.get("category", "")
 
