@@ -1,6 +1,6 @@
 /* AfriMarket PWA service worker — app-shell caching + offline fallback. */
-const CACHE = "afrimarket-v1";
-const APP_SHELL = ["/", "/index.html", "/manifest.json", "/logo192.png", "/logo512.png"];
+const CACHE = "afrimarket-v2";
+const APP_SHELL = ["/", "/index.html", "/manifest.json", "/icons/icon-192x192.png", "/icons/icon-512x512.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

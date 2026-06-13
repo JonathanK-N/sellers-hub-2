@@ -15,7 +15,7 @@ try {
       const n = payload.notification || {};
       self.registration.showNotification(n.title || "AfriMarket", {
         body: n.body || "",
-        icon: "/logo192.png",
+        icon: "/icons/icon-192x192.png",
         data: payload.data || {},
       });
     });
