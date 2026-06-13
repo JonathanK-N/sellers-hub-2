@@ -45,7 +45,7 @@ export default function Cart() {
             </div>
           )}
 
-          <div className="px-4 mt-4 space-y-4">
+          <div className="px-4 mt-4 space-y-4 pb-36">
             {sellerGroups.map((group) => (
               <div key={group.seller_id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-testid={`cart-seller-${group.seller_id}`}>
                 <div className="flex items-center gap-2 px-3 py-2 bg-[#F1EFE8] border-b border-gray-100">
@@ -104,7 +104,7 @@ export default function Cart() {
             ))}
           </div>
 
-          <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 pb-5 z-50 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
+          <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 z-50 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-600">Total</span>
               <span className="font-display font-black text-xl text-[#085041]" data-testid="cart-total">
