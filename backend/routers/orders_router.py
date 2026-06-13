@@ -211,6 +211,9 @@ async def get_order_group(group_id: str, user: dict = Depends(get_current_user_d
         o.pop("confirmation_code", None)
     group["orders"] = orders
     return group
+
+
+@router.get("/orders/{order_id}")
 async def get_order(order_id: str, user: dict = Depends(get_current_user_dep)):
     db = get_db()
     o = await db.orders.find_one({"id": order_id}, {"_id": 0})
