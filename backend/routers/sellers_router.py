@@ -218,14 +218,32 @@ async def upload_logo(file: UploadFile = File(...), user: dict = Depends(require
     seller = await db.sellers.find_one({"user_id": user["id"]})
     if not seller:
         raise HTTPException(status_code=400, detail="Boutique manquante")
+    ext = "jpg"
+    if file.filename and "." in file.filename:
+        ext = file.filename.rsplit(".", 1)[-1].lower()
+    if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
+        ext = "jpg"
+    path = f"{APP_NAME}/shop-logos/{seller['id']}/{uuid.uuid4()}.{ext}"
     data = await file.read()
+    try:
+        result = put_object(path, data, file.content_type or "image/jpeg")
+    except Exception as e:
+        logger.error(f"Logo upload failed: {e}")
+        raise HTTPException(status_code=500, detail="Échec du téléversement")
+
     file_id = str(uuid.uuid4())
-    ext = (file.filename or "img").rsplit(".", 1)[-1].lower()
-    path = f"shop-logos/{seller['id']}/{file_id}.{ext}"
-    result = await put_object(f"{APP_NAME}-private", path, data, file.content_type or "image/jpeg")
-    url = f"/api/files/{result['id']}"
+    await db.files.insert_one({
+        "id": file_id,
+        "storage_path": result["path"],
+        "owner_id": user["id"],
+        "content_type": file.content_type or f"image/{ext}",
+        "size": result.get("size", 0),
+        "is_deleted": False,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+    url = f"/api/files/{file_id}"
     await db.sellers.update_one({"user_id": user["id"]}, {"$set": {"shop_logo_url": url}})
-    return {"url": url, "id": result["id"]}
+    return {"url": url, "id": file_id}
 
 
 @router.post("/upload-banner")
@@ -235,14 +253,32 @@ async def upload_banner(file: UploadFile = File(...), user: dict = Depends(requi
     seller = await db.sellers.find_one({"user_id": user["id"]})
     if not seller:
         raise HTTPException(status_code=400, detail="Boutique manquante")
+    ext = "jpg"
+    if file.filename and "." in file.filename:
+        ext = file.filename.rsplit(".", 1)[-1].lower()
+    if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
+        ext = "jpg"
+    path = f"{APP_NAME}/shop-banners/{seller['id']}/{uuid.uuid4()}.{ext}"
     data = await file.read()
+    try:
+        result = put_object(path, data, file.content_type or "image/jpeg")
+    except Exception as e:
+        logger.error(f"Banner upload failed: {e}")
+        raise HTTPException(status_code=500, detail="Échec du téléversement")
+
     file_id = str(uuid.uuid4())
-    ext = (file.filename or "img").rsplit(".", 1)[-1].lower()
-    path = f"shop-banners/{seller['id']}/{file_id}.{ext}"
-    result = await put_object(f"{APP_NAME}-private", path, data, file.content_type or "image/jpeg")
-    url = f"/api/files/{result['id']}"
+    await db.files.insert_one({
+        "id": file_id,
+        "storage_path": result["path"],
+        "owner_id": user["id"],
+        "content_type": file.content_type or f"image/{ext}",
+        "size": result.get("size", 0),
+        "is_deleted": False,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+    url = f"/api/files/{file_id}"
     await db.sellers.update_one({"user_id": user["id"]}, {"$set": {"shop_banner_url": url}})
-    return {"url": url, "id": result["id"]}
+    return {"url": url, "id": file_id}
 
 
 @router.get("/public/{seller_id}")
