@@ -209,6 +209,66 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
     return {"ok": True, "status": "delivered", "escrow_status": "released"}
 
 
+
+
+# ---------- GPS Tracking ----------
+
+class LocationUpdate(BaseModel):
+    lat: float
+    lng: float
+
+
+@router.post("/deliverer/orders/{order_id}/location")
+async def update_location(order_id: str, loc: LocationUpdate, user: dict = Depends(require_role("deliverer"))):
+    """Livreur envoie sa position GPS en temps reel."""
+    db = get_db()
+    o = await db.orders.find_one({"id": order_id, "deliverer_id": user["id"]}, {"_id": 0, "status": 1})
+    if not o:
+        raise HTTPException(status_code=404, detail="Livraison introuvable")
+    if o["status"] not in ("assigned", "picked_up", "out_for_delivery"):
+        raise HTTPException(status_code=400, detail="Livraison non active")
+    await db.orders.update_one(
+        {"id": order_id},
+        {"$set": {"deliverer_location": {"lat": loc.lat, "lng": loc.lng, "updated_at": _now()}}},
+    )
+    return {"ok": True}
+
+
+@router.get("/orders/{order_id}/tracking")
+async def get_tracking(order_id: str, user: dict = Depends(get_current_user_dep)):
+    """Acheteur/vendeur recupere la position du livreur + statut."""
+    db = get_db()
+    o = await db.orders.find_one(
+        {"id": order_id},
+        {"_id": 0, "status": 1, "deliverer_location": 1, "deliverer_name": 1,
+         "delivery_neighborhood": 1, "delivery_landmark": 1,
+         "buyer_id": 1, "seller_id": 1},
+    )
+    if not o:
+        raise HTTPException(status_code=404, detail="Commande introuvable")
+    if user["role"] == "buyer" and o["buyer_id"] != user["id"]:
+        raise HTTPException(status_code=403, detail="Acces refuse")
+    if user["role"] == "seller":
+        my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0, "id": 1})
+        if not my_seller or my_seller["id"] != o.get("seller_id"):
+            raise HTTPException(status_code=403, detail="Acces refuse")
+    loc = o.get("deliverer_location")
+    fresh = False
+    if loc:
+        try:
+            updated = datetime.fromisoformat(loc["updated_at"].replace("Z", "+00:00"))
+            fresh = (datetime.now(timezone.utc) - updated).total_seconds() < 30
+        except Exception:
+            fresh = False
+    return {
+        "status": o["status"],
+        "deliverer_name": o.get("deliverer_name"),
+        "deliverer_location": loc,
+        "location_fresh": fresh,
+        "delivery_neighborhood": o.get("delivery_neighborhood"),
+        "delivery_landmark": o.get("delivery_landmark"),
+    }
+
 # ---------- Admin: manage deliverers ----------
 @router.get("/admin/deliverers")
 async def admin_list_deliverers(_: dict = Depends(require_role("admin"))):
