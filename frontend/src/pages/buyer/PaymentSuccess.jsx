@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import api from "../../lib/api";
 
 export default function PaymentSuccess() {
   const [params] = useSearchParams();
+  const nav = useNavigate();
   const [status, setStatus] = useState("checking");
   const [groupId, setGroupId] = useState(null);
 
@@ -30,7 +31,7 @@ export default function PaymentSuccess() {
           return;
         }
         if (data.payment_status === "failed") {
-          setStatus("done");
+          nav("/payment/failed", { replace: true });
           return;
         }
       } catch {
@@ -44,7 +45,7 @@ export default function PaymentSuccess() {
       }
     };
     poll();
-  }, [params]);
+  }, [params, nav]);
 
   return (
     <div className="mobile-shell pt-24 px-6 text-center">
