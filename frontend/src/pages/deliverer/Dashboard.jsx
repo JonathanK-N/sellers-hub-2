@@ -94,6 +94,38 @@ export default function DelivererDashboard() {
 
   const active = deliveries.filter((d) => d.status !== "delivered");
   const done = deliveries.filter((d) => d.status === "delivered");
+  const gpsWatchRef = useRef(null);
+
+  useEffect(() => {
+    const activeOrder = active[0];
+    if (!activeOrder || !["assigned", "picked_up", "out_for_delivery"].includes(activeOrder.status)) {
+      if (gpsWatchRef.current !== null) {
+        navigator.geolocation.clearWatch(gpsWatchRef.current);
+        gpsWatchRef.current = null;
+      }
+      return;
+    }
+    if (gpsWatchRef.current !== null) return;
+    if (!navigator.geolocation) return;
+    gpsWatchRef.current = navigator.geolocation.watchPosition(
+      (pos) => {
+        api.post(`/deliverer/orders/${activeOrder.id}/location`, {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        }).catch(() => {});
+      },
+      (err) => { console.warn("GPS error:", err.message); },
+      { enableHighAccuracy: true, maximumAge: 8000, timeout: 10000 }
+    );
+    return () => {
+      if (gpsWatchRef.current !== null) {
+        navigator.geolocation.clearWatch(gpsWatchRef.current);
+        gpsWatchRef.current = null;
+      }
+    };
+  }, [active]);
+
+
 
   return (
     <div className="mobile-shell pb-10">
@@ -118,7 +150,7 @@ export default function DelivererDashboard() {
             </button>
             <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPickPhoto} data-testid="avatar-file-input" />
             <div>
-              <div className="font-display font-black text-lg leading-tight">Livreur</div>
+              <div className="font-display font-black text-lg leading-tight flex items-center gap-2">Livreur{active.length > 0 && ["assigned","picked_up","out_for_delivery"].includes(active[0]?.status) && <span className="text-[9px] bg-[#1D9E75] px-1.5 py-0.5 rounded-full font-semibold animate-pulse">GPS</span>}</div>
               <div className="text-xs text-emerald-200/80">{user?.name}</div>
             </div>
           </div>
