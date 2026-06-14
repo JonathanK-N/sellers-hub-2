@@ -189,6 +189,9 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
     if o.get("confirmation_code") != req.code.strip():
         raise HTTPException(status_code=400, detail="Code incorrect")
 
+    LIVREUR_PART = 11_500.0
+    PLATFORM_PART = 4_500.0
+
     event = _timeline_event("delivered", "Livré et paiement libéré")
     await db.orders.update_one(
         {"id": order_id},
@@ -199,6 +202,27 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
     )
+
+    # Crediter le wallet du livreur si delivery_fee AfriMarket
+    delivery_fee = o.get("delivery_fee", 0)
+    if delivery_fee > 0:
+        await db.deliverer_wallets.update_one(
+            {"user_id": user["id"]},
+            {"$inc": {"balance": LIVREUR_PART}, "$set": {"currency": o.get("currency", "CDF"), "user_id": user["id"]}},
+            upsert=True,
+        )
+        await db.deliverer_wallet_transactions.insert_one({
+            "id": str(uuid.uuid4()),
+            "user_id": user["id"],
+            "order_id": order_id,
+            "type": "delivery_fee",
+            "amount": LIVREUR_PART,
+            "platform_fee": PLATFORM_PART,
+            "currency": o.get("currency", "CDF"),
+            "created_at": _now(),
+        })
+        logger.info(f"[WALLET] livreur {user['id']} credite {LIVREUR_PART} CDF pour commande {order_id}")
+
     try:
         await create_notification(
             o["buyer_id"], "order_delivered", "Commande livrée",
