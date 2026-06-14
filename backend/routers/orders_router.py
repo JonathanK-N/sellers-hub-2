@@ -88,8 +88,13 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
 
         commission_rate = seller.get("commission_rate", 0.07)
         commission_amount = round(sub_total * commission_rate, 2)
-        # Service fee charged to the buyer for home delivery (none for in-store pickup).
-        delivery_fee = round(sub_total * commission_rate, 2) if req.delivery_mode == "delivery" else 0.0
+        # Frais de livraison fixes AfriMarket: 16 000 FC (livreur: 11 500 / plateforme: 4 500)
+        # Seulement si le vendeur utilise le reseau AfriMarket (Premium requis)
+        seller_delivery = seller.get("delivery_service", "self")
+        if req.delivery_mode == "delivery" and seller_delivery == "afrimarket":
+            delivery_fee = 16_000.0
+        else:
+            delivery_fee = 0.0
         amount_due = sub_total + delivery_fee
         qr_token = str(uuid.uuid4()) if req.delivery_mode == "collect" else None
         grand_total += amount_due
