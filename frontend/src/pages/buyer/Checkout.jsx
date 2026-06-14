@@ -7,6 +7,8 @@ import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { formatPrice } from "../../lib/format";
 
+const DELIVERY_FEE_AFRIMARKET = 16_000;
+
 export default function Checkout() {
   const { items, total, clear } = useCart();
   const { user } = useAuth();
@@ -19,6 +21,7 @@ export default function Checkout() {
   const [payment, setPayment] = useState("MTN MoMo");
   const [operators, setOperators] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sellerDeliveryService, setSellerDeliveryService] = useState("self");
 
   useEffect(() => {
     api.get("/countries").then(({ data }) => {
@@ -28,7 +31,13 @@ export default function Checkout() {
         setPayment(c.mobile_money_operators[0]);
       }
     });
-  }, [user?.country_code]);
+    // Récupérer le delivery_service du vendeur (premier produit du panier)
+    if (items.length > 0 && items[0].seller_id) {
+      api.get(`/seller/public/${items[0].seller_id}`)
+        .then(({ data }) => setSellerDeliveryService(data.seller?.delivery_service || "self"))
+        .catch(() => {});
+    }
+  }, [user?.country_code, items]);
 
   if (items.length === 0) {
     return (
@@ -61,13 +70,12 @@ export default function Checkout() {
       const groupId = data.order_group_id;
       const n = data.seller_count || (data.orders ? data.orders.length : 1);
 
-      // Initiate hosted-checkout payment (CinetPay aggregator if configured).
       let paymentUrl = null;
       try {
         const initRes = await api.post("/payments/init", { order_group_id: groupId });
         paymentUrl = initRes.data?.payment_url || null;
       } catch {
-        // If init fails (or sandbox), fall back to escrow-simulated flow.
+        // sandbox fallback
       }
 
       clear();
@@ -92,7 +100,10 @@ export default function Checkout() {
     }
   };
 
-  const deliveryFee = mode === "delivery" ? total * 0.07 : 0;
+  // Frais de livraison : 16 000 FC si vendeur utilise AfriMarket, 0 sinon
+  const deliveryFee = mode === "delivery" && sellerDeliveryService === "afrimarket"
+    ? DELIVERY_FEE_AFRIMARKET
+    : 0;
   const payableTotal = total + deliveryFee;
 
   return (
@@ -111,6 +122,11 @@ export default function Checkout() {
             <ModeBtn icon={Truck} label="Livraison" active={mode === "delivery"} onClick={() => setMode("delivery")} testid="mode-delivery" />
             <ModeBtn icon={Store} label="Retrait" active={mode === "collect"} onClick={() => setMode("collect")} testid="mode-collect" />
           </div>
+          {mode === "delivery" && sellerDeliveryService === "self" && (
+            <p className="text-xs text-gray-500 mt-2 text-center">
+              Ce vendeur gère sa propre livraison — les frais sont à convenir directement avec lui.
+            </p>
+          )}
         </section>
 
         {mode === "delivery" && (
@@ -172,8 +188,11 @@ export default function Checkout() {
 
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 space-y-1.5 text-sm">
           <Row label="Sous-total" value={formatPrice(total, items[0]?.currency)} />
-          {mode === "delivery" && (
-            <Row label="Frais de livraison (7%)" value={formatPrice(deliveryFee, items[0]?.currency)} muted />
+          {mode === "delivery" && deliveryFee > 0 && (
+            <Row label="Frais de livraison AfriMarket" value={formatPrice(deliveryFee, items[0]?.currency)} muted />
+          )}
+          {mode === "delivery" && deliveryFee === 0 && sellerDeliveryService === "self" && (
+            <Row label="Frais de livraison" value="À convenir avec le vendeur" muted />
           )}
           <div className="border-t border-gray-100 pt-2 mt-2 flex justify-between font-display font-black text-lg text-[#085041]">
             <span>Total</span>
