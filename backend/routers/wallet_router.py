@@ -132,3 +132,30 @@ async def withdraw(req: WithdrawRequest, user: dict = Depends(require_role("sell
     await db.withdrawals.insert_one(withdrawal)
     withdrawal.pop("_id", None)
     return withdrawal
+
+# ============================================================
+# Wallet livreur
+# ============================================================
+
+@router.get("/deliverer", prefix="")
+async def deliverer_wallet(user: dict = Depends(require_role("deliverer"))):
+    """Solde et stats du wallet livreur."""
+    db = get_db()
+    w = await db.deliverer_wallets.find_one({"user_id": user["id"]}, {"_id": 0}) or {}
+    completed_all = await db.orders.count_documents({"deliverer_id": user["id"], "status": "delivered"})
+    return {
+        "balance": w.get("balance", 0.0),
+        "currency": w.get("currency", user.get("currency", "CDF")),
+        "completed_deliveries": completed_all,
+        "total_earned": w.get("balance", 0.0),
+    }
+
+
+@router.get("/deliverer/transactions", prefix="")
+async def deliverer_wallet_transactions(user: dict = Depends(require_role("deliverer"))):
+    """Historique des gains du livreur."""
+    db = get_db()
+    txs = await db.deliverer_wallet_transactions.find(
+        {"user_id": user["id"]}, {"_id": 0}
+    ).sort("created_at", -1).to_list(100)
+    return txs
