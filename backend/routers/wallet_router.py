@@ -137,7 +137,7 @@ async def withdraw(req: WithdrawRequest, user: dict = Depends(require_role("sell
 # Wallet livreur
 # ============================================================
 
-@router.get("/deliverer", prefix="")
+@router.get("/deliverer/balance")
 async def deliverer_wallet(user: dict = Depends(require_role("deliverer"))):
     """Solde et stats du wallet livreur."""
     db = get_db()
@@ -151,7 +151,7 @@ async def deliverer_wallet(user: dict = Depends(require_role("deliverer"))):
     }
 
 
-@router.get("/deliverer/transactions", prefix="")
+@router.get("/deliverer/transactions")
 async def deliverer_wallet_transactions(user: dict = Depends(require_role("deliverer"))):
     """Historique des gains du livreur."""
     db = get_db()
