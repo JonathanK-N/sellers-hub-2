@@ -40,7 +40,7 @@ export default function SellerPremium() {
     : null;
 
   return (
-    <div className="mobile-shell pb-40">
+    <div className="mobile-shell pb-24">
       <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md">
         <Link to="/seller/dashboard" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
@@ -95,14 +95,12 @@ export default function SellerPremium() {
             Abonnement mensuel renouvelable. Vous pouvez résilier à tout moment ; vos avantages restent actifs jusqu'à la fin de la période payée.
           </p>
         )}
-      </div>
 
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 pb-5 z-40 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
         <button
           onClick={subscribe}
           disabled={busy}
           data-testid="subscribe-premium-btn"
-          className="w-full text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2 mt-4"
           style={{ background: "#EF9F27" }}
         >
           <Crown size={18} />
