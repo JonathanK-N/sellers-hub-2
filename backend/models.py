@@ -104,6 +104,7 @@ class SellerSetupRequest(BaseModel):
     latitude: float = 0.0
     longitude: float = 0.0
     shop_logo_url: Optional[str] = None
+    delivery_service: str = "self"  # "self" | "afrimarket"
 
 
 class SellerPublic(BaseModel):
