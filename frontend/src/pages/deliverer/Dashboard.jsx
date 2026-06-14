@@ -24,6 +24,7 @@ export default function DelivererDashboard() {
   const [busy, setBusy] = useState(null);
   const fileRef = useRef(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [wallet, setWallet] = useState(null);
 
   const onPickPhoto = (e) => {
     const file = e.target.files?.[0];
@@ -52,6 +53,7 @@ export default function DelivererDashboard() {
   const load = () => {
     api.get("/deliverer/deliveries").then(({ data }) => setDeliveries(data)).catch(() => {});
     api.get("/deliverer/earnings").then(({ data }) => setEarnings(data)).catch(() => {});
+    api.get("/seller/wallet/deliverer").then(({ data }) => setWallet(data)).catch(() => {});
   };
 
   useEffect(() => {
@@ -165,6 +167,18 @@ export default function DelivererDashboard() {
           <StatMini icon={Package} label="Aujourd'hui" value={earnings.completed_today} />
           <StatMini icon={TrendingUp} label="Gains" value={formatPrice(earnings.earnings_today, earnings.currency)} small />
           <StatMini icon={CheckCircle2} label="Total" value={earnings.completed_all} />
+        </div>
+      )}
+
+
+      {wallet && (
+        <div className="mx-4 mt-3 bg-[#085041] rounded-xl p-4 text-white">
+          <p className="text-xs text-emerald-200 uppercase tracking-wide font-semibold mb-1">Wallet — Mes gains</p>
+          <p className="text-3xl font-display font-black">
+            {wallet.balance?.toLocaleString("fr-FR")} <span className="text-base font-normal opacity-80">{wallet.currency || "CDF"}</span>
+          </p>
+          <p className="text-xs text-emerald-200 mt-1">{wallet.completed_deliveries} livraison{wallet.completed_deliveries !== 1 ? "s" : ""} effectuée{wallet.completed_deliveries !== 1 ? "s" : ""}</p>
+          <p className="text-[10px] text-emerald-300/70 mt-1">11 500 CDF par livraison AfriMarket confirmée</p>
         </div>
       )}
 
