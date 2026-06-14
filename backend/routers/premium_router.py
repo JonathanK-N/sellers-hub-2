@@ -31,6 +31,7 @@ PREMIUM_BENEFITS = [
     "Visibilité prioritaire dans les recherches",
     "Produits illimités",
     "Statistiques avancées",
+    "Accès au réseau de livreurs AfriMarket",
 ]
 
 
@@ -129,7 +130,7 @@ async def _activate_premium(db, seller_id: str, user_id: str, sub_id: str):
     new_exp = (base + timedelta(days=30)).isoformat()
     await db.sellers.update_one(
         {"id": seller_id},
-        {"$set": {"premium": True, "premium_expires_at": new_exp, "premium_since": seller.get("premium_since") or _now()}},
+        {"$set": {"premium": True, "premium_expires_at": new_exp, "premium_since": seller.get("premium_since") or _now(), "delivery_service": "afrimarket"}},
     )
     await db.premium_subscriptions.update_one(
         {"id": sub_id},
