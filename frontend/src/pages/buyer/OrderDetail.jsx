@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Circle, ShieldCheck, Package, Truck, Lock, Bike, AlertTriangle, MessageSquare, ScanLine } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Circle, ShieldCheck, Package, Truck, Lock, Bike, AlertTriangle, MessageSquare, ScanLine, MapPin, Navigation, Wifi, WifiOff } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import api, { formatApiError } from "../../lib/api";
 import { formatPrice, photoUrl } from "../../lib/format";
@@ -21,6 +21,74 @@ const STEPS_COLLECT = [
   { key: "collected", icon: CheckCircle2, label: "Retirée" },
 ];
 
+const TRACKING_STATUSES = ["assigned", "picked_up", "out_for_delivery"];
+
+function TrackingMap({ tracking }) {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const markerRef = useRef(null);
+
+  useEffect(() => {
+    if (!mapRef.current || mapInstanceRef.current) return;
+    const L = window.L;
+    if (!L) return;
+
+    const defaultCenter = [-4.3225, 15.3222]; // Kinshasa
+    const center = tracking?.deliverer_location
+      ? [tracking.deliverer_location.lat, tracking.deliverer_location.lng]
+      : defaultCenter;
+
+    const map = L.map(mapRef.current, { zoomControl: true, attributionControl: false }).setView(center, 14);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+    mapInstanceRef.current = map;
+
+    if (tracking?.deliverer_location) {
+      const icon = L.divIcon({
+        html: `<div style="background:#1D9E75;width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;">🛵</div>`,
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+        className: "",
+      });
+      markerRef.current = L.marker(center, { icon }).addTo(map)
+        .bindPopup(`<b>${tracking.deliverer_name || "Livreur"}</b><br>En route vers vous`).openPopup();
+    }
+
+    if (tracking?.delivery_neighborhood) {
+      const destIcon = L.divIcon({
+        html: `<div style="background:#085041;width:32px;height:32px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:16px;">🏠</div>`,
+        iconSize: [32, 32], iconAnchor: [16, 16], className: "",
+      });
+      L.marker(defaultCenter, { icon: destIcon }).addTo(map)
+        .bindPopup(`<b>Destination</b><br>${tracking.delivery_neighborhood}`);
+    }
+
+    return () => { map.remove(); mapInstanceRef.current = null; };
+  }, []);
+
+  useEffect(() => {
+    if (!mapInstanceRef.current || !tracking?.deliverer_location || !window.L) return;
+    const { lat, lng } = tracking.deliverer_location;
+    if (markerRef.current) {
+      markerRef.current.setLatLng([lat, lng]);
+    }
+    mapInstanceRef.current.panTo([lat, lng], { animate: true });
+  }, [tracking?.deliverer_location]);
+
+  return (
+    <div className="relative rounded-xl overflow-hidden border border-gray-100 shadow-sm">
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" />
+      <div ref={mapRef} style={{ height: 220, width: "100%" }} />
+      {tracking?.deliverer_location && (
+        <div className={`absolute top-2 right-2 flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full ${tracking.location_fresh ? "bg-[#E1F5EE] text-[#085041]" : "bg-gray-100 text-gray-500"}`}>
+          {tracking.location_fresh ? <Wifi size={10} /> : <WifiOff size={10} />}
+          {tracking.location_fresh ? "En direct" : "Position ancienne"}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function OrderDetail() {
   const { id } = useParams();
   const { user } = useAuth();
@@ -30,10 +98,27 @@ export default function OrderDetail() {
   const [busy, setBusy] = useState(false);
   const [deliverers, setDeliverers] = useState([]);
   const [showAssign, setShowAssign] = useState(false);
+  const [tracking, setTracking] = useState(null);
 
-  const load = () => api.get(`/orders/${id}`).then(({ data }) => setOrder(data));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { load(); }, [id]);
+  const load = useCallback(() => api.get(`/orders/${id}`).then(({ data }) => setOrder(data)), [id]);
+
+  useEffect(() => { load(); }, [load]);
+
+  // Polling statut toutes les 15s
+  useEffect(() => {
+    const interval = setInterval(() => { load(); }, 15000);
+    return () => clearInterval(interval);
+  }, [load]);
+
+  // Polling position GPS toutes les 10s si en livraison
+  useEffect(() => {
+    if (!order || !TRACKING_STATUSES.includes(order.status)) return;
+    const fetchTracking = () =>
+      api.get(`/orders/${id}/tracking`).then(({ data }) => setTracking(data)).catch(() => {});
+    fetchTracking();
+    const interval = setInterval(fetchTracking, 10000);
+    return () => clearInterval(interval);
+  }, [id, order?.status]);
 
   const loadDeliverers = async () => {
     try {
@@ -92,6 +177,7 @@ export default function OrderDetail() {
 
   const isBuyer = user?.role === "buyer";
   const isSeller = user?.role === "seller";
+  const showTracking = order.delivery_mode === "delivery" && TRACKING_STATUSES.includes(order.status);
 
   return (
     <div className="mobile-shell">
@@ -103,6 +189,11 @@ export default function OrderDetail() {
           <h1 className="font-display font-black text-xl">Commande</h1>
           <p className="text-[10px] text-emerald-200 uppercase">#{order.id.slice(0, 8)}</p>
         </div>
+        {showTracking && (
+          <div className="ml-auto flex items-center gap-1 bg-[#1D9E75] px-2 py-1 rounded-full text-[10px] font-semibold animate-pulse">
+            <Navigation size={10} /> En livraison
+          </div>
+        )}
       </header>
 
       <div className="px-4 mt-4 space-y-3">
@@ -124,6 +215,28 @@ export default function OrderDetail() {
             </p>
           </div>
         </div>
+
+        {/* Carte GPS tracking */}
+        {showTracking && (
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="px-4 pt-3 pb-2 flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
+                <MapPin size={14} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-900">
+                  {tracking?.deliverer_name ? `${tracking.deliverer_name} est en route` : "Suivi en temps réel"}
+                </p>
+                <p className="text-[10px] text-gray-500">
+                  {tracking?.deliverer_location
+                    ? `Position mise à jour · ${tracking.location_fresh ? "En direct" : "Dernière position connue"}`
+                    : "En attente de la position du livreur…"}
+                </p>
+              </div>
+            </div>
+            <TrackingMap tracking={tracking} />
+          </section>
+        )}
 
         {/* Timeline */}
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
