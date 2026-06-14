@@ -40,7 +40,7 @@ export default function SellerPremium() {
     : null;
 
   return (
-    <div className="mobile-shell pb-24">
+    <div className="mobile-shell pb-40">
       <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md">
         <Link to="/seller/dashboard" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
@@ -97,7 +97,7 @@ export default function SellerPremium() {
         )}
       </div>
 
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 pb-5 z-50 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
+      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 pb-5 z-40 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
         <button
           onClick={subscribe}
           disabled={busy}
