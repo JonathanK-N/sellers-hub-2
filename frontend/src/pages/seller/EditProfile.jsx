@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Camera, Facebook, Globe, Phone, Plus, X, Save } from "lucide-react";
+import { ArrowLeft, Camera, Facebook, Globe, Phone, Plus, X, Save, Truck, Package } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
 import { photoUrl } from "../../lib/format";
 import BottomNav from "../../components/BottomNav";
@@ -15,6 +15,8 @@ export default function EditProfile() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [specialty, setSpecialty] = useState("");
+  const [isPremium, setIsPremium] = useState(false);
+  const [togglingDelivery, setTogglingDelivery] = useState(false);
 
   const [form, setForm] = useState({
     shop_name: "", description: "", long_description: "",
@@ -22,6 +24,7 @@ export default function EditProfile() {
     address: "", neighborhood: "", opening_hours: "08:00-18:00",
     latitude: 0, longitude: 0, shop_logo_url: null, shop_banner_url: null,
     social_links: { facebook: "", tiktok: "", whatsapp_business: "", instagram: "" },
+    delivery_service: "self",
   });
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
@@ -49,9 +52,34 @@ export default function EditProfile() {
           whatsapp_business: data.social_links?.whatsapp_business || "",
           instagram: data.social_links?.instagram || "",
         },
+        delivery_service: data.delivery_service || "self",
       });
     }).catch(() => {});
+
+    api.get("/premium/plan").then(({ data }) => setIsPremium(data.active)).catch(() => {});
   }, [nav]);
+
+  const toggleDeliveryService = async () => {
+    if (!isPremium && form.delivery_service === "self") {
+      toast.error("Abonnement Premium requis pour utiliser les livreurs AfriMarket");
+      nav("/seller/premium");
+      return;
+    }
+    setTogglingDelivery(true);
+    try {
+      const { data } = await api.patch("/seller/delivery-service");
+      set("delivery_service", data.delivery_service);
+      toast.success(
+        data.delivery_service === "afrimarket"
+          ? "Livreurs AfriMarket activés ✓"
+          : "Livraison propre activée"
+      );
+    } catch (e) {
+      toast.error(formatApiError(e.response?.data?.detail));
+    } finally {
+      setTogglingDelivery(false);
+    }
+  };
 
   const uploadFile = async (e, type) => {
     const file = e.target.files?.[0]; if (!file) return;
@@ -85,6 +113,8 @@ export default function EditProfile() {
     } catch (e) { toast.error(formatApiError(e.response?.data?.detail)); }
     finally { setLoading(false); }
   };
+
+  const isAfrimarket = form.delivery_service === "afrimarket";
 
   return (
     <div className="mobile-shell pb-24">
@@ -139,6 +169,60 @@ export default function EditProfile() {
               ))}
             </div>
           </Field>
+        </Section>
+
+        {/* LIVRAISON */}
+        <Section title="Service de livraison">
+          <p className="text-xs text-gray-500 mb-3">
+            Choisissez comment vous gérez la livraison de vos commandes.
+          </p>
+          <div className="space-y-2">
+            <div
+              onClick={() => !isAfrimarket || toggleDeliveryService()}
+              className={`flex items-start gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                !isAfrimarket ? "border-[#1D9E75] bg-[#E1F5EE]" : "border-gray-200 bg-white"
+              }`}
+            >
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${!isAfrimarket ? "bg-[#1D9E75] text-white" : "bg-gray-100 text-gray-500"}`}>
+                <Package size={16} />
+              </div>
+              <div className="flex-1">
+                <p className={`text-sm font-semibold ${!isAfrimarket ? "text-[#085041]" : "text-gray-700"}`}>
+                  Je gère ma propre livraison
+                </p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Vous utilisez vos propres livreurs hors AfriMarket. Aucun frais de livraison affiché aux acheteurs.
+                </p>
+              </div>
+              <div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${!isAfrimarket ? "border-[#1D9E75] bg-[#1D9E75]" : "border-gray-300"}`} />
+            </div>
+
+            <div
+              onClick={() => isAfrimarket || toggleDeliveryService()}
+              className={`flex items-start gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                isAfrimarket ? "border-[#1D9E75] bg-[#E1F5EE]" : "border-gray-200 bg-white"
+              } ${!isPremium ? "opacity-60" : ""}`}
+            >
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isAfrimarket ? "bg-[#1D9E75] text-white" : "bg-gray-100 text-gray-500"}`}>
+                <Truck size={16} />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <p className={`text-sm font-semibold ${isAfrimarket ? "text-[#085041]" : "text-gray-700"}`}>
+                    Réseau de livreurs AfriMarket
+                  </p>
+                  {!isPremium && (
+                    <span className="text-[10px] bg-[#EF9F27] text-white px-2 py-0.5 rounded-full font-semibold">Premium</span>
+                  )}
+                </div>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Accès aux livreurs indépendants AfriMarket. Frais de livraison : 16 000 FC (dont 11 500 FC au livreur).
+                </p>
+              </div>
+              <div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${isAfrimarket ? "border-[#1D9E75] bg-[#1D9E75]" : "border-gray-300"}`} />
+            </div>
+          </div>
+          {togglingDelivery && <p className="text-xs text-gray-500 text-center mt-2 animate-pulse">Mise à jour…</p>}
         </Section>
 
         {/* DESCRIPTION */}
