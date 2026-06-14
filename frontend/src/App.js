@@ -22,6 +22,8 @@ import BuyerOrders from "./pages/buyer/Orders";
 import OrderDetail from "./pages/buyer/OrderDetail";
 import OrderGroup from "./pages/buyer/OrderGroup";
 import Profile from "./pages/buyer/Profile";
+import PaymentSuccess from "./pages/buyer/PaymentSuccess";
+import PaymentFailed from "./pages/buyer/PaymentFailed";
 
 import SellerSetup from "./pages/seller/Setup";
 import SellerDashboard from "./pages/seller/Dashboard";
@@ -107,6 +109,8 @@ function App() {
             <Route path="/buyer/orders/:id" element={<ProtectedRoute roles={["buyer", "seller"]}><OrderDetail /></ProtectedRoute>} />
             <Route path="/buyer/order-group/:groupId" element={<ProtectedRoute roles={["buyer"]}><OrderGroup /></ProtectedRoute>} />
             <Route path="/buyer/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/payment/success" element={<ProtectedRoute roles={["buyer"]}><PaymentSuccess /></ProtectedRoute>} />
+            <Route path="/payment/failed" element={<ProtectedRoute roles={["buyer"]}><PaymentFailed /></ProtectedRoute>} />
 
             <Route path="/seller/setup" element={<ProtectedRoute roles={["seller"]}><SellerSetup /></ProtectedRoute>} />
             <Route path="/seller/dashboard" element={<ProtectedRoute roles={["seller"]}><SellerDashboard /></ProtectedRoute>} />
