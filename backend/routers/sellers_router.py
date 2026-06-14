@@ -38,6 +38,7 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
         "shop_logo_url": req.shop_logo_url,
         "shop_banner_url": req.shop_banner_url,
         "social_links": req.social_links.model_dump() if req.social_links else {},
+        "delivery_service": req.delivery_service,
         "country_code": user["country_code"],
         "location": {
             "type": "Point",
@@ -209,6 +210,26 @@ async def dashboard(user: dict = Depends(require_role("seller"))):
         "rating": seller.get("rating", 0.0),
         "recent_orders": orders[:10],
     }
+
+
+
+@router.patch("/delivery-service")
+async def update_delivery_service(user: dict = Depends(require_role("seller"))):
+    """Bascule entre livraison propre et reseau AfriMarket (Premium requis)."""
+    db = get_db()
+    seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    if not seller:
+        raise HTTPException(status_code=400, detail="Boutique manquante")
+    from routers.premium_router import _is_active
+    if not _is_active(seller):
+        raise HTTPException(
+            status_code=403,
+            detail="Abonnement Premium requis pour utiliser les livreurs AfriMarket"
+        )
+    current = seller.get("delivery_service", "self")
+    new_mode = "afrimarket" if current == "self" else "self"
+    await db.sellers.update_one({"user_id": user["id"]}, {"$set": {"delivery_service": new_mode}})
+    return {"delivery_service": new_mode}
 
 
 @router.post("/upload-logo")
