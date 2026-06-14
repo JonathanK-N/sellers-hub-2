@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Store, ChevronRight, Lock, Package } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
+import { ArrowLeft, Store, ChevronRight, Lock, Package, CreditCard, Loader2 } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
 import { formatPrice, timeAgo } from "../../lib/format";
 import BottomNav from "../../components/BottomNav";
@@ -27,9 +28,29 @@ const STATUS_COLORS = {
 
 export default function OrderGroup() {
   const { groupId } = useParams();
+  const nav = useNavigate();
   const [group, setGroup] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [paying, setPaying] = useState(false);
+
+  const handlePay = async () => {
+    setPaying(true);
+    try {
+      const { data } = await api.post("/payments/init", {
+        order_group_id: group.id,
+      });
+      if (data.simulated) {
+        nav(`/payment/success?order_group_id=${group.id}`);
+      } else if (data.payment_url) {
+        window.location.href = data.payment_url;
+      }
+    } catch (e) {
+      toast.error(formatApiError(e.response?.data?.detail));
+    } finally {
+      setPaying(false);
+    }
+  };
 
   useEffect(() => {
     api
@@ -86,6 +107,21 @@ export default function OrderGroup() {
             </p>
           </div>
         </section>
+
+        {!["paid", "captured_in_escrow"].includes(group.payment_status) && (
+          <button
+            onClick={handlePay}
+            disabled={paying}
+            className="w-full flex items-center justify-center gap-2 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-60 text-white rounded-xl py-3.5 font-semibold transition-colors"
+          >
+            {paying ? (
+              <Loader2 size={18} className="animate-spin" />
+            ) : (
+              <CreditCard size={18} />
+            )}
+            {paying ? "Redirection vers CinetPay…" : `Payer ${formatPrice(group.grand_total, currency)} via CinetPay`}
+          </button>
+        )}
 
         <div className="space-y-3">
           {group.orders.map((o) => (
