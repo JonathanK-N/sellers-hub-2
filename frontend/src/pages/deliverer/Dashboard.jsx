@@ -53,7 +53,7 @@ export default function DelivererDashboard() {
   const load = () => {
     api.get("/deliverer/deliveries").then(({ data }) => setDeliveries(data)).catch(() => {});
     api.get("/deliverer/earnings").then(({ data }) => setEarnings(data)).catch(() => {});
-    api.get("/seller/wallet/deliverer").then(({ data }) => setWallet(data)).catch(() => {});
+    api.get("/seller/wallet/deliverer/balance").then(({ data }) => setWallet(data)).catch(() => {});
   };
 
   useEffect(() => {
