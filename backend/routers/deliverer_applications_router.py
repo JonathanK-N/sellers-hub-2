@@ -23,6 +23,7 @@ from auth import get_current_user_dep, require_role, generate_otp, OTP_EXPIRY_MI
 from models import DelivererApplicationRequest, DelivererApplicationReject
 from s3_service import upload_private, generate_presigned_url
 from notifications import create_notification
+from email_service import deliverer_application_approved_email, deliverer_application_rejected_email, send_email
 from sms import send_otp_sms, is_sms_configured
 from pydantic import BaseModel
 from datetime import timedelta
@@ -317,6 +318,12 @@ async def _activate_deliverer(db, application: dict, reviewer_id: str):
     except Exception:
         pass
 
+    applicant = await db.users.find_one({"id": user_id}, {"_id": 0, "email": 1})
+    applicant_email = application.get("email") or (applicant or {}).get("email")
+    if applicant_email:
+        subject, html = deliverer_application_approved_email(application.get("full_name", "Livreur"))
+        await send_email(applicant_email, subject, html)
+
 
 @router.post("/admin/deliverer-applications/{application_id}/approve")
 async def admin_approve_application(application_id: str, user: dict = Depends(require_role("admin"))):
@@ -354,6 +361,12 @@ async def admin_reject_application(application_id: str, req: DelivererApplicatio
         )
     except Exception:
         pass
+
+    applicant = await db.users.find_one({"id": app_doc["user_id"]}, {"_id": 0, "email": 1})
+    applicant_email = app_doc.get("email") or (applicant or {}).get("email")
+    if applicant_email:
+        subject, html = deliverer_application_rejected_email(app_doc.get("full_name", "Candidat"), req.reason)
+        await send_email(applicant_email, subject, html)
     return {"ok": True}
 
 
@@ -434,4 +447,10 @@ async def seller_reject_application(application_id: str, req: DelivererApplicati
         )
     except Exception:
         pass
+
+    applicant = await db.users.find_one({"id": app_doc["user_id"]}, {"_id": 0, "email": 1})
+    applicant_email = app_doc.get("email") or (applicant or {}).get("email")
+    if applicant_email:
+        subject, html = deliverer_application_rejected_email(app_doc.get("full_name", "Candidat"), req.reason)
+        await send_email(applicant_email, subject, html)
     return {"ok": True}
