@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException, Depends, Query, Response
 from fastapi.responses import RedirectResponse
 
 from db import get_db
-from models import ProductCreateRequest
+from models import ProductCreateRequest, ProductUpdateRequest
 from auth import require_role, get_current_user_dep, get_current_user_optional
 from s3_service import generate_presigned_url, BUCKET_PUBLIC, AWS_REGION
 
@@ -175,6 +175,40 @@ async def my_products(user: dict = Depends(require_role("seller"))):
         return []
     items = await db.products.find({"seller_id": seller["id"]}, {"_id": 0}).sort("created_at", -1).to_list(500)
     return items
+
+
+@router.patch("/products/{product_id}")
+async def update_product(product_id: str, req: ProductUpdateRequest, user: dict = Depends(require_role("seller"))):
+    """Partial update of a product. Only the owning seller can edit it."""
+    db = get_db()
+    seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    if not seller:
+        raise HTTPException(status_code=403, detail="Pas de boutique")
+
+    existing = await db.products.find_one({"id": product_id, "seller_id": seller["id"]}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Produit introuvable")
+
+    update_data = req.model_dump(exclude_unset=True)
+    if not update_data:
+        return existing
+
+    if "specs" in update_data and update_data["specs"] is not None:
+        update_data["specs"] = [s if isinstance(s, dict) else s.model_dump() for s in update_data["specs"]]
+
+    if "delivery_modes" in update_data and update_data["delivery_modes"] is not None:
+        valid_modes = {"delivery", "collect"}
+        modes = [m for m in update_data["delivery_modes"] if m in valid_modes]
+        update_data["delivery_modes"] = modes or ["delivery", "collect"]
+
+    if "photos" in update_data and update_data["photos"] is not None:
+        update_data["photos"] = update_data["photos"][:5]
+
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+
+    await db.products.update_one({"id": product_id, "seller_id": seller["id"]}, {"$set": update_data})
+    updated = await db.products.find_one({"id": product_id}, {"_id": 0})
+    return updated
 
 
 @router.delete("/products/{product_id}")
