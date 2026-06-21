@@ -19,10 +19,13 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
 
 from db import get_db
-from auth import get_current_user_dep, require_role
+from auth import get_current_user_dep, require_role, generate_otp, OTP_EXPIRY_MINUTES
 from models import DelivererApplicationRequest, DelivererApplicationReject
 from s3_service import upload_private, generate_presigned_url
 from notifications import create_notification
+from sms import send_otp_sms, is_sms_configured
+from pydantic import BaseModel
+from datetime import timedelta
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["deliverer-applications"])
@@ -32,6 +35,70 @@ APP_NAME = "afrimarket"
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
+
+# ============================================================
+# Phone verification for the application form — works on ANY phone
+# number typed in the form (not necessarily the account's own phone),
+# unlike /auth/send-otp which requires an existing account with that
+# exact number.
+# ============================================================
+
+class ApplicationOtpSendRequest(BaseModel):
+    phone: str
+
+
+class ApplicationOtpVerifyRequest(BaseModel):
+    phone: str
+    code: str
+
+
+@router.post("/deliverer-applications/send-otp")
+async def send_application_otp(req: ApplicationOtpSendRequest, user: dict = Depends(get_current_user_dep)):
+    from auth import normalize_phone
+    db = get_db()
+    phone = normalize_phone(req.phone)
+    code = generate_otp()
+    expires = datetime.now(timezone.utc) + timedelta(minutes=OTP_EXPIRY_MINUTES)
+    await db.application_otp_codes.update_one(
+        {"phone": phone, "user_id": user["id"]},
+        {"$set": {"phone": phone, "user_id": user["id"], "code": code, "expires_at": expires}},
+        upsert=True,
+    )
+    await send_otp_sms(phone, code)
+    resp = {"message": "Code envoyé.", "phone": phone}
+    if not is_sms_configured():
+        resp["otp_dev"] = code
+    return resp
+
+
+@router.post("/deliverer-applications/verify-otp")
+async def verify_application_otp(req: ApplicationOtpVerifyRequest, user: dict = Depends(get_current_user_dep)):
+    from auth import normalize_phone
+    db = get_db()
+    phone = normalize_phone(req.phone)
+    otp_doc = await db.application_otp_codes.find_one({"phone": phone, "user_id": user["id"]})
+    if not otp_doc:
+        raise HTTPException(status_code=400, detail="Aucun code en attente")
+
+    expires = otp_doc.get("expires_at")
+    if isinstance(expires, str):
+        expires = datetime.fromisoformat(expires)
+    if expires and expires.tzinfo is None:
+        expires = expires.replace(tzinfo=timezone.utc)
+    if expires and expires < datetime.now(timezone.utc):
+        raise HTTPException(status_code=400, detail="Code expiré")
+    if otp_doc["code"] != req.code.strip():
+        raise HTTPException(status_code=400, detail="Code incorrect")
+
+    await db.application_otp_codes.delete_one({"phone": phone, "user_id": user["id"]})
+
+    # Mark phone as verified on the most recent draft/pending application for this user
+    await db.deliverer_applications.update_one(
+        {"user_id": user["id"], "status": {"$in": ["draft", "pending"]}},
+        {"$set": {"phone_verified": True}},
+        sort=[("created_at", -1)],
+    )
+    return {"ok": True, "phone_verified": True}
 
 # ============================================================
 # Candidate: submit application + upload documents
