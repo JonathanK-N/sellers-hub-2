@@ -23,46 +23,89 @@ const STEPS_COLLECT = [
 
 const TRACKING_STATUSES = ["assigned", "picked_up", "out_for_delivery"];
 
+let _leafletLoadPromise = null;
+
+function loadLeaflet() {
+  if (window.L) return Promise.resolve(window.L);
+  if (_leafletLoadPromise) return _leafletLoadPromise;
+
+  _leafletLoadPromise = new Promise((resolve, reject) => {
+    if (!document.querySelector('link[data-leaflet-css]')) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      link.setAttribute("data-leaflet-css", "true");
+      document.head.appendChild(link);
+    }
+    const script = document.createElement("script");
+    script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    script.async = true;
+    script.onload = () => resolve(window.L);
+    script.onerror = () => reject(new Error("Leaflet failed to load"));
+    document.body.appendChild(script);
+  });
+
+  return _leafletLoadPromise;
+}
+
 function TrackingMap({ tracking }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markerRef = useRef(null);
+  const [mapReady, setMapReady] = useState(false);
+  const [mapError, setMapError] = useState(false);
 
   useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return;
-    const L = window.L;
-    if (!L) return;
+    let cancelled = false;
+    loadLeaflet()
+      .then((L) => {
+        if (cancelled || !mapRef.current || mapInstanceRef.current) return;
 
-    const defaultCenter = [-4.3225, 15.3222]; // Kinshasa
-    const center = tracking?.deliverer_location
-      ? [tracking.deliverer_location.lat, tracking.deliverer_location.lng]
-      : defaultCenter;
+        const defaultCenter = [-4.3225, 15.3222]; // Kinshasa
+        const center = tracking?.deliverer_location
+          ? [tracking.deliverer_location.lat, tracking.deliverer_location.lng]
+          : defaultCenter;
 
-    const map = L.map(mapRef.current, { zoomControl: true, attributionControl: false }).setView(center, 14);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
-    mapInstanceRef.current = map;
+        const map = L.map(mapRef.current, { zoomControl: true, attributionControl: false }).setView(center, 14);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+        }).addTo(map);
+        mapInstanceRef.current = map;
 
-    if (tracking?.deliverer_location) {
-      const icon = L.divIcon({
-        html: `<div style="background:#1D9E75;width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;">🛵</div>`,
-        iconSize: [36, 36],
-        iconAnchor: [18, 18],
-        className: "",
-      });
-      markerRef.current = L.marker(center, { icon }).addTo(map)
-        .bindPopup(`<b>${tracking.deliverer_name || "Livreur"}</b><br>En route vers vous`).openPopup();
-    }
+        if (tracking?.deliverer_location) {
+          const icon = L.divIcon({
+            html: `<div style="background:#1D9E75;width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;">🛵</div>`,
+            iconSize: [36, 36],
+            iconAnchor: [18, 18],
+            className: "",
+          });
+          markerRef.current = L.marker(center, { icon }).addTo(map)
+            .bindPopup(`<b>${tracking.deliverer_name || "Livreur"}</b><br>En route vers vous`);
+        }
 
-    if (tracking?.delivery_neighborhood) {
-      const destIcon = L.divIcon({
-        html: `<div style="background:#085041;width:32px;height:32px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:16px;">🏠</div>`,
-        iconSize: [32, 32], iconAnchor: [16, 16], className: "",
-      });
-      L.marker(defaultCenter, { icon: destIcon }).addTo(map)
-        .bindPopup(`<b>Destination</b><br>${tracking.delivery_neighborhood}`);
-    }
+        if (tracking?.delivery_neighborhood) {
+          const destIcon = L.divIcon({
+            html: `<div style="background:#085041;width:32px;height:32px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:16px;">🏠</div>`,
+            iconSize: [32, 32], iconAnchor: [16, 16], className: "",
+          });
+          L.marker(defaultCenter, { icon: destIcon }).addTo(map)
+            .bindPopup(`<b>Destination</b><br>${tracking.delivery_neighborhood}`);
+        }
 
-    return () => { map.remove(); mapInstanceRef.current = null; };
+        // Force Leaflet to recalculate size since the container may have been hidden/sized late
+        setTimeout(() => map.invalidateSize(), 100);
+
+        setMapReady(true);
+      })
+      .catch(() => { if (!cancelled) setMapError(true); });
+
+    return () => {
+      cancelled = true;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -70,16 +113,32 @@ function TrackingMap({ tracking }) {
     const { lat, lng } = tracking.deliverer_location;
     if (markerRef.current) {
       markerRef.current.setLatLng([lat, lng]);
+    } else {
+      const L = window.L;
+      const icon = L.divIcon({
+        html: `<div style="background:#1D9E75;width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;">🛵</div>`,
+        iconSize: [36, 36], iconAnchor: [18, 18], className: "",
+      });
+      markerRef.current = L.marker([lat, lng], { icon }).addTo(mapInstanceRef.current)
+        .bindPopup(`<b>${tracking.deliverer_name || "Livreur"}</b><br>En route vers vous`);
     }
     mapInstanceRef.current.panTo([lat, lng], { animate: true });
-  }, [tracking?.deliverer_location]);
+  }, [tracking?.deliverer_location?.lat, tracking?.deliverer_location?.lng]);
 
   return (
     <div className="relative rounded-xl overflow-hidden border border-gray-100 shadow-sm">
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" />
-      <div ref={mapRef} style={{ height: 220, width: "100%" }} />
-      {tracking?.deliverer_location && (
+      <div ref={mapRef} style={{ height: 220, width: "100%", background: "#E1F5EE" }} />
+      {!mapReady && !mapError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-[#E1F5EE] text-xs text-[#085041]">
+          Chargement de la carte…
+        </div>
+      )}
+      {mapError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-xs text-gray-500 px-4 text-center">
+          Carte indisponible. {tracking?.deliverer_name ? `${tracking.deliverer_name} est en route.` : ""}
+        </div>
+      )}
+      {tracking?.deliverer_location && mapReady && (
         <div className={`absolute top-2 right-2 flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full ${tracking.location_fresh ? "bg-[#E1F5EE] text-[#085041]" : "bg-gray-100 text-gray-500"}`}>
           {tracking.location_fresh ? <Wifi size={10} /> : <WifiOff size={10} />}
           {tracking.location_fresh ? "En direct" : "Position ancienne"}
