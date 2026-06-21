@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Upload, X } from "lucide-react";
+import { ArrowLeft, Upload, X, Truck, Store } from "lucide-react";
 import api, { formatApiError, API_BASE } from "../../lib/api";
 
 const CATEGORIES = ["Général", "Électronique", "Vêtements", "Alimentation", "Maison", "Solaire", "Agriculture"];
@@ -14,6 +14,7 @@ export default function SellerAddProduct() {
     price: "",
     stock: 1,
     category: "Général",
+    delivery_modes: ["delivery", "collect"],
   });
   const [photos, setPhotos] = useState([]); // array of {id, url}
   const [uploading, setUploading] = useState(false);
@@ -50,6 +51,21 @@ export default function SellerAddProduct() {
 
   const removePhoto = (id) => setPhotos((p) => p.filter((x) => x.id !== id));
 
+  const toggleMode = (mode) => {
+    setForm((f) => {
+      const has = f.delivery_modes.includes(mode);
+      let next;
+      if (has) {
+        // Empêche de tout décocher — au moins un mode doit rester actif
+        if (f.delivery_modes.length === 1) return f;
+        next = f.delivery_modes.filter((m) => m !== mode);
+      } else {
+        next = [...f.delivery_modes, mode];
+      }
+      return { ...f, delivery_modes: next };
+    });
+  };
+
   const submit = async () => {
     if (!form.name || !form.price) {
       toast.error("Nom et prix obligatoires");
@@ -64,6 +80,7 @@ export default function SellerAddProduct() {
         stock: Number(form.stock),
         category: form.category,
         photos: photos.map((p) => p.url),
+        delivery_modes: form.delivery_modes,
       });
       toast.success("Produit publié");
       nav("/seller/products");
@@ -128,6 +145,36 @@ export default function SellerAddProduct() {
           >
             {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
           </select>
+        </div>
+
+        {/* Mode de livraison du produit */}
+        <div>
+          <label className="text-sm font-medium text-gray-700">Disponible en</label>
+          <p className="text-xs text-gray-500 mt-0.5 mb-2">Choisissez comment ce produit peut être obtenu par l'acheteur.</p>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              data-testid="product-mode-delivery"
+              onClick={() => toggleMode("delivery")}
+              className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${
+                form.delivery_modes.includes("delivery") ? "border-[#1D9E75] bg-[#E1F5EE]" : "border-gray-200 bg-white"
+              }`}
+            >
+              <Truck size={18} className={form.delivery_modes.includes("delivery") ? "text-[#1D9E75]" : "text-gray-400"} />
+              <span className={`text-xs font-semibold ${form.delivery_modes.includes("delivery") ? "text-[#085041]" : "text-gray-600"}`}>Livraison</span>
+            </button>
+            <button
+              type="button"
+              data-testid="product-mode-collect"
+              onClick={() => toggleMode("collect")}
+              className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${
+                form.delivery_modes.includes("collect") ? "border-[#1D9E75] bg-[#E1F5EE]" : "border-gray-200 bg-white"
+              }`}
+            >
+              <Store size={18} className={form.delivery_modes.includes("collect") ? "text-[#1D9E75]" : "text-gray-400"} />
+              <span className={`text-xs font-semibold ${form.delivery_modes.includes("collect") ? "text-[#085041]" : "text-gray-600"}`}>Retrait boutique</span>
+            </button>
+          </div>
         </div>
 
         <button
