@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException, Depends, Query, Response
 
 from db import get_db
 from models import ProductCreateRequest
-from auth import require_role, get_current_user_dep
+from auth import require_role, get_current_user_dep, get_current_user_optional
 from storage import get_object
 
 logger = logging.getLogger(__name__)
@@ -189,12 +189,24 @@ async def delete_product(product_id: str, user: dict = Depends(require_role("sel
 
 
 @router.get("/files/{file_id}")
-async def serve_file(file_id: str):
-    """Serve a file from object storage. Public endpoint for product photos."""
+async def serve_file(file_id: str, user: Optional[dict] = Depends(get_current_user_optional)):
+    """Serve a file from object storage. Public for non-private files (product
+    photos, shop logos/banners). Private files (KYC documents: ID cards,
+    selfies, address proofs) require the requester to be the file owner or
+    an admin — anyone else gets a 403, even with a valid file_id."""
     db = get_db()
-    record = await db.files.find_one({"id": file_id, "is_deleted": False})
+    record = await db.files.find_one({"id": file_id, "is_deleted": False}, {"_id": 0})
     if not record:
         raise HTTPException(status_code=404, detail="Fichier introuvable")
+
+    if record.get("is_private"):
+        if not user:
+            raise HTTPException(status_code=401, detail="Authentification requise")
+        is_owner = user["id"] == record.get("owner_id")
+        is_admin = user.get("role") == "admin"
+        if not (is_owner or is_admin):
+            raise HTTPException(status_code=403, detail="Accès refusé à ce document")
+
     try:
         data, ct = get_object(record["storage_path"])
     except Exception as e:
