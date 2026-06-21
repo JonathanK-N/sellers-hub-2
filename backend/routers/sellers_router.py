@@ -39,6 +39,7 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
         "shop_banner_url": req.shop_banner_url,
         "social_links": req.social_links.model_dump() if req.social_links else {},
         "delivery_service": req.delivery_service,
+        "self_delivery_fee": req.self_delivery_fee if req.self_delivery_fee in (7500, 10000, 15000, 20000) else 7500,
         "country_code": user["country_code"],
         "location": {
             "type": "Point",
