@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
 from db import get_db
 from models import SellerSetupRequest
 from auth import require_role
-from storage import put_object
+from s3_service import upload_public, upload_private
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/seller", tags=["seller"])
@@ -77,7 +77,7 @@ async def upload_photo(file: UploadFile = File(...), user: dict = Depends(requir
     path = f"{APP_NAME}/photos/{user['id']}/{uuid.uuid4()}.{ext}"
     data = await file.read()
     try:
-        result = put_object(path, data, file.content_type or "image/jpeg")
+        result = upload_public(path, data, file.content_type or "image/jpeg")
     except Exception as e:
         logger.error(f"Upload failed: {e}")
         raise HTTPException(status_code=500, detail="Échec du téléversement")
@@ -111,7 +111,7 @@ async def upload_kyc_doc(
     path = f"{APP_NAME}/kyc/{user['id']}/{doc_type}_{uuid.uuid4()}.{ext}"
     data = await file.read()
     try:
-        result = put_object(path, data, file.content_type or "image/jpeg")
+        result = upload_private(path, data, file.content_type or "image/jpeg")
     except Exception as e:
         logger.error(f"KYC upload failed: {e}")
         raise HTTPException(status_code=500, detail="Échec du téléversement")
@@ -248,7 +248,7 @@ async def upload_logo(file: UploadFile = File(...), user: dict = Depends(require
     path = f"{APP_NAME}/shop-logos/{seller['id']}/{uuid.uuid4()}.{ext}"
     data = await file.read()
     try:
-        result = put_object(path, data, file.content_type or "image/jpeg")
+        result = upload_public(path, data, file.content_type or "image/jpeg")
     except Exception as e:
         logger.error(f"Logo upload failed: {e}")
         raise HTTPException(status_code=500, detail="Échec du téléversement")
@@ -283,7 +283,7 @@ async def upload_banner(file: UploadFile = File(...), user: dict = Depends(requi
     path = f"{APP_NAME}/shop-banners/{seller['id']}/{uuid.uuid4()}.{ext}"
     data = await file.read()
     try:
-        result = put_object(path, data, file.content_type or "image/jpeg")
+        result = upload_public(path, data, file.content_type or "image/jpeg")
     except Exception as e:
         logger.error(f"Banner upload failed: {e}")
         raise HTTPException(status_code=500, detail="Échec du téléversement")
