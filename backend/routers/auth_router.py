@@ -21,7 +21,7 @@ from auth import (
     OTP_EXPIRY_MINUTES,
 )
 from sms import send_otp_sms, is_sms_configured
-from storage import put_object
+from s3_service import upload_public
 
 APP_NAME = "afrimarket"
 
@@ -235,7 +235,7 @@ async def upload_profile_photo(file: UploadFile = File(...), user: dict = Depend
     path = f"{APP_NAME}/avatars/{user['id']}/{uuid.uuid4()}.{ext}"
     data = await file.read()
     try:
-        result = put_object(path, data, file.content_type or "image/jpeg")
+        result = upload_public(path, data, file.content_type or "image/jpeg")
     except Exception as e:
         logger.error(f"Profile photo upload failed: {e}")
         raise HTTPException(status_code=500, detail="Échec du téléversement")
