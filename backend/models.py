@@ -138,6 +138,22 @@ class ProductSpec(BaseModel):
     value: str
 
 
+
+# ---------- Deliverer applications ----------
+class DelivererApplicationRequest(BaseModel):
+    application_type: str  # "afrimarket" | "shop"
+    seller_id: Optional[str] = None  # required if application_type == "shop"
+    full_name: str
+    date_of_birth: str  # ISO date string, e.g. "1995-03-12"
+    address: str
+    phone: str
+    email: Optional[str] = None
+    vehicle: str = "moto"
+
+
+class DelivererApplicationReject(BaseModel):
+    reason: str = ""
+
 class ProductCreateRequest(BaseModel):
     name: str
     description: str = ""
