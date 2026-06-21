@@ -13,7 +13,7 @@ const PRESETS = [1, 5, 10, 25, 50];
 export default function SearchPage() {
   const { user } = useAuth();
   const [q, setQ] = useState("");
-  const [radius, setRadius] = useState(5);
+  const [radius, setRadius] = useState(25);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [sort, setSort] = useState("nearest");
   const [pos, setPos] = useState(null);
@@ -76,7 +76,7 @@ export default function SearchPage() {
               <MapPin size={16} className="text-[#1D9E75]" />
               Rayon : {radius} km
             </div>
-            <span className="text-xs text-gray-500">{products.length} vendeurs</span>
+            <span className="text-xs text-gray-500">{products.length} résultat{products.length !== 1 ? "s" : ""}</span>
           </div>
           <Slider
             data-testid="radius-slider"
@@ -104,25 +104,11 @@ export default function SearchPage() {
             ))}
           </div>
 
-          <div className="mt-3 rounded-lg bg-gradient-to-br from-[#E1F5EE] to-emerald-50 border border-[#1D9E75]/20 h-32 relative overflow-hidden">
-            {/* Mini-map mock */}
-            <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(to_right,#1D9E75_1px,transparent_1px),linear-gradient(to_bottom,#1D9E75_1px,transparent_1px)] [background-size:24px_24px]" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative">
-                <div className="w-3 h-3 rounded-full bg-[#1D9E75] border-2 border-white shadow ring-4 ring-[#1D9E75]/20" />
-              </div>
-            </div>
-            {products.slice(0, 8).map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-2 h-2 rounded-full bg-[#1D9E75] border border-white"
-                style={{
-                  top: `${30 + (i * 13) % 70}%`,
-                  left: `${20 + (i * 23) % 80}%`,
-                }}
-              />
-            ))}
-          </div>
+          {q && (
+            <p className="text-xs text-gray-500 mt-3 bg-[#E1F5EE] rounded-lg px-3 py-2">
+              La recherche par mot-clé ignore le rayon : tous les produits correspondants sont affichés, quel que soit l'emplacement du vendeur.
+            </p>
+          )}
         </div>
 
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 space-y-3">
