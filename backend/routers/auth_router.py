@@ -58,6 +58,8 @@ async def register(req: RegisterRequest):
         "country_code": country["code"],
         "currency": country["currency"],
         "kyc_level": 1,
+        "buyer_verified": False,
+        "buyer_kyc_status": "none",
         "password_hash": hash_password(req.password),
         "phone_verified": False,
         "created_at": datetime.now(timezone.utc).isoformat(),
