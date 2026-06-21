@@ -95,7 +95,7 @@ export default function Profile() {
           </button>
         )}
 
-        {(user.role === "buyer" || user.role === "seller") && (
+        {user.role === "buyer" && (
           <button
             data-testid="goto-become-deliverer"
             onClick={() => nav("/become-deliverer")}
