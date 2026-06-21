@@ -11,6 +11,7 @@ import {
   ShieldAlert,
   Globe2,
   Bike,
+  Truck,
   LogOut,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -25,6 +26,7 @@ const items = [
   { to: "/admin/disputes", icon: AlertTriangle, label: "Litiges", testid: "admin-nav-disputes" },
   { to: "/admin/fraud", icon: ShieldAlert, label: "Fraude", testid: "admin-nav-fraud" },
   { to: "/admin/deliverers", icon: Bike, label: "Livreurs", testid: "admin-nav-deliverers" },
+  { to: "/admin/deliverer-applications", icon: Truck, label: "Candidatures livreurs", testid: "admin-nav-deliverer-applications" },
   { to: "/admin/geo", icon: Globe2, label: "Géographie", testid: "admin-nav-geo" },
 ];
 
