@@ -26,6 +26,8 @@ import PaymentSuccess from "./pages/buyer/PaymentSuccess";
 import PaymentFailed from "./pages/buyer/PaymentFailed";
 import BuyerKycVerification from "./pages/buyer/BuyerKycVerification";
 import BecomeDeliverer from "./pages/BecomeDeliverer";
+import AdminDelivererApplications from "./pages/admin/DelivererApplications";
+import SellerDelivererApplications from "./pages/seller/DelivererApplications";
 
 import SellerSetup from "./pages/seller/Setup";
 import SellerDashboard from "./pages/seller/Dashboard";
@@ -134,6 +136,7 @@ function App() {
             <Route path="/seller/premium" element={<ProtectedRoute roles={["seller"]}><SellerPremium /></ProtectedRoute>} />
             <Route path="/seller/edit-profile" element={<ProtectedRoute roles={["seller"]}><EditProfile /></ProtectedRoute>} />
             <Route path="/seller/buyer/:buyerId" element={<ProtectedRoute roles={["seller"]}><BuyerProfile /></ProtectedRoute>} />
+            <Route path="/seller/deliverer-applications" element={<ProtectedRoute roles={["seller"]}><SellerDelivererApplications /></ProtectedRoute>} />
             <Route path="/shop/:sellerId" element={<ShopProfile />} />
 
             <Route path="/messages" element={<ProtectedRoute roles={["buyer", "seller"]}><Messages /></ProtectedRoute>} />
@@ -152,6 +155,7 @@ function App() {
             <Route path="/admin/disputes" element={<ProtectedRoute roles={["admin"]}><AdminDisputes /></ProtectedRoute>} />
             <Route path="/admin/fraud" element={<ProtectedRoute roles={["admin"]}><AdminFraud /></ProtectedRoute>} />
             <Route path="/admin/deliverers" element={<ProtectedRoute roles={["admin"]}><AdminDeliverers /></ProtectedRoute>} />
+            <Route path="/admin/deliverer-applications" element={<ProtectedRoute roles={["admin"]}><AdminDelivererApplications /></ProtectedRoute>} />
             <Route path="/admin/geo" element={<ProtectedRoute roles={["admin"]}><AdminGeo /></ProtectedRoute>} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
