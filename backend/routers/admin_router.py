@@ -156,6 +156,66 @@ async def kyc_reject(seller_id: str, req: KycRejectRequest, _: dict = Depends(re
     return {"ok": True}
 
 
+
+# ---------- Buyer KYC ----------
+
+@router.get("/buyer-kyc/pending")
+async def buyer_kyc_pending(_: dict = Depends(require_role("admin"))):
+    db = get_db()
+    users = await db.users.find(
+        {"role": "buyer", "buyer_kyc_status": "pending_review"}, {"_id": 0, "otp_code": 0}
+    ).sort("buyer_kyc_submitted_at", -1).to_list(200)
+    return users
+
+
+@router.get("/buyer-kyc/{user_id}/docs")
+async def buyer_kyc_docs(user_id: str, _: dict = Depends(require_role("admin"))):
+    """List buyer identity document file IDs for admin review."""
+    db = get_db()
+    u = await db.users.find_one({"id": user_id}, {"_id": 0})
+    if not u:
+        raise HTTPException(status_code=404, detail="Utilisateur introuvable")
+    docs = u.get("buyer_kyc_docs") or {}
+    return {
+        "user_id": user_id,
+        "docs": {k: {"file_id": v.get("file_id"), "url": f"/api/files/{v.get('file_id')}", "uploaded_at": v.get("uploaded_at")} for k, v in docs.items()},
+    }
+
+
+@router.post("/buyer-kyc/{user_id}/approve")
+async def buyer_kyc_approve(user_id: str, _: dict = Depends(require_role("admin"))):
+    db = get_db()
+    res = await db.users.update_one(
+        {"id": user_id, "role": "buyer"},
+        {"$set": {"buyer_kyc_status": "verified", "buyer_verified": True, "buyer_kyc_reject_reason": None}},
+    )
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Acheteur introuvable")
+    try:
+        from notifications import create_notification
+        await create_notification(user_id, "kyc_approved", "Profil vérifié", "Votre identité a été vérifiée. Le badge Vérifié est maintenant actif sur votre profil.", {})
+    except Exception:
+        pass
+    return {"ok": True}
+
+
+@router.post("/buyer-kyc/{user_id}/reject")
+async def buyer_kyc_reject(user_id: str, req: KycRejectRequest, _: dict = Depends(require_role("admin"))):
+    db = get_db()
+    res = await db.users.update_one(
+        {"id": user_id, "role": "buyer"},
+        {"$set": {"buyer_kyc_status": "rejected", "buyer_verified": False, "buyer_kyc_reject_reason": req.reason}},
+    )
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Acheteur introuvable")
+    try:
+        from notifications import create_notification
+        await create_notification(user_id, "kyc_rejected", "Vérification refusée", f"Motif : {req.reason or 'non précisé'}", {})
+    except Exception:
+        pass
+    return {"ok": True}
+
+
 @router.get("/geo/overview")
 async def geo_overview(_: dict = Depends(require_role("admin"))):
     db = get_db()
