@@ -45,11 +45,18 @@ def upload_public(path: str, data: bytes, content_type: str) -> dict:
     (ACLs enabled) rather than "Bucket owner enforced", each object's own
     ACL can still override the policy and default to private, causing
     AccessDenied on read even though the policy says otherwise.
+
+    After upload, verifies the object actually landed in S3 via head_object.
+    This guards against silent failures: callers (routes) only insert a
+    `files` record in MongoDB after this function returns successfully, so
+    a confirmed-missing object here must raise rather than return — never
+    leave a DB record pointing at a file that doesn't exist on S3.
     """
     if not s3_configured():
         raise RuntimeError("AWS credentials not configured")
+    client = _client()
     try:
-        _client().put_object(
+        client.put_object(
             Bucket=BUCKET_PUBLIC,
             Key=path,
             Body=data,
@@ -59,17 +66,29 @@ def upload_public(path: str, data: bytes, content_type: str) -> dict:
     except (ClientError, NoCredentialsError) as e:
         logger.error(f"S3 public upload failed ({path}): {e}")
         raise RuntimeError(f"Échec du téléversement S3: {e}")
+
+    try:
+        client.head_object(Bucket=BUCKET_PUBLIC, Key=path)
+    except ClientError as e:
+        logger.error(f"S3 public upload verification failed ({path}): {e}")
+        raise RuntimeError(f"Le fichier n'a pas pu être confirmé sur S3: {e}")
+
     url = f"https://{BUCKET_PUBLIC}.s3.{AWS_REGION}.amazonaws.com/{path}"
     return {"path": path, "url": url, "size": len(data)}
 
 
 def upload_private(path: str, data: bytes, content_type: str) -> dict:
     """Upload to the private KYC bucket. Returns {"path": s3_key, "size": n} —
-    deliberately no public URL; callers must use generate_presigned_url()."""
+    deliberately no public URL; callers must use generate_presigned_url().
+
+    Verifies the object landed in S3 before returning, same rationale as
+    upload_public(): never let a MongoDB `files` record reference a path
+    that silently failed to upload."""
     if not s3_configured():
         raise RuntimeError("AWS credentials not configured")
+    client = _client()
     try:
-        _client().put_object(
+        client.put_object(
             Bucket=BUCKET_KYC,
             Key=path,
             Body=data,
@@ -78,6 +97,13 @@ def upload_private(path: str, data: bytes, content_type: str) -> dict:
     except (ClientError, NoCredentialsError) as e:
         logger.error(f"S3 private upload failed ({path}): {e}")
         raise RuntimeError(f"Échec du téléversement S3: {e}")
+
+    try:
+        client.head_object(Bucket=BUCKET_KYC, Key=path)
+    except ClientError as e:
+        logger.error(f"S3 private upload verification failed ({path}): {e}")
+        raise RuntimeError(f"Le fichier n'a pas pu être confirmé sur S3: {e}")
+
     return {"path": path, "size": len(data)}
 
 
