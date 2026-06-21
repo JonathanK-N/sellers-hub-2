@@ -40,11 +40,11 @@ def s3_configured() -> bool:
 def upload_public(path: str, data: bytes, content_type: str) -> dict:
     """Upload to the public bucket. Returns {"path": s3_key, "url": direct_public_url, "size": n}.
 
-    Explicitly sets ACL=public-read: the bucket policy alone isn't always
-    enough — if the bucket's Object Ownership is "Bucket owner preferred"
-    (ACLs enabled) rather than "Bucket owner enforced", each object's own
-    ACL can still override the policy and default to private, causing
-    AccessDenied on read even though the policy says otherwise.
+    No ACL is set on the object: the bucket's Object Ownership is configured
+    as "Bucket owner enforced", which disables ACLs entirely — public read
+    access is granted solely via the bucket policy (s3:GetObject for *).
+    Setting an ACL here would actually fail, since "Bucket owner enforced"
+    rejects ACL-bearing requests outright.
 
     After upload, verifies the object actually landed in S3 via head_object.
     This guards against silent failures: callers (routes) only insert a
@@ -61,7 +61,6 @@ def upload_public(path: str, data: bytes, content_type: str) -> dict:
             Key=path,
             Body=data,
             ContentType=content_type,
-            ACL="public-read",
         )
     except (ClientError, NoCredentialsError) as e:
         logger.error(f"S3 public upload failed ({path}): {e}")
