@@ -11,6 +11,8 @@ export default function SellerEditProduct() {
   const nav = useNavigate();
   const { id } = useParams();
   const [loadingProduct, setLoadingProduct] = useState(true);
+  const [customCategory, setCustomCategory] = useState("");
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -25,14 +27,19 @@ export default function SellerEditProduct() {
 
   useEffect(() => {
     api.get(`/products/${id}`).then(({ data }) => {
+      const cat = data.category || "Général";
       setForm({
         name: data.name || "",
         description: data.description || "",
         price: data.price ?? "",
         stock: data.stock ?? 0,
-        category: data.category || "Général",
+        category: cat,
         delivery_modes: data.delivery_modes?.length ? data.delivery_modes : ["delivery", "collect"],
       });
+      if (!CATEGORIES.includes(cat)) {
+        setIsCustomCategory(true);
+        setCustomCategory(cat);
+      }
       setPhotos((data.photos || []).map((url) => ({ id: url, url })));
     }).catch(() => {
       toast.error("Produit introuvable");
@@ -88,6 +95,10 @@ export default function SellerEditProduct() {
   const submit = async () => {
     if (!form.name || !form.price) {
       toast.error("Nom et prix obligatoires");
+      return;
+    }
+    if (isCustomCategory && !customCategory.trim()) {
+      toast.error("Indiquez le nom de la nouvelle catégorie");
       return;
     }
     setLoading(true);
@@ -162,12 +173,34 @@ export default function SellerEditProduct() {
           <label className="text-sm font-medium text-gray-700">Catégorie</label>
           <select
             data-testid="product-category-select"
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
+            value={isCustomCategory ? "__other__" : form.category}
+            onChange={(e) => {
+              if (e.target.value === "__other__") {
+                setIsCustomCategory(true);
+                setCustomCategory("");
+              } else {
+                setIsCustomCategory(false);
+                setForm({ ...form, category: e.target.value });
+              }
+            }}
             className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none"
           >
             {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+            <option value="__other__">Autre…</option>
           </select>
+          {isCustomCategory && (
+            <input
+              data-testid="product-custom-category-input"
+              value={customCategory}
+              onChange={(e) => {
+                setCustomCategory(e.target.value);
+                setForm({ ...form, category: e.target.value });
+              }}
+              placeholder="Nom de la nouvelle catégorie"
+              className="w-full mt-2 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none"
+              autoFocus
+            />
+          )}
         </div>
 
         {/* Mode de livraison du produit */}
