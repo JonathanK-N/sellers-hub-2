@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Camera, Facebook, Globe, Phone, Plus, X, Save, Truck, Package } from "lucide-react";
+import { ArrowLeft, Camera, Facebook, Globe, Phone, Plus, X, Save, Truck, Package, Copy } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
 import { photoUrl } from "../../lib/format";
 import BottomNav from "../../components/BottomNav";
@@ -17,6 +17,7 @@ export default function EditProfile() {
   const [specialty, setSpecialty] = useState("");
   const [isPremium, setIsPremium] = useState(false);
   const [togglingDelivery, setTogglingDelivery] = useState(false);
+  const [shopId, setShopId] = useState(null);
 
   const [form, setForm] = useState({
     shop_name: "", description: "", long_description: "",
@@ -34,6 +35,7 @@ export default function EditProfile() {
   useEffect(() => {
     api.get("/seller/me").then(({ data }) => {
       if (!data) { nav("/seller/setup"); return; }
+      setShopId(data.id);
       setForm({
         shop_name: data.shop_name || "",
         description: data.description || "",
@@ -174,6 +176,30 @@ export default function EditProfile() {
         </Section>
 
         {/* LIVRAISON */}
+        {shopId && (
+          <Section title="Identifiant boutique">
+            <p className="text-xs text-gray-500 mb-2">
+              Communiquez cet identifiant aux candidats livreurs souhaitant rejoindre exclusivement votre boutique.
+            </p>
+            <div className="flex items-center gap-2">
+              <code className="flex-1 text-xs bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 font-mono text-gray-700 truncate">
+                {shopId}
+              </code>
+              <button
+                type="button"
+                data-testid="copy-shop-id-btn"
+                onClick={() => {
+                  navigator.clipboard.writeText(shopId);
+                  toast.success("ID copié");
+                }}
+                className="w-10 h-10 rounded-lg bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center shrink-0"
+              >
+                <Copy size={16} />
+              </button>
+            </div>
+          </Section>
+        )}
+
         <Section title="Service de livraison">
           <p className="text-xs text-gray-500 mb-3">
             Choisissez comment vous gérez la livraison de vos commandes.
