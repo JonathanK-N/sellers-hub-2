@@ -35,6 +35,25 @@ export default function Checkout() {
   const deliveryAvailable = availableModes.has("delivery");
   const collectAvailable = availableModes.has("collect");
 
+  // Calcul des frais de livraison: somme par vendeur distinct dont au moins un
+  // produit (compatible avec le mode choisi) sera livré. Reflete au plus pres
+  // ce que le backend va facturer (un frais par sous-commande "delivery").
+  const deliveryFee = useMemo(() => {
+    if (mode !== "delivery") return 0;
+    const sellersToCharge = new Set();
+    items.forEach((it) => {
+      const modes = it.delivery_modes?.length ? it.delivery_modes : ["delivery", "collect"];
+      if (modes.includes("delivery")) sellersToCharge.add(it.seller_id);
+    });
+    let fee = 0;
+    sellersToCharge.forEach((sid) => {
+      const info = sellerInfo[sid];
+      if (!info) return;
+      fee += info.delivery_service === "afrimarket" ? 16000 : (info.self_delivery_fee || 7500);
+    });
+    return fee;
+  }, [mode, items, sellerInfo]);
+
   useEffect(() => {
     // Si le mode actuellement sélectionné n'est plus disponible, basculer automatiquement.
     if (mode === "delivery" && !deliveryAvailable && collectAvailable) setMode("collect");
@@ -133,25 +152,6 @@ export default function Checkout() {
       setLoading(false);
     }
   };
-
-  // Calcul des frais de livraison: somme par vendeur distinct dont au moins un
-  // produit (compatible avec le mode choisi) sera livré. Reflete au plus pres
-  // ce que le backend va facturer (un frais par sous-commande "delivery").
-  const deliveryFee = useMemo(() => {
-    if (mode !== "delivery") return 0;
-    const sellersToCharge = new Set();
-    items.forEach((it) => {
-      const modes = it.delivery_modes?.length ? it.delivery_modes : ["delivery", "collect"];
-      if (modes.includes("delivery")) sellersToCharge.add(it.seller_id);
-    });
-    let fee = 0;
-    sellersToCharge.forEach((sid) => {
-      const info = sellerInfo[sid];
-      if (!info) return;
-      fee += info.delivery_service === "afrimarket" ? 16000 : (info.self_delivery_fee || 7500);
-    });
-    return fee;
-  }, [mode, items, sellerInfo]);
 
   const payableTotal = total + deliveryFee;
 
