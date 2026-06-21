@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Pencil } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
@@ -64,13 +64,22 @@ export default function SellerProducts() {
                     Stock : <span className={p.stock > 0 ? "text-[#1D9E75]" : "text-[#E24B4A]"}>{p.stock}</span>
                   </div>
                 </div>
-                <button
-                  data-testid={`delete-product-${p.id}`}
-                  onClick={() => del(p.id)}
-                  className="text-[#E24B4A] p-2 hover:bg-red-50 rounded-lg self-start"
-                >
-                  <Trash2 size={16} />
-                </button>
+                <div className="flex flex-col gap-1 self-start">
+                  <button
+                    data-testid={`edit-product-${p.id}`}
+                    onClick={() => nav(`/seller/products/${p.id}/edit`)}
+                    className="text-[#1D9E75] p-2 hover:bg-[#E1F5EE] rounded-lg"
+                  >
+                    <Pencil size={16} />
+                  </button>
+                  <button
+                    data-testid={`delete-product-${p.id}`}
+                    onClick={() => del(p.id)}
+                    className="text-[#E24B4A] p-2 hover:bg-red-50 rounded-lg"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
