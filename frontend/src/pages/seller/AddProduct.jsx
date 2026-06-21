@@ -18,6 +18,8 @@ export default function SellerAddProduct() {
   });
   const [photos, setPhotos] = useState([]); // array of {id, url}
   const [uploading, setUploading] = useState(false);
+  const [customCategory, setCustomCategory] = useState("");
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleUpload = async (e) => {
@@ -69,6 +71,10 @@ export default function SellerAddProduct() {
   const submit = async () => {
     if (!form.name || !form.price) {
       toast.error("Nom et prix obligatoires");
+      return;
+    }
+    if (isCustomCategory && !customCategory.trim()) {
+      toast.error("Indiquez le nom de la nouvelle catégorie");
       return;
     }
     setLoading(true);
@@ -139,12 +145,34 @@ export default function SellerAddProduct() {
           <label className="text-sm font-medium text-gray-700">Catégorie</label>
           <select
             data-testid="product-category-select"
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
+            value={isCustomCategory ? "__other__" : form.category}
+            onChange={(e) => {
+              if (e.target.value === "__other__") {
+                setIsCustomCategory(true);
+                setCustomCategory("");
+              } else {
+                setIsCustomCategory(false);
+                setForm({ ...form, category: e.target.value });
+              }
+            }}
             className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none"
           >
             {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+            <option value="__other__">Autre…</option>
           </select>
+          {isCustomCategory && (
+            <input
+              data-testid="product-custom-category-input"
+              value={customCategory}
+              onChange={(e) => {
+                setCustomCategory(e.target.value);
+                setForm({ ...form, category: e.target.value });
+              }}
+              placeholder="Nom de la nouvelle catégorie"
+              className="w-full mt-2 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none"
+              autoFocus
+            />
+          )}
         </div>
 
         {/* Mode de livraison du produit */}
