@@ -141,16 +141,22 @@ async def create_product(req: ProductCreateRequest, user: dict = Depends(require
         if count >= 10:
             raise HTTPException(status_code=403, detail="Limite de 10 produits atteinte. Validez votre KYC ou passez Premium pour en ajouter plus.")
 
+    valid_modes = {"delivery", "collect"}
+    delivery_modes = [m for m in req.delivery_modes if m in valid_modes] or ["delivery", "collect"]
+
     product = {
         "id": str(uuid.uuid4()),
         "seller_id": seller["id"],
         "name": req.name,
         "description": req.description,
+        "long_description": req.long_description,
+        "specs": [s.model_dump() for s in req.specs],
         "price": req.price,
         "currency": user["currency"],
         "stock": req.stock,
         "category": req.category,
         "photos": req.photos[:5],
+        "delivery_modes": delivery_modes,
         "is_active": True,
         "country_code": user["country_code"],
         "created_at": datetime.now(timezone.utc).isoformat(),
