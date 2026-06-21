@@ -1,17 +1,23 @@
 """One-off script: migrate demo images from the public GitHub assets repo
 (afrimarket-assets) to the AWS S3 public bucket.
 
+Uses urllib (Python stdlib) instead of requests, to avoid depending on a
+package that may not be installed in the production runtime image.
+
 Run this ONCE, with real AWS credentials available in the environment
-(Railway shell, or locally with a .env file). After running, seed_demo.py
-is updated in place to reference S3 URLs instead of GitHub raw URLs.
+(Railway console, or locally with a .env file). After running, seed_demo.py
+is updated separately (img() already points at S3) — this script just
+populates the bucket with the actual files.
 
 Usage:
     python migrate_demo_images_to_s3.py
 """
 import os
 import sys
+import json
 import logging
-import requests
+import urllib.request
+import urllib.error
 
 sys.path.insert(0, os.path.dirname(__file__))
 from s3_service import upload_public, s3_configured  # noqa: E402
@@ -37,6 +43,12 @@ IMAGE_FILENAMES = [
 S3_PREFIX = "afrimarket/demo-products"
 
 
+def _download(url: str) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": "afrimarket-migration/1.0"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return resp.read()
+
+
 def migrate():
     if not s3_configured():
         logger.error("AWS credentials not found in environment. Aborting.")
@@ -49,22 +61,21 @@ def migrate():
     for filename in IMAGE_FILENAMES:
         src_url = f"{GITHUB_ASSETS_BASE}/{filename}"
         try:
-            resp = requests.get(src_url, timeout=30)
-            resp.raise_for_status()
-        except Exception as e:
+            data = _download(src_url)
+        except (urllib.error.URLError, urllib.error.HTTPError) as e:
             logger.warning(f"  ✗ download failed: {filename} ({e})")
             failed.append(filename)
             continue
 
         s3_path = f"{S3_PREFIX}/{filename}"
         try:
-            result = upload_public(s3_path, resp.content, "image/jpeg")
+            result = upload_public(s3_path, data, "image/jpeg")
         except Exception as e:
             logger.warning(f"  ✗ S3 upload failed: {filename} ({e})")
             failed.append(filename)
             continue
 
-        key = filename.rsplit(".", 1)[0]  # strip extension to match img() helper
+        key = filename.rsplit(".", 1)[0]
         url_map[key] = result["url"]
         success += 1
         logger.info(f"  ✓ {filename} → {result['url']}")
@@ -73,13 +84,10 @@ def migrate():
     if failed:
         logger.warning(f"Failed files: {failed}")
 
-    # Write the URL map to a JSON file for the next step (updating seed_demo.py)
-    import json
     out_path = os.path.join(os.path.dirname(__file__), "demo_images_s3_map.json")
     with open(out_path, "w") as f:
         json.dump(url_map, f, indent=2)
     logger.info(f"URL map written to {out_path}")
-    logger.info("Next: update seed_demo.py's img() function to use this map, or re-run seed with SEED_DEMO=1 after redeploy.")
 
 
 if __name__ == "__main__":
