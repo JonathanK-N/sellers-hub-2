@@ -216,16 +216,53 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
 
 @router.get("/orders/my")
 async def my_orders(user: dict = Depends(get_current_user_dep)):
+    """Order history. For buyers: their own orders, enriched with seller +
+    deliverer info and whether they can still review the seller. For
+    sellers: orders received, enriched with buyer info and whether they
+    can still rate that buyer."""
     db = get_db()
     q = {"buyer_id": user["id"]} if user["role"] == "buyer" else {"seller_id": (await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0, "id": 1}) or {}).get("id")}
     orders = await db.orders.find(q, {"_id": 0}).sort("created_at", -1).to_list(200)
-    # Enrich seller
+
     seller_ids = list({o["seller_id"] for o in orders})
     sellers = {s["id"]: s async for s in db.sellers.find({"id": {"$in": seller_ids}}, {"_id": 0})}
+
+    buyer_ids = list({o["buyer_id"] for o in orders})
+    buyers = {b["id"]: b async for b in db.users.find({"id": {"$in": buyer_ids}}, {"_id": 0, "id": 1, "name": 1})}
+
+    deliverer_ids = list({o["deliverer_id"] for o in orders if o.get("deliverer_id")})
+    deliverers = {d["id"]: d async for d in db.users.find({"id": {"$in": deliverer_ids}}, {"_id": 0, "id": 1, "name": 1})} if deliverer_ids else {}
+
+    order_ids = [o["id"] for o in orders]
+    DELIVERED_STATUSES = ("delivered", "collected")
+
+    if user["role"] == "buyer":
+        reviewed = {
+            r["order_id"]
+            async for r in db.reviews.find({"order_id": {"$in": order_ids}, "buyer_id": user["id"]}, {"_id": 0, "order_id": 1})
+        } if order_ids else set()
+    else:
+        reviewed = {
+            r["order_id"]
+            async for r in db.buyer_reviews.find({"order_id": {"$in": order_ids}, "rater_user_id": user["id"]}, {"_id": 0, "order_id": 1})
+        } if order_ids else set()
+
     for o in orders:
         s = sellers.get(o["seller_id"])
         if s:
             o["seller_name"] = s.get("shop_name")
+        b = buyers.get(o["buyer_id"])
+        if b:
+            o["buyer_name"] = b.get("name")
+        if o.get("deliverer_id"):
+            d = deliverers.get(o["deliverer_id"])
+            if d:
+                o["deliverer_name"] = d.get("name")
+        is_delivered = o["status"] in DELIVERED_STATUSES
+        if user["role"] == "buyer":
+            o["can_review_seller"] = is_delivered and o["id"] not in reviewed
+        else:
+            o["can_review_buyer"] = is_delivered and o["id"] not in reviewed
     return orders
 
 
