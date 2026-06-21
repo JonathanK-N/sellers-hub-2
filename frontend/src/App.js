@@ -100,6 +100,10 @@ function App() {
             <Route path="/auth/forgot" element={<ForgotPassword />} />
             <Route path="/admin/login" element={<AdminLogin />} />
 
+            {/* ---- Visiteur (sans compte) : exploration publique ---- */}
+            <Route path="/explore/product/:id" element={<ProductDetail guest />} />
+            <Route path="/explore/shop/:sellerId" element={<ShopProfile guest />} />
+
             <Route path="/buyer/home" element={<ProtectedRoute roles={["buyer", "seller", "admin"]}><BuyerHome /></ProtectedRoute>} />
             <Route path="/buyer/search" element={<ProtectedRoute roles={["buyer", "seller", "admin"]}><SearchPage /></ProtectedRoute>} />
             <Route path="/buyer/product/:id" element={<ProtectedRoute roles={["buyer", "seller", "admin"]}><ProductDetail /></ProtectedRoute>} />
