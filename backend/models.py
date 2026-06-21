@@ -150,6 +150,20 @@ class ProductCreateRequest(BaseModel):
     delivery_modes: List[str] = Field(default_factory=lambda: ["delivery", "collect"])  # modes autorises pour ce produit
 
 
+class ProductUpdateRequest(BaseModel):
+    """All fields optional: only provided fields are updated (PATCH semantics)."""
+    name: Optional[str] = None
+    description: Optional[str] = None
+    long_description: Optional[str] = None
+    specs: Optional[List[ProductSpec]] = None
+    price: Optional[float] = None
+    stock: Optional[int] = None
+    category: Optional[str] = None
+    photos: Optional[List[str]] = None
+    delivery_modes: Optional[List[str]] = None
+    is_active: Optional[bool] = None
+
+
 class ProductPublic(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str
