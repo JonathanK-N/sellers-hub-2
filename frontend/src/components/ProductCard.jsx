@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import { Star, MapPin, ShieldCheck, Crown } from "lucide-react";
 import { formatPrice, formatDistance, photoUrl } from "../lib/format";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, guest = false }) {
   const photo = product.photos?.[0];
   const distance = formatDistance(product.distance_km);
+  const href = guest ? `/explore/product/${product.id}` : `/buyer/product/${product.id}`;
 
   return (
     <Link
-      to={`/buyer/product/${product.id}`}
+      to={href}
       data-testid={`product-card-${product.id}`}
       className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group hover:border-[#1D9E75] transition-colors"
     >
