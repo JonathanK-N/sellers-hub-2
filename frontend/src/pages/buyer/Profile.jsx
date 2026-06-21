@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { LogOut, User, MapPin, Phone, Store, LayoutDashboard, Camera } from "lucide-react";
+import { LogOut, User, MapPin, Phone, Store, LayoutDashboard, Camera, ShieldCheck, ChevronRight } from "lucide-react";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
 import { useAuth } from "../../context/AuthContext";
@@ -65,11 +65,35 @@ export default function Profile() {
           <div className="flex-1">
             <div className="font-display font-bold text-gray-900">{user.name}</div>
             <div className="text-xs text-gray-500">{user.phone}</div>
-            <span className="inline-block mt-1 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-[#E1F5EE] text-[#1D9E75]">
-              {user.role === "buyer" ? "Acheteur" : user.role === "seller" ? "Vendeur" : "Admin"}
-            </span>
+            <div className="flex items-center gap-1.5 mt-1">
+              <span className="inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-[#E1F5EE] text-[#1D9E75]">
+                {user.role === "buyer" ? "Acheteur" : user.role === "seller" ? "Vendeur" : "Admin"}
+              </span>
+              {user.role === "buyer" && user.buyer_verified && (
+                <span data-testid="buyer-verified-badge" className="inline-flex items-center gap-0.5 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EF9F27]/15 text-[#BA7517]">
+                  <ShieldCheck size={10} /> Vérifié
+                </span>
+              )}
+            </div>
           </div>
         </section>
+
+        {user.role === "buyer" && !user.buyer_verified && (
+          <button
+            data-testid="goto-buyer-kyc"
+            onClick={() => nav("/buyer/kyc")}
+            className="w-full bg-white border border-[#1D9E75] rounded-xl shadow-sm p-4 flex items-center gap-3 hover:bg-[#E1F5EE] transition-colors"
+          >
+            <div className="w-9 h-9 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center shrink-0">
+              <ShieldCheck size={18} />
+            </div>
+            <div className="flex-1 text-left">
+              <div className="text-sm font-semibold text-gray-900">Vérifier mon identité</div>
+              <div className="text-xs text-gray-500">Obtenez le badge Vérifié, visible par les vendeurs</div>
+            </div>
+            <ChevronRight size={16} className="text-gray-400" />
+          </button>
+        )}
 
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm divide-y divide-gray-100">
           <Row icon={MapPin} label="Pays" value={user.country_code} />
