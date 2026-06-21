@@ -30,6 +30,7 @@ import SellerSetup from "./pages/seller/Setup";
 import SellerDashboard from "./pages/seller/Dashboard";
 import SellerProducts from "./pages/seller/Products";
 import SellerAddProduct from "./pages/seller/AddProduct";
+import SellerEditProduct from "./pages/seller/EditProduct";
 import SellerOrders from "./pages/seller/SellerOrders";
 import SellerWallet from "./pages/seller/Wallet";
 import SellerKyc from "./pages/seller/Kyc";
@@ -123,6 +124,7 @@ function App() {
             <Route path="/seller/dashboard" element={<ProtectedRoute roles={["seller"]}><SellerDashboard /></ProtectedRoute>} />
             <Route path="/seller/products" element={<ProtectedRoute roles={["seller"]}><SellerProducts /></ProtectedRoute>} />
             <Route path="/seller/products/new" element={<ProtectedRoute roles={["seller"]}><SellerAddProduct /></ProtectedRoute>} />
+            <Route path="/seller/products/:id/edit" element={<ProtectedRoute roles={["seller"]}><SellerEditProduct /></ProtectedRoute>} />
             <Route path="/seller/orders" element={<ProtectedRoute roles={["seller"]}><SellerOrders /></ProtectedRoute>} />
             <Route path="/seller/wallet" element={<ProtectedRoute roles={["seller"]}><SellerWallet /></ProtectedRoute>} />
             <Route path="/seller/kyc" element={<ProtectedRoute roles={["seller"]}><SellerKyc /></ProtectedRoute>} />
