@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, User, Phone, ChevronRight, Lock } from "lucide-react";
+import { ArrowLeft, User, Phone, ChevronRight, Lock, Eye, EyeOff } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
 
 export default function Register() {
@@ -16,6 +16,7 @@ export default function Register() {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     api.get("/countries").then(({ data }) => setCountries(data)).catch(() => {});
@@ -98,12 +99,21 @@ export default function Register() {
                 <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                   data-testid="register-password-input"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   placeholder="Au moins 6 caractères"
-                  className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
+                  className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
                 />
+                <button
+                  type="button"
+                  data-testid="toggle-register-password-visibility"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 
