@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { LogOut, User, MapPin, Phone, Store, LayoutDashboard, Camera, ShieldCheck, ChevronRight } from "lucide-react";
+import { LogOut, User, MapPin, Phone, Store, LayoutDashboard, Camera, ShieldCheck, ChevronRight, Truck } from "lucide-react";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
 import { useAuth } from "../../context/AuthContext";
@@ -92,6 +92,23 @@ export default function Profile() {
               <div className="text-xs text-gray-500">Obtenez le badge Vérifié, visible par les vendeurs</div>
             </div>
             <ChevronRight size={16} className="text-gray-400" />
+          </button>
+        )}
+
+        {(user.role === "buyer" || user.role === "seller") && (
+          <button
+            data-testid="goto-become-deliverer"
+            onClick={() => nav("/become-deliverer")}
+            className="w-full bg-gradient-to-r from-[#085041] to-[#1D9E75] rounded-xl shadow-sm p-4 flex items-center gap-3 text-white hover:opacity-95 transition-opacity"
+          >
+            <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+              <Truck size={18} />
+            </div>
+            <div className="flex-1 text-left">
+              <div className="text-sm font-semibold">Devenir livreur AfriMarket</div>
+              <div className="text-xs text-emerald-100">Générez des revenus en livrant des commandes</div>
+            </div>
+            <ChevronRight size={16} className="text-white/70" />
           </button>
         )}
 
