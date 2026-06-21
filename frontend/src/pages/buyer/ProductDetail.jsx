@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, ShieldCheck, MapPin, Star, Truck, Store, Plus, Minus, MessageSquare, Crown, ChevronRight } from "lucide-react";
+import { ArrowLeft, ShieldCheck, MapPin, Star, Truck, Store, Plus, Minus, MessageSquare, Crown, ChevronRight, LogIn } from "lucide-react";
 import api from "../../lib/api";
 import { formatPrice, formatDistance, photoUrl, timeAgo } from "../../lib/format";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 
-export default function ProductDetail() {
+export default function ProductDetail({ guest = false }) {
   const { id } = useParams();
   const nav = useNavigate();
   const { user } = useAuth();
@@ -18,14 +18,27 @@ export default function ProductDetail() {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    api.get(`/products/${id}`).then(({ data }) => setP(data));
+    api.get(`/products/${id}`).then(({ data }) => setP(data)).catch(() => {});
     api.get(`/products/${id}/reviews`).then(({ data }) => setReviews(data)).catch(() => {});
   }, [id]);
 
   if (!p) return <div className="mobile-shell flex items-center justify-center text-gray-500 pt-24">Chargement…</div>;
 
   const photos = p.photos?.length ? p.photos : [null];
+  const isGuestView = guest || !user;
+  const backLink = isGuestView ? "/" : "/buyer/home";
+  const shopLink = isGuestView ? `/explore/shop/${p.seller_id}` : `/shop/${p.seller_id}`;
+
+  const requireAuth = (action) => {
+    toast.info(`Connectez-vous pour ${action}`);
+    nav("/auth/login", { state: { from: `/explore/product/${id}` } });
+  };
+
   const handleAdd = () => {
+    if (isGuestView) {
+      requireAuth("commander");
+      return;
+    }
     if (user?.role !== "buyer") {
       toast.error("Seuls les acheteurs peuvent commander.");
       return;
@@ -34,13 +47,26 @@ export default function ProductDetail() {
     toast.success("Ajouté au panier");
   };
 
+  const handleAsk = () => {
+    if (isGuestView) {
+      requireAuth("contacter le vendeur");
+      return;
+    }
+    nav(`/messages/${user.id}__${p.seller_id}`, { state: { other_name: p.seller_name } });
+  };
+
   return (
     <div className="mobile-shell">
       <header className="sticky top-0 z-40 bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3">
-        <Link to="/buyer/home" className="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center" data-testid="back-btn">
+        <Link to={backLink} className="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
         <span className="font-display font-bold text-sm text-gray-900 truncate flex-1">{p.name}</span>
+        {isGuestView && (
+          <Link to="/auth/login" className="text-xs font-semibold text-[#1D9E75] flex items-center gap-1 shrink-0">
+            <LogIn size={14} /> Connexion
+          </Link>
+        )}
       </header>
 
       <div className="bg-gray-100 aspect-square relative">
@@ -78,7 +104,7 @@ export default function ProductDetail() {
       </div>
 
       <div className="px-4 mt-1">
-        <Link to={`/shop/${p.seller_id}`} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors block">
+        <Link to={shopLink} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors block">
           <div className="w-12 h-12 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center overflow-hidden shrink-0">
             {p.seller_logo ? <img src={p.seller_logo} alt="" className="w-full h-full object-cover" /> : <Store size={20} />}
           </div>
@@ -121,13 +147,13 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {user?.role === "buyer" && (
+        {(isGuestView || user?.role === "buyer") && (
           <button
             data-testid="chat-seller-product-btn"
-            onClick={() => nav(`/messages/${user.id}__${p.seller_id}`, { state: { other_name: p.seller_name } })}
+            onClick={handleAsk}
             className="w-full bg-white border border-[#1D9E75] text-[#1D9E75] hover:bg-[#E1F5EE] rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm"
           >
-            <MessageSquare size={16} /> Poser une question au vendeur
+            <MessageSquare size={16} /> {isGuestView ? "Se connecter pour poser une question" : "Poser une question au vendeur"}
           </button>
         )}
 
@@ -153,31 +179,33 @@ export default function ProductDetail() {
         )}
       </div>
 
-      {user?.role === "buyer" && p.stock > 0 && (
+      {p.stock > 0 && (isGuestView || user?.role === "buyer") && (
         <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 pb-5 z-50 flex items-center gap-3 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
-          <div className="flex items-center gap-1 border border-gray-200 rounded-lg">
-            <button
-              data-testid="qty-decrease"
-              onClick={() => setQty((q) => Math.max(1, q - 1))}
-              className="w-9 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50"
-            >
-              <Minus size={16} />
-            </button>
-            <span className="w-8 text-center font-semibold text-gray-900">{qty}</span>
-            <button
-              data-testid="qty-increase"
-              onClick={() => setQty((q) => Math.min(p.stock, q + 1))}
-              className="w-9 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50"
-            >
-              <Plus size={16} />
-            </button>
-          </div>
+          {!isGuestView && (
+            <div className="flex items-center gap-1 border border-gray-200 rounded-lg">
+              <button
+                data-testid="qty-decrease"
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                className="w-9 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50"
+              >
+                <Minus size={16} />
+              </button>
+              <span className="w-8 text-center font-semibold text-gray-900">{qty}</span>
+              <button
+                data-testid="qty-increase"
+                onClick={() => setQty((q) => Math.min(p.stock, q + 1))}
+                className="w-9 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50"
+              >
+                <Plus size={16} />
+              </button>
+            </div>
+          )}
           <button
             data-testid="add-to-cart-btn"
             onClick={handleAdd}
-            className="flex-1 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors"
+            className="flex-1 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2"
           >
-            Ajouter au panier
+            {isGuestView ? (<><LogIn size={16} /> Se connecter pour commander</>) : "Ajouter au panier"}
           </button>
         </div>
       )}
