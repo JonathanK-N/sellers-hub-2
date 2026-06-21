@@ -24,6 +24,7 @@ import OrderGroup from "./pages/buyer/OrderGroup";
 import Profile from "./pages/buyer/Profile";
 import PaymentSuccess from "./pages/buyer/PaymentSuccess";
 import PaymentFailed from "./pages/buyer/PaymentFailed";
+import BuyerKycVerification from "./pages/buyer/BuyerKycVerification";
 
 import SellerSetup from "./pages/seller/Setup";
 import SellerDashboard from "./pages/seller/Dashboard";
@@ -47,6 +48,7 @@ import AdminDisputes from "./pages/admin/Disputes";
 import AdminFraud from "./pages/admin/Fraud";
 import AdminDeliverers from "./pages/admin/Deliverers";
 import AdminGeo from "./pages/admin/Geo";
+import AdminBuyerKyc from "./pages/admin/BuyerKyc";
 
 import Messages from "./pages/Messages";
 import ChatThread from "./pages/ChatThread";
@@ -113,6 +115,7 @@ function App() {
             <Route path="/buyer/orders/:id" element={<ProtectedRoute roles={["buyer", "seller"]}><OrderDetail /></ProtectedRoute>} />
             <Route path="/buyer/order-group/:groupId" element={<ProtectedRoute roles={["buyer"]}><OrderGroup /></ProtectedRoute>} />
             <Route path="/buyer/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/buyer/kyc" element={<ProtectedRoute roles={["buyer"]}><BuyerKycVerification /></ProtectedRoute>} />
             <Route path="/payment/success" element={<ProtectedRoute roles={["buyer"]}><PaymentSuccess /></ProtectedRoute>} />
             <Route path="/payment/failed" element={<ProtectedRoute roles={["buyer"]}><PaymentFailed /></ProtectedRoute>} />
 
@@ -141,6 +144,7 @@ function App() {
             <Route path="/admin/sellers" element={<ProtectedRoute roles={["admin"]}><AdminSellers /></ProtectedRoute>} />
             <Route path="/admin/orders" element={<ProtectedRoute roles={["admin"]}><AdminOrders /></ProtectedRoute>} />
             <Route path="/admin/kyc" element={<ProtectedRoute roles={["admin"]}><AdminKyc /></ProtectedRoute>} />
+            <Route path="/admin/buyer-kyc" element={<ProtectedRoute roles={["admin"]}><AdminBuyerKyc /></ProtectedRoute>} />
             <Route path="/admin/disputes" element={<ProtectedRoute roles={["admin"]}><AdminDisputes /></ProtectedRoute>} />
             <Route path="/admin/fraud" element={<ProtectedRoute roles={["admin"]}><AdminFraud /></ProtectedRoute>} />
             <Route path="/admin/deliverers" element={<ProtectedRoute roles={["admin"]}><AdminDeliverers /></ProtectedRoute>} />
