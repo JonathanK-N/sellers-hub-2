@@ -38,7 +38,14 @@ def s3_configured() -> bool:
 
 
 def upload_public(path: str, data: bytes, content_type: str) -> dict:
-    """Upload to the public bucket. Returns {"path": s3_key, "url": direct_public_url, "size": n}."""
+    """Upload to the public bucket. Returns {"path": s3_key, "url": direct_public_url, "size": n}.
+
+    Explicitly sets ACL=public-read: the bucket policy alone isn't always
+    enough — if the bucket's Object Ownership is "Bucket owner preferred"
+    (ACLs enabled) rather than "Bucket owner enforced", each object's own
+    ACL can still override the policy and default to private, causing
+    AccessDenied on read even though the policy says otherwise.
+    """
     if not s3_configured():
         raise RuntimeError("AWS credentials not configured")
     try:
@@ -47,6 +54,7 @@ def upload_public(path: str, data: bytes, content_type: str) -> dict:
             Key=path,
             Body=data,
             ContentType=content_type,
+            ACL="public-read",
         )
     except (ClientError, NoCredentialsError) as e:
         logger.error(f"S3 public upload failed ({path}): {e}")
