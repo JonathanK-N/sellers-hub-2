@@ -30,11 +30,30 @@ def _gen_code() -> str:
     return f"{random.randint(0, 999999):06d}"
 
 
+SELF_DELIVERY_FEE_TIERS = {7500, 10000, 15000, 20000}
+AFRIMARKET_DELIVERY_FEE = 16_000.0
+
+
+def _resolve_item_mode(requested_mode: str, product_modes: list) -> str:
+    """Determine the effective delivery mode for one cart item, given the buyer's
+    requested mode and what the product actually supports. Falls back to the
+    product's only supported mode when the request isn't available for it."""
+    modes = product_modes or ["delivery", "collect"]
+    if requested_mode in modes:
+        return requested_mode
+    # Buyer asked for a mode this product doesn't support — use what's available.
+    return modes[0]
+
+
 @router.post("/orders", status_code=201)
 async def create_order(req: OrderCreateRequest, user: dict = Depends(require_role("buyer"))):
     """Create an order from the cart. Carts spanning multiple sellers are split into
-    one sub-order per seller, grouped under a single order_group_id. A single Mobile
-    Money payment covers the whole group; funds are split into per-seller escrows.
+    one sub-order per seller, grouped under a single order_group_id. Within a single
+    seller, items are further split by delivery mode (delivery vs collect) when the
+    seller's products don't all support the same mode — e.g. one product is
+    delivery-only and another is pickup-only, producing two separate sub-orders for
+    that seller. A single Mobile Money payment covers the whole group; funds are
+    split into per-order escrows.
     """
     db = get_db()
     if not req.items:
@@ -48,15 +67,18 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     if len(products) != len(set(product_ids)):
         raise HTTPException(status_code=400, detail="Produit introuvable dans le panier")
 
-    # Group requested items by seller
-    items_by_seller: dict[str, list] = {}
+    # Group requested items by (seller_id, effective_delivery_mode).
+    # A seller with mixed delivery/collect-only products yields two groups → two sub-orders.
+    items_by_group: dict[tuple, list] = {}
     for it in req.items:
         p = products[it.product_id]
         if p["stock"] < it.quantity:
             raise HTTPException(status_code=400, detail=f"Stock insuffisant pour {p['name']}")
-        items_by_seller.setdefault(p["seller_id"], []).append((it, p))
+        effective_mode = _resolve_item_mode(req.delivery_mode, p.get("delivery_modes"))
+        key = (p["seller_id"], effective_mode)
+        items_by_group.setdefault(key, []).append((it, p))
 
-    seller_ids = list(items_by_seller.keys())
+    seller_ids = list({sid for sid, _mode in items_by_group.keys()})
     sellers = {s["id"]: s async for s in db.sellers.find({"id": {"$in": seller_ids}}, {"_id": 0})}
     missing = [sid for sid in seller_ids if sid not in sellers]
     if missing:
@@ -68,8 +90,8 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     grand_total = 0.0
     currency = user["currency"]
 
-    # Build one sub-order per seller
-    for seller_id, entries in items_by_seller.items():
+    # Build one sub-order per (seller, effective delivery mode)
+    for (seller_id, item_mode), entries in items_by_group.items():
         seller = sellers[seller_id]
         items_full = []
         sub_total = 0.0
@@ -88,15 +110,20 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
 
         commission_rate = seller.get("commission_rate", 0.07)
         commission_amount = round(sub_total * commission_rate, 2)
-        # Frais de livraison fixes AfriMarket: 16 000 FC (livreur: 11 500 / plateforme: 4 500)
-        # Seulement si le vendeur utilise le reseau AfriMarket (Premium requis)
+
+        # Frais de livraison: definis par le vendeur (palier self_delivery_fee)
+        # si livraison propre, ou fixes 16 000 FC si reseau AfriMarket. Aucun frais
+        # pour le retrait en boutique.
         seller_delivery = seller.get("delivery_service", "self")
-        if req.delivery_mode == "delivery" and seller_delivery == "afrimarket":
-            delivery_fee = 16_000.0
+        if item_mode == "delivery" and seller_delivery == "afrimarket":
+            delivery_fee = AFRIMARKET_DELIVERY_FEE
+        elif item_mode == "delivery" and seller_delivery == "self":
+            tier = seller.get("self_delivery_fee", 7500)
+            delivery_fee = float(tier if tier in SELF_DELIVERY_FEE_TIERS else 7500)
         else:
             delivery_fee = 0.0
         amount_due = sub_total + delivery_fee
-        qr_token = str(uuid.uuid4()) if req.delivery_mode == "collect" else None
+        qr_token = str(uuid.uuid4()) if item_mode == "collect" else None
         grand_total += amount_due
 
         order = {
@@ -111,11 +138,11 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
             "delivery_fee": delivery_fee,
             "amount_due": amount_due,
             "currency": currency,
-            "delivery_mode": req.delivery_mode,
-            "delivery_address": req.delivery_address,
-            "delivery_neighborhood": req.delivery_neighborhood,
-            "delivery_landmark": req.delivery_landmark,
-            "pickup_slot": req.pickup_slot,
+            "delivery_mode": item_mode,
+            "delivery_address": req.delivery_address if item_mode == "delivery" else None,
+            "delivery_neighborhood": req.delivery_neighborhood if item_mode == "delivery" else None,
+            "delivery_landmark": req.delivery_landmark if item_mode == "delivery" else None,
+            "pickup_slot": req.pickup_slot if item_mode == "collect" else None,
             "payment_method": req.payment_method,
             "status": "confirmed",
             "escrow_status": "held",
@@ -133,7 +160,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
         for it, _p in entries:
             await db.products.update_one({"id": it.product_id}, {"$inc": {"stock": -it.quantity}})
 
-        # Per-seller escrow transaction
+        # Per-order escrow transaction
         await db.transactions.insert_one({
             "id": str(uuid.uuid4()),
             "order_id": order["id"],
