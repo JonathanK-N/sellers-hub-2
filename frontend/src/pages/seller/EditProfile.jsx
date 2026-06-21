@@ -25,6 +25,7 @@ export default function EditProfile() {
     latitude: 0, longitude: 0, shop_logo_url: null, shop_banner_url: null,
     social_links: { facebook: "", tiktok: "", whatsapp_business: "", instagram: "" },
     delivery_service: "self",
+    self_delivery_fee: 7500,
   });
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
@@ -53,6 +54,7 @@ export default function EditProfile() {
           instagram: data.social_links?.instagram || "",
         },
         delivery_service: data.delivery_service || "self",
+        self_delivery_fee: data.self_delivery_fee || 7500,
       });
     }).catch(() => {});
 
@@ -196,6 +198,29 @@ export default function EditProfile() {
               </div>
               <div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${!isAfrimarket ? "border-[#1D9E75] bg-[#1D9E75]" : "border-gray-300"}`} />
             </div>
+
+            {!isAfrimarket && (
+              <div className="pl-11 pr-1 -mt-1 pb-1">
+                <label className="text-xs font-medium text-gray-600 mb-1.5 block">Frais de livraison que vous facturez</label>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {[7500, 10000, 15000, 20000].map((tier) => (
+                    <button
+                      key={tier}
+                      type="button"
+                      onClick={() => set("self_delivery_fee", tier)}
+                      className={`text-xs font-semibold py-2 rounded-lg border transition-colors ${
+                        form.self_delivery_fee === tier
+                          ? "bg-[#1D9E75] text-white border-[#1D9E75]"
+                          : "bg-white text-gray-600 border-gray-200"
+                      }`}
+                    >
+                      {(tier / 1000)}k
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[10px] text-gray-400 mt-1.5">Ce montant sera facturé à l'acheteur pour vos livraisons. Vous gérez la livraison vous-même.</p>
+              </div>
+            )}
 
             <div
               onClick={() => isAfrimarket || toggleDeliveryService()}
