@@ -98,3 +98,26 @@ def require_role(*roles: str):
             raise HTTPException(status_code=403, detail="Accès refusé")
         return user
     return checker
+
+async def get_current_user_optional(request: Request):
+    """Like get_current_user_dep but returns None instead of raising when
+    there's no valid session. Used for endpoints that serve both public and
+    private content (e.g. file serving) depending on the resource."""
+    from db import get_db  # lazy import to avoid circular
+
+    auth_header = request.headers.get("Authorization", "")
+    token: Optional[str] = None
+    if auth_header.startswith("Bearer "):
+        token = auth_header[7:]
+    if not token:
+        token = request.cookies.get("access_token")
+    if not token:
+        return None
+    try:
+        payload = decode_token(token)
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+        return None
+
+    db = get_db()
+    user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0, "password_hash": 0})
+    return user
