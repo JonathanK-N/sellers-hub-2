@@ -28,9 +28,13 @@ def _uid(): return str(uuid.uuid4())
 # Images Unsplash — URLs directes (libres de droits, pas de token requis)
 # Format: https://images.unsplash.com/photo-<id>?w=800&q=80&fit=crop
 # ---------------------------------------------------------------------------
+_S3_BUCKET = os.environ.get("AWS_BUCKET_PUBLIC", "afrimarket")
+_S3_REGION = os.environ.get("AWS_REGION", "us-east-1")
+
+
 def img(filename):
-    """Images hebergees sur repo GitHub PUBLIC dedie (afrimarket-assets)."""
-    return f"https://raw.githubusercontent.com/JonathanK-N/afrimarket-assets/main/products/{filename}.jpg"
+    """Images hebergees sur le bucket S3 public AfriMarket."""
+    return f"https://{_S3_BUCKET}.s3.{_S3_REGION}.amazonaws.com/afrimarket/demo-products/{filename}.jpg"
 
 # Logos boutiques (carrés)
 LOGO_ELECTRO   = img("logo_electro")
@@ -397,8 +401,7 @@ async def _refresh_product_images(db):
         valid_photos = [
             p for p in photos_raw
             if p and isinstance(p, str)
-            and "raw.githubusercontent.com" in p
-            and "afrimarket-assets" in p
+            and (".s3." in p and ".amazonaws.com" in p)
             and p.rsplit("/", 1)[-1] in current_filenames
         ]
         if valid_photos:
