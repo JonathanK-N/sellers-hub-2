@@ -29,8 +29,8 @@ def _uid(): return str(uuid.uuid4())
 # Format: https://images.unsplash.com/photo-<id>?w=800&q=80&fit=crop
 # ---------------------------------------------------------------------------
 def img(filename):
-    """Images hébergées sur GitHub — accessibles sans restriction."""
-    return f"https://raw.githubusercontent.com/JonathanK-N/sellers-hub-2/main/public/images/products/{filename}.jpg"
+    """Images hebergees sur repo GitHub PUBLIC dedie (afrimarket-assets)."""
+    return f"https://raw.githubusercontent.com/JonathanK-N/afrimarket-assets/main/products/{filename}.jpg"
 
 # Logos boutiques (carrés)
 LOGO_ELECTRO   = img("logo_electro")
@@ -271,7 +271,7 @@ SHOPS = [
         "price": 65000, "stock": 18, "category": "Électroménager",
         "photos": [
           img("ventilateur"),
-          img("1558618666-fcd25c85cd64"),
+          img("miroir"),
         ],
         "specs": [{"label":"Diamètre","value":"16 pouces (40 cm)"},{"label":"Vitesses","value":"3"},{"label":"Consommation","value":"45W"},{"label":"Télécommande","value":"Incluse"}],
       },
@@ -296,7 +296,7 @@ SHOPS = [
         "description": "Miroir avec cadre en bois naturel, design africain, livré avec fixations incluses.",
         "long_description": "Ce miroir mural est encadré d'un bois naturel sculpté selon des motifs africains traditionnels. Sa taille généreuse (60×80 cm) en fait un élément décoratif fort pour votre salon, entrée ou chambre. Le verre argent de haute qualité offre un reflet fidèle sans distorsion. Les fixations murales sont incluses. Fabriqué par des artisans congolais.",
         "price": 45000, "stock": 10, "category": "Décoration",
-        "photos": [img("1558618666-fcd25c85cd64"), img("casseroles")],
+        "photos": [img("miroir"), img("casseroles")],
         "specs": [{"label":"Dimensions","value":"60×80 cm"},{"label":"Cadre","value":"Bois naturel sculpté"},{"label":"Fixations","value":"Incluses"},{"label":"Fabrication","value":"Artisanale locale"}],
       },
     ],
@@ -398,7 +398,7 @@ async def _refresh_product_images(db):
             p for p in photos_raw
             if p and isinstance(p, str)
             and "raw.githubusercontent.com" in p
-            and "sellers-hub-2" in p
+            and "afrimarket-assets" in p
             and p.rsplit("/", 1)[-1] in current_filenames
         ]
         if valid_photos:
