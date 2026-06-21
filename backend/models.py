@@ -105,6 +105,7 @@ class SellerSetupRequest(BaseModel):
     longitude: float = 0.0
     shop_logo_url: Optional[str] = None
     delivery_service: str = "self"  # "self" | "afrimarket"
+    self_delivery_fee: int = 7500  # palier choisi par le vendeur: 7500 | 10000 | 15000 | 20000
 
 
 class SellerPublic(BaseModel):
@@ -146,6 +147,7 @@ class ProductCreateRequest(BaseModel):
     stock: int = 0
     category: str = "Général"
     photos: List[str] = Field(default_factory=list)
+    delivery_modes: List[str] = Field(default_factory=lambda: ["delivery", "collect"])  # modes autorises pour ce produit
 
 
 class ProductPublic(BaseModel):
