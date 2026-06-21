@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Plus, Package, ShoppingBag, Star, TrendingUp, ShieldCheck, AlertCircle, Wallet, ScanLine, Crown, Pencil, Eye } from "lucide-react";
+import { Plus, Package, ShoppingBag, Star, TrendingUp, ShieldCheck, AlertCircle, Wallet, ScanLine, Crown, Pencil, Eye, Truck } from "lucide-react";
 import api from "../../lib/api";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
@@ -53,6 +53,14 @@ export default function SellerDashboard() {
             <Eye size={15} /> Voir ma boutique
           </Link>
         </div>
+
+        <Link
+          to="/seller/deliverer-applications"
+          data-testid="goto-deliverer-applications"
+          className="flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-[#085041] shadow-sm"
+        >
+          <Truck size={15} /> Candidatures livreurs
+        </Link>
 
         {/* Premium banner */}
         <button
