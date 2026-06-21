@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { MapPin, Clock, Star, ShieldCheck, Crown, Facebook, Globe, Phone, Package } from "lucide-react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { toast } from "sonner";
+import { MapPin, Clock, Star, ShieldCheck, Crown, Facebook, Globe, Phone, Package, MessageSquare, LogIn } from "lucide-react";
 import api from "../../lib/api";
-import { formatPrice, photoUrl, timeAgo } from "../../lib/format";
+import { photoUrl, timeAgo } from "../../lib/format";
+import { useAuth } from "../../context/AuthContext";
 import ProductCard from "../../components/ProductCard";
 
-export default function ShopProfile() {
+export default function ShopProfile({ guest = false }) {
   const { sellerId } = useParams();
+  const nav = useNavigate();
+  const { user } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -23,6 +27,17 @@ export default function ShopProfile() {
   const { seller, products, reviews } = data;
   const social = seller.social_links || {};
   const hasSocial = social.facebook || social.tiktok || social.whatsapp_business || social.instagram;
+  const isGuestView = guest || !user;
+  const backLink = isGuestView ? "/" : "/buyer/home";
+
+  const handleContact = () => {
+    if (isGuestView) {
+      toast.info("Connectez-vous pour contacter le vendeur");
+      nav("/auth/login", { state: { from: `/explore/shop/${sellerId}` } });
+      return;
+    }
+    nav(`/messages/${user.id}__${seller.user_id}`, { state: { other_name: seller.shop_name } });
+  };
 
   return (
     <div className="mobile-shell pb-12">
@@ -38,9 +53,14 @@ export default function ShopProfile() {
             : <div className="w-full h-full bg-[#085041] flex items-center justify-center"><span className="text-white text-3xl font-black">{seller.shop_name[0]}</span></div>}
         </div>
         {/* Bouton retour */}
-        <Link to="/buyer/home" className="absolute top-3 left-3 w-8 h-8 rounded-full bg-black/30 backdrop-blur flex items-center justify-center text-white">
+        <Link to={backLink} className="absolute top-3 left-3 w-8 h-8 rounded-full bg-black/30 backdrop-blur flex items-center justify-center text-white">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
         </Link>
+        {isGuestView && (
+          <Link to="/auth/login" className="absolute top-3 right-3 flex items-center gap-1 text-xs font-semibold bg-white/90 backdrop-blur text-[#085041] px-3 py-1.5 rounded-full">
+            <LogIn size={13} /> Connexion
+          </Link>
+        )}
       </div>
 
       <div className="px-4 pt-12">
@@ -76,6 +96,15 @@ export default function ShopProfile() {
           {seller.neighborhood && <span className="flex items-center gap-1 text-xs text-gray-500"><MapPin size={12} />{seller.neighborhood}{seller.address ? `, ${seller.address}` : ""}</span>}
           {seller.opening_hours && <span className="flex items-center gap-1 text-xs text-gray-500"><Clock size={12} />{seller.opening_hours}</span>}
         </div>
+
+        {/* Bouton contact */}
+        <button
+          data-testid="contact-seller-btn"
+          onClick={handleContact}
+          className="w-full mt-4 bg-white border border-[#1D9E75] text-[#1D9E75] hover:bg-[#E1F5EE] rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm transition-colors"
+        >
+          <MessageSquare size={16} /> {isGuestView ? "Se connecter pour contacter ce vendeur" : "Contacter le vendeur"}
+        </button>
 
         {/* DESCRIPTION LONGUE */}
         {seller.long_description && (
@@ -122,7 +151,7 @@ export default function ShopProfile() {
           {products.length === 0
             ? <p className="text-sm text-gray-400 text-center py-6">Aucun produit disponible pour l'instant.</p>
             : <div className="grid grid-cols-2 gap-3">
-                {products.map(p => <ProductCard key={p.id} product={{ ...p, seller_name: seller.shop_name, seller_rating: seller.rating, seller_premium: seller.premium }} />)}
+                {products.map(p => <ProductCard key={p.id} guest={isGuestView} product={{ ...p, seller_name: seller.shop_name, seller_rating: seller.rating, seller_premium: seller.premium }} />)}
               </div>
           }
         </div>
@@ -146,6 +175,18 @@ export default function ShopProfile() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* CTA bas de page (guest only) */}
+        {isGuestView && (
+          <div className="mt-6 bg-[#E1F5EE] rounded-xl p-4 text-center">
+            <p className="text-sm text-[#085041] font-medium mb-3">
+              Connectez-vous pour commander chez {seller.shop_name}
+            </p>
+            <Link to="/auth/register" className="inline-block bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors">
+              Créer mon compte
+            </Link>
           </div>
         )}
       </div>
