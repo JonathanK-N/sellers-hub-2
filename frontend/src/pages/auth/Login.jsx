@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Phone, Lock } from "lucide-react";
+import { ArrowLeft, Phone, Lock, Eye, EyeOff } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
 
@@ -12,6 +12,7 @@ export default function Login() {
   const [dial, setDial] = useState("+243");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -90,13 +91,22 @@ export default function Login() {
             <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               data-testid="login-password-input"
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && phone && password && submit()}
               placeholder="••••••••"
-              className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
+              className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
             />
+            <button
+              type="button"
+              data-testid="toggle-login-password-visibility"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
           <Link to="/auth/forgot" className="text-xs text-[#1D9E75] font-medium mt-1.5 inline-block" data-testid="link-forgot">
             Mot de passe oublié ?
