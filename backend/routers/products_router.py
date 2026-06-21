@@ -6,11 +6,12 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Depends, Query, Response
+from fastapi.responses import RedirectResponse
 
 from db import get_db
 from models import ProductCreateRequest
 from auth import require_role, get_current_user_dep, get_current_user_optional
-from storage import get_object
+from s3_service import generate_presigned_url, BUCKET_PUBLIC, AWS_REGION
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["products"])
@@ -190,10 +191,12 @@ async def delete_product(product_id: str, user: dict = Depends(require_role("sel
 
 @router.get("/files/{file_id}")
 async def serve_file(file_id: str, user: Optional[dict] = Depends(get_current_user_optional)):
-    """Serve a file from object storage. Public for non-private files (product
-    photos, shop logos/banners). Private files (KYC documents: ID cards,
-    selfies, address proofs) require the requester to be the file owner or
-    an admin — anyone else gets a 403, even with a valid file_id."""
+    """Resolve a file_id to its S3 location and redirect there. Public files
+    (product photos, shop logos/banners, avatars) redirect straight to the
+    permanent public S3 URL. Private files (KYC documents: ID cards, selfies)
+    require the requester to be the file owner or an admin, then redirect to
+    a short-lived presigned URL (5 min) rather than ever exposing a stable
+    public link to sensitive documents."""
     db = get_db()
     record = await db.files.find_one({"id": file_id, "is_deleted": False}, {"_id": 0})
     if not record:
@@ -206,13 +209,15 @@ async def serve_file(file_id: str, user: Optional[dict] = Depends(get_current_us
         is_admin = user.get("role") == "admin"
         if not (is_owner or is_admin):
             raise HTTPException(status_code=403, detail="Accès refusé à ce document")
+        try:
+            signed_url = generate_presigned_url(record["storage_path"], expires_in=300)
+        except Exception as e:
+            logger.error(f"Presign error: {e}")
+            raise HTTPException(status_code=500, detail="Erreur de récupération")
+        return RedirectResponse(url=signed_url, status_code=302)
 
-    try:
-        data, ct = get_object(record["storage_path"])
-    except Exception as e:
-        logger.error(f"File fetch error: {e}")
-        raise HTTPException(status_code=500, detail="Erreur de récupération")
-    return Response(content=data, media_type=record.get("content_type", ct))
+    public_url = f"https://{BUCKET_PUBLIC}.s3.{AWS_REGION}.amazonaws.com/{record['storage_path']}"
+    return RedirectResponse(url=public_url, status_code=302)
 
 
 @router.get("/categories")
