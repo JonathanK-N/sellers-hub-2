@@ -27,6 +27,7 @@ from routers.delivery_router import router as delivery_router
 from routers.notifications_router import router as notifications_router
 from routers.payments_router import router as payments_router
 from routers.premium_router import router as premium_router
+from routers.buyer_kyc_router import router as buyer_kyc_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -62,6 +63,7 @@ api_router.include_router(delivery_router)
 api_router.include_router(notifications_router)
 api_router.include_router(payments_router)
 api_router.include_router(premium_router)
+api_router.include_router(buyer_kyc_router)
 
 app.include_router(api_router)
 
