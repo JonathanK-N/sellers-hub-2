@@ -81,7 +81,11 @@ async def list_products(
             continue
         if verified_only and not s.get("badge_verified"):
             continue
-        # Compute distance if buyer location provided
+        # Compute distance if buyer location provided. The radius filter only
+        # applies for geo-browsing (no text query): a text search for a known
+        # product name must find it regardless of the buyer's GPS position —
+        # otherwise a buyer far from a seller's coordinates gets zero results
+        # even when the product genuinely exists in the catalog.
         distance = None
         loc = s.get("location") or {}
         coords = loc.get("coordinates") if isinstance(loc, dict) else None
@@ -89,7 +93,7 @@ async def list_products(
             slng, slat = coords[0], coords[1]
             if slat or slng:
                 distance = _haversine_km(lat, lng, slat, slng)
-                if distance > radius_km:
+                if not q and distance > radius_km:
                     continue
         p["seller_name"] = s.get("shop_name")
         p["seller_verified"] = s.get("badge_verified", False)
