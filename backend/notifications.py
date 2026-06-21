@@ -29,6 +29,8 @@ NOTIF_TYPES = {
     "review_received": "Nouvel avis",
     "withdrawal_completed": "Retrait effectué",
     "fraud_alert": "Alerte fraude",
+    "deliverer_application_approved": "Candidature livreur approuvée",
+    "deliverer_application_rejected": "Candidature livreur rejetée",
 }
 
 
