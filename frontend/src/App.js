@@ -25,6 +25,7 @@ import Profile from "./pages/buyer/Profile";
 import PaymentSuccess from "./pages/buyer/PaymentSuccess";
 import PaymentFailed from "./pages/buyer/PaymentFailed";
 import BuyerKycVerification from "./pages/buyer/BuyerKycVerification";
+import BecomeDeliverer from "./pages/BecomeDeliverer";
 
 import SellerSetup from "./pages/seller/Setup";
 import SellerDashboard from "./pages/seller/Dashboard";
@@ -117,6 +118,7 @@ function App() {
             <Route path="/buyer/order-group/:groupId" element={<ProtectedRoute roles={["buyer"]}><OrderGroup /></ProtectedRoute>} />
             <Route path="/buyer/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/buyer/kyc" element={<ProtectedRoute roles={["buyer"]}><BuyerKycVerification /></ProtectedRoute>} />
+            <Route path="/become-deliverer" element={<ProtectedRoute><BecomeDeliverer /></ProtectedRoute>} />
             <Route path="/payment/success" element={<ProtectedRoute roles={["buyer"]}><PaymentSuccess /></ProtectedRoute>} />
             <Route path="/payment/failed" element={<ProtectedRoute roles={["buyer"]}><PaymentFailed /></ProtectedRoute>} />
 
