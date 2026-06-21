@@ -109,6 +109,14 @@ async def verify_application_otp(req: ApplicationOtpVerifyRequest, user: dict = 
 async def submit_application(req: DelivererApplicationRequest, user: dict = Depends(get_current_user_dep)):
     db = get_db()
 
+    if user["role"] == "seller":
+        raise HTTPException(
+            status_code=403,
+            detail="Les vendeurs ne peuvent pas devenir livreurs. Cette fonctionnalité est réservée aux acheteurs.",
+        )
+    if user["role"] == "deliverer":
+        raise HTTPException(status_code=400, detail="Vous êtes déjà livreur sur AfriMarket")
+
     if req.application_type not in ("afrimarket", "shop"):
         raise HTTPException(status_code=400, detail="Type de candidature invalide")
 
@@ -285,6 +293,13 @@ async def admin_get_application(application_id: str, _: dict = Depends(require_r
 async def _activate_deliverer(db, application: dict, reviewer_id: str):
     user_id = application["user_id"]
     affiliation = "afrimarket" if application["application_type"] == "afrimarket" else "shop"
+
+    applicant_user = await db.users.find_one({"id": user_id}, {"_id": 0, "role": 1})
+    if applicant_user and applicant_user.get("role") == "seller":
+        raise HTTPException(
+            status_code=409,
+            detail="Ce candidat est désormais vendeur et ne peut pas être activé comme livreur",
+        )
 
     existing = await db.deliverers.find_one({"user_id": user_id}, {"_id": 0})
     profile = {
