@@ -50,6 +50,21 @@ async def health():
     return {"status": "ok"}
 
 
+@api_router.get("/fx/rate")
+async def fx_rate():
+    """Taux USD/CDF depuis le cache (mis à jour toutes les 6h par le scheduler)."""
+    from fx_service import get_usd_to_fc
+    from db import get_db
+    db = get_db()
+    rate = await get_usd_to_fc()
+    doc = await db.fx_rates.find_one({"pair": "USD_CDF"}, {"_id": 0})
+    return {
+        "pair": "USD_CDF",
+        "rate": rate,
+        "updated_at": doc.get("updated_at") if doc else None,
+    }
+
+
 api_router.include_router(auth_router)
 api_router.include_router(countries_router)
 api_router.include_router(sellers_router)

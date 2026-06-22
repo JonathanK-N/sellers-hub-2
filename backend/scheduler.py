@@ -84,6 +84,16 @@ async def expire_premium_subscriptions():
         logger.info(f"[CRON] Premium expired for seller {s['id']}")
 
 
+async def refresh_fx_rate():
+    """Rafraîchit le taux USD/CDF depuis ForexRateAPI et le cache en base."""
+    try:
+        from fx_service import refresh_rate
+        rate = await refresh_rate()
+        logger.info(f"[CRON] Taux USD/CDF rafraîchi : {rate}")
+    except Exception as e:
+        logger.warning(f"[CRON] Échec refresh taux FX : {e}")
+
+
 def start_scheduler():
     global _scheduler
     if _scheduler:
@@ -91,7 +101,11 @@ def start_scheduler():
     _scheduler = AsyncIOScheduler(timezone="UTC")
     _scheduler.add_job(process_pending_withdrawals, "interval", minutes=1, id="withdrawals")
     _scheduler.add_job(expire_premium_subscriptions, "interval", hours=6, id="premium_expiry")
+    _scheduler.add_job(refresh_fx_rate, "interval", hours=6, id="fx_rate_refresh")
     _scheduler.start()
+    # Premier fetch immédiat au démarrage (non bloquant)
+    import asyncio
+    asyncio.ensure_future(refresh_fx_rate())
     logger.info("Scheduler started")
 
 

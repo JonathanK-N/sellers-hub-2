@@ -158,6 +158,8 @@ async def create_product(req: ProductCreateRequest, user: dict = Depends(require
         "specs": [s.model_dump() for s in req.specs],
         "price": req.price,
         "currency": getattr(req, "currency", None) or user["currency"],
+        "price_fc": None,   # sera rempli ci-dessous si USD
+        "fx_rate": None,
         "stock": req.stock,
         "category": req.category,
         "photos": req.photos[:5],
@@ -166,6 +168,17 @@ async def create_product(req: ProductCreateRequest, user: dict = Depends(require
         "country_code": user["country_code"],
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
+    # Conversion USD → FC si nécessaire
+    chosen_currency = getattr(req, "currency", None) or user["currency"]
+    if chosen_currency == "USD":
+        try:
+            from fx_service import convert_usd_to_fc
+            price_fc, fx_rate = await convert_usd_to_fc(req.price)
+            product["price_fc"] = price_fc
+            product["fx_rate"] = fx_rate
+        except Exception as e:
+            logger.warning(f"FX conversion failed at product create: {e}")
+
     await db.products.insert_one(product)
     product.pop("_id", None)
     return product
@@ -200,6 +213,22 @@ async def update_product(product_id: str, req: ProductUpdateRequest, user: dict 
     ALLOWED_CURRENCY = {"FC", "USD"}
     if "currency" in update_data and update_data["currency"] not in ALLOWED_CURRENCY:
         update_data.pop("currency")
+
+    # Recalculer price_fc si le prix ou la devise a changé vers USD
+    final_currency = update_data.get("currency") or existing.get("currency", "FC")
+    final_price = update_data.get("price") or existing.get("price", 0)
+    if final_currency == "USD":
+        try:
+            from fx_service import convert_usd_to_fc
+            price_fc, fx_rate = await convert_usd_to_fc(final_price)
+            update_data["price_fc"] = price_fc
+            update_data["fx_rate"] = fx_rate
+        except Exception as e:
+            logger.warning(f"FX conversion failed at product update: {e}")
+    else:
+        # FC ou autre: pas de conversion, effacer les champs
+        update_data["price_fc"] = None
+        update_data["fx_rate"] = None
 
     if "specs" in update_data and update_data["specs"] is not None:
         update_data["specs"] = [s if isinstance(s, dict) else s.model_dump() for s in update_data["specs"]]
