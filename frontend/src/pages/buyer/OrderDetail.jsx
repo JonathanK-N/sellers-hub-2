@@ -157,6 +157,8 @@ export default function OrderDetail() {
   const [deliverers, setDeliverers] = useState([]);
   const [showAssign, setShowAssign] = useState(false);
   const [tracking, setTracking] = useState(null);
+  const [collectConfirmed, setCollectConfirmed] = useState(false);
+  const [confirmingCollect, setConfirmingCollect] = useState(false);
 
   const load = useCallback(() => api.get(`/orders/${id}`).then(({ data }) => setOrder(data)), [id]);
 
@@ -248,8 +250,6 @@ export default function OrderDetail() {
 
   const isBuyer = user?.role === "buyer";
   const isSeller = user?.role === "seller";
-  const [collectConfirmed, setCollectConfirmed] = useState(false);
-  const [confirmingCollect, setConfirmingCollect] = useState(false);
   const showTracking = order.delivery_mode === "delivery" && TRACKING_STATUSES.includes(order.status);
 
   return (
