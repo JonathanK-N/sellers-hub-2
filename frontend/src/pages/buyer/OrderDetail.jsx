@@ -363,7 +363,14 @@ export default function OrderDetail() {
             </h3>
             <div className="inline-block bg-white p-3 rounded-lg">
               <QRCodeSVG
-                value={`${window.location.origin}/qr-collect/${order.id}/${order.qr_code}`}
+                value={(() => {
+                  // Toujours encoder l'URL de prod pour que le QR soit scannable
+                  // depuis n'importe quel appareil, pas juste depuis le même réseau
+                  const base = window.location.hostname === "localhost"
+                    ? "https://afrimarket.up.railway.app"
+                    : window.location.origin;
+                  return `${base}/qr-collect/${order.id}/${order.qr_code}`;
+                })()}
                 size={200}
                 fgColor="#085041"
               />

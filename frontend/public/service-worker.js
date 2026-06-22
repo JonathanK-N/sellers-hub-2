@@ -1,45 +1,61 @@
-/* AfriMarket PWA service worker — v4
-   Stratégie :
-   - API calls           → network-only
-   - Navigations HTML    → network-first (JAMAIS de cache pour index.html)
-   - JS / CSS / chunks   → network-first (fraîcheur après deploy)
-   - Images CDN externes → cache-first (immutables)
+/* AfriMarket PWA service worker — v5
+   Stratégie définitive pour production :
+   - API (/api/)         → network-only, jamais de cache
+   - Navigation HTML     → network-first avec timeout 4s, fallback index.html offline
+   - JS/CSS/chunks       → network-first, cache de secours
+   - Images CDN (S3)     → cache-first, réseau en fallback
    - Autres assets       → stale-while-revalidate
 */
-const CACHE_VERSION = "afrimarket-v4";
-const STATIC_SHELL = [
+const CACHE = "afrimarket-v5";
+const OFFLINE_PAGE = "/index.html";
+
+// Assets à précacher au premier install
+const PRECACHE = [
+  "/",
+  "/index.html",
+  "/manifest.json",
   "/icons/icon-192x192.png",
   "/icons/icon-512x512.png",
-  "/manifest.json",
 ];
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_VERSION)
-      .then((cache) => cache.addAll(STATIC_SHELL))
-      .catch(() => {})
+// ── Install ──────────────────────────────────────────────────────────────────
+self.addEventListener("install", (e) => {
+  e.waitUntil(
+    caches.open(CACHE)
+      .then((c) => c.addAll(PRECACHE))
+      .catch(() => {}) // ne pas bloquer l'install si un asset manque
   );
   self.skipWaiting();
 });
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
+// ── Activate — purger les anciens caches ─────────────────────────────────────
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_VERSION).map((k) => caches.delete(k)))
+      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
     )
   );
   self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {
-  const { request } = event;
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function withTimeout(promise, ms) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), ms)),
+  ]);
+}
+
+// ── Fetch ────────────────────────────────────────────────────────────────────
+self.addEventListener("fetch", (e) => {
+  const { request } = e;
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
 
-  // ── 1. API calls — réseau uniquement, jamais de cache ──────────────────
+  // 1. API — réseau pur, jamais de cache
   if (url.pathname.startsWith("/api/")) {
-    event.respondWith(
+    e.respondWith(
       fetch(request).catch(() =>
         new Response(JSON.stringify({ detail: "Hors ligne" }), {
           status: 503,
@@ -50,41 +66,53 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // ── 2. Navigations HTML (refresh, liens directs, QR scan) ──────────────
-  // TOUJOURS network-first : index.html doit être frais après chaque deploy.
-  // Si le réseau tombe, on sert l'index.html en cache comme fallback offline.
+  // 2. Navigation HTML (refresh, lien direct, scan QR, deep link)
+  //    → network-first avec timeout 5s
+  //    → si réseau ok : mettre index.html en cache et servir
+  //    → si réseau KO ou timeout : servir index.html depuis cache (offline)
   if (request.mode === "navigate") {
-    event.respondWith(
-      fetch(request)
+    e.respondWith(
+      withTimeout(fetch(request), 5000)
         .then((resp) => {
           if (resp.ok) {
-            // Mettre à jour le cache silencieusement
+            // Toujours mettre à jour le cache de index.html
             const copy = resp.clone();
-            caches.open(CACHE_VERSION).then((c) => c.put(request, copy)).catch(() => {});
+            caches.open(CACHE).then((c) => {
+              c.put(OFFLINE_PAGE, copy.clone());
+              c.put(request, copy);
+            }).catch(() => {});
           }
           return resp;
         })
         .catch(async () => {
-          // Hors ligne : servir index.html depuis le cache (SPA routing)
-          const cached = await caches.match("/index.html") || await caches.match("/");
-          return cached || new Response("Hors ligne", { status: 503 });
+          // Hors ligne ou timeout → SPA fallback
+          const cached =
+            (await caches.match(OFFLINE_PAGE)) ||
+            (await caches.match("/"));
+          return (
+            cached ||
+            new Response(
+              "<html><body>Hors ligne — relancez l'application</body></html>",
+              { status: 503, headers: { "Content-Type": "text/html" } }
+            )
+          );
         })
     );
     return;
   }
 
-  // ── 3. JS / CSS / chunks — network-first ───────────────────────────────
+  // 3. JS / CSS / chunks — network-first, cache de secours
   const isAsset =
     url.pathname.match(/\.(js|css|mjs)$/) ||
     url.pathname.startsWith("/static/");
 
   if (isAsset) {
-    event.respondWith(
+    e.respondWith(
       fetch(request)
         .then((resp) => {
           if (resp.ok) {
             const copy = resp.clone();
-            caches.open(CACHE_VERSION).then((c) => c.put(request, copy)).catch(() => {});
+            caches.open(CACHE).then((c) => c.put(request, copy)).catch(() => {});
           }
           return resp;
         })
@@ -95,33 +123,37 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // ── 4. Images CDN externes (S3) — cache-first, économise la bande passante
+  // 4. Images CDN externes (S3, Cloudfront) — cache-first
   if (url.origin !== self.location.origin) {
-    event.respondWith(
+    e.respondWith(
       caches.match(request).then((cached) => {
         if (cached) return cached;
-        return fetch(request).then((resp) => {
-          if (resp.ok) {
-            const copy = resp.clone();
-            caches.open(CACHE_VERSION).then((c) => c.put(request, copy)).catch(() => {});
-          }
-          return resp;
-        }).catch(() => new Response("", { status: 504 }));
+        return fetch(request)
+          .then((resp) => {
+            if (resp.ok) {
+              const copy = resp.clone();
+              caches.open(CACHE).then((c) => c.put(request, copy)).catch(() => {});
+            }
+            return resp;
+          })
+          .catch(() => new Response("", { status: 504 }));
       })
     );
     return;
   }
 
-  // ── 5. Autres assets locaux (icons, fonts…) — stale-while-revalidate ───
-  event.respondWith(
+  // 5. Autres assets locaux (icons, fonts…) — stale-while-revalidate
+  e.respondWith(
     caches.match(request).then((cached) => {
-      const fetchPromise = fetch(request).then((resp) => {
-        if (resp.ok) {
-          const copy = resp.clone();
-          caches.open(CACHE_VERSION).then((c) => c.put(request, copy)).catch(() => {});
-        }
-        return resp;
-      }).catch(() => null);
+      const fetchPromise = fetch(request)
+        .then((resp) => {
+          if (resp.ok) {
+            const copy = resp.clone();
+            caches.open(CACHE).then((c) => c.put(request, copy)).catch(() => {});
+          }
+          return resp;
+        })
+        .catch(() => null);
 
       return cached || fetchPromise.then((r) => r || new Response("", { status: 504 }));
     })

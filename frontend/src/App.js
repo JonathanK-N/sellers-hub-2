@@ -61,15 +61,27 @@ import DelivererDashboard from "./pages/deliverer/Dashboard";
 import Notifications from "./pages/Notifications";
 import { useParams as useQrParams } from "react-router-dom";
 
-// Redirige l'acheteur vers sa page commande quand il scanne son propre QR.
-// Le vendeur voit cette même URL dans son scanner et extrait le token.
+// Gestion du scan QR Click & Collect.
+// L'URL encodée dans le QR est : /qr-collect/:orderId/:token
+//   - Acheteur : redirigé vers sa page commande (pour voir le QR)
+//   - Vendeur  : redirigé vers /seller/scan qui gère la caméra
+//   - Non-connecté : redirigé vers login puis revient ici
 function QrCollectRedirect() {
-  const { orderId } = useQrParams();
+  const { orderId, token } = useQrParams();
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Chargement…</div>;
-  if (!user) return <Navigate to="/auth/login" replace />;
-  // Buyer → sa page commande | Seller → page scanner (il gère le scan)
-  if (user.role === "seller") return <Navigate to="/seller/scan" replace />;
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center text-gray-500">
+      Chargement…
+    </div>
+  );
+  if (!user) {
+    return <Navigate to={`/auth/login?next=/qr-collect/${orderId}/${token}`} replace />;
+  }
+  if (user.role === "seller") {
+    // Le vendeur va sur son scanner — il n'a pas besoin d'accéder à la commande buyer
+    return <Navigate to="/seller/scan" replace />;
+  }
+  // Buyer, admin, deliverer → page de la commande
   return <Navigate to={`/buyer/orders/${orderId}`} replace />;
 }
 
