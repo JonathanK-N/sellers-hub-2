@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Truck, Store, ShieldCheck, Lock } from "lucide-react";
+import { ArrowLeft, Truck, Store, ShieldCheck, Banknote, Info } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
@@ -16,13 +16,9 @@ export default function Checkout() {
   const [landmark, setLandmark] = useState("");
   const [city, setCity] = useState("");
   const [pickupSlot, setPickupSlot] = useState("Aujourd'hui 14:00-16:00");
-  const [payment, setPayment] = useState("MTN MoMo");
-  const [operators, setOperators] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [sellerInfo, setSellerInfo] = useState({}); // { seller_id: { delivery_service, self_delivery_fee } }
+  const [sellerInfo, setSellerInfo] = useState({});
 
-  // Quels modes sont disponibles compte tenu de TOUS les produits du panier.
-  // Un mode est "disponible" si au moins un produit du panier le supporte.
   const availableModes = useMemo(() => {
     const allModes = new Set();
     items.forEach((it) => {
@@ -35,9 +31,6 @@ export default function Checkout() {
   const deliveryAvailable = availableModes.has("delivery");
   const collectAvailable = availableModes.has("collect");
 
-  // Calcul des frais de livraison: somme par vendeur distinct dont au moins un
-  // produit (compatible avec le mode choisi) sera livré. Reflete au plus pres
-  // ce que le backend va facturer (un frais par sous-commande "delivery").
   const deliveryFee = useMemo(() => {
     if (mode !== "delivery") return 0;
     const sellersToCharge = new Set();
@@ -55,22 +48,10 @@ export default function Checkout() {
   }, [mode, items, sellerInfo]);
 
   useEffect(() => {
-    // Si le mode actuellement sélectionné n'est plus disponible, basculer automatiquement.
     if (mode === "delivery" && !deliveryAvailable && collectAvailable) setMode("collect");
     if (mode === "collect" && !collectAvailable && deliveryAvailable) setMode("delivery");
   }, [deliveryAvailable, collectAvailable]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    api.get("/countries").then(({ data }) => {
-      const c = data.find((c) => c.code === user?.country_code);
-      if (c) {
-        setOperators(c.mobile_money_operators);
-        setPayment(c.mobile_money_operators[0]);
-      }
-    });
-  }, [user?.country_code]);
-
-  // Charger les infos de livraison (delivery_service + self_delivery_fee) de chaque vendeur du panier
   useEffect(() => {
     const sellerIds = [...new Set(items.map((i) => i.seller_id).filter(Boolean))];
     if (sellerIds.length === 0) return;
@@ -117,33 +98,19 @@ export default function Checkout() {
         delivery_landmark: mode === "delivery" ? landmark : null,
         delivery_address: mode === "delivery" ? city : null,
         pickup_slot: mode === "collect" ? pickupSlot : null,
-        payment_method: payment,
+        payment_method: "cash",
       };
       const { data } = await api.post("/orders", payload);
       const groupId = data.order_group_id;
       const n = data.seller_count || (data.orders ? data.orders.length : 1);
 
-      let paymentUrl = null;
-      try {
-        const initRes = await api.post("/payments/init", { order_group_id: groupId });
-        paymentUrl = initRes.data?.payment_url || null;
-      } catch {
-        // sandbox fallback
-      }
-
       clear();
 
-      if (paymentUrl) {
-        toast.success("Redirection vers le paiement sécurisé…");
-        window.location.href = paymentUrl;
-        return;
-      }
-
       if (n > 1) {
-        toast.success(`${n} commande${n > 1 ? "s" : ""} créée${n > 1 ? "s" : ""}. Paiement unique bloqué en escrow.`);
+        toast.success(`${n} commande${n > 1 ? "s" : ""} créée${n > 1 ? "s" : ""}. Paiement à la livraison.`);
         nav(`/buyer/order-group/${groupId}`);
       } else {
-        toast.success("Commande créée. Paiement bloqué en escrow.");
+        toast.success("Commande créée. Paiement à la livraison.");
         nav(`/buyer/orders/${data.orders[0].id}`);
       }
     } catch (e) {
@@ -164,7 +131,8 @@ export default function Checkout() {
         <h1 className="font-display font-black text-xl">Paiement</h1>
       </header>
 
-      <div className="px-4 mt-4 space-y-3">
+      <div className="px-4 mt-4 space-y-3 pb-28">
+        {/* Mode de livraison */}
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Mode</h3>
           <div className="grid grid-cols-2 gap-2">
@@ -172,10 +140,10 @@ export default function Checkout() {
             <ModeBtn icon={Store} label="Retrait" active={mode === "collect"} disabled={!collectAvailable} onClick={() => collectAvailable && setMode("collect")} testid="mode-collect" />
           </div>
           {!deliveryAvailable && (
-            <p className="text-xs text-gray-500 mt-2 text-center">Un ou plusieurs produits de votre panier ne sont disponibles qu'au retrait en boutique.</p>
+            <p className="text-xs text-gray-500 mt-2 text-center">Un ou plusieurs produits ne sont disponibles qu'au retrait en boutique.</p>
           )}
           {!collectAvailable && (
-            <p className="text-xs text-gray-500 mt-2 text-center">Un ou plusieurs produits de votre panier ne sont disponibles qu'en livraison.</p>
+            <p className="text-xs text-gray-500 mt-2 text-center">Un ou plusieurs produits ne sont disponibles qu'en livraison.</p>
           )}
           {items.some((it) => {
             const modes = it.delivery_modes?.length ? it.delivery_modes : ["delivery", "collect"];
@@ -187,6 +155,7 @@ export default function Checkout() {
           )}
         </section>
 
+        {/* Adresse de livraison */}
         {mode === "delivery" && (
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500">Adresse de livraison</h3>
@@ -196,6 +165,7 @@ export default function Checkout() {
           </section>
         )}
 
+        {/* Créneau retrait */}
         {mode === "collect" && (
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
             <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Créneau de retrait</h3>
@@ -213,37 +183,43 @@ export default function Checkout() {
           </section>
         )}
 
+        {/* Mode de paiement : Cash uniquement */}
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-          <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Mobile Money</h3>
-          <div className="grid grid-cols-1 gap-2">
-            {operators.map((op) => (
-              <button
-                key={op}
-                data-testid={`payment-${op.replace(/\s+/g, "-")}`}
-                onClick={() => setPayment(op)}
-                className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all ${
-                  payment === op ? "border-[#1D9E75] bg-[#E1F5EE]" : "border-gray-200 bg-white"
-                }`}
-              >
-                <span className="text-sm font-semibold text-gray-900">{op}</span>
-                <span className="text-xs text-gray-500">Mobile Money</span>
-              </button>
-            ))}
+          <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Mode de paiement</h3>
+
+          <div className="flex items-center gap-3 p-3 rounded-lg border-2 border-[#1D9E75] bg-[#E1F5EE]">
+            <div className="w-10 h-10 rounded-full bg-[#1D9E75] text-white flex items-center justify-center shrink-0">
+              <Banknote size={20} />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-[#085041]">Paiement en espèces</p>
+              <p className="text-xs text-[#1D9E75]">À la livraison / au retrait</p>
+            </div>
+          </div>
+
+          <div className="mt-3 flex items-start gap-2 bg-[#F5F5F5] border border-gray-200 rounded-lg px-3 py-2.5">
+            <Info size={15} className="text-gray-400 shrink-0 mt-0.5" />
+            <p className="text-xs text-gray-500 leading-relaxed">
+              <span className="font-semibold text-gray-600">Mobile Money</span> (MTN MoMo, Airtel Money, Orange Money…) —{" "}
+              <span className="text-[#1D9E75] font-semibold">Disponible très prochainement</span> sur AfriMarket.
+            </p>
           </div>
         </section>
 
+        {/* Sécurité */}
         <section className="bg-[#E1F5EE] border border-[#1D9E75]/30 rounded-xl p-4 flex items-start gap-3">
           <div className="w-9 h-9 rounded-full bg-[#1D9E75] text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={18} />
           </div>
           <div className="text-xs text-[#085041]">
-            <p className="font-semibold">Paiement sécurisé (Escrow)</p>
+            <p className="font-semibold">Paiement sécurisé</p>
             <p className="mt-0.5 leading-relaxed">
-              {formatPrice(payableTotal, items[0]?.currency)} sera bloqué et libéré au vendeur uniquement à la confirmation de réception.
+              Vous payez en espèces à la livraison ou au retrait. Le paiement est libéré au vendeur uniquement après votre confirmation de réception.
             </p>
           </div>
         </section>
 
+        {/* Récapitulatif */}
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 space-y-1.5 text-sm">
           <Row label="Sous-total" value={formatPrice(total, items[0]?.currency)} />
           {mode === "delivery" && deliveryFee > 0 && (
@@ -263,8 +239,8 @@ export default function Checkout() {
           onClick={submit}
           className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          <Lock size={16} />
-          {loading ? "Traitement…" : `Payer ${formatPrice(payableTotal, items[0]?.currency)}`}
+          <Banknote size={16} />
+          {loading ? "Traitement…" : `Commander — ${formatPrice(payableTotal, items[0]?.currency)}`}
         </button>
       </div>
     </div>

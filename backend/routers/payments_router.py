@@ -25,9 +25,9 @@ class InitRequest(BaseModel):
 async def init_payment(req: InitRequest, user: dict = Depends(require_role("buyer"))):
     """Create a hosted-checkout payment for an order group.
 
-    With a real aggregator (CinetPay) configured, returns a payment_url the buyer
-    opens to pay all sub-orders in one charge. In sandbox, returns simulated=True
-    and the escrow is already considered captured (legacy behaviour).
+    - payment_method == "cash": no external provider needed; escrow is
+      considered captured and will be released when the buyer confirms delivery.
+    - Otherwise: CinetPay hosted checkout (sandbox or live).
     """
     db = get_db()
     group = await db.order_groups.find_one({"id": req.order_group_id}, {"_id": 0})
@@ -36,6 +36,28 @@ async def init_payment(req: InitRequest, user: dict = Depends(require_role("buye
     if group["buyer_id"] != user["id"]:
         raise HTTPException(status_code=403, detail="Accès refusé")
 
+    # ── Cash on delivery: pas de prestataire externe ──────────────────────────
+    if group.get("payment_method") == "cash":
+        await db.order_groups.update_one(
+            {"id": req.order_group_id},
+            {"$set": {"payment_status": "cash_on_delivery"}},
+        )
+        await db.orders.update_many(
+            {"order_group_id": req.order_group_id},
+            {"$set": {"escrow_status": "held", "payment_confirmed": True}},
+        )
+        await db.transactions.update_many(
+            {"order_group_id": req.order_group_id},
+            {"$set": {"payment_status": "cash_pending"}},
+        )
+        return {
+            "simulated": False,
+            "cash": True,
+            "status": "cash_on_delivery",
+            "order_group_id": req.order_group_id,
+        }
+
+    # ── Mobile Money via CinetPay ─────────────────────────────────────────────
     if not cinetpay_configured():
         return {"simulated": True, "status": "captured_in_escrow", "order_group_id": req.order_group_id}
 
@@ -77,11 +99,9 @@ async def cinetpay_webhook(request: Request):
     if not transaction_id:
         raise HTTPException(status_code=400, detail="transaction_id manquant")
 
-    # Always re-verify with CinetPay rather than trusting the callback payload.
     provider = CinetPayProvider()
     verified = await provider.check(transaction_id)
 
-    # Premium subscription payments use a "premium_<sub_id>" external ref.
     if transaction_id.startswith("premium_"):
         sub_id = transaction_id[len("premium_"):]
         sub = await db.premium_subscriptions.find_one({"id": sub_id}, {"_id": 0})
@@ -124,7 +144,7 @@ async def cinetpay_webhook(request: Request):
 
 @router.get("/status/{order_group_id}")
 async def payment_status(order_group_id: str, user: dict = Depends(require_role("buyer"))):
-    """Buyer polls the payment status of their order group after returning from checkout."""
+    """Buyer polls the payment status of their order group."""
     db = get_db()
     group = await db.order_groups.find_one({"id": order_group_id}, {"_id": 0})
     if not group or group["buyer_id"] != user["id"]:
