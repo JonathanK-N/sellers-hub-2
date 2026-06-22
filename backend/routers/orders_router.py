@@ -144,6 +144,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
             "delivery_landmark": req.delivery_landmark if item_mode == "delivery" else None,
             "pickup_slot": req.pickup_slot if item_mode == "collect" else None,
             "payment_method": req.payment_method,
+            "checkout_currency": req.checkout_currency or "FC",
             "status": "confirmed",
             "escrow_status": "held",
             "confirmation_code": _gen_code(),

@@ -217,6 +217,7 @@ class OrderCreateRequest(BaseModel):
     delivery_landmark: Optional[str] = None
     pickup_slot: Optional[str] = None
     payment_method: str  # mtn | airtel | wave | orange | cash
+    checkout_currency: Optional[str] = "FC"  # devise choisie par l'acheteur pour payer (FC | USD)
 
 
 class OrderTimelineEvent(BaseModel):
