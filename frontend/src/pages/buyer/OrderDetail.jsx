@@ -256,7 +256,8 @@ export default function OrderDetail() {
       </header>
 
       <div className="px-4 mt-4 space-y-3">
-        {/* Escrow banner */}
+        {/* Escrow banner — masqué pour paiement en espèces (escrow non applicable) */}
+        {order.payment_method !== "cash" && (
         <div className={`rounded-xl p-4 flex items-center gap-3 ${order.escrow_status === "released" ? "bg-emerald-100 border-emerald-300" : "bg-[#E1F5EE] border-[#1D9E75]/30"} border`}>
           <div className="w-9 h-9 rounded-full bg-[#1D9E75] text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={18} />
@@ -274,6 +275,7 @@ export default function OrderDetail() {
             </p>
           </div>
         </div>
+        )}
 
         {/* Carte GPS tracking */}
         {showTracking && (

@@ -2,6 +2,14 @@ import { API_BASE } from "./api";
 
 export function formatPrice(value, currency = "FC") {
   const n = Number(value || 0);
+  if (currency === "USD") {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(n);
+  }
   const formatted = new Intl.NumberFormat("fr-FR", {
     maximumFractionDigits: 0,
   }).format(n);

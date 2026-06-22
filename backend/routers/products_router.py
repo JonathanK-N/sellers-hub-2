@@ -157,7 +157,7 @@ async def create_product(req: ProductCreateRequest, user: dict = Depends(require
         "long_description": req.long_description,
         "specs": [s.model_dump() for s in req.specs],
         "price": req.price,
-        "currency": user["currency"],
+        "currency": getattr(req, "currency", None) or user["currency"],
         "stock": req.stock,
         "category": req.category,
         "photos": req.photos[:5],
@@ -196,6 +196,10 @@ async def update_product(product_id: str, req: ProductUpdateRequest, user: dict 
     update_data = req.model_dump(exclude_unset=True)
     if not update_data:
         return existing
+    # currency est autorisé dans le PATCH
+    ALLOWED_CURRENCY = {"FC", "USD"}
+    if "currency" in update_data and update_data["currency"] not in ALLOWED_CURRENCY:
+        update_data.pop("currency")
 
     if "specs" in update_data and update_data["specs"] is not None:
         update_data["specs"] = [s if isinstance(s, dict) else s.model_dump() for s in update_data["specs"]]

@@ -160,6 +160,7 @@ class ProductCreateRequest(BaseModel):
     long_description: str = ""   # description détaillée du produit
     specs: List[ProductSpec] = Field(default_factory=list)  # ex: [{"label":"Couleur","value":"Vert"}]
     price: float
+    currency: Optional[str] = None  # "FC" | "USD" — si absent, hérite de user.currency
     stock: int = 0
     category: str = "Général"
     photos: List[str] = Field(default_factory=list)
@@ -173,6 +174,7 @@ class ProductUpdateRequest(BaseModel):
     long_description: Optional[str] = None
     specs: Optional[List[ProductSpec]] = None
     price: Optional[float] = None
+    currency: Optional[str] = None  # "FC" | "USD"
     stock: Optional[int] = None
     category: Optional[str] = None
     photos: Optional[List[str]] = None
