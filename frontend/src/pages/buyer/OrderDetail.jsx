@@ -233,8 +233,23 @@ export default function OrderDetail() {
     } finally { setBusy(false); }
   };
 
+  const confirmCollect = async () => {
+    setConfirmingCollect(true);
+    try {
+      await api.post(`/orders/${id}/confirm-collect`);
+      setCollectConfirmed(true);
+      setOrder((o) => ({ ...o, status: "collected", escrow_status: "released" }));
+    } catch (e) {
+      toast.error(formatApiError(e.response?.data?.detail));
+    } finally {
+      setConfirmingCollect(false);
+    }
+  };
+
   const isBuyer = user?.role === "buyer";
   const isSeller = user?.role === "seller";
+  const [collectConfirmed, setCollectConfirmed] = useState(false);
+  const [confirmingCollect, setConfirmingCollect] = useState(false);
   const showTracking = order.delivery_mode === "delivery" && TRACKING_STATUSES.includes(order.status);
 
   return (
@@ -364,44 +379,74 @@ export default function OrderDetail() {
           </div>
         </section>
 
-        {/* QR code for Click & Collect (buyer view) */}
-        {isBuyer && order.delivery_mode === "collect" && order.qr_code && order.escrow_status === "held" && (
-          <section className="bg-white rounded-xl border-2 border-[#1D9E75] shadow-sm p-4 text-center" data-testid="qr-code-section">
-            <h3 className="text-xs font-bold uppercase tracking-wide text-[#1D9E75] mb-2">
-              Présentez ce QR au vendeur
-            </h3>
-            <div className="inline-block bg-white p-3 rounded-lg">
-              <QRCodeSVG
-                value={(() => {
-                  // Toujours encoder l'URL de prod pour que le QR soit scannable
-                  // depuis n'importe quel appareil, pas juste depuis le même réseau
-                  const base = window.location.hostname === "localhost"
-                    ? "https://afrimarket.up.railway.app"
-                    : window.location.origin;
-                  return `${base}/qr-collect/${order.id}/${order.qr_code}`;
-                })()}
-                size={200}
-                fgColor="#085041"
-              />
+        {/* Acheteur — instruction retrait boutique */}
+        {isBuyer && order.delivery_mode === "collect" && ["ready_for_pickup","confirmed","preparing"].includes(order.status) && (
+          <section className="bg-[#E1F5EE] border border-[#1D9E75]/30 rounded-xl p-4 flex items-start gap-3">
+            <div className="w-9 h-9 rounded-full bg-[#1D9E75] text-white flex items-center justify-center shrink-0">
+              <Store size={18} />
             </div>
-            <p className="text-xs text-gray-600 mt-3 leading-relaxed">
-              Le vendeur scanne ce code à votre arrivée. Le paiement sera libéré automatiquement.
-            </p>
-            {order.pickup_slot && (
-              <p className="text-xs text-[#085041] mt-2 font-semibold">Créneau : {order.pickup_slot}</p>
-            )}
+            <div className="text-sm text-[#085041]">
+              <p className="font-semibold">Présentez-vous en boutique</p>
+              <p className="mt-0.5 text-xs leading-relaxed text-[#085041]/80">
+                Le vendeur confirmera la remise après réception de votre paiement en espèces.
+              </p>
+              {order.pickup_slot && (
+                <p className="mt-1 text-xs font-bold">Créneau : {order.pickup_slot}</p>
+              )}
+            </div>
           </section>
         )}
 
-        {/* Seller QR scanner shortcut */}
-        {isSeller && order.delivery_mode === "collect" && order.status === "ready_for_pickup" && order.escrow_status === "held" && (
-          <button
-            data-testid="goto-scanner-btn"
-            onClick={() => nav("/seller/scan")}
-            className="w-full bg-[#085041] hover:bg-[#063b30] text-white rounded-lg py-3 font-semibold flex items-center justify-center gap-2"
+        {/* Vendeur — bouton confirmer remise cash */}
+        {isSeller && order.delivery_mode === "collect" && ["ready_for_pickup","confirmed","preparing"].includes(order.status) && !collectConfirmed && (
+          <section className="bg-white rounded-xl border-2 border-[#1D9E75] shadow-sm p-4" data-testid="confirm-collect-section">
+            <h3 className="text-sm font-bold text-[#085041] mb-1">Remise en boutique</h3>
+            <p className="text-xs text-gray-500 mb-4">
+              Appuyez après avoir remis la commande à l'acheteur et reçu le paiement en espèces.
+            </p>
+            <button
+              data-testid="confirm-collect-btn"
+              disabled={confirmingCollect}
+              onClick={confirmCollect}
+              className="w-full bg-[#1D9E75] hover:bg-[#168260] active:scale-95 text-white rounded-xl py-4 font-bold text-base transition-all disabled:opacity-60 flex items-center justify-center gap-2 shadow-md"
+            >
+              {confirmingCollect ? (
+                <>
+                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                  </svg>
+                  Confirmation…
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 size={20} />
+                  Confirmer la remise — cash reçu
+                </>
+              )}
+            </button>
+          </section>
+        )}
+
+        {/* Vendeur — écran succès animé */}
+        {isSeller && order.delivery_mode === "collect" && (collectConfirmed || order.status === "collected") && (
+          <section
+            className="bg-white rounded-xl border-2 border-[#1D9E75] shadow-sm p-6 flex flex-col items-center text-center gap-3"
+            style={{ animation: "fadeInScale 0.4s cubic-bezier(0.34,1.56,0.64,1) both" }}
+            data-testid="collect-confirmed-banner"
           >
-            <ScanLine size={18} /> Scanner QR retrait
-          </button>
+            <div
+              className="w-16 h-16 rounded-full bg-[#E1F5EE] flex items-center justify-center"
+              style={{ animation: "popIn 0.5s 0.15s cubic-bezier(0.34,1.56,0.64,1) both", opacity: 0 }}
+            >
+              <CheckCircle2 size={36} className="text-[#1D9E75]" />
+            </div>
+            <h3 className="font-display font-black text-xl text-[#085041]">Remise confirmée !</h3>
+            <p className="text-sm text-gray-600">
+              Commande <span className="font-bold">#{order.id.slice(0,8).toUpperCase()}</span> remise à l'acheteur.
+            </p>
+            <p className="text-sm font-bold text-[#1D9E75]">✓ Paiement cash encaissé</p>
+          </section>
         )}
 
         {/* Chat with seller (buyer) */}
