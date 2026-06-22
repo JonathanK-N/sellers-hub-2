@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Circle, ShieldCheck, Package, Truck, Lock, Bike, AlertTriangle, MessageSquare, ScanLine, MapPin, Navigation, Wifi, WifiOff, Banknote } from "lucide-react";
-import { QRCodeSVG } from "qrcode.react";
+import { ArrowLeft, CheckCircle2, Circle, ShieldCheck, Package, Truck, Store, Lock, Bike, AlertTriangle, MessageSquare, MapPin, Navigation, Wifi, WifiOff, Banknote } from "lucide-react";
 import api, { formatApiError } from "../../lib/api";
 import { formatPrice, photoUrl } from "../../lib/format";
 import { useAuth } from "../../context/AuthContext";
@@ -240,6 +239,16 @@ export default function OrderDetail() {
 
   return (
     <div className="mobile-shell">
+      <style>{`
+        @keyframes fadeInScale {
+          from { opacity: 0; transform: scale(0.85); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes popIn {
+          from { opacity: 0; transform: scale(0.5); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
       <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md">
         <Link to={isSeller ? "/seller/orders" : "/buyer/orders"} className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />

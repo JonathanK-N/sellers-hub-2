@@ -374,6 +374,50 @@ class ScanQrRequest(BaseModel):
     qr_token: str
 
 
+@router.post("/orders/{order_id}/confirm-collect")
+async def confirm_collect(order_id: str, user: dict = Depends(require_role("seller"))):
+    """Seller confirms cash handoff for Click & Collect — no QR needed for cash payment."""
+    db = get_db()
+    o = await db.orders.find_one({"id": order_id}, {"_id": 0})
+    if not o:
+        raise HTTPException(status_code=404, detail="Commande introuvable")
+    my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
+    if not my_seller or my_seller["id"] != o["seller_id"]:
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    if o["delivery_mode"] != "collect":
+        raise HTTPException(status_code=400, detail="Cette commande n'est pas en retrait boutique")
+    if o["status"] == "collected":
+        raise HTTPException(status_code=400, detail="Commande déjà marquée comme retirée")
+    allowed = {"ready_for_pickup", "confirmed", "preparing"}
+    if o["status"] not in allowed:
+        raise HTTPException(status_code=400, detail="Statut incompatible avec une confirmation de retrait")
+
+    now = datetime.now(timezone.utc).isoformat()
+    event = {"status": "collected", "timestamp": now, "actor": "seller",
+             "note": "Remise en main propre confirmée par le vendeur (paiement cash)"}
+
+    await db.orders.update_one(
+        {"id": order_id},
+        {"$set": {
+            "status": "collected",
+            "escrow_status": "released",
+            "collected_at": now,
+        },
+         "$push": {"timeline": event}},
+    )
+    await db.transactions.update_many(
+        {"order_id": order_id},
+        {"$set": {"payment_status": "released", "released_at": now}},
+    )
+    await create_notification(
+        db, o["buyer_id"], "order",
+        "Retrait confirmé",
+        f"Votre commande #{order_id[:8].upper()} a été remise. Merci pour votre achat !",
+        {"order_id": order_id},
+    )
+    return {"ok": True, "status": "collected", "order_id": order_id}
+
+
 @router.post("/orders/{order_id}/scan-qr")
 async def scan_qr(order_id: str, req: ScanQrRequest, user: dict = Depends(require_role("seller"))):
     """Seller scans buyer's QR code -> escrow released for Click & Collect."""
