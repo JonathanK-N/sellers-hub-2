@@ -44,18 +44,40 @@ export default function SellerScan() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode]);
 
-  const process = async (token) => {
+  const process = async (rawDecoded) => {
     setBusy(true);
+    // Le QR peut contenir l'URL complète (ex: https://afrimarket.../qr-collect/orderId/token)
+    // ou juste le token UUID brut (ancien format).
+    let token = rawDecoded.trim();
+    let orderId = null;
     try {
-      const { data: order } = await api.get(`/orders/by-qr/${encodeURIComponent(token)}`);
+      const u = new URL(rawDecoded);
+      const parts = u.pathname.split("/").filter(Boolean);
+      // /qr-collect/:orderId/:token
+      if (parts[0] === "qr-collect" && parts.length >= 3) {
+        orderId = parts[1];
+        token = parts[2];
+      }
+    } catch {
+      // pas une URL — token brut, comportement normal
+    }
+    try {
+      let order;
+      if (orderId) {
+        // On connaît déjà l'orderId depuis l'URL
+        const { data } = await api.get(`/orders/${orderId}`);
+        order = data;
+      } else {
+        const { data } = await api.get(`/orders/by-qr/${encodeURIComponent(token)}`);
+        order = data;
+      }
       await api.post(`/orders/${order.id}/scan-qr`, { qr_token: token });
       toast.success("Retrait validé. Paiement libéré !");
       nav(`/buyer/orders/${order.id}`);
     } catch (e) {
       toast.error(formatApiError(e.response?.data?.detail));
       startedRef.current = false;
-      // restart camera
-      if (mode === "camera") setMode((m) => m); // noop, dependency unchanged
+      if (mode === "camera") setMode((m) => m);
     } finally {
       setBusy(false);
     }

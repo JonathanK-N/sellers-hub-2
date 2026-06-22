@@ -362,7 +362,11 @@ export default function OrderDetail() {
               Présentez ce QR au vendeur
             </h3>
             <div className="inline-block bg-white p-3 rounded-lg">
-              <QRCodeSVG value={order.qr_code} size={200} fgColor="#085041" />
+              <QRCodeSVG
+                value={`${window.location.origin}/qr-collect/${order.id}/${order.qr_code}`}
+                size={200}
+                fgColor="#085041"
+              />
             </div>
             <p className="text-xs text-gray-600 mt-3 leading-relaxed">
               Le vendeur scanne ce code à votre arrivée. Le paiement sera libéré automatiquement.
