@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { Star, MapPin, ShieldCheck, Crown } from "lucide-react";
-import { formatPrice, formatDistance, photoUrl } from "../lib/format";
+import { formatPrice, formatDistance, displayPrice, photoUrl } from "../lib/format";
 
 export default function ProductCard({ product, guest = false }) {
   const photo = product.photos?.[0];
   const distance = formatDistance(product.distance_km);
   const href = guest ? `/explore/product/${product.id}` : `/buyer/product/${product.id}`;
+  const { amount, currency } = displayPrice(product);
 
   return (
     <Link
@@ -31,6 +32,11 @@ export default function ProductCard({ product, guest = false }) {
             <Crown size={11} /> Premium
           </span>
         )}
+        {product.currency === "USD" && (
+          <span className="absolute bottom-2 left-2 bg-[#085041] text-white px-1.5 py-0.5 rounded text-[10px] font-bold">
+            $USD
+          </span>
+        )}
         {distance && (
           <span className="absolute top-2 right-2 flex items-center gap-1 bg-white/95 backdrop-blur text-gray-700 px-2 py-0.5 rounded-full text-[11px] font-medium shadow-sm">
             <MapPin size={11} /> {distance}
@@ -46,9 +52,16 @@ export default function ProductCard({ product, guest = false }) {
           )}
         </div>
         <div className="flex items-center justify-between mt-1">
-          <span className="font-display font-bold text-[#085041]">
-            {formatPrice(product.price, product.currency)}
-          </span>
+          <div className="flex flex-col">
+            <span className="font-display font-bold text-[#085041]">
+              {formatPrice(amount, currency)}
+            </span>
+            {product.currency === "USD" && (
+              <span className="text-[10px] text-gray-400">
+                ≈ {formatPrice(product.price, "USD")}
+              </span>
+            )}
+          </div>
           {product.seller_rating > 0 && (
             <span className="flex items-center gap-0.5 text-xs text-gray-600">
               <Star size={12} className="text-[#EF9F27] fill-[#EF9F27]" />

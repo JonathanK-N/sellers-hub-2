@@ -3,7 +3,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, ShieldCheck, MapPin, Star, Truck, Store, Plus, Minus, MessageSquare, Crown, ChevronRight, LogIn } from "lucide-react";
 import api from "../../lib/api";
-import { formatPrice, formatDistance, photoUrl, timeAgo } from "../../lib/format";
+import { formatPrice, formatDistance, displayPrice, photoUrl, timeAgo } from "../../lib/format";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 
@@ -90,14 +90,24 @@ export default function ProductDetail({ guest = false }) {
 
       <div className="px-4 py-4 bg-white">
         <h1 className="font-display font-black text-2xl text-gray-900 leading-tight">{p.name}</h1>
-        <div className="mt-2 flex items-baseline gap-2">
-          <span className="font-display font-black text-2xl text-[#085041]">
-            {formatPrice(p.price, p.currency)}
-          </span>
-          {p.stock > 0 ? (
-            <span className="text-xs text-[#1D9E75] font-semibold">En stock ({p.stock})</span>
-          ) : (
-            <span className="text-xs text-[#E24B4A] font-semibold">Rupture</span>
+        <div className="mt-2">
+          <div className="flex items-baseline gap-2">
+            <span className="font-display font-black text-2xl text-[#085041]">
+              {formatPrice(displayPrice(p).amount, displayPrice(p).currency)}
+            </span>
+            {p.stock > 0 ? (
+              <span className="text-xs text-[#1D9E75] font-semibold">En stock ({p.stock})</span>
+            ) : (
+              <span className="text-xs text-[#E24B4A] font-semibold">Rupture</span>
+            )}
+          </div>
+          {p.currency === "USD" && (
+            <p className="text-xs text-gray-400 mt-0.5">
+              ≈ {formatPrice(p.price, "USD")}
+              {p.fx_rate && (
+                <span className="ml-1">· 1 USD = {new Intl.NumberFormat("fr-FR").format(Math.round(p.fx_rate))} FC</span>
+              )}
+            </p>
           )}
         </div>
         <p className="text-sm text-gray-700 mt-3 leading-relaxed whitespace-pre-line">{p.description || "—"}</p>

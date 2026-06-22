@@ -35,7 +35,12 @@ export function CartProvider({ children }) {
   const removeItem = (id) => setItems((prev) => prev.filter((i) => i.id !== id));
   const clear = () => setItems([]);
 
-  const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  // Pour les produits USD, on utilise price_fc (converti en FC par le backend)
+  // pour que tout le checkout soit cohérent en FC.
+  const effectivePrice = (item) =>
+    item.currency === "USD" && item.price_fc ? item.price_fc : item.price;
+
+  const total = items.reduce((sum, i) => sum + effectivePrice(i) * i.quantity, 0);
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
   const groupedBySeller = items.reduce((acc, i) => {
@@ -49,7 +54,7 @@ export function CartProvider({ children }) {
       };
     }
     acc[key].items.push(i);
-    acc[key].subtotal += i.price * i.quantity;
+    acc[key].subtotal += effectivePrice(i) * i.quantity;
     return acc;
   }, {});
   const sellerGroups = Object.values(groupedBySeller);

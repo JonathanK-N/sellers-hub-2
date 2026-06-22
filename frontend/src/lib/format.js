@@ -16,6 +16,19 @@ export function formatPrice(value, currency = "FC") {
   return `${formatted} ${currency}`;
 }
 
+/**
+ * Pour un produit dont la devise d'origine est USD :
+ * retourne price_fc (calculé par le backend au taux du jour) en FC.
+ * Pour tout autre produit, retourne le prix dans sa devise native.
+ * Utilisé dans les cartes et pages produit côté acheteur.
+ */
+export function displayPrice(product) {
+  if (product.currency === "USD" && product.price_fc) {
+    return { amount: product.price_fc, currency: "FC" };
+  }
+  return { amount: product.price, currency: product.currency || "FC" };
+}
+
 export function formatDistance(km) {
   if (km == null) return null;
   if (km < 1) return `${Math.round(km * 1000)} m`;
