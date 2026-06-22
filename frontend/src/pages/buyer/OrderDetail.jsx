@@ -504,10 +504,18 @@ export default function OrderDetail() {
 
         {/* Payment */}
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
-          <Lock size={18} className="text-gray-400" />
+          {order.payment_method === "cash" ? (
+            <Banknote size={18} className="text-[#1D9E75]" />
+          ) : (
+            <Lock size={18} className="text-gray-400" />
+          )}
           <div className="text-sm">
-            <div className="font-semibold text-gray-900">{order.payment_method}</div>
-            <div className="text-xs text-gray-500">Mobile Money (simulé)</div>
+            <div className="font-semibold text-gray-900">
+              {order.payment_method === "cash" ? "Paiement en espèces" : order.payment_method}
+            </div>
+            <div className="text-xs text-gray-500">
+              {order.payment_method === "cash" ? "À la livraison / au retrait" : "Mobile Money"}
+            </div>
           </div>
         </section>
 
