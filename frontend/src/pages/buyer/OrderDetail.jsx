@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Circle, ShieldCheck, Package, Truck, Lock, Bike, AlertTriangle, MessageSquare, ScanLine, MapPin, Navigation, Wifi, WifiOff } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Circle, ShieldCheck, Package, Truck, Lock, Bike, AlertTriangle, MessageSquare, ScanLine, MapPin, Navigation, Wifi, WifiOff, Banknote } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import api, { formatApiError } from "../../lib/api";
 import { formatPrice, photoUrl } from "../../lib/format";
