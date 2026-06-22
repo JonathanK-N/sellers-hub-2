@@ -410,7 +410,7 @@ async def confirm_collect(order_id: str, user: dict = Depends(require_role("sell
         {"$set": {"payment_status": "released", "released_at": now}},
     )
     await create_notification(
-        db, o["buyer_id"], "order",
+        o["buyer_id"], "order",
         "Retrait confirmé",
         f"Votre commande #{order_id[:8].upper()} a été remise. Merci pour votre achat !",
         {"order_id": order_id},
