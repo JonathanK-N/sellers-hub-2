@@ -310,6 +310,12 @@ async def get_public_profile(seller_id: str):
     seller = await db.sellers.find_one({"id": seller_id}, {"_id": 0, "commission_rate": 0})
     if not seller:
         raise HTTPException(status_code=404, detail="Boutique introuvable")
+    # Boutique masquée si vendeur banni ou suspendu
+    _owner = await db.users.find_one(
+        {"id": seller.get("user_id")}, {"_id": 0, "banned": 1, "suspended": 1}
+    )
+    if _owner and (_owner.get("banned") or _owner.get("suspended")):
+        raise HTTPException(status_code=404, detail="Boutique introuvable")
     products = await db.products.find(
         {"seller_id": seller_id, "is_active": True, "stock": {"$gt": 0}},
         {"_id": 0}

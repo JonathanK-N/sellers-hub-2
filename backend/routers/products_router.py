@@ -123,6 +123,14 @@ async def get_product(product_id: str):
     p = await db.products.find_one({"id": product_id}, {"_id": 0})
     if not p:
         raise HTTPException(status_code=404, detail="Produit introuvable")
+    # Vérifier que le vendeur n'est pas banni ou suspendu
+    _seller_check = await db.sellers.find_one({"id": p.get("seller_id")}, {"_id": 0, "user_id": 1})
+    if _seller_check:
+        _user_check = await db.users.find_one(
+            {"id": _seller_check.get("user_id")}, {"_id": 0, "banned": 1, "suspended": 1}
+        )
+        if _user_check and (_user_check.get("banned") or _user_check.get("suspended")):
+            raise HTTPException(status_code=404, detail="Produit introuvable")
     s = await db.sellers.find_one({"id": p["seller_id"]}, {"_id": 0})
     if s:
         p["seller_name"] = s.get("shop_name")
