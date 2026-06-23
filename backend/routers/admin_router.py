@@ -497,13 +497,15 @@ async def seller_products(seller_id: str, _: dict = Depends(require_role("admin"
     return products
 
 
+class TogglePremiumRequest(BaseModel):
+    premium: bool = False
+
+
 @router.post("/sellers/{seller_id}/toggle-premium")
-async def toggle_seller_premium(seller_id: str, req: dict, _: dict = Depends(require_role("admin"))):
-    from pydantic import BaseModel
+async def toggle_seller_premium(seller_id: str, req: TogglePremiumRequest, _: dict = Depends(require_role("admin"))):
     db = get_db()
-    premium = req.get("premium", False)
-    await db.sellers.update_one({"id": seller_id}, {"$set": {"premium": premium}})
-    return {"ok": True, "premium": premium}
+    await db.sellers.update_one({"id": seller_id}, {"$set": {"premium": req.premium}})
+    return {"ok": True, "premium": req.premium}
 
 
 # ─── User actions ──────────────────────────────────────────────────────────────
@@ -584,6 +586,22 @@ async def create_banner(req: BannerCreateRequest, _: dict = Depends(require_role
     return banner
 
 
+# ─── Public banners endpoint (pour l'app acheteur/vendeur) ────────────────────
+# IMPORTANT: déclaré AVANT /{banner_id} pour éviter le conflit de route FastAPI
+
+@router.get("/banners/public")
+async def public_banners(position: str = None, role: str = "all"):
+    """Retourne les bannières actives filtrées par position et rôle."""
+    db = get_db()
+    query = {"is_active": True}
+    if position:
+        query["position"] = position
+    if role != "all":
+        query["target_role"] = {"$in": [role, "all"]}
+    banners = await db.banners.find(query, {"_id": 0}).sort("created_at", -1).to_list(20)
+    return banners
+
+
 @router.patch("/banners/{banner_id}")
 async def update_banner(banner_id: str, req: BannerUpdateRequest, _: dict = Depends(require_role("admin"))):
     db = get_db()
@@ -602,18 +620,3 @@ async def delete_banner(banner_id: str, _: dict = Depends(require_role("admin"))
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Bannière introuvable")
     return {"ok": True}
-
-
-# ─── Public banners endpoint (pour l'app acheteur/vendeur) ────────────────────
-
-@router.get("/banners/public")
-async def public_banners(position: str = None, role: str = "all"):
-    """Retourne les bannières actives filtrées par position et rôle."""
-    db = get_db()
-    query = {"is_active": True}
-    if position:
-        query["position"] = position
-    if role != "all":
-        query["target_role"] = {"$in": [role, "all"]}
-    banners = await db.banners.find(query, {"_id": 0}).sort("created_at", -1).to_list(20)
-    return banners

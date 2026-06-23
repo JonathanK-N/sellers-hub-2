@@ -166,7 +166,7 @@ export default function OrderDetail() {
 
   // Polling statut toutes les 15s
   useEffect(() => {
-    const interval = setInterval(() => { load(); }, 15000);
+    const interval = setInterval(() => { load(); }, 30000);
     return () => clearInterval(interval);
   }, [load]);
 
