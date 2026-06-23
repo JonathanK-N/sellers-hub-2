@@ -31,7 +31,8 @@ class CountryToggleRequest(BaseModel):
 async def admin_upload(file: UploadFile = File(...), _: dict = Depends(require_role("admin"))):
     """Upload d'image pour l'administration (banners, etc.)."""
     import uuid as _uuid
-    from storage import upload_public, APP_NAME
+    from s3_service import upload_public
+    APP_NAME = "afrimarket"
     ext = "jpg"
     if file.filename and "." in file.filename:
         ext = file.filename.rsplit(".", 1)[-1].lower()
