@@ -687,3 +687,30 @@ async def delete_banner(banner_id: str, _: dict = Depends(require_role("admin"))
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Bannière introuvable")
     return {"ok": True}
+
+# ─── Nettoyage données démo ────────────────────────────────────────────────────
+
+@router.delete("/cleanup-demo")
+async def cleanup_demo_data(_: dict = Depends(require_role("admin"))):
+    """Supprime toutes les données marquées demo:True en base.
+    À appeler une seule fois avant la mise en production.
+    """
+    db = get_db()
+    collections = [
+        "users", "sellers", "products", "orders", "order_groups",
+        "reviews", "deliverers", "transactions", "notifications",
+        "messages", "disputes",
+    ]
+    results = {}
+    for col in collections:
+        res = await db[col].delete_many({"demo": True})
+        if res.deleted_count > 0:
+            results[col] = res.deleted_count
+    total = sum(results.values())
+    logger.info(f"[CLEANUP] Demo data supprimée : {results}")
+    return {
+        "ok": True,
+        "total_deleted": total,
+        "details": results,
+        "message": "Données de démo supprimées. Cet endpoint peut être retiré du code."
+    }
