@@ -53,6 +53,8 @@ import AdminFraud from "./pages/admin/Fraud";
 import AdminDeliverers from "./pages/admin/Deliverers";
 import AdminGeo from "./pages/admin/Geo";
 import AdminBuyerKyc from "./pages/admin/BuyerKyc";
+import AdminProducts from "./pages/admin/Products";
+import AdminBanners from "./pages/admin/Banners";
 
 import Messages from "./pages/Messages";
 import ChatThread from "./pages/ChatThread";
@@ -182,6 +184,8 @@ function App() {
             <Route path="/admin/deliverers" element={<ProtectedRoute roles={["admin"]}><AdminDeliverers /></ProtectedRoute>} />
             <Route path="/admin/deliverer-applications" element={<ProtectedRoute roles={["admin"]}><AdminDelivererApplications /></ProtectedRoute>} />
             <Route path="/admin/geo" element={<ProtectedRoute roles={["admin"]}><AdminGeo /></ProtectedRoute>} />
+            <Route path="/admin/products" element={<ProtectedRoute roles={["admin"]}><AdminProducts /></ProtectedRoute>} />
+            <Route path="/admin/banners" element={<ProtectedRoute roles={["admin"]}><AdminBanners /></ProtectedRoute>} />
 
             {/* QR Click & Collect — lien scannable par l'acheteur ou le vendeur */}
             <Route path="/qr-collect/:orderId/:token" element={<QrCollectRedirect />} />

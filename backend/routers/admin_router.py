@@ -474,3 +474,146 @@ async def fraud_action(user_id: str, req: FraudActionRequest, _: dict = Depends(
         raise HTTPException(status_code=400, detail="Action invalide")
 
     return {"ok": True, "action": req.action, "user_id": user_id}
+
+
+# ─── Products moderation ───────────────────────────────────────────────────────
+
+@router.get("/products")
+async def list_all_products(_: dict = Depends(require_role("admin"))):
+    """All products with seller name enrichment."""
+    db = get_db()
+    products = await db.products.find({}, {"_id": 0}).sort("created_at", -1).to_list(2000)
+    seller_ids = list({p["seller_id"] for p in products if p.get("seller_id")})
+    sellers = {s["id"]: s async for s in db.sellers.find({"id": {"$in": seller_ids}}, {"_id": 0, "id": 1, "shop_name": 1})}
+    for p in products:
+        s = sellers.get(p.get("seller_id"), {})
+        p["seller_name"] = s.get("shop_name")
+    return products
+
+
+@router.get("/sellers/{seller_id}/products")
+async def seller_products(seller_id: str, _: dict = Depends(require_role("admin"))):
+    products = await get_db().products.find({"seller_id": seller_id}, {"_id": 0}).to_list(200)
+    return products
+
+
+@router.post("/sellers/{seller_id}/toggle-premium")
+async def toggle_seller_premium(seller_id: str, req: dict, _: dict = Depends(require_role("admin"))):
+    from pydantic import BaseModel
+    db = get_db()
+    premium = req.get("premium", False)
+    await db.sellers.update_one({"id": seller_id}, {"$set": {"premium": premium}})
+    return {"ok": True, "premium": premium}
+
+
+# ─── User actions ──────────────────────────────────────────────────────────────
+
+class UserActionRequest(BaseModel):
+    action: str  # suspend | unsuspend | ban
+
+
+@router.post("/users/{user_id}/action")
+async def user_action(user_id: str, req: UserActionRequest, _: dict = Depends(require_role("admin"))):
+    db = get_db()
+    user = await db.users.find_one({"id": user_id}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur introuvable")
+    if user.get("role") == "admin":
+        raise HTTPException(status_code=403, detail="Impossible d'agir sur un administrateur")
+    now = datetime.now(timezone.utc).isoformat()
+    if req.action == "suspend":
+        await db.users.update_one({"id": user_id}, {"$set": {"suspended": True, "suspended_at": now}})
+    elif req.action == "unsuspend":
+        await db.users.update_one({"id": user_id}, {"$set": {"suspended": False, "banned": False}})
+    elif req.action == "ban":
+        await db.users.update_one({"id": user_id}, {"$set": {"suspended": True, "banned": True, "suspended_at": now}})
+    else:
+        raise HTTPException(status_code=400, detail="Action invalide")
+    return {"ok": True, "action": req.action}
+
+
+# ─── Banners CRUD ─────────────────────────────────────────────────────────────
+
+class BannerCreateRequest(BaseModel):
+    title: str
+    subtitle: str = ""
+    image_url: str
+    link_url: str = ""
+    position: str = "home_top"   # home_top | home_mid | search_top | product_bottom
+    target_role: str = "all"     # all | buyer | seller | deliverer
+    is_active: bool = True
+
+
+class BannerUpdateRequest(BaseModel):
+    title: str = None
+    subtitle: str = None
+    image_url: str = None
+    link_url: str = None
+    position: str = None
+    target_role: str = None
+    is_active: bool = None
+
+
+@router.get("/banners")
+async def list_banners(_: dict = Depends(require_role("admin"))):
+    import uuid as _uuid
+    db = get_db()
+    banners = await db.banners.find({}, {"_id": 0}).sort("created_at", -1).to_list(200)
+    return banners
+
+
+@router.post("/banners")
+async def create_banner(req: BannerCreateRequest, _: dict = Depends(require_role("admin"))):
+    import uuid as _uuid
+    db = get_db()
+    now = datetime.now(timezone.utc).isoformat()
+    banner = {
+        "id": str(_uuid.uuid4()),
+        "title": req.title,
+        "subtitle": req.subtitle,
+        "image_url": req.image_url,
+        "link_url": req.link_url,
+        "position": req.position,
+        "target_role": req.target_role,
+        "is_active": req.is_active,
+        "created_at": now,
+        "updated_at": now,
+    }
+    await db.banners.insert_one(banner)
+    banner.pop("_id", None)
+    return banner
+
+
+@router.patch("/banners/{banner_id}")
+async def update_banner(banner_id: str, req: BannerUpdateRequest, _: dict = Depends(require_role("admin"))):
+    db = get_db()
+    update = {k: v for k, v in req.model_dump(exclude_unset=True).items() if v is not None}
+    update["updated_at"] = datetime.now(timezone.utc).isoformat()
+    res = await db.banners.update_one({"id": banner_id}, {"$set": update})
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Bannière introuvable")
+    return {"ok": True}
+
+
+@router.delete("/banners/{banner_id}")
+async def delete_banner(banner_id: str, _: dict = Depends(require_role("admin"))):
+    db = get_db()
+    res = await db.banners.delete_one({"id": banner_id})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Bannière introuvable")
+    return {"ok": True}
+
+
+# ─── Public banners endpoint (pour l'app acheteur/vendeur) ────────────────────
+
+@router.get("/banners/public")
+async def public_banners(position: str = None, role: str = "all"):
+    """Retourne les bannières actives filtrées par position et rôle."""
+    db = get_db()
+    query = {"is_active": True}
+    if position:
+        query["position"] = position
+    if role != "all":
+        query["target_role"] = {"$in": [role, "all"]}
+    banners = await db.banners.find(query, {"_id": 0}).sort("created_at", -1).to_list(20)
+    return banners
