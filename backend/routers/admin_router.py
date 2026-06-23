@@ -575,7 +575,8 @@ async def toggle_seller_premium(seller_id: str, req: TogglePremiumRequest, _: di
 # ─── User actions ──────────────────────────────────────────────────────────────
 
 class UserActionRequest(BaseModel):
-    action: str  # suspend | unsuspend | ban
+    action: str   # suspend | unsuspend | ban | block
+    motif: str = ""  # motif affiché dans le message WhatsApp
 
 
 @router.post("/users/{user_id}/action")
@@ -588,14 +589,16 @@ async def user_action(user_id: str, req: UserActionRequest, _: dict = Depends(re
         raise HTTPException(status_code=403, detail="Impossible d'agir sur un administrateur")
     now = datetime.now(timezone.utc).isoformat()
     if req.action == "suspend":
-        await db.users.update_one({"id": user_id}, {"$set": {"suspended": True, "suspended_at": now}})
+        await db.users.update_one({"id": user_id}, {"$set": {"suspended": True, "suspended_at": now, "suspend_motif": req.motif}})
+    elif req.action == "block":
+        await db.users.update_one({"id": user_id}, {"$set": {"suspended": True, "blocked": True, "suspended_at": now, "suspend_motif": req.motif}})
     elif req.action == "unsuspend":
-        await db.users.update_one({"id": user_id}, {"$set": {"suspended": False, "banned": False}})
+        await db.users.update_one({"id": user_id}, {"$set": {"suspended": False, "banned": False, "blocked": False, "suspend_motif": ""}})
     elif req.action == "ban":
-        await db.users.update_one({"id": user_id}, {"$set": {"suspended": True, "banned": True, "suspended_at": now}})
+        await db.users.update_one({"id": user_id}, {"$set": {"suspended": True, "banned": True, "suspended_at": now, "suspend_motif": req.motif}})
     else:
         raise HTTPException(status_code=400, detail="Action invalide")
-    return {"ok": True, "action": req.action}
+    return {"ok": True, "action": req.action, "motif": req.motif}
 
 
 # ─── Banners CRUD ─────────────────────────────────────────────────────────────
