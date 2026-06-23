@@ -190,10 +190,10 @@ export default function ProductDetail({ guest = false }) {
         )}
       </div>
 
-      {p.stock > 0 && (isGuestView || user?.role === "buyer") && (
-        {/* Banner product_bottom — sous le contenu, avant le bouton fixe */}
-        <BannerCarousel position="product_bottom" role={user?.role || "buyer"} className="mx-0 mb-20" />
+      {/* Banner product_bottom — sous le contenu, avant le bouton fixe */}
+      <BannerCarousel position="product_bottom" role={user?.role || "buyer"} className="mx-4 mb-24" />
 
+      {p.stock > 0 && (isGuestView || user?.role === "buyer") && (
         <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 pb-5 z-50 flex items-center gap-3 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
           {!isGuestView && (
             <div className="flex items-center gap-1 border border-gray-200 rounded-lg">
