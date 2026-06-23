@@ -499,6 +499,46 @@ async def fraud_action(user_id: str, req: FraudActionRequest, _: dict = Depends(
     return {"ok": True, "action": req.action, "user_id": user_id}
 
 
+
+# ─── App config : bloc promo fixe ─────────────────────────────────────────────
+
+class PromoBannerConfig(BaseModel):
+    visible: bool = True
+    title: str = "Livraison gratuite dès 50 000 FC"
+    subtitle: str = "Sur tous les produits dans votre quartier"
+
+
+@router.get("/config/promo-banner")
+async def get_promo_banner(_: dict = Depends(require_role("admin"))):
+    """Lire la config du bloc promo fixe."""
+    db = get_db()
+    doc = await db.app_config.find_one({"key": "promo_banner"}, {"_id": 0})
+    if not doc:
+        return {"visible": True, "title": "Livraison gratuite dès 50 000 FC", "subtitle": "Sur tous les produits dans votre quartier"}
+    return {"visible": doc.get("visible", True), "title": doc.get("title", ""), "subtitle": doc.get("subtitle", "")}
+
+
+@router.patch("/config/promo-banner")
+async def update_promo_banner(req: PromoBannerConfig, _: dict = Depends(require_role("admin"))):
+    """Mettre à jour la visibilité et le texte du bloc promo fixe."""
+    db = get_db()
+    await db.app_config.update_one(
+        {"key": "promo_banner"},
+        {"$set": {"key": "promo_banner", "visible": req.visible, "title": req.title, "subtitle": req.subtitle}},
+        upsert=True,
+    )
+    return {"ok": True}
+
+
+@router.get("/config/promo-banner/public")
+async def get_promo_banner_public():
+    """Endpoint public — pas d'auth requise — utilisé par le frontend acheteur."""
+    db = get_db()
+    doc = await db.app_config.find_one({"key": "promo_banner"}, {"_id": 0})
+    if not doc:
+        return {"visible": True, "title": "Livraison gratuite dès 50 000 FC", "subtitle": "Sur tous les produits dans votre quartier"}
+    return {"visible": doc.get("visible", True), "title": doc.get("title", ""), "subtitle": doc.get("subtitle", "")}
+
 # ─── Products moderation ───────────────────────────────────────────────────────
 
 @router.get("/products")

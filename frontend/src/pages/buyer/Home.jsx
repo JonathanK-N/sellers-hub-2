@@ -18,12 +18,21 @@ const CATEGORIES = [
   { value: "Agriculture",  label: "Agriculture" },
 ];
 
+// Config promo par défaut (affiché pendant le chargement)
+const DEFAULT_PROMO = {
+  visible: true,
+  title: "Livraison gratuite dès 50 000 FC",
+  subtitle: "Sur tous les produits dans votre quartier",
+};
+
 export default function BuyerHome() {
   const { user } = useAuth();
   const nav = useNavigate();
   const [cat, setCat] = useState("all");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [promo, setPromo] = useState(DEFAULT_PROMO);
+  const [homeMidBanners, setHomeMidBanners] = useState(null); // null=chargement
 
   const role = user?.role || "buyer";
 
@@ -35,6 +44,17 @@ export default function BuyerHome() {
       .then(({ data }) => setProducts(data))
       .finally(() => setLoading(false));
   }, [cat, user?.country_code]);
+
+  // Charger config promo + banners home_mid en parallèle
+  useEffect(() => {
+    Promise.all([
+      api.get("/admin/config/promo-banner/public").then(({ data }) => data).catch(() => DEFAULT_PROMO),
+      api.get("/admin/banners/public", { params: { position: "home_mid", role } }).then(({ data }) => data).catch(() => []),
+    ]).then(([promoConfig, midBanners]) => {
+      setPromo(promoConfig);
+      setHomeMidBanners(midBanners);
+    });
+  }, [role]);
 
   return (
     <div className="mobile-shell">
@@ -52,7 +72,7 @@ export default function BuyerHome() {
         </button>
       </div>
 
-      {/* Banner home_top — entre recherche et catégories */}
+      {/* Banner home_top */}
       <BannerCarousel position="home_top" role={role} className="mx-4 mt-3" />
 
       {/* Catégories */}
@@ -73,9 +93,19 @@ export default function BuyerHome() {
         ))}
       </div>
 
-      {/* Banner home_mid OU bloc promo fixe si pas de banner */}
+      {/* Zone home_mid :
+          Priorité 1 — bannière admin home_mid si elle existe
+          Priorité 2 — bloc promo fixe si visible=true
+          Priorité 3 — rien */}
       <section className="px-4 mt-3">
-        <BannerCarouselOrPromo role={role} currency={user?.currency} />
+        {homeMidBanners === null ? (
+          /* Chargement — afficher le promo par défaut pour éviter le saut */
+          promo.visible && <PromoBlock title={promo.title} subtitle={promo.subtitle} />
+        ) : homeMidBanners.length > 0 ? (
+          <BannerCarousel position="home_mid" role={role} />
+        ) : promo.visible ? (
+          <PromoBlock title={promo.title} subtitle={promo.subtitle} />
+        ) : null}
       </section>
 
       {/* Produits */}
@@ -111,42 +141,15 @@ export default function BuyerHome() {
   );
 }
 
-/**
- * Affiche la bannière home_mid si elle existe,
- * sinon affiche le bloc promo par défaut.
- */
-function BannerCarouselOrPromo({ role, currency }) {
-  const [hasBanner, setHasBanner] = useState(null); // null=chargement, false=aucun, true=affiche
-
-  useEffect(() => {
-    api.get("/admin/banners/public", { params: { position: "home_mid", role } })
-      .then(({ data }) => setHasBanner(data.length > 0))
-      .catch(() => setHasBanner(false));
-  }, [role]);
-
-  // Pendant le chargement, afficher le bloc promo par défaut
-  if (hasBanner === null) return <PromoDefault currency={currency} />;
-
-  if (hasBanner) {
-    return <BannerCarousel position="home_mid" role={role} />;
-  }
-
-  return <PromoDefault currency={currency} />;
-}
-
-function PromoDefault({ currency }) {
+function PromoBlock({ title, subtitle }) {
   return (
     <div className="rounded-xl bg-gradient-to-r from-[#085041] to-[#1D9E75] text-white p-4 flex items-center gap-3 overflow-hidden relative">
       <div className="w-12 h-12 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
         <Sparkles size={22} />
       </div>
       <div className="relative">
-        <h3 className="font-display font-bold text-base leading-tight">
-          Livraison gratuite dès 50 000 {currency}
-        </h3>
-        <p className="text-xs text-emerald-100 mt-0.5">
-          Sur tous les produits dans votre quartier
-        </p>
+        <h3 className="font-display font-bold text-base leading-tight">{title}</h3>
+        <p className="text-xs text-emerald-100 mt-0.5">{subtitle}</p>
       </div>
     </div>
   );
