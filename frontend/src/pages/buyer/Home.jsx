@@ -5,16 +5,17 @@ import api from "../../lib/api";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
 import ProductCard from "../../components/ProductCard";
+import BannerCarousel from "../../components/BannerCarousel";
 import { useAuth } from "../../context/AuthContext";
 
 const CATEGORIES = [
-  { value: "all", label: "Tout" },
+  { value: "all",          label: "Tout" },
   { value: "Électronique", label: "Électronique" },
-  { value: "Vêtements", label: "Vêtements" },
+  { value: "Vêtements",    label: "Vêtements" },
   { value: "Alimentation", label: "Alimentation" },
-  { value: "Maison", label: "Maison" },
-  { value: "Solaire", label: "Solaire" },
-  { value: "Agriculture", label: "Agriculture" },
+  { value: "Maison",       label: "Maison" },
+  { value: "Solaire",      label: "Solaire" },
+  { value: "Agriculture",  label: "Agriculture" },
 ];
 
 export default function BuyerHome() {
@@ -24,15 +25,13 @@ export default function BuyerHome() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const role = user?.role || "buyer";
+
   useEffect(() => {
     setLoading(true);
-    const params = {
-      country_code: user?.country_code,
-      sort: "newest",
-    };
+    const params = { country_code: user?.country_code, sort: "newest" };
     if (cat !== "all") params.category = cat;
-    api
-      .get("/products", { params })
+    api.get("/products", { params })
       .then(({ data }) => setProducts(data))
       .finally(() => setLoading(false));
   }, [cat, user?.country_code]);
@@ -41,6 +40,7 @@ export default function BuyerHome() {
     <div className="mobile-shell">
       <TopBar title="AfriMarket" />
 
+      {/* Barre de recherche */}
       <div className="px-4 pt-3">
         <button
           onClick={() => nav("/buyer/search")}
@@ -52,6 +52,10 @@ export default function BuyerHome() {
         </button>
       </div>
 
+      {/* Banner home_top — entre recherche et catégories */}
+      <BannerCarousel position="home_top" role={role} className="mx-4 mt-3" />
+
+      {/* Catégories */}
       <div className="mt-3 px-4 flex gap-2 overflow-x-auto no-scrollbar pb-1">
         {CATEGORIES.map((c) => (
           <button
@@ -69,22 +73,12 @@ export default function BuyerHome() {
         ))}
       </div>
 
-      <section className="px-4 mt-4">
-        <div className="rounded-xl bg-gradient-to-r from-[#085041] to-[#1D9E75] text-white p-4 flex items-center gap-3 overflow-hidden relative">
-          <div className="w-12 h-12 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
-            <Sparkles size={22} />
-          </div>
-          <div className="relative">
-            <h3 className="font-display font-bold text-base leading-tight">
-              Livraison gratuite dès 50 000 {user?.currency}
-            </h3>
-            <p className="text-xs text-emerald-100 mt-0.5">
-              Sur tous les produits dans votre quartier
-            </p>
-          </div>
-        </div>
+      {/* Banner home_mid OU bloc promo fixe si pas de banner */}
+      <section className="px-4 mt-3">
+        <BannerCarouselOrPromo role={role} currency={user?.currency} />
       </section>
 
+      {/* Produits */}
       <section className="px-4 mt-5">
         <div className="flex items-center justify-between mb-3">
           <h2 className="font-display font-bold text-lg text-gray-900">
@@ -113,6 +107,47 @@ export default function BuyerHome() {
       </section>
 
       <BottomNav role={user?.role === "seller" ? "seller" : "buyer"} />
+    </div>
+  );
+}
+
+/**
+ * Affiche la bannière home_mid si elle existe,
+ * sinon affiche le bloc promo par défaut.
+ */
+function BannerCarouselOrPromo({ role, currency }) {
+  const [hasBanner, setHasBanner] = useState(null); // null=chargement, false=aucun, true=affiche
+
+  useEffect(() => {
+    api.get("/admin/banners/public", { params: { position: "home_mid", role } })
+      .then(({ data }) => setHasBanner(data.length > 0))
+      .catch(() => setHasBanner(false));
+  }, [role]);
+
+  // Pendant le chargement, afficher le bloc promo par défaut
+  if (hasBanner === null) return <PromoDefault currency={currency} />;
+
+  if (hasBanner) {
+    return <BannerCarousel position="home_mid" role={role} />;
+  }
+
+  return <PromoDefault currency={currency} />;
+}
+
+function PromoDefault({ currency }) {
+  return (
+    <div className="rounded-xl bg-gradient-to-r from-[#085041] to-[#1D9E75] text-white p-4 flex items-center gap-3 overflow-hidden relative">
+      <div className="w-12 h-12 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
+        <Sparkles size={22} />
+      </div>
+      <div className="relative">
+        <h3 className="font-display font-bold text-base leading-tight">
+          Livraison gratuite dès 50 000 {currency}
+        </h3>
+        <p className="text-xs text-emerald-100 mt-0.5">
+          Sur tous les produits dans votre quartier
+        </p>
+      </div>
     </div>
   );
 }
