@@ -141,3 +141,19 @@ async def seed_all():
     await seed_countries()
     await seed_admin()
     await seed_test_accounts()
+    await init_app_config()
+
+
+async def init_app_config():
+    """Initialise les configs app si elles n'existent pas encore."""
+    from db import get_db
+    db = get_db()
+    existing = await db.app_config.find_one({"key": "promo_banner"})
+    if not existing:
+        await db.app_config.insert_one({
+            "key": "promo_banner",
+            "visible": False,
+            "title": "Livraison gratuite dès 50 000 FC",
+            "subtitle": "Sur tous les produits dans votre quartier",
+        })
+        logger.info("Config promo_banner initialisée (visible=False)")
