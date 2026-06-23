@@ -90,22 +90,38 @@ export default function SellerPremium() {
           </div>
         </div>
 
+        {/* Bloc paiement désactivé — CinetPay Mobile Money en cours d'intégration */}
         {!plan.active && (
-          <p className="text-xs text-gray-400 text-center mt-4 px-4">
-            Abonnement mensuel renouvelable. Vous pouvez résilier à tout moment ; vos avantages restent actifs jusqu'à la fin de la période payée.
-          </p>
-        )}
+          <div className="mt-5 rounded-2xl overflow-hidden border border-[#EF9F27]/30 shadow-sm">
+            {/* Image d'ambiance */}
+            <div className="relative h-36 bg-gradient-to-br from-[#EF9F27]/20 to-[#BA7517]/10 flex items-center justify-center">
+              <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                <Crown size={100} className="text-[#EF9F27]" />
+              </div>
+              <div className="relative text-center px-4">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <div className="w-2 h-2 rounded-full bg-[#EF9F27] animate-pulse" />
+                  <div className="w-2 h-2 rounded-full bg-[#EF9F27] animate-pulse" style={{ animationDelay: "0.2s" }} />
+                  <div className="w-2 h-2 rounded-full bg-[#EF9F27] animate-pulse" style={{ animationDelay: "0.4s" }} />
+                </div>
+                <p className="font-display font-black text-lg text-[#BA7517]">Disponible très prochainement</p>
+                <p className="text-xs text-[#BA7517]/70 mt-1">Le paiement Mobile Money arrive bientôt sur AfriMarket</p>
+              </div>
+            </div>
 
-        <button
-          onClick={subscribe}
-          disabled={busy}
-          data-testid="subscribe-premium-btn"
-          className="w-full text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2 mt-4"
-          style={{ background: "#EF9F27" }}
-        >
-          <Crown size={18} />
-          {busy ? "Traitement…" : plan.active ? `Renouveler — ${formatPrice(plan.price, plan.currency)}` : `S'abonner — ${formatPrice(plan.price, plan.currency)}/mois`}
-        </button>
+            {/* Info paiement */}
+            <div className="bg-[#FFFBF0] px-4 py-4">
+              <p className="text-xs text-center text-gray-600 leading-relaxed">
+                Le paiement Premium via{" "}
+                <span className="font-semibold text-[#BA7517]">MTN MoMo, Airtel Money et Orange Money</span>{" "}
+                sera disponible très prochainement.
+              </p>
+              <p className="text-xs text-center text-gray-400 mt-2">
+                Vous serez notifié dès que cette fonctionnalité sera activée.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       <BottomNav role="seller" />
