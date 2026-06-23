@@ -7,6 +7,7 @@ import api from "../../lib/api";
 import ProductCard from "../../components/ProductCard";
 import BottomNav from "../../components/BottomNav";
 import { useAuth } from "../../context/AuthContext";
+import BannerCarousel from "../../components/BannerCarousel";
 
 const PRESETS = [1, 5, 10, 25, 50];
 
@@ -68,6 +69,9 @@ export default function SearchPage() {
           />
         </div>
       </header>
+
+      {/* Banner search_top — juste sous la barre de recherche */}
+      <BannerCarousel position="search_top" role={user?.role || "buyer"} className="mx-4 mt-3" />
 
       <section className="px-4 mt-4 space-y-3">
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
