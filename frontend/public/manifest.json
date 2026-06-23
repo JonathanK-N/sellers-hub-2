@@ -17,11 +17,21 @@
     { "src": "icons/icon-maskable-192x192.png", "type": "image/png", "sizes": "192x192", "purpose": "maskable" },
     { "src": "icons/icon-maskable-512x512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
   ],
-  "start_url": ".",
-  "scope": ".",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#085041",
   "background_color": "#085041",
-  "categories": ["shopping", "business"]
+  "categories": ["shopping", "business"],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "icons/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Accueil AfriMarket"
+    }
+  ]
 }

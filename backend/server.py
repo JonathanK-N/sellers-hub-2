@@ -53,7 +53,46 @@ async def root():
 
 @api_router.get("/health")
 async def health():
-    return {"status": "ok"}
+    """Health check enrichi — utilisé par UptimeRobot / monitoring externe.
+    Vérifie MongoDB et retourne les métriques essentielles.
+    Répondre dans les 5s sinon Railway/UptimeRobot considère le service down.
+    """
+    import time
+    start = time.monotonic()
+    checks = {}
+    overall = "ok"
+
+    # Check MongoDB
+    try:
+        db = get_db()
+        await db.command("ping")
+        checks["mongodb"] = "ok"
+    except Exception as e:
+        checks["mongodb"] = f"error: {str(e)[:80]}"
+        overall = "degraded"
+
+    # Check FX rate fraîcheur (si plus vieux que 7h → warning)
+    try:
+        from fx_service import get_usd_to_fc
+        db = get_db()
+        fx_doc = await db.fx_rates.find_one({"pair": "USD_CDF"}, {"_id": 0, "updated_at": 1})
+        if fx_doc and fx_doc.get("updated_at"):
+            from datetime import datetime, timezone
+            updated = datetime.fromisoformat(fx_doc["updated_at"])
+            age_hours = (datetime.now(timezone.utc) - updated).total_seconds() / 3600
+            checks["fx_rate"] = "ok" if age_hours < 7 else f"stale ({age_hours:.1f}h)"
+        else:
+            checks["fx_rate"] = "no_data"
+    except Exception:
+        checks["fx_rate"] = "unknown"
+
+    elapsed_ms = int((time.monotonic() - start) * 1000)
+    return {
+        "status": overall,
+        "checks": checks,
+        "response_ms": elapsed_ms,
+        "version": "1.0.0",
+    }
 
 
 @api_router.get("/fx/rate")
