@@ -66,6 +66,48 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
     return seller
 
 
+def _resize_image(data: bytes, max_px: int = 1200, quality: int = 85) -> tuple[bytes, str]:
+    """Redimensionne une image à max_px sur le grand côté, encode en JPEG optimisé.
+    Retourne (bytes_optimisés, content_type).
+    Ne touche pas aux images déjà plus petites que max_px.
+    """
+    try:
+        from PIL import Image, ExifTags
+        import io
+        img = Image.open(io.BytesIO(data))
+        # Corriger l'orientation EXIF (photos iPhone notamment)
+        try:
+            exif = img._getexif()
+            if exif:
+                for tag, val in exif.items():
+                    if ExifTags.TAGS.get(tag) == "Orientation":
+                        rotations = {3: 180, 6: 270, 8: 90}
+                        if val in rotations:
+                            img = img.rotate(rotations[val], expand=True)
+        except Exception:
+            pass
+        # Convertir en RGB (pour JPEG — pas de canal alpha)
+        if img.mode in ("RGBA", "P", "LA"):
+            bg = Image.new("RGB", img.size, (255, 255, 255))
+            if img.mode == "P":
+                img = img.convert("RGBA")
+            bg.paste(img, mask=img.split()[-1] if img.mode in ("RGBA", "LA") else None)
+            img = bg
+        elif img.mode != "RGB":
+            img = img.convert("RGB")
+        # Redimensionner si nécessaire
+        w, h = img.size
+        if max(w, h) > max_px:
+            ratio = max_px / max(w, h)
+            img = img.resize((int(w * ratio), int(h * ratio)), Image.LANCZOS)
+        buf = io.BytesIO()
+        img.save(buf, format="JPEG", quality=quality, optimize=True)
+        return buf.getvalue(), "image/jpeg"
+    except Exception as e:
+        logger.warning(f"Image resize failed, using original: {e}")
+        return data, "image/jpeg"
+
+
 @router.post("/upload-photo")
 async def upload_photo(file: UploadFile = File(...), user: dict = Depends(require_role("seller"))):
     """Upload a single product/shop photo to object storage. Returns public URL via our backend."""
@@ -74,10 +116,13 @@ async def upload_photo(file: UploadFile = File(...), user: dict = Depends(requir
         ext = file.filename.rsplit(".", 1)[-1].lower()
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
+    raw_data = await file.read()
+    # Redimensionner à max 1200px, JPEG optimisé — réduit la taille de 70-90% pour les photos mobiles
+    data, content_type = _resize_image(raw_data)
+    ext = "jpg"
     path = f"{APP_NAME}/photos/{user['id']}/{uuid.uuid4()}.{ext}"
-    data = await file.read()
     try:
-        result = upload_public(path, data, file.content_type or "image/jpeg")
+        result = upload_public(path, data, content_type)
     except Exception as e:
         logger.error(f"Upload failed: {e}")
         raise HTTPException(status_code=500, detail="Échec du téléversement")

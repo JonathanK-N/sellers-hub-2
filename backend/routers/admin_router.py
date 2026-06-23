@@ -39,9 +39,15 @@ async def admin_upload(file: UploadFile = File(...), _: dict = Depends(require_r
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
     path = f"{APP_NAME}/admin/{_uuid.uuid4()}.{ext}"
-    data = await file.read()
+    raw_data = await file.read()
+    # Redimensionner à max 1400px pour les bannières admin (légèrement plus grand que les produits)
     try:
-        result = upload_public(path, data, file.content_type or "image/jpeg")
+        from sellers_router import _resize_image
+        data, content_type = _resize_image(raw_data, max_px=1400)
+    except Exception:
+        data, content_type = raw_data, file.content_type or "image/jpeg"
+    try:
+        result = upload_public(path, data, content_type)
     except Exception as e:
         logger.warning(f"Admin upload failed: {e}")
         raise HTTPException(status_code=500, detail="Échec de l'upload")
@@ -596,6 +602,24 @@ async def user_action(user_id: str, req: UserActionRequest, _: dict = Depends(re
         await db.users.update_one({"id": user_id}, {"$set": {"suspended": False, "banned": False, "blocked": False, "suspend_motif": ""}})
     elif req.action == "ban":
         await db.users.update_one({"id": user_id}, {"$set": {"suspended": True, "banned": True, "suspended_at": now, "suspend_motif": req.motif}})
+        # Annuler toutes les commandes actives liées à cet utilisateur (en tant qu'acheteur ou vendeur)
+        active_statuses = ["confirmed", "preparing", "ready_for_pickup", "out_for_delivery"]
+        cancel_update = {"$set": {"status": "cancelled", "cancel_reason": f"Compte banni : {req.motif}", "cancelled_at": now}}
+        if user.get("role") == "seller":
+            # Trouver le seller_id associé
+            seller_doc = await db.sellers.find_one({"user_id": user_id}, {"_id": 0, "id": 1})
+            if seller_doc:
+                await db.orders.update_many(
+                    {"seller_id": seller_doc["id"], "status": {"$in": active_statuses}},
+                    cancel_update
+                )
+                logger.info(f"[BAN] Commandes annulées pour seller {seller_doc['id']}")
+        # Annuler aussi les commandes de l'acheteur si c'est un buyer
+        await db.orders.update_many(
+            {"buyer_id": user_id, "status": {"$in": active_statuses}},
+            cancel_update
+        )
+        logger.info(f"[BAN] Commandes annulées pour user {user_id}")
     else:
         raise HTTPException(status_code=400, detail="Action invalide")
     return {"ok": True, "action": req.action, "motif": req.motif}
