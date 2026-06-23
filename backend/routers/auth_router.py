@@ -4,7 +4,8 @@ import uuid
 import logging
 from datetime import datetime, timezone, timedelta
 
-from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Request
+from rate_limit import limiter, LIMIT_OTP_SEND, LIMIT_OTP_VERIFY, LIMIT_LOGIN, LIMIT_REGISTER, LIMIT_ADMIN_LOGIN
 
 from db import get_db
 from models import (
@@ -34,7 +35,8 @@ def _strip_user(user: dict) -> dict:
 
 
 @router.post("/register")
-async def register(req: RegisterRequest):
+@limiter.limit(LIMIT_REGISTER)
+async def register(request: Request, req: RegisterRequest):
     db = get_db()
     phone = normalize_phone(req.phone)
     if req.role not in ("buyer", "seller", "deliverer"):
@@ -82,7 +84,8 @@ async def register(req: RegisterRequest):
 
 
 @router.post("/send-otp")
-async def send_otp(req: SendOtpRequest):
+@limiter.limit(LIMIT_OTP_SEND)
+async def send_otp(request: Request, req: SendOtpRequest):
     db = get_db()
     phone = normalize_phone(req.phone)
     user = await db.users.find_one({"phone": phone})
@@ -104,7 +107,8 @@ async def send_otp(req: SendOtpRequest):
 
 
 @router.post("/verify-otp")
-async def verify_otp(req: VerifyOtpRequest):
+@limiter.limit(LIMIT_OTP_VERIFY)
+async def verify_otp(request: Request, req: VerifyOtpRequest):
     db = get_db()
     phone = normalize_phone(req.phone)
     otp_doc = await db.otp_codes.find_one({"phone": phone})
@@ -140,7 +144,8 @@ async def verify_otp(req: VerifyOtpRequest):
 
 
 @router.post("/login")
-async def login(req: LoginRequest):
+@limiter.limit(LIMIT_LOGIN)
+async def login(request: Request, req: LoginRequest):
     """Password login by phone number (after the phone was verified once)."""
     db = get_db()
     phone = normalize_phone(req.phone)
@@ -164,7 +169,8 @@ async def login(req: LoginRequest):
 
 
 @router.post("/admin/login")
-async def admin_login(req: AdminLoginRequest):
+@limiter.limit(LIMIT_ADMIN_LOGIN)
+async def admin_login(request: Request, req: AdminLoginRequest):
     """Dedicated admin login. Credentials come from environment variables:
     ADMIN_PHONE + ADMIN_PASSWORD. The admin account is provisioned at startup.
     """

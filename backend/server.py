@@ -11,6 +11,8 @@ from fastapi import FastAPI, APIRouter
 from starlette.middleware.cors import CORSMiddleware
 
 from db import init_db, close_db
+from rate_limit import limiter, rate_limit_handler
+from slowapi.errors import RateLimitExceeded
 from seed_data import seed_all
 from storage import init_storage
 from routers.auth_router import router as auth_router
@@ -37,6 +39,10 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AfriMarket API")
+
+# Rate limiting — protège contre le spam et le brute-force
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, rate_limit_handler)
 api_router = APIRouter(prefix="/api")
 
 
