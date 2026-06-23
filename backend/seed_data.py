@@ -1,4 +1,4 @@
-"""Seed countries, admin, and test accounts on startup."""
+"""Seed essential data on startup: indexes, countries, admin, app config."""
 import os
 import uuid
 import logging
@@ -30,9 +30,14 @@ async def seed_admin():
     """Create or update the admin account from environment variables."""
     from auth import hash_password
     db = get_db()
-    admin_phone = normalize_phone(os.environ.get("ADMIN_PHONE", "+243000000001"))
-    admin_name = os.environ.get("ADMIN_NAME", "Admin AfriMarket")
+    admin_phone = normalize_phone(os.environ.get("ADMIN_PHONE", ""))
+    admin_name  = os.environ.get("ADMIN_NAME", "Admin AfriMarket")
     admin_password = os.environ.get("ADMIN_PASSWORD", "")
+
+    if not admin_phone:
+        logger.warning("ADMIN_PHONE non défini — compte admin non créé")
+        return
+
     pwd_hash = hash_password(admin_password) if admin_password else None
 
     existing = await db.users.find_one({"phone": admin_phone})
@@ -49,70 +54,13 @@ async def seed_admin():
             "phone_verified": True,
             "created_at": datetime.now(timezone.utc).isoformat(),
         })
-        logger.info(f"Admin seeded: {admin_phone}")
+        logger.info(f"Admin créé : {admin_phone}")
     else:
-        updates = {"role": "admin"}
+        updates = {"role": "admin", "name": admin_name}
         if pwd_hash:
             updates["password_hash"] = pwd_hash
         await db.users.update_one({"phone": admin_phone}, {"$set": updates})
-        logger.info(f"Admin updated: {admin_phone}")
-
-
-async def seed_test_accounts():
-    """Create 3 fixed test accounts (buyer, seller, deliverer). Idempotent."""
-    from auth import hash_password
-    db = get_db()
-    PWD_HASH = hash_password("Afrimarket2026!")
-
-    TEST_ACCOUNTS = [
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Beatrice Mutombo",
-            "phone": normalize_phone("+243890000001"),
-            "role": "buyer",
-            "country_code": "CD", "currency": "FC", "kyc_level": 1,
-            "password_hash": PWD_HASH, "phone_verified": True, "test_account": True,
-            "created_at": datetime.now(timezone.utc).isoformat(),
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Patrick Luzolo",
-            "phone": normalize_phone("+243890000002"),
-            "role": "seller",
-            "country_code": "CD", "currency": "FC", "kyc_level": 1,
-            "password_hash": PWD_HASH, "phone_verified": True, "test_account": True,
-            "created_at": datetime.now(timezone.utc).isoformat(),
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Moise Kabongo",
-            "phone": normalize_phone("+243890000003"),
-            "role": "deliverer",
-            "country_code": "CD", "currency": "FC", "kyc_level": 1,
-            "password_hash": PWD_HASH, "phone_verified": True, "test_account": True,
-            "created_at": datetime.now(timezone.utc).isoformat(),
-        },
-    ]
-
-    for acc in TEST_ACCOUNTS:
-        existing = await db.users.find_one({"phone": acc["phone"]})
-        if not existing:
-            await db.users.insert_one(acc)
-            if acc["role"] == "deliverer":
-                await db.deliverers.insert_one({
-                    "id": str(uuid.uuid4()), "user_id": acc["id"],
-                    "vehicle": "moto", "is_active": True,
-                    "country_code": "CD", "created_at": acc["created_at"],
-                    "test_account": True,
-                })
-            logger.info(f"Compte test cree: {acc['role']} {acc['phone']}")
-        else:
-            # Always keep password up to date
-            await db.users.update_one(
-                {"phone": acc["phone"]},
-                {"$set": {"password_hash": PWD_HASH, "phone_verified": True}},
-            )
-            logger.info(f"Compte test mis a jour: {acc['role']} {acc['phone']}")
+        logger.info(f"Admin mis à jour : {admin_phone}")
 
 
 async def create_indexes():
@@ -132,21 +80,12 @@ async def create_indexes():
     try:
         await db.sellers.create_index([("location", "2dsphere")])
     except Exception as e:
-        logger.warning(f"2dsphere index issue: {e}")
+        logger.warning(f"2dsphere index: {e}")
     logger.info("Indexes created")
 
 
-async def seed_all():
-    await create_indexes()
-    await seed_countries()
-    await seed_admin()
-    await seed_test_accounts()
-    await init_app_config()
-
-
 async def init_app_config():
-    """Initialise les configs app si elles n'existent pas encore."""
-    from db import get_db
+    """Initialise les configs app par défaut si elles n'existent pas."""
     db = get_db()
     existing = await db.app_config.find_one({"key": "promo_banner"})
     if not existing:
@@ -157,3 +96,10 @@ async def init_app_config():
             "subtitle": "Sur tous les produits dans votre quartier",
         })
         logger.info("Config promo_banner initialisée (visible=False)")
+
+
+async def seed_all():
+    await create_indexes()
+    await seed_countries()
+    await seed_admin()
+    await init_app_config()
