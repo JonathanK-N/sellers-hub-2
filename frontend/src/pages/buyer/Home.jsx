@@ -20,7 +20,7 @@ const CATEGORIES = [
 
 // Config promo par défaut (affiché pendant le chargement)
 const DEFAULT_PROMO = {
-  visible: true,
+  visible: false,   // masqué par défaut pendant le chargement
   title: "Livraison gratuite dès 50 000 FC",
   subtitle: "Sur tous les produits dans votre quartier",
 };

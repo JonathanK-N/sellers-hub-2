@@ -514,8 +514,8 @@ async def get_promo_banner(_: dict = Depends(require_role("admin"))):
     db = get_db()
     doc = await db.app_config.find_one({"key": "promo_banner"}, {"_id": 0})
     if not doc:
-        return {"visible": True, "title": "Livraison gratuite dès 50 000 FC", "subtitle": "Sur tous les produits dans votre quartier"}
-    return {"visible": doc.get("visible", True), "title": doc.get("title", ""), "subtitle": doc.get("subtitle", "")}
+        return {"visible": False, "title": "Livraison gratuite dès 50 000 FC", "subtitle": "Sur tous les produits dans votre quartier"}
+    return {"visible": doc.get("visible", False), "title": doc.get("title", ""), "subtitle": doc.get("subtitle", "")}
 
 
 @router.patch("/config/promo-banner")
@@ -536,8 +536,9 @@ async def get_promo_banner_public():
     db = get_db()
     doc = await db.app_config.find_one({"key": "promo_banner"}, {"_id": 0})
     if not doc:
-        return {"visible": True, "title": "Livraison gratuite dès 50 000 FC", "subtitle": "Sur tous les produits dans votre quartier"}
-    return {"visible": doc.get("visible", True), "title": doc.get("title", ""), "subtitle": doc.get("subtitle", "")}
+        # Pas encore configuré → masqué par défaut
+        return {"visible": False, "title": "Livraison gratuite dès 50 000 FC", "subtitle": "Sur tous les produits dans votre quartier"}
+    return {"visible": doc.get("visible", False), "title": doc.get("title", ""), "subtitle": doc.get("subtitle", "")}
 
 # ─── Products moderation ───────────────────────────────────────────────────────
 
