@@ -5,7 +5,7 @@ import logging
 from collections import defaultdict
 from datetime import datetime, timezone, timedelta
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
@@ -23,6 +23,28 @@ class KycRejectRequest(BaseModel):
 class CountryToggleRequest(BaseModel):
     is_active: bool
 
+
+
+# ─── Admin upload ──────────────────────────────────────────────────────────────
+
+@router.post("/upload")
+async def admin_upload(file: UploadFile = File(...), _: dict = Depends(require_role("admin"))):
+    """Upload d'image pour l'administration (banners, etc.)."""
+    import uuid as _uuid
+    from storage import upload_public, APP_NAME
+    ext = "jpg"
+    if file.filename and "." in file.filename:
+        ext = file.filename.rsplit(".", 1)[-1].lower()
+    if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
+        ext = "jpg"
+    path = f"{APP_NAME}/admin/{_uuid.uuid4()}.{ext}"
+    data = await file.read()
+    try:
+        result = upload_public(path, data, file.content_type or "image/jpeg")
+    except Exception as e:
+        logger.warning(f"Admin upload failed: {e}")
+        raise HTTPException(status_code=500, detail="Échec de l'upload")
+    return {"url": result["url"], "file_id": result.get("file_id", "")}
 
 @router.get("/overview")
 async def overview(_: dict = Depends(require_role("admin"))):
