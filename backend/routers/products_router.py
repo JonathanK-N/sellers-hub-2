@@ -203,9 +203,18 @@ async def my_products(user: dict = Depends(require_role("seller"))):
 
 
 @router.patch("/products/{product_id}")
-async def update_product(product_id: str, req: ProductUpdateRequest, user: dict = Depends(require_role("seller"))):
-    """Partial update of a product. Only the owning seller can edit it."""
+async def update_product(product_id: str, req: ProductUpdateRequest, user: dict = Depends(require_role("seller", "admin"))):
+    """Partial update of a product. Owning seller OR admin can edit."""
     db = get_db()
+    # Admin peut modifier n'importe quel produit sans vérification boutique
+    if user["role"] == "admin":
+        existing = await db.products.find_one({"id": product_id}, {"_id": 0})
+        if not existing:
+            raise HTTPException(status_code=404, detail="Produit introuvable")
+        update_data = req.model_dump(exclude_unset=True)
+        if update_data:
+            await db.products.update_one({"id": product_id}, {"$set": update_data})
+        return {**existing, **update_data}
     seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
     if not seller:
         raise HTTPException(status_code=403, detail="Pas de boutique")
