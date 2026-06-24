@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Autoriser uniquement les connexions HTTPS en production -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">afrimarket.up.railway.app</domain>
+        <domain includeSubdomains="true">sellers-hub-2-production.up.railway.app</domain>
+    </domain-config>
+</network-security-config>

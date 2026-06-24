@@ -9,6 +9,33 @@
   },
   "android": {
     "allowMixedContent": false,
-    "backgroundColor": "#085041"
+    "backgroundColor": "#085041",
+    "loggingBehavior": "none"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "launchAutoHide": true,
+      "backgroundColor": "#085041",
+      "androidSplashResourceName": "splash",
+      "showSpinner": false
+    },
+    "Camera": {
+      "permissionType": "prompt"
+    },
+    "Geolocation": {
+      "requestPermissions": true
+    },
+    "PushNotifications": {
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ]
+    },
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_icon_config_sample",
+      "iconColor": "#1D9E75"
+    }
   }
 }

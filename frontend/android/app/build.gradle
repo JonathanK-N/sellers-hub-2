@@ -3,29 +3,58 @@ apply plugin: 'com.android.application'
 android {
     namespace "cd.cognito.afrimarket"
     compileSdk rootProject.ext.compileSdkVersion
+
     defaultConfig {
         applicationId "cd.cognito.afrimarket"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
-             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
-             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
-    buildTypes {
+
+    // Signature release — à configurer avec ton keystore
+    // Pour builder un APK release signé depuis Android Studio :
+    // Build > Generate Signed Bundle/APK > APK > créer ou choisir ton keystore
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // Ces valeurs seront remplies par Android Studio lors de la génération
+            // OU via des variables d'environnement CI/CD
+            if (project.hasProperty('AFRIMARKET_KEYSTORE_PATH')) {
+                storeFile file(AFRIMARKET_KEYSTORE_PATH)
+                storePassword AFRIMARKET_KEYSTORE_PASSWORD
+                keyAlias AFRIMARKET_KEY_ALIAS
+                keyPassword AFRIMARKET_KEY_PASSWORD
+            }
         }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (project.hasProperty('AFRIMARKET_KEYSTORE_PATH')) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
 repositories {
-    flatDir{
+    flatDir {
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
     }
 }
@@ -50,5 +79,5 @@ try {
         apply plugin: 'com.google.gms.google-services'
     }
 } catch(Exception e) {
-    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+    logger.info("google-services.json not found, push notifications won't work")
 }

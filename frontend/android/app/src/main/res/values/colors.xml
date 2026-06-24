@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Couleurs AfriMarket -->
+    <color name="colorPrimary">#085041</color>
+    <color name="colorPrimaryDark">#063b30</color>
+    <color name="colorAccent">#1D9E75</color>
+    <color name="colorGold">#EF9F27</color>
+    <color name="colorBackground">#085041</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>
