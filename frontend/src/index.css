@@ -9,6 +9,10 @@
   --afri-accent: #ef9f27;
   --afri-error: #e24b4a;
   --afri-success-bg: #e1f5ee;
+  --afri-dark: #0b0b0d;
+  --afri-dark-2: #17171a;
+  --afri-orange: #f97316;
+  --afri-orange-hover: #ea580c;
 }
 
 html, body {

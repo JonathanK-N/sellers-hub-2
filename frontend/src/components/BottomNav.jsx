@@ -35,14 +35,14 @@ export default function BottomNav({ role = "buyer" }) {
             data-testid={item.testid}
             className={({ isActive }) =>
               `flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-xs transition-colors relative ${
-                isActive ? "text-[#1D9E75] font-semibold" : "text-gray-500"
+                isActive ? "text-[#f97316] font-semibold" : "text-gray-500"
               }`
             }
           >
             <Icon size={22} />
             <span>{item.label}</span>
             {item.label === "Panier" && count > 0 && (
-              <span className="absolute top-1 right-1/4 bg-[#EF9F27] text-white text-[10px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1">
+              <span className="absolute top-1 right-1/4 bg-[#f97316] text-white text-[10px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1">
                 {count}
               </span>
             )}

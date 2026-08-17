@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Star, MapPin, ShieldCheck, Crown } from "lucide-react";
+import { Star, MapPin, ShieldCheck, Crown, Heart, ShoppingCart } from "lucide-react";
 import { formatPrice, formatDistance, displayPrice, photoUrl } from "../lib/format";
 
 export default function ProductCard({ product, guest = false }) {
@@ -12,7 +12,7 @@ export default function ProductCard({ product, guest = false }) {
     <Link
       to={href}
       data-testid={`product-card-${product.id}`}
-      className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group hover:border-[#1D9E75] transition-colors"
+      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group hover:shadow-md hover:-translate-y-0.5 transition-all"
     >
       <div className="aspect-square bg-gray-100 relative overflow-hidden">
         {photo ? (
@@ -27,18 +27,26 @@ export default function ProductCard({ product, guest = false }) {
             A
           </div>
         )}
+        <button
+          type="button"
+          aria-label="Ajouter aux favoris"
+          onClick={(e) => e.preventDefault()}
+          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gray-500 hover:text-[#f97316] shadow-sm transition-colors"
+        >
+          <Heart size={14} />
+        </button>
         {product.seller_premium && (
-          <span className="absolute top-2 left-2 flex items-center gap-1 bg-[#EF9F27] text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm">
+          <span className="absolute top-2 left-2 flex items-center gap-1 bg-[#f97316] text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm">
             <Crown size={11} /> Premium
           </span>
         )}
         {product.currency === "USD" && (
-          <span className="absolute bottom-2 left-2 bg-[#085041] text-white px-1.5 py-0.5 rounded text-[10px] font-bold">
+          <span className="absolute bottom-2 left-2 bg-[#0b0b0d] text-white px-1.5 py-0.5 rounded text-[10px] font-bold">
             $USD
           </span>
         )}
         {distance && (
-          <span className="absolute top-2 right-2 flex items-center gap-1 bg-white/95 backdrop-blur text-gray-700 px-2 py-0.5 rounded-full text-[11px] font-medium shadow-sm">
+          <span className="absolute bottom-2 right-2 flex items-center gap-1 bg-white/95 backdrop-blur text-gray-700 px-2 py-0.5 rounded-full text-[11px] font-medium shadow-sm">
             <MapPin size={11} /> {distance}
           </span>
         )}
@@ -53,7 +61,7 @@ export default function ProductCard({ product, guest = false }) {
         </div>
         <div className="flex items-center justify-between mt-1">
           <div className="flex flex-col">
-            <span className="font-display font-bold text-[#085041]">
+            <span className="font-display font-bold text-gray-900">
               {formatPrice(amount, currency)}
             </span>
             {product.currency === "USD" && (
@@ -62,12 +70,20 @@ export default function ProductCard({ product, guest = false }) {
               </span>
             )}
           </div>
-          {product.seller_rating > 0 && (
-            <span className="flex items-center gap-0.5 text-xs text-gray-600">
-              <Star size={12} className="text-[#EF9F27] fill-[#EF9F27]" />
-              {product.seller_rating.toFixed(1)}
+          <div className="flex items-center gap-2">
+            {product.seller_rating > 0 && (
+              <span className="flex items-center gap-0.5 text-xs text-gray-600">
+                <Star size={12} className="text-[#EF9F27] fill-[#EF9F27]" />
+                {product.seller_rating.toFixed(1)}
+              </span>
+            )}
+            <span
+              aria-hidden="true"
+              className="w-7 h-7 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0"
+            >
+              <ShoppingCart size={13} />
             </span>
-          )}
+          </div>
         </div>
       </div>
     </Link>
