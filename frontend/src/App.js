@@ -4,6 +4,7 @@ import InstallPrompt from "./components/InstallPrompt";
 import "./App.css";
 
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthModalProvider } from "./context/AuthModalContext";
 import { CartProvider } from "./context/CartContext";
 
 import Landing from "./pages/Landing";
@@ -123,6 +124,7 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <BrowserRouter>
+          <AuthModalProvider>
           <Toaster position="top-center" richColors />
           <InstallPrompt />
           <Routes>
@@ -192,6 +194,7 @@ function App() {
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          </AuthModalProvider>
         </BrowserRouter>
       </CartProvider>
     </AuthProvider>

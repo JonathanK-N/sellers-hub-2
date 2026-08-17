@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import { useAuthModal } from "../../context/AuthModalContext";
 import { toast } from "sonner";
 import { ArrowLeft, ShieldCheck, MapPin, Star, Truck, Store, Plus, Minus, MessageSquare, Crown, ChevronRight, LogIn } from "lucide-react";
 import api from "../../lib/api";
@@ -9,6 +10,7 @@ import { useAuth } from "../../context/AuthContext";
 import BannerCarousel from "../../components/BannerCarousel";
 
 export default function ProductDetail({ guest = false }) {
+  const { openAuth } = useAuthModal();
   const { id } = useParams();
   const nav = useNavigate();
   const { user } = useAuth();
@@ -32,7 +34,7 @@ export default function ProductDetail({ guest = false }) {
 
   const requireAuth = (action) => {
     toast.info(`Connectez-vous pour ${action}`);
-    nav("/auth/login", { state: { from: `/explore/product/${id}` } });
+    openAuth("login");
   };
 
   const handleAdd = () => {

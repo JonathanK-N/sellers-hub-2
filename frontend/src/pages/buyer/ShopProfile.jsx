@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useAuthModal } from "../../context/AuthModalContext";
 import { toast } from "sonner";
 import { MapPin, Clock, Star, ShieldCheck, Crown, Facebook, Globe, Phone, Package, MessageSquare, LogIn } from "lucide-react";
 import api from "../../lib/api";
@@ -8,6 +9,7 @@ import { useAuth } from "../../context/AuthContext";
 import ProductCard from "../../components/ProductCard";
 
 export default function ShopProfile({ guest = false }) {
+  const { openAuth } = useAuthModal();
   const { sellerId } = useParams();
   const nav = useNavigate();
   const { user } = useAuth();
@@ -33,7 +35,7 @@ export default function ShopProfile({ guest = false }) {
   const handleContact = () => {
     if (isGuestView) {
       toast.info("Connectez-vous pour contacter le vendeur");
-      nav("/auth/login", { state: { from: `/explore/shop/${sellerId}` } });
+      openAuth("login");
       return;
     }
     nav(`/messages/${user.id}__${seller.user_id}`, { state: { other_name: seller.shop_name } });

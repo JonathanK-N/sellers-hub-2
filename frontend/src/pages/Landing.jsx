@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthModal } from "../context/AuthModalContext";
 import {
   Search, ShieldCheck, MapPin, LogIn, UserPlus, Store,
   LayoutGrid, Smartphone, Shirt, UtensilsCrossed, Home as HomeIcon,
@@ -22,6 +23,7 @@ const CATEGORIES = [
 const WRAP = "max-w-7xl mx-auto px-4 md:px-8";
 
 export default function Landing() {
+  const { openAuth } = useAuthModal();
   const nav = useNavigate();
   const [cat, setCat] = useState("all");
   const [products, setProducts] = useState([]);
@@ -74,20 +76,22 @@ export default function Landing() {
           </form>
 
           <div className="flex items-center gap-2 shrink-0">
-            <Link
-              to="/auth/login"
+            <button
+              type="button"
+              onClick={() => openAuth("login")}
               data-testid="guest-login-btn"
               className="text-xs md:text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors rounded-full px-3 md:px-4 py-1.5 md:py-2"
             >
               Se connecter
-            </Link>
-            <Link
-              to="/auth/register"
+            </button>
+            <button
+              type="button"
+              onClick={() => openAuth("register")}
               data-testid="guest-register-btn"
               className="text-xs md:text-sm font-semibold bg-[#f97316] hover:bg-[#ea580c] transition-colors rounded-full px-3 md:px-4 py-1.5 md:py-2"
             >
               S'inscrire
-            </Link>
+            </button>
           </div>
         </div>
 
@@ -223,20 +227,22 @@ export default function Landing() {
             Créez votre compte gratuitement en quelques secondes.
           </p>
           <div className="flex flex-col md:flex-row gap-2 md:justify-center">
-            <Link
-              to="/auth/register"
+            <button
+              type="button"
+              onClick={() => openAuth("register")}
               data-testid="cta-register"
               className="bg-[#f97316] hover:bg-[#ea580c] text-white rounded-full py-3 px-6 font-semibold transition-colors flex justify-center items-center gap-2"
             >
               <UserPlus size={18} /> Créer mon compte
-            </Link>
-            <Link
-              to="/auth/login"
+            </button>
+            <button
+              type="button"
+              onClick={() => openAuth("login")}
               data-testid="cta-login"
               className="bg-gray-100 hover:bg-gray-200 text-[#0b0b0d] rounded-full py-3 px-6 font-semibold transition-colors flex justify-center items-center gap-2"
             >
               <LogIn size={18} /> Se connecter
-            </Link>
+            </button>
           </div>
         </div>
       </section>
@@ -284,8 +290,8 @@ export default function Landing() {
             <div>
               <div className="text-white font-semibold mb-2 text-sm">Aide</div>
               <ul className="space-y-1.5 text-xs md:text-sm text-gray-400">
-                <li><Link to="/auth/login" className="hover:text-[#f97316]">Se connecter</Link></li>
-                <li><Link to="/auth/register" className="hover:text-[#f97316]">Créer un compte</Link></li>
+                <li><button type="button" onClick={() => openAuth("login")} className="hover:text-[#f97316]">Se connecter</button></li>
+                <li><button type="button" onClick={() => openAuth("register")} className="hover:text-[#f97316]">Créer un compte</button></li>
               </ul>
             </div>
             <div>
