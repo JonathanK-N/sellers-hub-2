@@ -21,6 +21,10 @@ export function CartProvider({ children }) {
   // Taux live depuis le backend (rafraîchi à l'ouverture du panier)
   const [fxRate, setFxRate] = useState(null);
 
+  // Ouverture du tiroir panier lateral. L'etat vit ici, mais le rendu se fait
+  // dans <CartDrawerMount /> a l'interieur du Router (le tiroir navigue).
+  const [cartOpen, setCartOpen] = useState(false);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items]);
@@ -90,6 +94,9 @@ export function CartProvider({ children }) {
       items, addItem, updateQty, removeItem, clear,
       total, totalFC, totalUSD, totalCurrency, count, sellerGroups,
       checkoutCurrency, setCheckoutCurrency, fxRate,
+      cartOpen,
+      openCart: () => setCartOpen(true),
+      closeCart: () => setCartOpen(false),
     }}>
       {children}
     </CartContext.Provider>

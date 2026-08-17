@@ -7,7 +7,7 @@ import api from "../lib/api";
 import MessagesIndicator from "./MessagesIndicator";
 
 export default function TopBar({ title = "AfriMarket", showCart = true }) {
-  const { count } = useCart();
+  const { count, openCart } = useCart();
   const { user } = useAuth();
   const [notifCount, setNotifCount] = useState(0);
 
@@ -52,8 +52,10 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
           )}
         </Link>
         {showCart && (
-          <Link
-            to="/buyer/cart"
+          <button
+            type="button"
+            onClick={openCart}
+            aria-label="Ouvrir le panier"
             data-testid="cart-icon-link"
             className="relative w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center"
           >
@@ -66,7 +68,7 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
                 {count}
               </span>
             )}
-          </Link>
+          </button>
         )}
       </div>
     </header>

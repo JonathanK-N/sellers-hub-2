@@ -19,7 +19,7 @@ const sellerItems = [
 
 export default function BottomNav({ role = "buyer" }) {
   const items = role === "seller" ? sellerItems : buyerItems;
-  const { count } = useCart();
+  const { count, openCart } = useCart();
 
   return (
     <nav
@@ -28,6 +28,29 @@ export default function BottomNav({ role = "buyer" }) {
     >
       {items.map((item) => {
         const Icon = item.icon;
+        const badge = item.label === "Panier" && count > 0 && (
+          <span className="absolute top-1 right-1/4 bg-[#f97316] text-white text-[10px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1">
+            {count}
+          </span>
+        );
+
+        // Le panier ouvre le tiroir lateral au lieu de naviguer
+        if (item.label === "Panier") {
+          return (
+            <button
+              key={item.to}
+              type="button"
+              onClick={openCart}
+              data-testid={item.testid}
+              className="flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-xs transition-colors relative text-gray-500"
+            >
+              <Icon size={22} />
+              <span>{item.label}</span>
+              {badge}
+            </button>
+          );
+        }
+
         return (
           <NavLink
             key={item.to}
@@ -41,11 +64,7 @@ export default function BottomNav({ role = "buyer" }) {
           >
             <Icon size={22} />
             <span>{item.label}</span>
-            {item.label === "Panier" && count > 0 && (
-              <span className="absolute top-1 right-1/4 bg-[#f97316] text-white text-[10px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1">
-                {count}
-              </span>
-            )}
+            {badge}
           </NavLink>
         );
       })}

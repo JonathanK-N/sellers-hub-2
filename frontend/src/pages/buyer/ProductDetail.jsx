@@ -14,7 +14,7 @@ export default function ProductDetail({ guest = false }) {
   const { id } = useParams();
   const nav = useNavigate();
   const { user } = useAuth();
-  const { addItem } = useCart();
+  const { addItem, openCart } = useCart();
   const [p, setP] = useState(null);
   const [photoIdx, setPhotoIdx] = useState(0);
   const [qty, setQty] = useState(1);
@@ -48,6 +48,7 @@ export default function ProductDetail({ guest = false }) {
     }
     addItem(p, qty);
     toast.success("Ajouté au panier");
+    openCart();
   };
 
   const handleAsk = () => {
