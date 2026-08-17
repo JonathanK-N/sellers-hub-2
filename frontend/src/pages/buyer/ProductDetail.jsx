@@ -64,7 +64,7 @@ export default function ProductDetail({ guest = false }) {
         </Link>
         <span className="font-display font-bold text-sm text-gray-900 truncate flex-1">{p.name}</span>
         {isGuestView && (
-          <Link to="/auth/login" className="text-xs font-semibold text-[#1D9E75] flex items-center gap-1 shrink-0">
+          <Link to="/auth/login" className="text-xs font-semibold text-[#f97316] flex items-center gap-1 shrink-0">
             <LogIn size={14} /> Connexion
           </Link>
         )}
@@ -93,11 +93,11 @@ export default function ProductDetail({ guest = false }) {
         <h1 className="font-display font-black text-2xl text-gray-900 leading-tight">{p.name}</h1>
         <div className="mt-2">
           <div className="flex items-baseline gap-2">
-            <span className="font-display font-black text-2xl text-[#085041]">
+            <span className="font-display font-black text-2xl text-gray-900">
               {formatPrice(displayPrice(p).amount, displayPrice(p).currency)}
             </span>
             {p.stock > 0 ? (
-              <span className="text-xs text-[#1D9E75] font-semibold">En stock ({p.stock})</span>
+              <span className="text-xs text-green-600 font-semibold">En stock ({p.stock})</span>
             ) : (
               <span className="text-xs text-[#E24B4A] font-semibold">Rupture</span>
             )}
@@ -116,18 +116,18 @@ export default function ProductDetail({ guest = false }) {
 
       <div className="px-4 mt-1">
         <Link to={shopLink} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors block">
-          <div className="w-12 h-12 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center overflow-hidden shrink-0">
+          <div className="w-12 h-12 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center overflow-hidden shrink-0">
             {p.seller_logo ? <img src={p.seller_logo} alt="" className="w-full h-full object-cover" /> : <Store size={20} />}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5">
               <span className="font-semibold text-gray-900 truncate">{p.seller_name}</span>
-              {p.seller_verified && <ShieldCheck size={14} className="text-[#1D9E75] shrink-0" />}
+              {p.seller_verified && <ShieldCheck size={14} className="text-green-600 shrink-0" />}
             </div>
             <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5">
               {p.seller_rating > 0 && (
                 <span className="flex items-center gap-1">
-                  <Star size={12} className="text-[#EF9F27] fill-[#EF9F27]" />
+                  <Star size={12} className="text-[#f97316] fill-[#f97316]" />
                   {p.seller_rating.toFixed(1)}
                 </span>
               )}
@@ -151,10 +151,10 @@ export default function ProductDetail({ guest = false }) {
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Livraison</h3>
           <div className="flex items-center gap-2 text-sm text-gray-700">
-            <Truck size={16} className="text-[#1D9E75]" /> Livraison à domicile disponible
+            <Truck size={16} className="text-[#f97316]" /> Livraison à domicile disponible
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-700 mt-1.5">
-            <Store size={16} className="text-[#1D9E75]" /> Retrait en boutique (Click & Collect)
+            <Store size={16} className="text-[#f97316]" /> Retrait en boutique (Click & Collect)
           </div>
         </div>
 
@@ -162,7 +162,7 @@ export default function ProductDetail({ guest = false }) {
           <button
             data-testid="chat-seller-product-btn"
             onClick={handleAsk}
-            className="w-full bg-white border border-[#1D9E75] text-[#1D9E75] hover:bg-[#E1F5EE] rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm"
+            className="w-full bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm"
           >
             <MessageSquare size={16} /> {isGuestView ? "Se connecter pour poser une question" : "Poser une question au vendeur"}
           </button>
@@ -177,7 +177,7 @@ export default function ProductDetail({ guest = false }) {
                   <div className="flex items-center gap-2">
                     <div className="flex gap-0.5">
                       {[1,2,3,4,5].map((n) => (
-                        <Star key={n} size={12} className={n <= r.rating ? "text-[#EF9F27] fill-[#EF9F27]" : "text-gray-200"} />
+                        <Star key={n} size={12} className={n <= r.rating ? "text-[#f97316] fill-[#f97316]" : "text-gray-200"} />
                       ))}
                     </div>
                     <span className="text-xs text-gray-500">{r.buyer_name} · {timeAgo(r.created_at)}</span>
@@ -217,7 +217,7 @@ export default function ProductDetail({ guest = false }) {
           <button
             data-testid="add-to-cart-btn"
             onClick={handleAdd}
-            className="flex-1 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2"
+            className="flex-1 bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2"
           >
             {isGuestView ? (<><LogIn size={16} /> Se connecter pour commander</>) : "Ajouter au panier"}
           </button>

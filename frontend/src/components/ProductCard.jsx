@@ -73,7 +73,7 @@ export default function ProductCard({ product, guest = false }) {
           <div className="flex items-center gap-2">
             {product.seller_rating > 0 && (
               <span className="flex items-center gap-0.5 text-xs text-gray-600">
-                <Star size={12} className="text-[#EF9F27] fill-[#EF9F27]" />
+                <Star size={12} className="text-[#f97316] fill-[#f97316]" />
                 {product.seller_rating.toFixed(1)}
               </span>
             )}
