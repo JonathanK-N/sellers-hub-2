@@ -46,17 +46,18 @@ export default function Register() {
 
   return (
     <div className="mobile-shell bg-white">
-      <header className="px-5 pt-5 pb-2 flex items-center gap-3">
-        <Link to="/" className="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center" data-testid="back-btn">
-          <ArrowLeft size={20} />
-        </Link>
-        <div>
-          <h1 className="font-display font-black text-xl text-[#085041]">Créer un compte</h1>
-          <p className="text-xs text-gray-500">Étape {step} sur 2</p>
+      <Link to="/" className="absolute left-4 top-4 w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center z-10" data-testid="back-btn">
+        <ArrowLeft size={20} />
+      </Link>
+      <header className="px-6 pt-8 pb-5 flex flex-col items-center text-center border-b border-gray-100">
+        <div className="w-12 h-12 rounded-xl bg-[#0b0b0d] text-[#f97316] flex items-center justify-center font-black text-xl mb-3">
+          A
         </div>
+        <h1 className="font-display font-black text-xl text-gray-900">Créer un compte</h1>
+        <p className="text-sm text-gray-500 mt-1">Rejoignez la communauté AfriMarket &middot; Étape {step} sur 2</p>
       </header>
 
-      <div className="px-5 mt-6">
+      <div className="px-6 mt-6">
         {step === 1 && (
           <div className="space-y-4">
             <div>
@@ -68,7 +69,7 @@ export default function Register() {
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="Ex: Jean Mbo"
-                  className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
+                  className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
                 />
               </div>
             </div>
@@ -87,7 +88,7 @@ export default function Register() {
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
                     placeholder="ex: 812345678"
                     inputMode="tel"
-                    className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
+                    className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
                   />
                 </div>
               </div>
@@ -103,7 +104,7 @@ export default function Register() {
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   placeholder="Au moins 6 caractères"
-                  className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
+                  className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
                 />
                 <button
                   type="button"
@@ -128,7 +129,7 @@ export default function Register() {
                     onClick={() => setForm({ ...form, role: r })}
                     className={`py-3 px-2 rounded-lg font-semibold text-sm border-2 transition-all ${
                       form.role === r
-                        ? "border-[#1D9E75] bg-[#E1F5EE] text-[#085041]"
+                        ? "border-[#f97316] bg-orange-50 text-gray-900"
                         : "border-gray-200 bg-white text-gray-600"
                     }`}
                   >
@@ -142,13 +143,13 @@ export default function Register() {
               data-testid="register-step-next"
               disabled={!form.name || !form.phone || form.password.length < 6}
               onClick={() => setStep(2)}
-              className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50 flex justify-center items-center gap-2"
+              className="w-full bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50 flex justify-center items-center gap-2"
             >
               Suivant <ChevronRight size={18} />
             </button>
             <p className="text-center text-xs text-gray-500 mt-4">
               Déjà un compte ?{" "}
-              <Link to="/auth/login" className="text-[#1D9E75] font-semibold" data-testid="link-to-login">
+              <Link to="/auth/login" className="text-[#f97316] font-semibold" data-testid="link-to-login">
                 Se connecter
               </Link>
             </p>
@@ -168,7 +169,7 @@ export default function Register() {
                     onClick={() => setForm({ ...form, country_code: c.code })}
                     className={`flex items-center gap-3 p-3 rounded-lg border-2 text-left transition-all ${
                       form.country_code === c.code
-                        ? "border-[#1D9E75] bg-[#E1F5EE]"
+                        ? "border-[#f97316] bg-orange-50"
                         : "border-gray-200 bg-white"
                     }`}
                   >
@@ -185,7 +186,7 @@ export default function Register() {
             </div>
 
             {current && (
-              <div className="rounded-lg bg-[#E1F5EE] border border-[#1D9E75]/30 p-3 text-xs text-[#085041]">
+              <div className="rounded-lg bg-orange-50 border border-orange-200 p-3 text-xs text-gray-800">
                 <div className="font-semibold mb-1">Profil configuré :</div>
                 <div>📍 Pays : {current.name}</div>
                 <div>💰 Devise : {current.currency_symbol}</div>
@@ -197,7 +198,7 @@ export default function Register() {
               <button
                 onClick={() => setStep(1)}
                 data-testid="register-step-back"
-                className="bg-white border border-[#1D9E75] text-[#1D9E75] rounded-lg py-3 px-4 font-semibold hover:bg-[#E1F5EE] transition-colors"
+                className="bg-white border border-gray-300 text-gray-700 rounded-lg py-3 px-4 font-semibold hover:bg-gray-50 transition-colors"
               >
                 Retour
               </button>
@@ -205,7 +206,7 @@ export default function Register() {
                 disabled={loading}
                 onClick={submit}
                 data-testid="register-submit-btn"
-                className="bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
+                className="bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
               >
                 {loading ? "Envoi…" : "Recevoir le code"}
               </button>

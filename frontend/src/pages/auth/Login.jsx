@@ -48,15 +48,18 @@ export default function Login() {
 
   return (
     <div className="mobile-shell bg-white">
-      <header className="px-5 pt-5 pb-2 flex items-center gap-3">
-        <Link to="/" className="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center" data-testid="back-btn">
-          <ArrowLeft size={20} />
-        </Link>
-        <h1 className="font-display font-black text-xl text-[#085041]">Connexion</h1>
+      <Link to="/" className="absolute left-4 top-4 w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center z-10" data-testid="back-btn">
+        <ArrowLeft size={20} />
+      </Link>
+      <header className="px-6 pt-8 pb-5 flex flex-col items-center text-center border-b border-gray-100">
+        <div className="w-12 h-12 rounded-xl bg-[#0b0b0d] text-[#f97316] flex items-center justify-center font-black text-xl mb-3">
+          A
+        </div>
+        <h1 className="font-display font-black text-xl text-gray-900">Connexion</h1>
+        <p className="text-sm text-gray-500 mt-1">Bienvenue sur AfriMarket</p>
       </header>
 
-      <div className="px-5 mt-6 space-y-4">
-        <p className="text-sm text-gray-600">Connectez-vous avec votre numéro et votre mot de passe.</p>
+      <div className="px-6 mt-6 space-y-4">
 
         <div>
           <label className="text-sm font-medium text-gray-700">Numéro de téléphone</label>
@@ -79,7 +82,7 @@ export default function Login() {
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="812345678"
                 inputMode="tel"
-                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
+                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
               />
             </div>
           </div>
@@ -96,7 +99,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && phone && password && submit()}
               placeholder="••••••••"
-              className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
+              className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
             />
             <button
               type="button"
@@ -108,7 +111,7 @@ export default function Login() {
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          <Link to="/auth/forgot" className="text-xs text-[#1D9E75] font-medium mt-1.5 inline-block" data-testid="link-forgot">
+          <Link to="/auth/forgot" className="text-xs text-[#f97316] font-medium mt-1.5 inline-block" data-testid="link-forgot">
             Mot de passe oublié ?
           </Link>
         </div>
@@ -117,14 +120,14 @@ export default function Login() {
           data-testid="login-submit-btn"
           disabled={loading || !phone || !password}
           onClick={submit}
-          className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
+          className="w-full bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
         >
           {loading ? "Connexion…" : "Se connecter"}
         </button>
 
         <p className="text-center text-xs text-gray-500 mt-4">
           Pas encore inscrit ?{" "}
-          <Link to="/auth/register" className="text-[#1D9E75] font-semibold" data-testid="link-to-register">
+          <Link to="/auth/register" className="text-[#f97316] font-semibold" data-testid="link-to-register">
             Créer un compte
           </Link>
         </p>
