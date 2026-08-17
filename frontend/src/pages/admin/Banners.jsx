@@ -140,12 +140,12 @@ export default function AdminBanners() {
 
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl text-[#085041]">Affiches & Banners</h1>
+          <h1 className="font-display font-black text-xl text-gray-900">Affiches & Banners</h1>
           <p className="text-xs text-gray-500">Gérez le contenu affiché aux utilisateurs</p>
         </div>
         <div className="flex gap-2">
           <button onClick={load} className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className={`text-gray-500 ${loading ? "animate-spin" : ""}`} /></button>
-          <button onClick={() => { resetForm(); setCreating(true); }} className="flex items-center gap-1.5 text-sm font-semibold bg-[#1D9E75] text-white px-4 py-2 rounded-lg hover:bg-[#168260]">
+          <button onClick={() => { resetForm(); setCreating(true); }} className="flex items-center gap-1.5 text-sm font-semibold bg-[#0b0b0d] text-white px-4 py-2 rounded-lg hover:bg-[#1f2937]">
             <Plus size={16} /> Nouvelle bannière
           </button>
         </div>
@@ -157,7 +157,7 @@ export default function AdminBanners() {
         <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center">
                 <Sparkles size={16} />
               </div>
               <div>
@@ -169,7 +169,7 @@ export default function AdminBanners() {
               onClick={togglePromoVisible}
               disabled={promoLoading}
               className={`flex items-center gap-1.5 text-sm font-semibold px-3 py-1.5 rounded-lg transition-colors ${
-                promo.visible ? "bg-[#E1F5EE] text-[#085041] hover:bg-[#c8ede1]" : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                promo.visible ? "bg-orange-50 text-gray-900 hover:bg-[#c8ede1]" : "bg-gray-100 text-gray-500 hover:bg-gray-200"
               }`}
             >
               {promo.visible ? <Eye size={15} /> : <EyeOff size={15} />}
@@ -179,7 +179,7 @@ export default function AdminBanners() {
 
           <div className="px-5 py-4">
             {/* Preview du bloc promo */}
-            <div className={`rounded-xl bg-gradient-to-r from-[#085041] to-[#1D9E75] text-white p-4 flex items-center gap-3 mb-4 ${!promo.visible ? "opacity-40" : ""}`}>
+            <div className={`rounded-xl bg-gradient-to-r from-[#0b0b0d] to-[#f97316] text-white p-4 flex items-center gap-3 mb-4 ${!promo.visible ? "opacity-40" : ""}`}>
               <div className="w-10 h-10 rounded-lg bg-white/15 flex items-center justify-center shrink-0"><Sparkles size={18} /></div>
               <div>
                 <p className="font-display font-bold text-sm">{promo.title || "—"}</p>
@@ -192,16 +192,16 @@ export default function AdminBanners() {
                 <div>
                   <label className="text-xs font-medium text-gray-700 block mb-1">Titre</label>
                   <input value={promoDraft.title} onChange={(e) => setPromoDraft({ ...promoDraft, title: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]" />
+                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]" />
                 </div>
                 <div>
                   <label className="text-xs font-medium text-gray-700 block mb-1">Sous-titre</label>
                   <input value={promoDraft.subtitle} onChange={(e) => setPromoDraft({ ...promoDraft, subtitle: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]" />
+                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]" />
                 </div>
                 <div className="flex gap-2">
                   <button onClick={savePromo} disabled={promoSaving}
-                    className="flex items-center gap-1.5 bg-[#1D9E75] text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 hover:bg-[#168260]">
+                    className="flex items-center gap-1.5 bg-[#0b0b0d] text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 hover:bg-[#1f2937]">
                     <Check size={15} /> {promoSaving ? "Sauvegarde…" : "Enregistrer"}
                   </button>
                   <button onClick={() => { setPromoEditing(false); setPromoDraft(promo); }}
@@ -212,7 +212,7 @@ export default function AdminBanners() {
               </div>
             ) : (
               <button onClick={() => setPromoEditing(true)}
-                className="flex items-center gap-1.5 text-sm font-semibold text-[#085041] border border-[#085041] px-3 py-1.5 rounded-lg hover:bg-[#E1F5EE] transition-colors">
+                className="flex items-center gap-1.5 text-sm font-semibold text-gray-900 border border-[#0b0b0d] px-3 py-1.5 rounded-lg hover:bg-orange-50 transition-colors">
                 <Pencil size={14} /> Modifier le texte
               </button>
             )}
@@ -230,7 +230,7 @@ export default function AdminBanners() {
               <Image size={36} className="mx-auto text-gray-300 mb-3" />
               <p className="text-gray-500 font-medium text-sm">Aucune bannière créée</p>
               <p className="text-xs text-gray-400 mt-1">Créez votre première affiche</p>
-              <button onClick={() => { resetForm(); setCreating(true); }} className="mt-4 bg-[#1D9E75] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#168260]">
+              <button onClick={() => { resetForm(); setCreating(true); }} className="mt-4 bg-[#0b0b0d] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#1f2937]">
                 Créer une bannière
               </button>
             </div>
@@ -249,7 +249,7 @@ export default function AdminBanners() {
                         {b.subtitle && <div className="text-xs text-gray-500 mt-0.5">{b.subtitle}</div>}
                       </div>
                       <div className="flex items-center gap-1 shrink-0">
-                        <button onClick={() => toggleActive(b)} className={`p-1.5 rounded-lg hover:bg-gray-100 ${b.is_active ? "text-[#1D9E75]" : "text-gray-400"}`}>
+                        <button onClick={() => toggleActive(b)} className={`p-1.5 rounded-lg hover:bg-gray-100 ${b.is_active ? "text-[#f97316]" : "text-gray-400"}`}>
                           {b.is_active ? <Eye size={15} /> : <EyeOff size={15} />}
                         </button>
                         <button onClick={() => deleteBanner(b.id)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500">
@@ -264,7 +264,7 @@ export default function AdminBanners() {
                       <span className="text-[10px] font-bold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
                         {TARGET_ROLES.find((r) => r.value === b.target_role)?.label || b.target_role}
                       </span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${b.is_active ? "bg-[#E1F5EE] text-[#1D9E75]" : "bg-gray-100 text-gray-500"}`}>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${b.is_active ? "bg-orange-50 text-[#f97316]" : "bg-gray-100 text-gray-500"}`}>
                         {b.is_active ? "Visible" : "Masquée"}
                       </span>
                     </div>
@@ -281,20 +281,20 @@ export default function AdminBanners() {
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="font-display font-black text-lg text-[#085041]">Nouvelle bannière</h2>
+              <h2 className="font-display font-black text-lg text-gray-900">Nouvelle bannière</h2>
               <button onClick={() => { setCreating(false); resetForm(); }} className="p-2 hover:bg-gray-100 rounded-lg text-gray-500">✕</button>
             </div>
             <div className="p-6 space-y-4">
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-1.5">Image <span className="text-red-500">*</span></label>
                 <label className={`block border-2 border-dashed rounded-xl overflow-hidden cursor-pointer transition-colors ${
-                  uploadError ? "border-red-300 bg-red-50" : formImgSrc ? "border-[#1D9E75]" : "border-gray-300 hover:border-[#1D9E75]"
+                  uploadError ? "border-red-300 bg-red-50" : formImgSrc ? "border-[#f97316]" : "border-gray-300 hover:border-[#f97316]"
                 }`}>
                   {formImgSrc ? (
                     <div className="relative">
                       <img src={formImgSrc} alt="Preview" className="w-full max-h-48 object-cover" />
                       {uploading && <div className="absolute inset-0 bg-black/40 flex items-center justify-center"><div className="text-white text-sm font-semibold animate-pulse">Upload en cours…</div></div>}
-                      {!uploading && form.image_url && <div className="absolute top-2 right-2 bg-[#1D9E75] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">✓ Uploadée</div>}
+                      {!uploading && form.image_url && <div className="absolute top-2 right-2 bg-[#0b0b0d] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">✓ Uploadée</div>}
                     </div>
                   ) : (
                     <div className="p-8 text-center text-gray-400">
@@ -322,7 +322,7 @@ export default function AdminBanners() {
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-1.5">Position</label>
                 <select value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#1D9E75]">
+                  className="w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#f97316]">
                   {POSITIONS.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
                 </select>
               </div>
@@ -330,13 +330,13 @@ export default function AdminBanners() {
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-1.5">Visible pour</label>
                 <select value={form.target_role} onChange={(e) => setForm({ ...form, target_role: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#1D9E75]">
+                  className="w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#f97316]">
                   {TARGET_ROLES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
                 </select>
               </div>
 
               <button onClick={create} disabled={uploading || !form.image_url}
-                className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed">
                 {uploading ? "Upload en cours…" : "Créer la bannière"}
               </button>
             </div>
@@ -352,7 +352,7 @@ function Field({ label, value, onChange, placeholder }) {
     <div>
       <label className="text-sm font-medium text-gray-700 block mb-1.5">{label}</label>
       <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
-        className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]" />
+        className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]" />
     </div>
   );
 }

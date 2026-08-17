@@ -29,13 +29,13 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#085041] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#0b0b0d] flex items-center justify-center px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-8">
         <div className="flex flex-col items-center text-center">
-          <div className="w-14 h-14 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
+          <div className="w-14 h-14 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center">
             <ShieldCheck size={28} />
           </div>
-          <h1 className="font-display font-black text-2xl text-[#085041] mt-3">Administration</h1>
+          <h1 className="font-display font-black text-2xl text-gray-900 mt-3">Administration</h1>
           <p className="text-sm text-gray-500 mt-1">Accès réservé aux administrateurs AfriMarket.</p>
         </div>
 
@@ -50,7 +50,7 @@ export default function AdminLogin() {
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+243000000001"
                 inputMode="tel"
-                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
+                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
               />
             </div>
           </div>
@@ -65,7 +65,7 @@ export default function AdminLogin() {
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && phone && password && submit()}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none"
+                className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
               />
               <button
                 type="button"
@@ -82,7 +82,7 @@ export default function AdminLogin() {
             data-testid="admin-login-submit"
             disabled={loading || !phone || !password}
             onClick={submit}
-            className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50"
+            className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50"
           >
             {loading ? "Connexion…" : "Se connecter"}
           </button>

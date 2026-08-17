@@ -36,12 +36,12 @@ export default function InstallPrompt() {
 
   return (
     <div className="fixed bottom-20 left-1/2 -translate-x-1/2 w-[92%] max-w-md z-[60] bg-white rounded-xl shadow-lg border border-gray-200 p-3 flex items-center gap-3" data-testid="pwa-install-banner">
-      <div className="w-10 h-10 rounded-lg bg-[#085041] text-white flex items-center justify-center shrink-0 font-display font-black">A</div>
+      <div className="w-10 h-10 rounded-lg bg-[#0b0b0d] text-white flex items-center justify-center shrink-0 font-display font-black">A</div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-semibold text-gray-900">Installer AfriMarket</div>
         <div className="text-xs text-gray-500">Accès rapide depuis votre écran d'accueil.</div>
       </div>
-      <button onClick={install} data-testid="pwa-install-btn" className="bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg px-3 py-2 text-sm font-semibold flex items-center gap-1.5 shrink-0">
+      <button onClick={install} data-testid="pwa-install-btn" className="bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg px-3 py-2 text-sm font-semibold flex items-center gap-1.5 shrink-0">
         <Download size={15} /> Installer
       </button>
       <button onClick={dismiss} aria-label="Fermer" className="text-gray-400 hover:text-gray-600 shrink-0">

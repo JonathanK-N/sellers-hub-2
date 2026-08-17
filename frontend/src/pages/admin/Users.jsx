@@ -11,7 +11,7 @@ import { toast } from "sonner";
 const ROLE_LABELS = { buyer: "Acheteur", seller: "Vendeur", deliverer: "Livreur", admin: "Admin" };
 const ROLE_COLORS = {
   buyer:     "bg-blue-50 text-blue-700",
-  seller:    "bg-[#E1F5EE] text-[#1D9E75]",
+  seller:    "bg-orange-50 text-[#f97316]",
   deliverer: "bg-amber-50 text-amber-700",
   admin:     "bg-purple-50 text-purple-700",
 };
@@ -141,7 +141,7 @@ export default function AdminUsers() {
 
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl text-[#085041]">Utilisateurs</h1>
+          <h1 className="font-display font-black text-xl text-gray-900">Utilisateurs</h1>
           <p className="text-xs text-gray-500">{users.length} inscrits</p>
         </div>
         <div className="flex gap-2">
@@ -149,7 +149,7 @@ export default function AdminUsers() {
             <RefreshCw size={16} className={`text-gray-500 ${loading ? "animate-spin" : ""}`} />
           </button>
           <a href="/api/admin/export/users"
-            className="flex items-center gap-1.5 text-xs font-semibold text-[#085041] border border-[#085041] px-3 py-1.5 rounded-lg hover:bg-[#E1F5EE]">
+            className="flex items-center gap-1.5 text-xs font-semibold text-gray-900 border border-[#0b0b0d] px-3 py-1.5 rounded-lg hover:bg-orange-50">
             <Download size={14} /> CSV
           </a>
         </div>
@@ -161,10 +161,10 @@ export default function AdminUsers() {
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Nom, téléphone…"
-              className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]" />
+              className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]" />
           </div>
           <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}
-            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] bg-white">
+            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316] bg-white">
             <option value="all">Tous les rôles</option>
             <option value="buyer">Acheteurs</option>
             <option value="seller">Vendeurs</option>
@@ -210,7 +210,7 @@ export default function AdminUsers() {
                       ) : u.suspended ? (
                         <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">Suspendu</span>
                       ) : (
-                        <span className="text-[10px] font-bold text-[#1D9E75] bg-[#E1F5EE] px-2 py-0.5 rounded-full">Actif</span>
+                        <span className="text-[10px] font-bold text-[#f97316] bg-orange-50 px-2 py-0.5 rounded-full">Actif</span>
                       )}
                     </td>
                     <td className="px-4 py-3">
@@ -226,7 +226,7 @@ export default function AdminUsers() {
 
                         {/* Voir détail */}
                         <button onClick={() => setSelected(u)} title="Voir profil"
-                          className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-[#085041]">
+                          className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-black">
                           <Eye size={15} />
                         </button>
 
@@ -247,7 +247,7 @@ export default function AdminUsers() {
                         {/* Réactiver */}
                         {(u.suspended || u.banned) && u.role !== "admin" && (
                           <button onClick={() => { setActionModal({ user: u, act: "unsuspend" }); setMotif(""); }}
-                            title="Réactiver" className="p-1.5 hover:bg-[#E1F5EE] rounded-lg text-[#1D9E75]">
+                            title="Réactiver" className="p-1.5 hover:bg-orange-50 rounded-lg text-[#f97316]">
                             <CheckCircle2 size={15} />
                           </button>
                         )}
@@ -275,7 +275,7 @@ export default function AdminUsers() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-y-auto">
             <div className="p-5 border-b border-gray-100 flex items-center justify-between">
               <div>
-                <h2 className="font-display font-black text-lg text-[#085041]">{selected.name}</h2>
+                <h2 className="font-display font-black text-lg text-gray-900">{selected.name}</h2>
                 <p className="text-xs text-gray-500">{selected.phone} · #{selected.id.slice(0, 8)}</p>
               </div>
               <button onClick={() => setSelected(null)} className="p-2 hover:bg-gray-100 rounded-lg text-gray-400">
@@ -314,7 +314,7 @@ export default function AdminUsers() {
               )}
               {(selected.suspended || selected.banned) && selected.role !== "admin" && (
                 <button onClick={() => { setSelected(null); setActionModal({ user: selected, act: "unsuspend" }); setMotif(""); }}
-                  className="w-full flex items-center justify-center gap-1.5 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-2.5 text-sm font-semibold">
+                  className="w-full flex items-center justify-center gap-1.5 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-2.5 text-sm font-semibold">
                   <CheckCircle2 size={15} /> Réactiver le compte
                 </button>
               )}
@@ -334,7 +334,7 @@ export default function AdminUsers() {
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm">
             <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="font-display font-black text-base text-[#085041]">
+              <h2 className="font-display font-black text-base text-gray-900">
                 {actionModal.act === "suspend" && "Suspendre le compte"}
                 {actionModal.act === "ban"     && "Bannir définitivement"}
                 {actionModal.act === "block"   && "Bloquer le compte"}
@@ -365,7 +365,7 @@ export default function AdminUsers() {
                         : "Ex: Violation grave des conditions d'utilisation…"
                     }
                     rows={3}
-                    className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] resize-none"
+                    className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316] resize-none"
                   />
                 </div>
               )}
@@ -387,7 +387,7 @@ export default function AdminUsers() {
                   disabled={busy || (actionModal.act !== "unsuspend" && !motif.trim())}
                   className={`flex-1 py-2.5 rounded-lg text-sm font-semibold text-white disabled:opacity-50 transition-colors ${
                     actionModal.act === "unsuspend"
-                      ? "bg-[#1D9E75] hover:bg-[#168260]"
+                      ? "bg-[#0b0b0d] hover:bg-[#1f2937]"
                       : actionModal.act === "ban"
                       ? "bg-red-500 hover:bg-red-600"
                       : "bg-amber-500 hover:bg-amber-600"
@@ -406,7 +406,7 @@ export default function AdminUsers() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
             <div className="p-5 border-b border-gray-100 flex items-center justify-between">
               <div>
-                <h2 className="font-display font-black text-base text-[#085041]">
+                <h2 className="font-display font-black text-base text-gray-900">
                   Produits — {productsModal.user.name}
                 </h2>
                 <p className="text-xs text-gray-500">{productsModal.products.length} produits</p>
@@ -433,7 +433,7 @@ export default function AdminUsers() {
                     <div className="text-xs text-gray-500">{p.price?.toLocaleString("fr-FR")} {p.currency} · Stock : {p.stock}</div>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.is_active ? "bg-[#E1F5EE] text-[#1D9E75]" : "bg-red-100 text-red-600"}`}>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.is_active ? "bg-orange-50 text-[#f97316]" : "bg-red-100 text-red-600"}`}>
                       {p.is_active ? "Actif" : "Retiré"}
                     </span>
                     {p.is_active && (

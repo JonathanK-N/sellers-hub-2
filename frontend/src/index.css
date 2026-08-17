@@ -18,15 +18,17 @@
 html, body {
   margin: 0;
   background: #f9fafb;
-  color: #111827;
-  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #11181c;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, .font-display {
-  font-family: "Manrope", "IBM Plex Sans", sans-serif;
-  letter-spacing: -0.01em;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
 }
 
 code {
@@ -109,4 +111,157 @@ code {
 
 @layer base {
   [data-debug-wrapper="true"] { display: contents !important; }
+}
+
+
+/* ==========================================================================
+   Design system AfriMarket — animations & motion
+   Courbe standard: cubic-bezier(0.4, 0, 0.2, 1)
+   ========================================================================== */
+
+@keyframes afri-fade-in-up {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes afri-fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes afri-scale-in {
+  0%   { opacity: 0; transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes afri-slide-in-right {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes afri-shimmer {
+  100% { transform: translateX(200%); }
+}
+
+/* Apparition au chargement — a poser sur les sections/cartes */
+.afri-fade-up {
+  animation: afri-fade-in-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+.afri-fade {
+  animation: afri-fade-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+.afri-scale-in {
+  animation: afri-scale-in 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+.afri-slide-in {
+  animation: afri-slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Decalage en cascade pour les grilles de produits */
+.afri-stagger > *:nth-child(1)  { animation-delay: 0.02s; }
+.afri-stagger > *:nth-child(2)  { animation-delay: 0.04s; }
+.afri-stagger > *:nth-child(3)  { animation-delay: 0.06s; }
+.afri-stagger > *:nth-child(4)  { animation-delay: 0.08s; }
+.afri-stagger > *:nth-child(5)  { animation-delay: 0.10s; }
+.afri-stagger > *:nth-child(6)  { animation-delay: 0.12s; }
+.afri-stagger > *:nth-child(7)  { animation-delay: 0.14s; }
+.afri-stagger > *:nth-child(8)  { animation-delay: 0.16s; }
+.afri-stagger > *:nth-child(9)  { animation-delay: 0.18s; }
+.afri-stagger > *:nth-child(10) { animation-delay: 0.20s; }
+
+/* Squelette de chargement avec reflet qui balaie */
+.afri-skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: #e5e7eb;
+}
+.afri-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: afri-shimmer 1.6s infinite;
+}
+
+/* Carte produit — l'image zoome au survol de la carte entiere */
+.afri-card {
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.afri-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+.afri-card-media {
+  overflow: hidden;
+}
+.afri-card-media img {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.afri-card:hover .afri-card-media img {
+  transform: scale(1.06);
+}
+
+/* Carrousel horizontal avec accrochage, barre de defilement masquee */
+.afri-carousel {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.75rem;
+}
+.afri-carousel::-webkit-scrollbar { display: none; }
+.afri-carousel > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Boutons pilule facon casakonnect */
+.afri-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  padding: 0.625rem 1.5rem;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.afri-btn:active { transform: scale(0.98); }
+.afri-btn-primary {
+  background-color: #0b0b0d;
+  color: #fff;
+}
+.afri-btn-primary:hover { background-color: #1f2937; }
+.afri-btn-accent {
+  background-color: #f97316;
+  color: #fff;
+}
+.afri-btn-accent:hover { background-color: #ea580c; }
+
+/* Respect des preferences systeme de reduction d'animation */
+@media (prefers-reduced-motion: reduce) {
+  .afri-fade-up,
+  .afri-fade,
+  .afri-scale-in,
+  .afri-slide-in,
+  .afri-stagger > * {
+    animation: none !important;
+  }
+  .afri-card,
+  .afri-card-media img,
+  .afri-btn {
+    transition: none !important;
+  }
+  .afri-skeleton::after { animation: none; }
 }

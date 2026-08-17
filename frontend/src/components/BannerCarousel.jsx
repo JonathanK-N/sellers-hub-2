@@ -62,7 +62,7 @@ export default function BannerCarousel({ position = "home_top", role = "all", cl
       {/* Image principale */}
       <div
         onClick={handleClick}
-        className={`relative w-full aspect-[2.5/1] bg-gradient-to-r from-[#085041] to-[#1D9E75] overflow-hidden ${b.link_url ? "cursor-pointer" : ""}`}
+        className={`relative w-full aspect-[2.5/1] bg-gradient-to-r from-[#0b0b0d] to-[#f97316] overflow-hidden ${b.link_url ? "cursor-pointer" : ""}`}
       >
         {b.image_url && (
           <img

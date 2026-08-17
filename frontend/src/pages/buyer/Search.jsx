@@ -54,7 +54,7 @@ export default function SearchPage() {
 
   return (
     <div className="mobile-shell shell-wide">
-      <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 md:px-8 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 md:px-8 py-3 flex items-center gap-3 shadow-md">
         <Link to="/buyer/home" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
@@ -77,7 +77,7 @@ export default function SearchPage() {
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
-              <MapPin size={16} className="text-[#1D9E75]" />
+              <MapPin size={16} className="text-[#f97316]" />
               Rayon : {radius} km
             </div>
             <span className="text-xs text-gray-500">{products.length} résultat{products.length !== 1 ? "s" : ""}</span>
@@ -99,7 +99,7 @@ export default function SearchPage() {
                 onClick={() => setRadius(p)}
                 className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors ${
                   radius === p
-                    ? "bg-[#1D9E75] text-white border-[#1D9E75]"
+                    ? "bg-[#0b0b0d] text-white border-[#f97316]"
                     : "bg-white text-gray-700 border-gray-200"
                 }`}
               >
@@ -109,7 +109,7 @@ export default function SearchPage() {
           </div>
 
           {q && (
-            <p className="text-xs text-gray-500 mt-3 bg-[#E1F5EE] rounded-lg px-3 py-2">
+            <p className="text-xs text-gray-500 mt-3 bg-orange-50 rounded-lg px-3 py-2">
               La recherche par mot-clé ignore le rayon : tous les produits correspondants sont affichés, quel que soit l'emplacement du vendeur.
             </p>
           )}
@@ -118,7 +118,7 @@ export default function SearchPage() {
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 space-y-3">
           <Toggle
             label="Vendeurs vérifiés uniquement"
-            icon={<ShieldCheck size={16} className="text-[#1D9E75]" />}
+            icon={<ShieldCheck size={16} className="text-green-600" />}
             checked={verifiedOnly}
             onChange={setVerifiedOnly}
             testid="filter-verified-toggle"
@@ -139,7 +139,7 @@ export default function SearchPage() {
                   onClick={() => setSort(o.v)}
                   className={`py-2 rounded-lg text-xs font-semibold border transition-colors ${
                     sort === o.v
-                      ? "bg-[#085041] text-white border-[#085041]"
+                      ? "bg-[#0b0b0d] text-white border-[#0b0b0d]"
                       : "bg-white text-gray-700 border-gray-200"
                   }`}
                 >
@@ -158,7 +158,7 @@ export default function SearchPage() {
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-gray-100 rounded-xl aspect-[3/4] animate-pulse" />
+              <div key={i} className="afri-skeleton rounded-xl aspect-[3/4]" />
             ))}
           </div>
         ) : products.length === 0 ? (
@@ -166,9 +166,9 @@ export default function SearchPage() {
             Aucun produit trouvé dans ce rayon.
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 afri-stagger">
             {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p} className="afri-fade-up" />
             ))}
           </div>
         )}

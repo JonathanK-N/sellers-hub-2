@@ -38,7 +38,7 @@ export default function MessagesIndicator() {
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </svg>
       {count > 0 && (
-        <span className="absolute -top-1 -right-1 bg-[#EF9F27] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white">
+        <span className="absolute -top-1 -right-1 bg-[#f97316] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white">
           {count}
         </span>
       )}

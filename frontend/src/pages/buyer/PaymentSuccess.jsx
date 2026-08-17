@@ -49,10 +49,10 @@ export default function PaymentSuccess() {
 
   return (
     <div className="mobile-shell pt-24 px-6 text-center">
-      <div className="w-16 h-16 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center mx-auto">
+      <div className="w-16 h-16 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center mx-auto">
         {status === "checking" ? <Loader2 size={32} className="animate-spin" /> : <CheckCircle2 size={32} />}
       </div>
-      <h1 className="font-display font-black text-xl text-[#085041] mt-4">
+      <h1 className="font-display font-black text-xl text-gray-900 mt-4">
         {status === "checking" ? "Vérification du paiement…" : "Paiement reçu"}
       </h1>
       <p className="text-gray-500 text-sm mt-2">
@@ -66,7 +66,7 @@ export default function PaymentSuccess() {
           {groupId && (
             <Link
               to={`/buyer/order-group/${groupId}`}
-              className="block w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors"
+              className="block w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors"
             >
               Voir ma commande
             </Link>

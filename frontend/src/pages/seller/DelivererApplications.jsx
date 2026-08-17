@@ -62,7 +62,7 @@ export default function SellerDelivererApplications() {
 
   return (
     <div className="mobile-shell pb-24">
-      <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md">
         {selected ? (
           <button onClick={() => { setSelected(null); setDetail(null); }} className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center">
             <ArrowLeft size={20} />
@@ -92,16 +92,16 @@ export default function SellerDelivererApplications() {
                   key={a.id}
                   onClick={() => openDetail(a.id)}
                   data-testid={`application-card-${a.id}`}
-                  className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-4 hover:border-[#1D9E75] transition-colors"
+                  className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-4 hover:border-[#f97316] transition-colors"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-11 h-11 rounded-lg bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0">
                       <Truck size={20} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold text-gray-900 truncate">{a.full_name}</div>
                       <div className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
-                        <Phone size={11} /> {a.phone} {a.phone_verified && <Check size={11} className="text-[#1D9E75]" />}
+                        <Phone size={11} /> {a.phone} {a.phone_verified && <Check size={11} className="text-[#f97316]" />}
                       </div>
                     </div>
                   </div>
@@ -114,7 +114,7 @@ export default function SellerDelivererApplications() {
         ) : (
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-orange-50 text-[#f97316] flex items-center justify-center">
                 <Truck size={22} />
               </div>
               <div>
@@ -138,7 +138,7 @@ export default function SellerDelivererApplications() {
             </div>
 
             <div className="flex items-center gap-2 text-xs text-gray-500 mb-5 bg-gray-50 rounded-lg p-3">
-              <Check size={14} className={detail.contract_accepted ? "text-[#1D9E75]" : "text-gray-300"} />
+              <Check size={14} className={detail.contract_accepted ? "text-[#f97316]" : "text-gray-300"} />
               Contrat {detail.contract_accepted ? "accepté" : "non accepté"}
             </div>
 
@@ -146,7 +146,7 @@ export default function SellerDelivererApplications() {
               <button
                 data-testid={`approve-application-${detail.id}`}
                 onClick={() => approve(detail.id)}
-                className="bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 text-sm font-semibold flex items-center justify-center gap-2"
+                className="bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 text-sm font-semibold flex items-center justify-center gap-2"
               >
                 <Check size={16} /> Approuver
               </button>
@@ -175,7 +175,7 @@ function InfoRow({ icon: Icon, label, value, verified, capitalize }) {
       </div>
       <div className={`text-sm font-medium text-gray-900 flex items-center gap-1.5 ${capitalize ? "capitalize" : ""}`}>
         {value}
-        {verified && <Check size={13} className="text-[#1D9E75]" />}
+        {verified && <Check size={13} className="text-[#f97316]" />}
       </div>
     </div>
   );

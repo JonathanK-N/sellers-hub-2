@@ -9,8 +9,8 @@ const STATUS_COLORS = {
   preparing:        "bg-amber-50 text-amber-700",
   ready_for_pickup: "bg-purple-50 text-purple-700",
   out_for_delivery: "bg-indigo-50 text-indigo-700",
-  delivered:        "bg-[#E1F5EE] text-[#1D9E75]",
-  collected:        "bg-[#E1F5EE] text-[#1D9E75]",
+  delivered:        "bg-orange-50 text-[#f97316]",
+  collected:        "bg-orange-50 text-[#f97316]",
   cancelled:        "bg-red-50 text-red-600",
 };
 const STATUS_LABELS = {
@@ -45,12 +45,12 @@ export default function AdminOrders() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl text-[#085041]">Commandes</h1>
+          <h1 className="font-display font-black text-xl text-gray-900">Commandes</h1>
           <p className="text-xs text-gray-500">{orders.length} commandes</p>
         </div>
         <div className="flex gap-2">
           <button onClick={load} className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className="text-gray-500" /></button>
-          <a href="/api/admin/export/orders" className="flex items-center gap-1.5 text-xs font-semibold text-[#085041] border border-[#085041] px-3 py-1.5 rounded-lg hover:bg-[#E1F5EE]">
+          <a href="/api/admin/export/orders" className="flex items-center gap-1.5 text-xs font-semibold text-gray-900 border border-[#0b0b0d] px-3 py-1.5 rounded-lg hover:bg-orange-50">
             <Download size={14} /> CSV
           </a>
         </div>
@@ -61,15 +61,15 @@ export default function AdminOrders() {
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="ID, acheteur, vendeur…"
-              className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]" />
+              className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]" />
           </div>
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
-            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-[#1D9E75]">
+            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-[#f97316]">
             <option value="all">Tous statuts</option>
             {Object.entries(STATUS_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
           <select value={modeFilter} onChange={(e) => setModeFilter(e.target.value)}
-            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-[#1D9E75]">
+            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-[#f97316]">
             <option value="all">Tous modes</option>
             <option value="delivery">Livraison</option>
             <option value="collect">Retrait</option>
@@ -103,9 +103,9 @@ export default function AdminOrders() {
                     <td className="px-4 py-3 text-gray-700">{o.buyer_name || "—"}</td>
                     <td className="px-4 py-3 text-gray-700">{o.seller_name || "—"}</td>
                     <td className="px-4 py-3 text-gray-600">{o.delivery_mode === "delivery" ? "🚚 Livraison" : "🏪 Retrait"}</td>
-                    <td className="px-4 py-3 font-semibold text-[#085041]">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</td>
+                    <td className="px-4 py-3 font-semibold text-gray-900">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</td>
                     <td className="px-4 py-3">
-                      <span className="text-[10px] font-bold uppercase bg-[#E1F5EE] text-[#085041] px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-bold uppercase bg-orange-50 text-gray-900 px-2 py-0.5 rounded-full">
                         {o.payment_method === "cash" ? "Cash" : o.payment_method}
                       </span>
                     </td>
@@ -116,7 +116,7 @@ export default function AdminOrders() {
                     </td>
                     <td className="px-4 py-3 text-xs text-gray-500">{timeAgo(o.created_at)}</td>
                     <td className="px-4 py-3">
-                      <button onClick={() => setSelected(o)} className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-[#085041]">
+                      <button onClick={() => setSelected(o)} className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-black">
                         <Eye size={15} />
                       </button>
                     </td>
@@ -134,7 +134,7 @@ export default function AdminOrders() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-100 flex items-center justify-between">
               <div>
-                <h2 className="font-display font-black text-lg text-[#085041]">Commande #{selected.id.slice(0, 8)}</h2>
+                <h2 className="font-display font-black text-lg text-gray-900">Commande #{selected.id.slice(0, 8)}</h2>
                 <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${STATUS_COLORS[selected.status] || "bg-gray-100"}`}>
                   {STATUS_LABELS[selected.status] || selected.status}
                 </span>

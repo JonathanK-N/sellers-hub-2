@@ -46,10 +46,10 @@ export default function SellerDashboard() {
 
         {/* Profile quick actions */}
         <div className="flex gap-2">
-          <Link to="/seller/edit-profile" className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-[#085041] shadow-sm">
+          <Link to="/seller/edit-profile" className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-gray-900 shadow-sm">
             <Pencil size={15} /> Modifier le profil
           </Link>
-          <Link to={`/shop/${data.shop?.id}`} className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-[#085041] shadow-sm">
+          <Link to={`/shop/${data.shop?.id}`} className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-gray-900 shadow-sm">
             <Eye size={15} /> Voir ma boutique
           </Link>
         </div>
@@ -57,7 +57,7 @@ export default function SellerDashboard() {
         <Link
           to="/seller/deliverer-applications"
           data-testid="goto-deliverer-applications"
-          className="flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-[#085041] shadow-sm"
+          className="flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-gray-900 shadow-sm"
         >
           <Truck size={15} /> Candidatures livreurs
         </Link>
@@ -67,7 +67,7 @@ export default function SellerDashboard() {
           onClick={() => nav("/seller/premium")}
           data-testid="premium-banner"
           className="w-full text-left rounded-xl p-3 flex items-center gap-3 transition-opacity hover:opacity-90"
-          style={{ background: data.shop.premium ? "linear-gradient(135deg, #EF9F27 0%, #BA7517 100%)" : "#085041" }}
+          style={{ background: data.shop.premium ? "linear-gradient(135deg, #f97316 0%, #c2410c 100%)" : "#0b0b0d" }}
         >
           <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
             <Crown size={18} className="text-white" />
@@ -97,7 +97,7 @@ export default function SellerDashboard() {
         <button
           data-testid="add-product-quick-btn"
           onClick={() => nav("/seller/products/new")}
-          className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2"
         >
           <Plus size={18} /> Ajouter un produit
         </button>
@@ -119,13 +119,13 @@ export default function SellerDashboard() {
                   key={o.id}
                   onClick={() => nav(`/buyer/orders/${o.id}`)}
                   data-testid={`recent-order-${o.id}`}
-                  className="w-full text-left p-3 rounded-lg border border-gray-100 hover:border-[#1D9E75] transition-colors flex justify-between items-center"
+                  className="w-full text-left p-3 rounded-lg border border-gray-100 hover:border-[#f97316] transition-colors flex justify-between items-center"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-semibold text-gray-900 truncate">{o.items[0]?.name}</div>
                     <div className="text-[10px] text-gray-500 uppercase font-bold mt-0.5">{o.status}</div>
                   </div>
-                  <div className="font-display font-bold text-[#085041]">{formatPrice(o.total_amount, o.currency)}</div>
+                  <div className="font-display font-bold text-gray-900">{formatPrice(o.total_amount, o.currency)}</div>
                 </button>
               ))}
             </div>
@@ -133,7 +133,7 @@ export default function SellerDashboard() {
         </section>
 
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-full ${data.shop.badge_verified ? "bg-[#1D9E75]" : "bg-gray-200"} text-white flex items-center justify-center`}>
+          <div className={`w-10 h-10 rounded-full ${data.shop.badge_verified ? "bg-[#0b0b0d]" : "bg-gray-200"} text-white flex items-center justify-center`}>
             <ShieldCheck size={18} />
           </div>
           <div>
@@ -155,10 +155,10 @@ export default function SellerDashboard() {
 function Stat({ icon: Icon, label, value, sub }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-      <div className="w-9 h-9 rounded-lg bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
+      <div className="w-9 h-9 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center">
         <Icon size={18} />
       </div>
-      <div className="font-display font-black text-xl text-[#085041] mt-2">{value}</div>
+      <div className="font-display font-black text-xl text-gray-900 mt-2">{value}</div>
       <div className="text-xs text-gray-600">{label}</div>
       {sub && <div className="text-[10px] text-gray-400 mt-0.5">{sub}</div>}
     </div>
@@ -170,9 +170,9 @@ function QuickAction({ icon: Icon, label, onClick, testid }) {
     <button
       onClick={onClick}
       data-testid={testid}
-      className="bg-white rounded-xl border border-gray-100 shadow-sm py-3 flex flex-col items-center gap-1.5 text-xs font-semibold text-gray-700 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-colors"
+      className="bg-white rounded-xl border border-gray-100 shadow-sm py-3 flex flex-col items-center gap-1.5 text-xs font-semibold text-gray-700 hover:border-[#f97316] hover:text-[#f97316] transition-colors"
     >
-      <Icon size={20} className="text-[#1D9E75]" />
+      <Icon size={20} className="text-[#f97316]" />
       {label}
     </button>
   );

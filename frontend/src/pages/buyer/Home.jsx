@@ -125,7 +125,7 @@ export default function BuyerHome() {
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-gray-100 rounded-xl aspect-[3/4] animate-pulse" />
+              <div key={i} className="afri-skeleton rounded-xl aspect-[3/4]" />
             ))}
           </div>
         ) : products.length === 0 ? (
@@ -133,9 +133,9 @@ export default function BuyerHome() {
             Aucun produit disponible pour cette catégorie.
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 afri-stagger">
             {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p} className="afri-fade-up" />
             ))}
           </div>
         )}

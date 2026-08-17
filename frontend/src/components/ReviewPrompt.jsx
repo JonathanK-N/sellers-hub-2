@@ -24,7 +24,7 @@ export default function ReviewPrompt({ orderId, sellerName, onSubmitted }) {
         <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Votre avis</h3>
         <div className="flex gap-0.5">
           {[1,2,3,4,5].map((n) => (
-            <Star key={n} size={18} className={n <= existing.rating ? "text-[#EF9F27] fill-[#EF9F27]" : "text-gray-200"} />
+            <Star key={n} size={18} className={n <= existing.rating ? "text-[#f97316] fill-[#f97316]" : "text-gray-200"} />
           ))}
         </div>
         {existing.comment && <p className="text-sm text-gray-700 mt-2">{existing.comment}</p>}
@@ -54,7 +54,7 @@ export default function ReviewPrompt({ orderId, sellerName, onSubmitted }) {
   };
 
   return (
-    <section className="bg-white rounded-xl border-2 border-[#EF9F27]/40 shadow-sm p-4" data-testid="review-prompt">
+    <section className="bg-white rounded-xl border-2 border-[#f97316]/40 shadow-sm p-4" data-testid="review-prompt">
       <h3 className="font-display font-bold text-base text-gray-900">Notez {sellerName}</h3>
       <p className="text-xs text-gray-500 mt-0.5">Votre avis aide les autres acheteurs.</p>
       <div className="flex gap-1 mt-3" onMouseLeave={() => setHover(0)}>
@@ -66,7 +66,7 @@ export default function ReviewPrompt({ orderId, sellerName, onSubmitted }) {
             onClick={() => setRating(n)}
             className="p-1"
           >
-            <Star size={28} className={(hover || rating) >= n ? "text-[#EF9F27] fill-[#EF9F27]" : "text-gray-300"} />
+            <Star size={28} className={(hover || rating) >= n ? "text-[#f97316] fill-[#f97316]" : "text-gray-300"} />
           </button>
         ))}
       </div>
@@ -76,13 +76,13 @@ export default function ReviewPrompt({ orderId, sellerName, onSubmitted }) {
         onChange={(e) => setComment(e.target.value)}
         placeholder="Décrivez votre expérience (optionnel)…"
         rows={2}
-        className="w-full mt-3 border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] resize-none"
+        className="w-full mt-3 border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316] resize-none"
       />
       <button
         data-testid="submit-review-btn"
         disabled={submitting}
         onClick={submit}
-        className="w-full mt-3 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-2.5 text-sm font-semibold disabled:opacity-50"
+        className="w-full mt-3 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-2.5 text-sm font-semibold disabled:opacity-50"
       >
         {submitting ? "Envoi…" : "Envoyer mon avis"}
       </button>

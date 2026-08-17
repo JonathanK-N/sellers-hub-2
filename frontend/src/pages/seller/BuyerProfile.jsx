@@ -24,7 +24,7 @@ export default function BuyerProfile() {
 
   return (
     <div className="mobile-shell pb-12">
-      <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3">
+      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3">
         <Link to="/seller/orders" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center">
           <ArrowLeft size={20} />
         </Link>
@@ -34,8 +34,8 @@ export default function BuyerProfile() {
       <div className="px-4 mt-5">
         {/* Avatar + nom */}
         <div className="flex flex-col items-center text-center py-5">
-          <div className="w-20 h-20 rounded-full bg-[#E1F5EE] flex items-center justify-center mb-3">
-            <User size={36} className="text-[#085041]" />
+          <div className="w-20 h-20 rounded-full bg-orange-50 flex items-center justify-center mb-3">
+            <User size={36} className="text-gray-900" />
           </div>
           <h2 className="font-display font-black text-xl text-gray-900">{buyer.name}</h2>
           <p className="text-sm text-gray-500 mt-0.5">Client depuis {timeAgo(buyer.created_at)}</p>
@@ -44,18 +44,18 @@ export default function BuyerProfile() {
         {/* Stats */}
         <div className="grid grid-cols-2 gap-3 mb-5">
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center">
-            <div className="text-2xl font-black text-[#085041]">{total_orders}</div>
+            <div className="text-2xl font-black text-gray-900">{total_orders}</div>
             <div className="text-xs text-gray-500 mt-0.5">commande{total_orders > 1 ? "s" : ""} avec vous</div>
           </div>
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center">
-            <div className="text-2xl font-black text-[#085041]">{formatPrice(total_spent, "FC")}</div>
+            <div className="text-2xl font-black text-gray-900">{formatPrice(total_spent, "FC")}</div>
             <div className="text-xs text-gray-500 mt-0.5">total dépensé</div>
           </div>
         </div>
 
         {/* Historique commandes */}
         <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-          <ShoppingBag size={16} className="text-[#1D9E75]" /> Historique des commandes
+          <ShoppingBag size={16} className="text-[#f97316]" /> Historique des commandes
         </h3>
         {orders.length === 0
           ? <p className="text-sm text-gray-400 text-center py-6">Aucune commande pour l'instant.</p>
@@ -73,7 +73,7 @@ export default function BuyerProfile() {
                       </p>
                     </div>
                     <div className="text-right ml-3">
-                      <p className="text-sm font-bold text-[#085041]">{formatPrice(o.total_amount, "FC")}</p>
+                      <p className="text-sm font-bold text-gray-900">{formatPrice(o.total_amount, "FC")}</p>
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                         o.status === "delivered" ? "bg-green-100 text-green-700" :
                         o.status === "confirmed" ? "bg-blue-100 text-blue-700" :

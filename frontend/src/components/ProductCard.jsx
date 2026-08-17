@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Star, MapPin, ShieldCheck, Crown, Heart, ShoppingCart } from "lucide-react";
 import { formatPrice, formatDistance, displayPrice, photoUrl } from "../lib/format";
 
-export default function ProductCard({ product, guest = false }) {
+export default function ProductCard({ product, guest = false, className = "" }) {
   const photo = product.photos?.[0];
   const distance = formatDistance(product.distance_km);
   const href = guest ? `/explore/product/${product.id}` : `/buyer/product/${product.id}`;
@@ -12,14 +12,14 @@ export default function ProductCard({ product, guest = false }) {
     <Link
       to={href}
       data-testid={`product-card-${product.id}`}
-      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group hover:shadow-md hover:-translate-y-0.5 transition-all"
+      className={`afri-card group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col ${className}`}
     >
-      <div className="aspect-square bg-gray-100 relative overflow-hidden">
+      <div className="afri-card-media aspect-square bg-gray-100 relative">
         {photo ? (
           <img
             src={photoUrl(photo)}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover"
             loading="lazy"
           />
         ) : (
@@ -56,7 +56,7 @@ export default function ProductCard({ product, guest = false }) {
         <div className="flex items-center gap-1 text-xs text-gray-500">
           <span className="truncate">{product.seller_name || "Boutique"}</span>
           {product.seller_verified && (
-            <ShieldCheck size={12} className="text-[#1D9E75] shrink-0" />
+            <ShieldCheck size={12} className="text-green-600 shrink-0" />
           )}
         </div>
         <div className="flex items-center justify-between mt-1">
@@ -79,7 +79,7 @@ export default function ProductCard({ product, guest = false }) {
             )}
             <span
               aria-hidden="true"
-              className="w-7 h-7 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0"
+              className="w-7 h-7 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0 transition-colors group-hover:bg-[#f97316]"
             >
               <ShoppingCart size={13} />
             </span>

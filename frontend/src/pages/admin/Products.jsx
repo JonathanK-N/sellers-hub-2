@@ -36,7 +36,7 @@ export default function AdminProducts() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl text-[#085041]">Produits</h1>
+          <h1 className="font-display font-black text-xl text-gray-900">Produits</h1>
           <p className="text-xs text-gray-500">{products.length} produits</p>
         </div>
         <button onClick={load} className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className="text-gray-500" /></button>
@@ -46,7 +46,7 @@ export default function AdminProducts() {
         <div className="relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Produit, boutique, catégorie…"
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]" />
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]" />
         </div>
 
         {loading ? (
@@ -85,18 +85,18 @@ export default function AdminProducts() {
                       </td>
                       <td className="px-4 py-3 text-gray-700">{p.seller_name || "—"}</td>
                       <td className="px-4 py-3 text-gray-600">{p.category}</td>
-                      <td className="px-4 py-3 font-semibold text-[#085041]">{formatPrice(p.price, p.currency)}</td>
+                      <td className="px-4 py-3 font-semibold text-gray-900">{formatPrice(p.price, p.currency)}</td>
                       <td className="px-4 py-3 text-gray-600">{p.stock}</td>
                       <td className="px-4 py-3">
                         <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                          p.is_active ? "bg-[#E1F5EE] text-[#1D9E75]" : "bg-red-50 text-red-600"}`}>
+                          p.is_active ? "bg-orange-50 text-[#f97316]" : "bg-red-50 text-red-600"}`}>
                           {p.is_active ? "Actif" : "Désactivé"}
                         </span>
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1">
                           <button onClick={() => setSelected(p)} className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500"><Eye size={15} /></button>
-                          <button onClick={() => toggle(p)} className={`p-1.5 hover:bg-gray-100 rounded-lg ${p.is_active ? "text-red-500" : "text-[#1D9E75]"}`}>
+                          <button onClick={() => toggle(p)} className={`p-1.5 hover:bg-gray-100 rounded-lg ${p.is_active ? "text-red-500" : "text-[#f97316]"}`}>
                             {p.is_active ? <ToggleRight size={15} /> : <ToggleLeft size={15} />}
                           </button>
                         </div>
@@ -115,7 +115,7 @@ export default function AdminProducts() {
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-y-auto">
             <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="font-display font-black text-lg text-[#085041]">{selected.name}</h2>
+              <h2 className="font-display font-black text-lg text-gray-900">{selected.name}</h2>
               <button onClick={() => setSelected(null)} className="p-2 hover:bg-gray-100 rounded-lg text-gray-500">✕</button>
             </div>
             <div className="p-5 space-y-4">
@@ -144,7 +144,7 @@ export default function AdminProducts() {
               )}
               <button onClick={() => { toggle(selected); }}
                 className={`w-full py-2.5 rounded-lg font-semibold text-sm transition-colors ${
-                  selected.is_active ? "bg-red-50 text-red-600 hover:bg-red-100" : "bg-[#E1F5EE] text-[#1D9E75] hover:bg-[#c8ede1]"}`}>
+                  selected.is_active ? "bg-red-50 text-red-600 hover:bg-red-100" : "bg-orange-50 text-[#f97316] hover:bg-[#c8ede1]"}`}>
                 {selected.is_active ? "Désactiver ce produit" : "Réactiver ce produit"}
               </button>
             </div>

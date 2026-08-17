@@ -28,7 +28,7 @@ export default function AdminDeliverers() {
     <div className="min-h-screen bg-gray-50 lg:pl-[250px]">
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10">
-        <h1 className="font-display font-black text-xl lg:text-2xl text-[#085041]">Livreurs</h1>
+        <h1 className="font-display font-black text-xl lg:text-2xl text-gray-900">Livreurs</h1>
         <p className="text-xs text-gray-500 mt-0.5">Gestion des partenaires de livraison</p>
       </header>
       <main className="p-6 lg:p-10 max-w-5xl">
@@ -40,7 +40,7 @@ export default function AdminDeliverers() {
           <div className="space-y-3">
             {rows.map((d) => (
               <div key={d.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-4" data-testid={`deliverer-${d.id}`}>
-                <div className="w-11 h-11 rounded-lg bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center shrink-0">
+                <div className="w-11 h-11 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0">
                   <Bike size={20} />
                 </div>
                 <div className="flex-1 min-w-0">

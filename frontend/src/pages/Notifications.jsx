@@ -73,7 +73,7 @@ export default function Notifications() {
 
   return (
     <div className="mobile-shell pb-10">
-      <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md">
         <Link to="/buyer/home" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
@@ -89,7 +89,7 @@ export default function Notifications() {
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className={`w-9 h-9 rounded-full flex items-center justify-center ${pushOn ? "bg-[#E1F5EE] text-[#1D9E75]" : "bg-gray-100 text-gray-400"}`}>
+              <div className={`w-9 h-9 rounded-full flex items-center justify-center ${pushOn ? "bg-orange-50 text-[#f97316]" : "bg-gray-100 text-gray-400"}`}>
                 {pushOn ? <Bell size={18} /> : <BellOff size={18} />}
               </div>
               <div>
@@ -102,7 +102,7 @@ export default function Notifications() {
             <button
               onClick={togglePush}
               data-testid="toggle-push"
-              className={`relative w-12 h-7 rounded-full transition-colors ${pushOn ? "bg-[#1D9E75]" : "bg-gray-300"}`}
+              className={`relative w-12 h-7 rounded-full transition-colors ${pushOn ? "bg-[#0b0b0d]" : "bg-gray-300"}`}
             >
               <span className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-all ${pushOn ? "left-6" : "left-1"}`} />
             </button>
@@ -110,7 +110,7 @@ export default function Notifications() {
 
           <button
             onClick={() => setShowPrefs((s) => !s)}
-            className="text-xs text-[#1D9E75] font-medium mt-3"
+            className="text-xs text-[#f97316] font-medium mt-3"
           >
             {showPrefs ? "Masquer les préférences" : "Gérer les types de notifications"}
           </button>
@@ -123,7 +123,7 @@ export default function Notifications() {
                   <button
                     onClick={() => togglePref(p.type, !p.enabled)}
                     data-testid={`pref-${p.type}`}
-                    className={`relative w-10 h-6 rounded-full transition-colors ${p.enabled ? "bg-[#1D9E75]" : "bg-gray-300"}`}
+                    className={`relative w-10 h-6 rounded-full transition-colors ${p.enabled ? "bg-[#0b0b0d]" : "bg-gray-300"}`}
                   >
                     <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${p.enabled ? "left-5" : "left-1"}`} />
                   </button>
@@ -150,11 +150,11 @@ export default function Notifications() {
                 onClick={() => !n.read && markRead(n.id)}
                 data-testid={`notif-${n.id}`}
                 className={`w-full text-left rounded-xl border p-4 transition-colors ${
-                  n.read ? "bg-white border-gray-100" : "bg-[#E1F5EE] border-[#9FE1CB]"
+                  n.read ? "bg-white border-gray-100" : "bg-orange-50 border-[#9FE1CB]"
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${n.read ? "bg-transparent" : "bg-[#1D9E75]"}`} />
+                  <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${n.read ? "bg-transparent" : "bg-[#0b0b0d]"}`} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-sm font-semibold text-gray-900">{n.title}</span>

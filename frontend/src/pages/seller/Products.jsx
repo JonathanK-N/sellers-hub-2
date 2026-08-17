@@ -37,7 +37,7 @@ export default function SellerProducts() {
         <button
           data-testid="add-product-btn"
           onClick={() => nav("/seller/products/new")}
-          className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2 mb-4"
+          className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2 mb-4"
         >
           <Plus size={18} /> Ajouter un produit
         </button>
@@ -59,16 +59,16 @@ export default function SellerProducts() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-semibold text-gray-900 line-clamp-1">{p.name}</div>
-                  <div className="text-sm font-bold text-[#085041]">{formatPrice(p.price, p.currency)}</div>
+                  <div className="text-sm font-bold text-gray-900">{formatPrice(p.price, p.currency)}</div>
                   <div className="text-[10px] uppercase font-bold mt-1 text-gray-500">
-                    Stock : <span className={p.stock > 0 ? "text-[#1D9E75]" : "text-[#E24B4A]"}>{p.stock}</span>
+                    Stock : <span className={p.stock > 0 ? "text-[#f97316]" : "text-[#E24B4A]"}>{p.stock}</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1 self-start">
                   <button
                     data-testid={`edit-product-${p.id}`}
                     onClick={() => nav(`/seller/products/${p.id}/edit`)}
-                    className="text-[#1D9E75] p-2 hover:bg-[#E1F5EE] rounded-lg"
+                    className="text-[#f97316] p-2 hover:bg-orange-50 rounded-lg"
                   >
                     <Pencil size={16} />
                   </button>

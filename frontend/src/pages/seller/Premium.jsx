@@ -41,7 +41,7 @@ export default function SellerPremium() {
 
   return (
     <div className="mobile-shell pb-24">
-      <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md">
         <Link to="/seller/dashboard" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
@@ -49,7 +49,7 @@ export default function SellerPremium() {
       </header>
 
       <div className="px-4 mt-5">
-        <div className="rounded-2xl p-6 text-center" style={{ background: "linear-gradient(135deg, #EF9F27 0%, #BA7517 100%)" }}>
+        <div className="rounded-2xl p-6 text-center" style={{ background: "linear-gradient(135deg, #f97316 0%, #c2410c 100%)" }}>
           <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto">
             <Crown size={32} className="text-white" />
           </div>
@@ -76,12 +76,12 @@ export default function SellerPremium() {
 
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 mt-4">
           <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2 mb-3">
-            <Sparkles size={16} className="text-[#EF9F27]" /> Vos avantages Premium
+            <Sparkles size={16} className="text-[#f97316]" /> Vos avantages Premium
           </h3>
           <div className="space-y-2.5">
             {plan.benefits.map((b, i) => (
               <div key={i} className="flex items-start gap-2.5">
-                <div className="w-5 h-5 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0 mt-0.5">
                   <Check size={12} />
                 </div>
                 <span className="text-sm text-gray-700">{b}</span>
@@ -92,17 +92,17 @@ export default function SellerPremium() {
 
         {/* Bloc paiement désactivé — CinetPay Mobile Money en cours d'intégration */}
         {!plan.active && (
-          <div className="mt-5 rounded-2xl overflow-hidden border border-[#EF9F27]/30 shadow-sm">
+          <div className="mt-5 rounded-2xl overflow-hidden border border-[#f97316]/30 shadow-sm">
             {/* Image d'ambiance */}
-            <div className="relative h-36 bg-gradient-to-br from-[#EF9F27]/20 to-[#BA7517]/10 flex items-center justify-center">
+            <div className="relative h-36 bg-gradient-to-br from-[#f97316]/20 to-[#BA7517]/10 flex items-center justify-center">
               <div className="absolute inset-0 flex items-center justify-center opacity-10">
-                <Crown size={100} className="text-[#EF9F27]" />
+                <Crown size={100} className="text-[#f97316]" />
               </div>
               <div className="relative text-center px-4">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <div className="w-2 h-2 rounded-full bg-[#EF9F27] animate-pulse" />
-                  <div className="w-2 h-2 rounded-full bg-[#EF9F27] animate-pulse" style={{ animationDelay: "0.2s" }} />
-                  <div className="w-2 h-2 rounded-full bg-[#EF9F27] animate-pulse" style={{ animationDelay: "0.4s" }} />
+                  <div className="w-2 h-2 rounded-full bg-[#f97316] animate-pulse" />
+                  <div className="w-2 h-2 rounded-full bg-[#f97316] animate-pulse" style={{ animationDelay: "0.2s" }} />
+                  <div className="w-2 h-2 rounded-full bg-[#f97316] animate-pulse" style={{ animationDelay: "0.4s" }} />
                 </div>
                 <p className="font-display font-black text-lg text-[#BA7517]">Disponible très prochainement</p>
                 <p className="text-xs text-[#BA7517]/70 mt-1">Le paiement Mobile Money arrive bientôt sur AfriMarket</p>

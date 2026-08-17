@@ -15,7 +15,7 @@ export default function Cart() {
 
   return (
     <div className="mobile-shell">
-      <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md">
         <Link to="/buyer/home" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
@@ -24,13 +24,13 @@ export default function Cart() {
 
       {items.length === 0 ? (
         <div className="px-6 mt-20 text-center">
-          <div className="w-20 h-20 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center mx-auto">
+          <div className="w-20 h-20 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center mx-auto">
             <ShoppingBag size={32} />
           </div>
           <h2 className="font-display font-bold text-lg text-gray-900 mt-4">Votre panier est vide</h2>
           <p className="text-sm text-gray-500 mt-1">Découvrez les produits près de chez vous.</p>
           <Link to="/buyer/home" data-testid="empty-cart-shop-btn"
-            className="inline-block mt-6 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 px-6 font-semibold transition-colors">
+            className="inline-block mt-6 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 px-6 font-semibold transition-colors">
             Découvrir les produits
           </Link>
         </div>
@@ -49,7 +49,7 @@ export default function Cart() {
             {sellerGroups.map((group) => (
               <div key={group.seller_id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-testid={`cart-seller-${group.seller_id}`}>
                 <div className="flex items-center gap-2 px-3 py-2 bg-[#F1EFE8] border-b border-gray-100">
-                  <div className="w-6 h-6 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center">
                     <Store size={13} />
                   </div>
                   <span className="text-sm font-semibold text-gray-900 flex-1 line-clamp-1">{group.seller_name}</span>
@@ -70,7 +70,7 @@ export default function Cart() {
                         <div className="flex-1 min-w-0">
                           <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">{it.name}</h3>
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="text-sm font-bold text-[#085041]">
+                            <span className="text-sm font-bold text-gray-900">
                               {formatPrice(amount, currency)}
                             </span>
                             {it.currency === "USD" && (
@@ -117,7 +117,7 @@ export default function Cart() {
                   onClick={() => setCheckoutCurrency("FC")}
                   className={`px-3 py-1 rounded-full text-xs font-bold transition-colors ${
                     checkoutCurrency === "FC"
-                      ? "bg-[#085041] text-white"
+                      ? "bg-[#0b0b0d] text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -127,7 +127,7 @@ export default function Cart() {
                   onClick={() => setCheckoutCurrency("USD")}
                   className={`px-3 py-1 rounded-full text-xs font-bold transition-colors ${
                     checkoutCurrency === "USD"
-                      ? "bg-[#085041] text-white"
+                      ? "bg-[#0b0b0d] text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -140,7 +140,7 @@ export default function Cart() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-600">Total</span>
               <div className="text-right">
-                <span className="font-display font-black text-xl text-[#085041]" data-testid="cart-total">
+                <span className="font-display font-black text-xl text-gray-900" data-testid="cart-total">
                   {checkoutCurrency === "USD"
                     ? formatPrice(totalUSD, "USD")
                     : formatPrice(totalFC, "FC")}
@@ -159,7 +159,7 @@ export default function Cart() {
             <button
               data-testid="cart-checkout-btn"
               onClick={() => nav("/buyer/checkout")}
-              className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors"
+              className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors"
             >
               Passer commande
             </button>
