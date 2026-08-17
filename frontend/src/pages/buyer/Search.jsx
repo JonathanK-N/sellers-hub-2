@@ -53,7 +53,7 @@ export default function SearchPage() {
   }, [q, radius, verifiedOnly, sort, pos, user?.country_code]);
 
   return (
-    <div className="mobile-shell">
+    <div className="mobile-shell shell-wide">
       <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 md:px-8 py-3 flex items-center gap-3 shadow-md">
         <Link to="/buyer/home" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />

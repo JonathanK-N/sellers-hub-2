@@ -57,7 +57,7 @@ export default function BuyerHome() {
   }, [role]);
 
   return (
-    <div className="mobile-shell">
+    <div className="mobile-shell shell-wide">
       <TopBar title="AfriMarket" />
 
       {/* Barre de recherche */}
