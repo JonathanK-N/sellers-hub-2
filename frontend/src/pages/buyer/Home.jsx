@@ -61,7 +61,7 @@ export default function BuyerHome() {
       <TopBar title="AfriMarket" />
 
       {/* Barre de recherche */}
-      <div className="px-4 pt-3">
+      <div className="px-4 md:px-8 pt-3">
         <button
           onClick={() => nav("/buyer/search")}
           data-testid="home-search-btn"
@@ -76,7 +76,7 @@ export default function BuyerHome() {
       <BannerCarousel position="home_top" role={role} className="mx-4 mt-3" />
 
       {/* Catégories */}
-      <div className="mt-3 px-4 flex gap-2 overflow-x-auto no-scrollbar pb-1">
+      <div className="mt-3 px-4 md:px-8 flex gap-2 overflow-x-auto no-scrollbar pb-1">
         {CATEGORIES.map((c) => (
           <button
             key={c.value}
@@ -97,7 +97,7 @@ export default function BuyerHome() {
           Priorité 1 — bannière admin home_mid si elle existe
           Priorité 2 — bloc promo fixe si visible=true
           Priorité 3 — rien */}
-      <section className="px-4 mt-3">
+      <section className="px-4 md:px-8 mt-3">
         {homeMidBanners === null ? (
           /* Chargement — afficher le promo par défaut pour éviter le saut */
           promo.visible && <PromoBlock title={promo.title} subtitle={promo.subtitle} />
@@ -109,7 +109,7 @@ export default function BuyerHome() {
       </section>
 
       {/* Produits */}
-      <section className="px-4 mt-5">
+      <section className="px-4 md:px-8 mt-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="w-8 h-8 rounded-lg bg-[#0b0b0d] text-[#f97316] flex items-center justify-center shrink-0">
@@ -123,7 +123,7 @@ export default function BuyerHome() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="bg-gray-100 rounded-xl aspect-[3/4] animate-pulse" />
             ))}
@@ -133,7 +133,7 @@ export default function BuyerHome() {
             Aucun produit disponible pour cette catégorie.
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {products.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}

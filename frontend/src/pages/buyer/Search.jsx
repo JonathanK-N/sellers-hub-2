@@ -54,7 +54,7 @@ export default function SearchPage() {
 
   return (
     <div className="mobile-shell">
-      <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 md:px-8 py-3 flex items-center gap-3 shadow-md">
         <Link to="/buyer/home" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
@@ -73,7 +73,7 @@ export default function SearchPage() {
       {/* Banner search_top — juste sous la barre de recherche */}
       <BannerCarousel position="search_top" role={user?.role || "buyer"} className="mx-4 mt-3" />
 
-      <section className="px-4 mt-4 space-y-3">
+      <section className="px-4 md:px-8 mt-4 space-y-3">
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
@@ -151,12 +151,12 @@ export default function SearchPage() {
         </div>
       </section>
 
-      <section className="px-4 mt-4">
+      <section className="px-4 md:px-8 mt-4">
         <h2 className="font-display font-bold text-base text-gray-900 mb-3">
           Résultats
         </h2>
         {loading ? (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="bg-gray-100 rounded-xl aspect-[3/4] animate-pulse" />
             ))}
@@ -166,7 +166,7 @@ export default function SearchPage() {
             Aucun produit trouvé dans ce rayon.
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {products.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}

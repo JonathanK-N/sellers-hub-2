@@ -28,7 +28,7 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
   return (
     <header
       data-testid="top-header"
-      className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex justify-between items-center shadow-md"
+      className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 md:px-8 py-3 flex justify-between items-center shadow-md"
     >
       <Link to="/buyer/home" className="flex items-center gap-2" data-testid="logo-link">
         <div className="w-8 h-8 rounded-md bg-[#f97316] flex items-center justify-center font-black text-white">
@@ -36,7 +36,7 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
         </div>
         <span className="font-display font-black text-lg tracking-tight">{title}</span>
       </Link>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 md:gap-2">
         <MessagesIndicator />
         <Link
           to="/notifications"
