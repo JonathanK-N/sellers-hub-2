@@ -6,6 +6,7 @@ import "./App.css";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { AuthModalProvider } from "./context/AuthModalContext";
 import CartDrawerMount from "./components/cart/CartDrawerMount";
+import SmoothScroll from "./components/SmoothScroll";
 import { CartProvider } from "./context/CartContext";
 
 import Landing from "./pages/Landing";
@@ -128,6 +129,7 @@ function App() {
           <AuthModalProvider>
           <Toaster position="top-center" richColors />
           <InstallPrompt />
+          <SmoothScroll />
           <CartDrawerMount />
           <Routes>
             <Route path="/" element={<RoleRedirect />} />

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthModal } from "../context/AuthModalContext";
+import AnimatedContent from "../components/reactbits/AnimatedContent";
+import CountUp from "../components/reactbits/CountUp";
 import {
   Search, ShieldCheck, MapPin, LogIn, UserPlus, Store,
   LayoutGrid, Smartphone, Shirt, UtensilsCrossed, Home as HomeIcon,
@@ -157,6 +159,21 @@ export default function Landing() {
             >
               Explorer les produits <ArrowRight size={15} />
             </button>
+
+            {/* Chiffres cles — comptage anime a l'apparition */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-5 md:mt-7 text-xs md:text-sm text-gray-300">
+              <span className="flex items-center gap-1.5">
+                <CountUp to={products.length} duration={1.4} className="font-bold text-white" />
+                produits
+              </span>
+              <span className="text-gray-500">·</span>
+              <span className="flex items-center gap-1.5">
+                <CountUp to={5} duration={1.4} className="font-bold text-white" />
+                pays couverts
+              </span>
+              <span className="text-gray-500">·</span>
+              <span>Livraison locale</span>
+            </div>
           </div>
         </div>
       </section>
@@ -176,6 +193,7 @@ export default function Landing() {
       </form>
 
       {/* TRUST BAR */}
+      <AnimatedContent distance={50} duration={0.7} threshold={0.15}>
       <section className={`${WRAP} mt-4 md:mt-8`}>
         <div className="grid grid-cols-3 gap-2 md:gap-4 md:max-w-2xl">
           <TrustItem icon={ShieldCheck} label="Paiement sécurisé" />
@@ -183,8 +201,10 @@ export default function Landing() {
           <TrustItem icon={Store} label="Vendeurs vérifiés" />
         </div>
       </section>
+      </AnimatedContent>
 
       {/* PRODUITS */}
+      <AnimatedContent distance={60} duration={0.8} threshold={0.12}>
       <section className={`${WRAP} mt-6 md:mt-10`}>
         <div className="flex items-center justify-between mb-3 md:mb-5">
           <div className="flex items-center gap-2">
@@ -216,8 +236,10 @@ export default function Landing() {
           </div>
         )}
       </section>
+      </AnimatedContent>
 
       {/* CTA FINAL */}
+      <AnimatedContent distance={50} duration={0.7} threshold={0.15}>
       <section className={`${WRAP} mt-8 md:mt-14`}>
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-10 text-center md:max-w-2xl md:mx-auto">
           <h3 className="font-display font-bold text-lg md:text-2xl text-gray-900">
@@ -246,6 +268,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
+      </AnimatedContent>
 
       {/* PAYS */}
       <section className={`${WRAP} mt-6 md:mt-10`}>
