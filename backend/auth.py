@@ -1,6 +1,6 @@
 """Phone+OTP authentication with JWT."""
 import os
-import random
+import secrets
 import logging
 from datetime import datetime, timezone, timedelta
 from typing import Optional
@@ -39,7 +39,7 @@ def get_jwt_secret() -> str:
 
 
 def generate_otp() -> str:
-    return f"{random.randint(0, 999999):06d}"
+    return f"{secrets.randbelow(1000000):06d}"
 
 
 def create_access_token(user_id: str, role: str) -> str:
@@ -54,7 +54,10 @@ def create_access_token(user_id: str, role: str) -> str:
 
 
 def decode_token(token: str) -> dict:
-    return jwt.decode(token, get_jwt_secret(), algorithms=[JWT_ALGORITHM])
+    payload = jwt.decode(token, get_jwt_secret(), algorithms=[JWT_ALGORITHM], options={"require": ["sub", "exp", "iat", "type"]})
+    if payload.get("type") != "access":
+        raise jwt.InvalidTokenError("Invalid token type")
+    return payload
 
 
 def normalize_phone(phone: str) -> str:
@@ -125,4 +128,6 @@ async def get_current_user_optional(request: Request):
 
     db = get_db()
     user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0, "password_hash": 0})
+    if user and (user.get("banned") or user.get("suspended")):
+        return None
     return user

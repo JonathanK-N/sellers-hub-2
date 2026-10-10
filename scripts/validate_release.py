@@ -22,7 +22,7 @@ for name, value in {'primary':'#1d9e75','primary-hover':'#168260','secondary':'#
 for file in (root/'frontend/src').rglob('*.jsx'):
     assert not re.search(r'#(?:f97316|ea580c|0b0b0d|17171a)', file.read_text(encoding='utf-8'), re.I), file
 sw = (root/'frontend/public/service-worker.js').read_text()
-assert 'afrimarket-green-v7' in sw and 'startsWith("afrimarket-")' in sw
+assert 'afrimarket-green-rc2-v8' in sw and 'startsWith("afrimarket-")' in sw
 config = json.loads((root/'frontend/capacitor.config.json').read_text())
 assert config['appId'] == 'cd.cognito.afrimarket'
 assert not config['server']['cleartext'] and not config['android']['allowMixedContent']
