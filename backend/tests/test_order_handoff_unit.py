@@ -22,7 +22,7 @@ def database(order, modified=1):
     ({"id":"buyer","role":"buyer"}, {"payment_method":"mtn","payment_confirmed":False}, 409),
 ])
 def test_delivery_rejects_unauthorized_or_unpaid_order(user, changes, expected):
-    order = {"id":"order","buyer_id":"buyer","deliverer_id":"courier","delivery_mode":"delivery","status":"in_transit","escrow_status":"held","payment_method":"cash","confirmation_code":"123456", **changes}
+    order = {"id":"order","buyer_id":"buyer","deliverer_id":"courier","delivery_mode":"delivery","status":"out_for_delivery","escrow_status":"held","payment_method":"cash","confirmation_code":"123456", **changes}
     db = database(order)
     with patch.object(routes,"get_db",return_value=db), pytest.raises(HTTPException) as error:
         asyncio.run(routes.confirm_delivery("order", routes.ConfirmDeliveryRequest(code="123456"), user))
@@ -32,11 +32,11 @@ def test_delivery_rejects_unauthorized_or_unpaid_order(user, changes, expected):
 
 
 def test_concurrent_delivery_loser_cannot_release_transaction():
-    db = database({"buyer_id":"buyer","delivery_mode":"delivery","status":"in_transit","escrow_status":"held","payment_method":"cash","confirmation_code":"123456"}, modified=0)
+    db = database({"buyer_id":"buyer","delivery_mode":"delivery","status":"out_for_delivery","escrow_status":"held","payment_method":"cash","confirmation_code":"123456"}, modified=0)
     with patch.object(routes,"get_db",return_value=db), pytest.raises(HTTPException) as error:
         asyncio.run(routes.confirm_delivery("order", routes.ConfirmDeliveryRequest(code="123456"), {"id":"buyer","role":"buyer"}))
     assert error.value.status_code == 409
-    assert db.orders.update_one.await_args.args[0] == {"id":"order","status":"in_transit","escrow_status":"held"}
+    assert db.orders.update_one.await_args.args[0] == {"id":"order","status":"out_for_delivery","escrow_status":"held"}
     db.transactions.update_one.assert_not_awaited()
 
 

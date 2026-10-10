@@ -369,7 +369,7 @@ async def confirm_delivery(order_id: str, req: ConfirmDeliveryRequest, user: dic
     if not (user["id"] == o["buyer_id"] or
             (user.get("role") == "deliverer" and user["id"] == o.get("deliverer_id"))):
         raise HTTPException(status_code=403, detail="Accès refusé")
-    if o["status"] != "in_transit":
+    if o["status"] != "out_for_delivery":
         raise HTTPException(status_code=409, detail="Commande non disponible pour livraison")
     if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
         raise HTTPException(status_code=409, detail="Paiement non confirmé")
