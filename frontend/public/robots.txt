@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /buyer/
+Disallow: /seller/
+Disallow: /deliverer/
+Disallow: /auth/

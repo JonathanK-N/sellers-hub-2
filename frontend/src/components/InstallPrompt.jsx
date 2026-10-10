@@ -41,7 +41,7 @@ export default function InstallPrompt() {
         <div className="text-sm font-semibold text-gray-900">Installer AfriMarket</div>
         <div className="text-xs text-gray-500">Accès rapide depuis votre écran d'accueil.</div>
       </div>
-      <button onClick={install} data-testid="pwa-install-btn" className="bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg px-3 py-2 text-sm font-semibold flex items-center gap-1.5 shrink-0">
+      <button onClick={install} data-testid="pwa-install-btn" className="bg-afri-primary-hover hover:bg-afri-secondary text-white rounded-lg px-3 py-2 text-sm font-semibold flex items-center gap-1.5 shrink-0">
         <Download size={15} /> Installer
       </button>
       <button onClick={dismiss} aria-label="Fermer" className="text-gray-400 hover:text-gray-600 shrink-0">
