@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 
 from db import get_db
+from stock import aggregate_items, reserve_stock, release_stock
 from models import OrderCreateRequest, ConfirmDeliveryRequest
 from auth import get_current_user_dep, require_role, generate_otp
 from notifications import create_notification
@@ -61,6 +62,8 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     if req.delivery_mode not in ("delivery", "collect"):
         raise HTTPException(status_code=400, detail="Mode de livraison invalide")
 
+    req = req.model_copy(update={"items": aggregate_items(req.items)})
+
     # Fetch all products
     product_ids = [it.product_id for it in req.items]
     products = {p["id"]: p async for p in db.products.find({"id": {"$in": product_ids}}, {"_id": 0})}
@@ -72,6 +75,8 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     items_by_group: dict[tuple, list] = {}
     for it in req.items:
         p = products[it.product_id]
+        if p.get("is_active") is False:
+            raise HTTPException(status_code=400, detail="Produit indisponible")
         if p["stock"] < it.quantity:
             raise HTTPException(status_code=400, detail=f"Stock insuffisant pour {p['name']}")
         effective_mode = _resolve_item_mode(req.delivery_mode, p.get("delivery_modes"))
@@ -85,119 +90,127 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
         raise HTTPException(status_code=404, detail="Vendeur introuvable")
 
     group_id = str(uuid.uuid4())
-    now = _now()
-    created_orders = []
-    grand_total = 0.0
-    currency = user["currency"]
+    reservations = await reserve_stock(db, req.items)
+    try:
+        now = _now()
+        created_orders = []
+        grand_total = 0.0
+        currency = user["currency"]
 
-    # Build one sub-order per (seller, effective delivery mode)
-    for (seller_id, item_mode), entries in items_by_group.items():
-        seller = sellers[seller_id]
-        items_full = []
-        sub_total = 0.0
-        for it, p in entries:
-            subtotal = p["price"] * it.quantity
-            sub_total += subtotal
-            currency = p["currency"]
-            items_full.append({
-                "product_id": p["id"],
-                "name": p["name"],
-                "price": p["price"],
-                "quantity": it.quantity,
-                "photo": p["photos"][0] if p.get("photos") else None,
-                "subtotal": subtotal,
+        # Build one sub-order per (seller, effective delivery mode)
+        for (seller_id, item_mode), entries in items_by_group.items():
+            seller = sellers[seller_id]
+            items_full = []
+            sub_total = 0.0
+            for it, p in entries:
+                subtotal = p["price"] * it.quantity
+                sub_total += subtotal
+                currency = p["currency"]
+                items_full.append({
+                    "product_id": p["id"],
+                    "name": p["name"],
+                    "price": p["price"],
+                    "quantity": it.quantity,
+                    "photo": p["photos"][0] if p.get("photos") else None,
+                    "subtotal": subtotal,
+                })
+
+            commission_rate = seller.get("commission_rate", 0.07)
+            commission_amount = round(sub_total * commission_rate, 2)
+
+            # Frais de livraison: definis par le vendeur (palier self_delivery_fee)
+            # si livraison propre, ou fixes 16 000 FC si reseau AfriMarket. Aucun frais
+            # pour le retrait en boutique.
+            seller_delivery = seller.get("delivery_service", "self")
+            if item_mode == "delivery" and seller_delivery == "afrimarket":
+                delivery_fee = AFRIMARKET_DELIVERY_FEE
+            elif item_mode == "delivery" and seller_delivery == "self":
+                tier = seller.get("self_delivery_fee", 7500)
+                delivery_fee = float(tier if tier in SELF_DELIVERY_FEE_TIERS else 7500)
+            else:
+                delivery_fee = 0.0
+            amount_due = sub_total + delivery_fee
+            qr_token = str(uuid.uuid4()) if item_mode == "collect" else None
+            grand_total += amount_due
+
+            order = {
+                "id": str(uuid.uuid4()),
+                "order_group_id": group_id,
+                "buyer_id": user["id"],
+                "seller_id": seller_id,
+                "seller_name": seller.get("shop_name"),
+                "items": items_full,
+                "total_amount": sub_total,
+                "commission_amount": commission_amount,
+                "delivery_fee": delivery_fee,
+                "amount_due": amount_due,
+                "currency": currency,
+                "delivery_mode": item_mode,
+                "delivery_address": req.delivery_address if item_mode == "delivery" else None,
+                "delivery_neighborhood": req.delivery_neighborhood if item_mode == "delivery" else None,
+                "delivery_landmark": req.delivery_landmark if item_mode == "delivery" else None,
+                "pickup_slot": req.pickup_slot if item_mode == "collect" else None,
+                "payment_method": req.payment_method,
+                "checkout_currency": req.checkout_currency or "FC",
+                "status": "confirmed",
+                "escrow_status": "held",
+                "confirmation_code": _gen_code(),
+                "qr_code": qr_token,
+                "country_code": user["country_code"],
+                "created_at": now,
+                "timeline": [_timeline_event("confirmed", "Commande confirmée")],
+            }
+            await db.orders.insert_one(order)
+            order.pop("_id", None)
+            created_orders.append(order)
+
+            # Per-order escrow transaction
+            await db.transactions.insert_one({
+                "id": str(uuid.uuid4()),
+                "order_id": order["id"],
+                "order_group_id": group_id,
+                "amount": amount_due,
+                "currency": currency,
+                "payment_method": req.payment_method,
+                "payment_status": "captured_in_escrow",
+                "escrow_released_at": None,
+                "created_at": now,
             })
 
-        commission_rate = seller.get("commission_rate", 0.07)
-        commission_amount = round(sub_total * commission_rate, 2)
+            # Notify seller of the new order
+            try:
+                await create_notification(
+                    seller["user_id"],
+                    "order_received",
+                    "Nouvelle commande",
+                    f"Vous avez reçu une commande de {sub_total:.0f} {currency}.",
+                    {"order_id": order["id"], "order_group_id": group_id},
+                )
+            except Exception as e:
+                logger.warning(f"notify seller failed: {e}")
 
-        # Frais de livraison: definis par le vendeur (palier self_delivery_fee)
-        # si livraison propre, ou fixes 16 000 FC si reseau AfriMarket. Aucun frais
-        # pour le retrait en boutique.
-        seller_delivery = seller.get("delivery_service", "self")
-        if item_mode == "delivery" and seller_delivery == "afrimarket":
-            delivery_fee = AFRIMARKET_DELIVERY_FEE
-        elif item_mode == "delivery" and seller_delivery == "self":
-            tier = seller.get("self_delivery_fee", 7500)
-            delivery_fee = float(tier if tier in SELF_DELIVERY_FEE_TIERS else 7500)
-        else:
-            delivery_fee = 0.0
-        amount_due = sub_total + delivery_fee
-        qr_token = str(uuid.uuid4()) if item_mode == "collect" else None
-        grand_total += amount_due
-
-        order = {
-            "id": str(uuid.uuid4()),
-            "order_group_id": group_id,
+        # Record the payment group (single Mobile Money charge for the whole cart)
+        await db.order_groups.insert_one({
+            "id": group_id,
             "buyer_id": user["id"],
-            "seller_id": seller_id,
-            "seller_name": seller.get("shop_name"),
-            "items": items_full,
-            "total_amount": sub_total,
-            "commission_amount": commission_amount,
-            "delivery_fee": delivery_fee,
-            "amount_due": amount_due,
+            "order_ids": [o["id"] for o in created_orders],
+            "seller_count": len(created_orders),
+            "grand_total": grand_total,
             "currency": currency,
-            "delivery_mode": item_mode,
-            "delivery_address": req.delivery_address if item_mode == "delivery" else None,
-            "delivery_neighborhood": req.delivery_neighborhood if item_mode == "delivery" else None,
-            "delivery_landmark": req.delivery_landmark if item_mode == "delivery" else None,
-            "pickup_slot": req.pickup_slot if item_mode == "collect" else None,
             "payment_method": req.payment_method,
-            "checkout_currency": req.checkout_currency or "FC",
-            "status": "confirmed",
-            "escrow_status": "held",
-            "confirmation_code": _gen_code(),
-            "qr_code": qr_token,
             "country_code": user["country_code"],
-            "created_at": now,
-            "timeline": [_timeline_event("confirmed", "Commande confirmée")],
-        }
-        await db.orders.insert_one(order)
-        order.pop("_id", None)
-        created_orders.append(order)
-
-        # Decrement stock for this seller's items
-        for it, _p in entries:
-            await db.products.update_one({"id": it.product_id}, {"$inc": {"stock": -it.quantity}})
-
-        # Per-order escrow transaction
-        await db.transactions.insert_one({
-            "id": str(uuid.uuid4()),
-            "order_id": order["id"],
-            "order_group_id": group_id,
-            "amount": amount_due,
-            "currency": currency,
-            "payment_method": req.payment_method,
-            "payment_status": "captured_in_escrow",
-            "escrow_released_at": None,
             "created_at": now,
         })
 
-        # Notify seller of the new order
+    except Exception:
         try:
-            await create_notification(
-                seller["user_id"],
-                "order_received",
-                "Nouvelle commande",
-                f"Vous avez reçu une commande de {sub_total:.0f} {currency}.",
-                {"order_id": order["id"], "order_group_id": group_id},
-            )
-        except Exception as e:
-            logger.warning(f"notify seller failed: {e}")
-
-    # Record the payment group (single Mobile Money charge for the whole cart)
-    await db.order_groups.insert_one({
-        "id": group_id,
-        "buyer_id": user["id"],
-        "order_ids": [o["id"] for o in created_orders],
-        "seller_count": len(created_orders),
-        "grand_total": grand_total,
-        "currency": currency,
-        "payment_method": req.payment_method,
-        "country_code": user["country_code"],
-        "created_at": now,
-    })
+            await db.orders.delete_many({"order_group_id": group_id})
+            await db.transactions.delete_many({"order_group_id": group_id})
+            await db.order_groups.delete_one({"id": group_id})
+            await release_stock(db, reservations)
+        except Exception:
+            logger.exception("Order compensation failed for group %s", group_id)
+        raise
 
     # Trigger fraud evaluation for the buyer (non-blocking best-effort)
     try:
