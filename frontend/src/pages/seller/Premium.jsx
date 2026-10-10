@@ -81,7 +81,7 @@ export default function SellerPremium() {
           <div className="space-y-2.5">
             {plan.benefits.map((b, i) => (
               <div key={i} className="flex items-start gap-2.5">
-                <div className="w-5 h-5 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center shrink-0 mt-0.5">
                   <Check size={12} />
                 </div>
                 <span className="text-sm text-gray-700">{b}</span>

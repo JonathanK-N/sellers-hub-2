@@ -109,7 +109,7 @@ export default function SearchPage() {
           </div>
 
           {q && (
-            <p className="text-xs text-gray-500 mt-3 var(--afri-success-bg) rounded-lg px-3 py-2">
+            <p className="text-xs text-gray-500 mt-3 bg-afri-soft rounded-lg px-3 py-2">
               La recherche par mot-clé ignore le rayon : tous les produits correspondants sont affichés, quel que soit l'emplacement du vendeur.
             </p>
           )}

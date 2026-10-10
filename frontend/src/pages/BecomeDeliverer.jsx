@@ -300,7 +300,7 @@ export default function BecomeDeliverer() {
                     className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-start gap-3"
                     style={{ animation: `fadeSlideIn 0.4s ease-out ${i * 0.08}s both` }}
                   >
-                    <div className="w-10 h-10 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center shrink-0">
                       <b.icon size={18} />
                     </div>
                     <div>
@@ -335,7 +335,7 @@ export default function BecomeDeliverer() {
                   data-testid="type-afrimarket-btn"
                   onClick={() => setForm((f) => ({ ...f, application_type: "afrimarket", seller_id: null }))}
                   className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
-                    form.application_type === "afrimarket" ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"
+                    form.application_type === "afrimarket" ? "border-afri-primary bg-afri-soft" : "border-gray-200 bg-white"
                   }`}
                 >
                   <div className="flex items-start gap-3">
@@ -353,7 +353,7 @@ export default function BecomeDeliverer() {
                   data-testid="type-shop-btn"
                   onClick={() => setForm((f) => ({ ...f, application_type: "shop" }))}
                   className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
-                    form.application_type === "shop" ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"
+                    form.application_type === "shop" ? "border-afri-primary bg-afri-soft" : "border-gray-200 bg-white"
                   }`}
                 >
                   <div className="flex items-start gap-3">
@@ -673,7 +673,7 @@ export default function BecomeDeliverer() {
           {step === "done" && (
             <FadeStep>
               <div className="text-center py-8">
-                <div className="w-20 h-20 mx-auto rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center" style={{ animation: "pulseRing 2.5s infinite" }}>
+                <div className="w-20 h-20 mx-auto rounded-full bg-afri-soft text-afri-primary flex items-center justify-center" style={{ animation: "pulseRing 2.5s infinite" }}>
                   <PartyPopper size={32} />
                 </div>
                 <h2 className="font-display font-bold text-2xl text-gray-900 mt-5">

@@ -32,7 +32,7 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-afri-secondary flex items-center justify-center px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-8">
         <div className="flex flex-col items-center text-center">
-          <div className="w-14 h-14 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center">
+          <div className="w-14 h-14 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center">
             <ShieldCheck size={28} />
           </div>
           <h1 className="font-display font-black text-2xl text-afri-secondary mt-3">Administration</h1>

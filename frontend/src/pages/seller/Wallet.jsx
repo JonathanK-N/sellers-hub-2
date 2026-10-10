@@ -100,7 +100,7 @@ export default function SellerWallet() {
             <div className="divide-y divide-gray-100">
               {txs.map((t) => (
                 <div key={t.id} className="py-3 flex items-center gap-3" data-testid={`tx-${t.id}`}>
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center ${t.type === "sale" ? "var(--afri-success-bg) text-afri-primary" : "bg-amber-50 text-afri-accent"}`}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center ${t.type === "sale" ? "bg-afri-soft text-afri-primary" : "bg-amber-50 text-afri-accent"}`}>
                     {t.type === "sale" ? <TrendingUp size={16} /> : <ArrowDownToLine size={16} />}
                   </div>
                   <div className="flex-1 min-w-0">

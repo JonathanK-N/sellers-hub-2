@@ -89,7 +89,7 @@ export default function Notifications() {
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className={`w-9 h-9 rounded-full flex items-center justify-center ${pushOn ? "var(--afri-success-bg) text-afri-primary" : "bg-gray-100 text-gray-400"}`}>
+              <div className={`w-9 h-9 rounded-full flex items-center justify-center ${pushOn ? "bg-afri-soft text-afri-primary" : "bg-gray-100 text-gray-400"}`}>
                 {pushOn ? <Bell size={18} /> : <BellOff size={18} />}
               </div>
               <div>
@@ -150,7 +150,7 @@ export default function Notifications() {
                 onClick={() => !n.read && markRead(n.id)}
                 data-testid={`notif-${n.id}`}
                 className={`w-full text-left rounded-xl border p-4 transition-colors ${
-                  n.read ? "bg-white border-gray-100" : "var(--afri-success-bg) border-[#9FE1CB]"
+                  n.read ? "bg-white border-gray-100" : "bg-afri-soft border-[#9FE1CB]"
                 }`}
               >
                 <div className="flex items-start gap-3">

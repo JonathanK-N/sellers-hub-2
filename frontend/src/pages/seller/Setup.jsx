@@ -91,7 +91,7 @@ export default function SellerSetup() {
             <p className="text-sm text-gray-500">Commençons par l'identité de votre boutique.</p>
             {/* Logo */}
             <div className="flex flex-col items-center gap-2 py-3">
-              <button onClick={() => logoRef.current?.click()} className="relative w-24 h-24 rounded-full overflow-hidden border-4 var(--afri-success-bg) bg-gray-100 flex items-center justify-center group">
+              <button onClick={() => logoRef.current?.click()} className="relative w-24 h-24 rounded-full overflow-hidden border-4 bg-afri-soft bg-gray-100 flex items-center justify-center group">
                 {form.shop_logo_url ? <img src={photoUrl(form.shop_logo_url)} alt="logo" className="w-full h-full object-cover" /> : <Camera size={28} className="text-gray-400" />}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center"><Camera size={20} className="text-white" /></div>
               </button>
@@ -110,7 +110,7 @@ export default function SellerSetup() {
               <label className="text-sm font-medium text-gray-700">Produits vendus (tags)</label>
               <div className="mt-1.5 flex gap-2">
                 <input value={specialty} onChange={e => setSpecialty(e.target.value)} onKeyDown={e => e.key === "Enter" && addSpecialty()} placeholder="ex: Téléphones, Pagnes..." className="flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
-                <button onClick={addSpecialty} className="w-10 h-10 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center"><Plus size={18} /></button>
+                <button onClick={addSpecialty} className="w-10 h-10 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center"><Plus size={18} /></button>
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {form.product_specialties.map(s => (

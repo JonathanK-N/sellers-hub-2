@@ -163,7 +163,7 @@ export default function EditProfile() {
           <Field label="Produits vendus">
             <div className="flex gap-2">
               <input value={specialty} onChange={e => setSpecialty(e.target.value)} onKeyDown={e => e.key === "Enter" && addSpecialty()} placeholder="Ajouter un tag" className={`${inp} flex-1`} />
-              <button onClick={addSpecialty} className="w-10 h-10 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center shrink-0"><Plus size={18} /></button>
+              <button onClick={addSpecialty} className="w-10 h-10 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center shrink-0"><Plus size={18} /></button>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
               {form.product_specialties.map(s => (
@@ -192,7 +192,7 @@ export default function EditProfile() {
                   navigator.clipboard.writeText(shopId);
                   toast.success("ID copié");
                 }}
-                className="w-10 h-10 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center shrink-0"
+                className="w-10 h-10 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center shrink-0"
               >
                 <Copy size={16} />
               </button>
@@ -208,7 +208,7 @@ export default function EditProfile() {
             <div
               onClick={() => !isAfrimarket || toggleDeliveryService()}
               className={`flex items-start gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                !isAfrimarket ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"
+                !isAfrimarket ? "border-afri-primary bg-afri-soft" : "border-gray-200 bg-white"
               }`}
             >
               <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${!isAfrimarket ? "bg-afri-primary text-white" : "bg-gray-100 text-gray-500"}`}>
@@ -251,7 +251,7 @@ export default function EditProfile() {
             <div
               onClick={() => isAfrimarket || toggleDeliveryService()}
               className={`flex items-start gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                isAfrimarket ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"
+                isAfrimarket ? "border-afri-primary bg-afri-soft" : "border-gray-200 bg-white"
               } ${!isPremium ? "opacity-60" : ""}`}
             >
               <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isAfrimarket ? "bg-afri-primary text-white" : "bg-gray-100 text-gray-500"}`}>

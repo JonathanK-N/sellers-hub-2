@@ -66,7 +66,7 @@ export default function Profile() {
             <div className="font-display font-bold text-gray-900">{user.name}</div>
             <div className="text-xs text-gray-500">{user.phone}</div>
             <div className="flex items-center gap-1.5 mt-1">
-              <span className="inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded-full var(--afri-success-bg) text-afri-primary">
+              <span className="inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-afri-soft text-afri-primary">
                 {user.role === "buyer" ? "Acheteur" : user.role === "seller" ? "Vendeur" : "Admin"}
               </span>
               {user.role === "buyer" && user.buyer_verified && (
@@ -82,9 +82,9 @@ export default function Profile() {
           <button
             data-testid="goto-buyer-kyc"
             onClick={() => nav("/buyer/kyc")}
-            className="w-full bg-white border border-afri-primary rounded-xl shadow-sm p-4 flex items-center gap-3 hover:var(--afri-success-bg) transition-colors"
+            className="w-full bg-white border border-afri-primary rounded-xl shadow-sm p-4 flex items-center gap-3 hover:bg-afri-soft transition-colors"
           >
-            <div className="w-9 h-9 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center shrink-0">
               <ShieldCheck size={18} />
             </div>
             <div className="flex-1 text-left">

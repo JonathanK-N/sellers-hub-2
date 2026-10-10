@@ -112,7 +112,7 @@ export default function SellerScan() {
   if (success) {
     return (
       <div className="mobile-shell flex flex-col items-center justify-center px-6 text-center gap-6 bg-white min-h-screen">
-        <div className="w-24 h-24 rounded-full var(--afri-success-bg) flex items-center justify-center">
+        <div className="w-24 h-24 rounded-full bg-afri-soft flex items-center justify-center">
           <CheckCircle2 size={48} className="text-green-600" />
         </div>
         <div>

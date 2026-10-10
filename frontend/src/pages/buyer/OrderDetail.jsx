@@ -282,7 +282,7 @@ export default function OrderDetail() {
       <div className="px-4 mt-4 space-y-3">
         {/* Escrow banner — masqué pour paiement en espèces (escrow non applicable) */}
         {order.payment_method !== "cash" && (
-        <div className={`rounded-xl p-4 flex items-center gap-3 ${order.escrow_status === "released" ? "bg-emerald-100 border-emerald-300" : "var(--afri-success-bg) border-afri-primary/30"} border`}>
+        <div className={`rounded-xl p-4 flex items-center gap-3 ${order.escrow_status === "released" ? "bg-emerald-100 border-emerald-300" : "bg-afri-soft border-afri-primary/30"} border`}>
           <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={18} />
           </div>
@@ -307,7 +307,7 @@ export default function OrderDetail() {
         {showTracking && (
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-4 pt-3 pb-2 flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center">
+              <div className="w-7 h-7 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center">
                 <MapPin size={14} />
               </div>
               <div>
@@ -383,7 +383,7 @@ export default function OrderDetail() {
 
         {/* Acheteur — instruction retrait boutique */}
         {isBuyer && order.delivery_mode === "collect" && ["ready_for_pickup","confirmed","preparing"].includes(order.status) && (
-          <section className="var(--afri-success-bg) border border-afri-primary/30 rounded-xl p-4 flex items-start gap-3">
+          <section className="bg-afri-soft border border-afri-primary/30 rounded-xl p-4 flex items-start gap-3">
             <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
               <Store size={18} />
             </div>
@@ -438,7 +438,7 @@ export default function OrderDetail() {
             data-testid="collect-confirmed-banner"
           >
             <div
-              className="w-16 h-16 rounded-full var(--afri-success-bg) flex items-center justify-center"
+              className="w-16 h-16 rounded-full bg-afri-soft flex items-center justify-center"
               style={{ animation: "popIn 0.5s 0.15s cubic-bezier(0.34,1.56,0.64,1) both", opacity: 0 }}
             >
               <CheckCircle2 size={36} className="text-green-600" />
@@ -456,7 +456,7 @@ export default function OrderDetail() {
           <button
             data-testid="chat-with-seller-btn"
             onClick={() => nav(`/messages/${order.buyer_id}__${order.seller_id}`, { state: { other_name: order.seller_name } })}
-            className="w-full bg-white border border-afri-primary text-afri-primary hover:var(--afri-success-bg) rounded-lg py-2.5 font-semibold transition-colors flex items-center justify-center gap-2 text-sm"
+            className="w-full bg-white border border-afri-primary text-afri-primary hover:bg-afri-soft rounded-lg py-2.5 font-semibold transition-colors flex items-center justify-center gap-2 text-sm"
           >
             <MessageSquare size={16} /> Discuter avec le vendeur
           </button>
@@ -515,7 +515,7 @@ export default function OrderDetail() {
                 <button
                   data-testid="load-deliverers-btn"
                   onClick={loadDeliverers}
-                  className="w-full border border-afri-primary text-afri-primary rounded-lg py-2.5 font-semibold text-sm hover:var(--afri-success-bg)"
+                  className="w-full border border-afri-primary text-afri-primary rounded-lg py-2.5 font-semibold text-sm hover:bg-afri-soft"
                 >
                   Assigner un livreur
                 </button>
@@ -533,7 +533,7 @@ export default function OrderDetail() {
                     className="w-full flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-afri-primary disabled:opacity-50"
                   >
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center">
                         <Bike size={15} />
                       </div>
                       <div className="text-left">

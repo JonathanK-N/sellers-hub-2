@@ -210,7 +210,7 @@ export default function AdminUsers() {
                       ) : u.suspended ? (
                         <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">Suspendu</span>
                       ) : (
-                        <span className="text-[10px] font-bold text-afri-primary var(--afri-success-bg) px-2 py-0.5 rounded-full">Actif</span>
+                        <span className="text-[10px] font-bold text-afri-primary bg-afri-soft px-2 py-0.5 rounded-full">Actif</span>
                       )}
                     </td>
                     <td className="px-4 py-3">
@@ -247,7 +247,7 @@ export default function AdminUsers() {
                         {/* Réactiver */}
                         {(u.suspended || u.banned) && u.role !== "admin" && (
                           <button onClick={() => { setActionModal({ user: u, act: "unsuspend" }); setMotif(""); }}
-                            title="Réactiver" className="p-1.5 hover:var(--afri-success-bg) rounded-lg text-afri-primary">
+                            title="Réactiver" className="p-1.5 hover:bg-afri-soft rounded-lg text-afri-primary">
                             <CheckCircle2 size={15} />
                           </button>
                         )}
@@ -433,7 +433,7 @@ export default function AdminUsers() {
                     <div className="text-xs text-gray-500">{p.price?.toLocaleString("fr-FR")} {p.currency} · Stock : {p.stock}</div>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.is_active ? "var(--afri-success-bg) text-afri-primary" : "bg-red-100 text-red-600"}`}>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.is_active ? "bg-afri-soft text-afri-primary" : "bg-red-100 text-red-600"}`}>
                       {p.is_active ? "Actif" : "Retiré"}
                     </span>
                     {p.is_active && (

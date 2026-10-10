@@ -68,7 +68,7 @@ export default function SellerProducts() {
                   <button
                     data-testid={`edit-product-${p.id}`}
                     onClick={() => nav(`/seller/products/${p.id}/edit`)}
-                    className="text-afri-primary p-2 hover:var(--afri-success-bg) rounded-lg"
+                    className="text-afri-primary p-2 hover:bg-afri-soft rounded-lg"
                   >
                     <Pencil size={16} />
                   </button>

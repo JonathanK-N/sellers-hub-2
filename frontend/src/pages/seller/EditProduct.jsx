@@ -187,12 +187,12 @@ export default function SellerEditProduct() {
           <p className="text-xs text-gray-500 mt-0.5 mb-2">Choisissez comment ce produit peut être obtenu par l'acheteur.</p>
           <div className="grid grid-cols-2 gap-2">
             <button type="button" data-testid="product-mode-delivery" onClick={() => toggleMode("delivery")}
-              className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes("delivery") ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"}`}>
+              className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes("delivery") ? "border-afri-primary bg-afri-soft" : "border-gray-200 bg-white"}`}>
               <Truck size={18} className={form.delivery_modes.includes("delivery") ? "text-afri-primary" : "text-gray-400"} />
               <span className={`text-xs font-semibold ${form.delivery_modes.includes("delivery") ? "text-afri-secondary" : "text-gray-600"}`}>Livraison</span>
             </button>
             <button type="button" data-testid="product-mode-collect" onClick={() => toggleMode("collect")}
-              className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes("collect") ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"}`}>
+              className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes("collect") ? "border-afri-primary bg-afri-soft" : "border-gray-200 bg-white"}`}>
               <Store size={18} className={form.delivery_modes.includes("collect") ? "text-afri-primary" : "text-gray-400"} />
               <span className={`text-xs font-semibold ${form.delivery_modes.includes("collect") ? "text-afri-secondary" : "text-gray-600"}`}>Retrait boutique</span>
             </button>

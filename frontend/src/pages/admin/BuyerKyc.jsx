@@ -52,7 +52,7 @@ export default function AdminBuyerKyc() {
             {pending.map((u) => (
               <div key={u.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5" data-testid={`buyer-kyc-card-${u.id}`}>
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center">
                     <ShieldCheck size={20} />
                   </div>
                   <div className="flex-1">

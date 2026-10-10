@@ -24,7 +24,7 @@ export default function Cart() {
 
       {items.length === 0 ? (
         <div className="px-6 mt-20 text-center">
-          <div className="w-20 h-20 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center mx-auto">
+          <div className="w-20 h-20 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center mx-auto">
             <ShoppingBag size={32} />
           </div>
           <h2 className="font-display font-bold text-lg text-gray-900 mt-4">Votre panier est vide</h2>
@@ -49,7 +49,7 @@ export default function Cart() {
             {sellerGroups.map((group) => (
               <div key={group.seller_id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-testid={`cart-seller-${group.seller_id}`}>
                 <div className="flex items-center gap-2 px-3 py-2 bg-[#F1EFE8] border-b border-gray-100">
-                  <div className="w-6 h-6 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center">
                     <Store size={13} />
                   </div>
                   <span className="text-sm font-semibold text-gray-900 flex-1 line-clamp-1">{group.seller_name}</span>

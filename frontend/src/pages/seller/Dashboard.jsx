@@ -155,7 +155,7 @@ export default function SellerDashboard() {
 function Stat({ icon: Icon, label, value, sub }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-      <div className="w-9 h-9 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center">
+      <div className="w-9 h-9 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center">
         <Icon size={18} />
       </div>
       <div className="font-display font-black text-xl text-afri-secondary mt-2">{value}</div>

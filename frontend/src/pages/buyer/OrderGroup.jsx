@@ -96,7 +96,7 @@ export default function OrderGroup() {
           <p className="text-xs text-gray-500 mt-1">Passée {timeAgo(group.created_at)} · Paiement unique via {group.payment_method}</p>
         </section>
 
-        <section className="var(--afri-success-bg) border border-afri-primary/30 rounded-xl p-4 flex items-start gap-3">
+        <section className="bg-afri-soft border border-afri-primary/30 rounded-xl p-4 flex items-start gap-3">
           <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
             <Lock size={18} />
           </div>
@@ -132,7 +132,7 @@ export default function OrderGroup() {
               className="block bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:border-afri-primary/40 transition-colors"
             >
               <div className="flex items-center gap-2 px-3 py-2 bg-[#F1EFE8] border-b border-gray-100">
-                <div className="w-6 h-6 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center">
                   <Store size={13} />
                 </div>
                 <span className="text-sm font-semibold text-gray-900 flex-1 line-clamp-1">{o.seller_name}</span>
