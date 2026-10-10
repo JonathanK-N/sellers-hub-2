@@ -1,3 +1,4 @@
+from uploads import read_upload
 """Buyer identity verification (KYC) — separate from seller boutique KYC.
 
 Stores documents on the user record directly (no shop entity for buyers).
@@ -31,7 +32,7 @@ async def upload_buyer_kyc_doc(
     if file.filename and "." in file.filename:
         ext = file.filename.rsplit(".", 1)[-1].lower()
     path = f"{APP_NAME}/buyer_kyc/{user['id']}/{doc_type}_{uuid.uuid4()}.{ext}"
-    data = await file.read()
+    data = await read_upload(file, allow_pdf=True)
     try:
         result = upload_private(path, data, file.content_type or "image/jpeg")
     except Exception as e:

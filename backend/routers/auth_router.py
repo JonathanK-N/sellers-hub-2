@@ -1,3 +1,4 @@
+from uploads import read_upload
 """Auth routes: register, OTP verification, password login, admin login."""
 import os
 import uuid
@@ -239,7 +240,7 @@ async def upload_profile_photo(file: UploadFile = File(...), user: dict = Depend
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
     path = f"{APP_NAME}/avatars/{user['id']}/{uuid.uuid4()}.{ext}"
-    data = await file.read()
+    data = await read_upload(file)
     try:
         result = upload_public(path, data, file.content_type or "image/jpeg")
     except Exception as e:

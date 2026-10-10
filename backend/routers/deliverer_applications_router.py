@@ -1,3 +1,4 @@
+from uploads import read_upload
 """Deliverer applications: candidacy workflow before becoming an active
 deliverer. Two distinct tracks:
 
@@ -180,7 +181,7 @@ async def upload_document(
     if file.filename and "." in file.filename:
         ext = file.filename.rsplit(".", 1)[-1].lower()
     path = f"{APP_NAME}/deliverer_applications/{application_id}/{doc_type}_{uuid.uuid4()}.{ext}"
-    data = await file.read()
+    data = await read_upload(file, allow_pdf=True)
     try:
         result = upload_private(path, data, file.content_type or "image/jpeg")
     except Exception as e:

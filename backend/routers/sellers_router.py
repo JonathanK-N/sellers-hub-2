@@ -1,3 +1,4 @@
+from uploads import read_upload
 """Seller boutique + profile management."""
 import uuid
 import logging
@@ -116,7 +117,7 @@ async def upload_photo(file: UploadFile = File(...), user: dict = Depends(requir
         ext = file.filename.rsplit(".", 1)[-1].lower()
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
-    raw_data = await file.read()
+    raw_data = await read_upload(file)
     # Redimensionner à max 1200px, JPEG optimisé — réduit la taille de 70-90% pour les photos mobiles
     data, content_type = _resize_image(raw_data)
     ext = "jpg"
@@ -154,7 +155,7 @@ async def upload_kyc_doc(
     if file.filename and "." in file.filename:
         ext = file.filename.rsplit(".", 1)[-1].lower()
     path = f"{APP_NAME}/kyc/{user['id']}/{doc_type}_{uuid.uuid4()}.{ext}"
-    data = await file.read()
+    data = await read_upload(file, allow_pdf=True)
     try:
         result = upload_private(path, data, file.content_type or "image/jpeg")
     except Exception as e:
@@ -291,7 +292,7 @@ async def upload_logo(file: UploadFile = File(...), user: dict = Depends(require
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
     path = f"{APP_NAME}/shop-logos/{seller['id']}/{uuid.uuid4()}.{ext}"
-    data = await file.read()
+    data = await read_upload(file)
     try:
         result = upload_public(path, data, file.content_type or "image/jpeg")
     except Exception as e:
@@ -326,7 +327,7 @@ async def upload_banner(file: UploadFile = File(...), user: dict = Depends(requi
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
     path = f"{APP_NAME}/shop-banners/{seller['id']}/{uuid.uuid4()}.{ext}"
-    data = await file.read()
+    data = await read_upload(file)
     try:
         result = upload_public(path, data, file.content_type or "image/jpeg")
     except Exception as e:

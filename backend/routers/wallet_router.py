@@ -5,6 +5,7 @@ from datetime import datetime, timezone, timedelta
 
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, Field
+from pymongo.errors import OperationFailure
 
 from db import get_db
 from auth import require_role
@@ -23,13 +24,13 @@ class WithdrawRequest(BaseModel):
     operator: str  # MTN MoMo, Airtel Money, etc.
 
 
-async def _compute_balance(db, seller_id: str) -> dict:
+async def _compute_balance(db, seller_id: str, session=None) -> dict:
     """Available = sum(released order net) - sum(completed/in_progress withdrawals)."""
     pipeline = [
         {"$match": {"seller_id": seller_id, "escrow_status": {"$in": ["released", "partial_refund"]}}},
         {"$group": {"_id": None, "gross": {"$sum": "$total_amount"}, "commission": {"$sum": "$commission_amount"}}},
     ]
-    rows = await db.orders.aggregate(pipeline).to_list(1)
+    rows = await db.orders.aggregate(pipeline, session=session).to_list(1)
     if rows:
         gross = rows[0]["gross"]
         commission = rows[0]["commission"]
@@ -42,7 +43,7 @@ async def _compute_balance(db, seller_id: str) -> dict:
     # Count in-progress/processing/completed against the balance so a seller can't
     # double-withdraw funds that are mid-flight.
     withdrawn = 0
-    async for w in db.withdrawals.find({"seller_id": seller_id, "status": {"$in": ["in_progress", "processing", "completed"]}}):
+    async for w in db.withdrawals.find({"seller_id": seller_id, "status": {"$in": ["in_progress", "processing", "completed"]}}, session=session):
         withdrawn += w["amount"]
 
     return {
@@ -129,7 +130,21 @@ async def withdraw(req: WithdrawRequest, user: dict = Depends(require_role("sell
         "created_at": _now(),
         "completed_at": None,
     }
-    await db.withdrawals.insert_one(withdrawal)
+    # Contend on one seller document so two snapshot transactions cannot both
+    # spend the same computed balance by inserting different withdrawal rows.
+    try:
+        async with await db.client.start_session() as session:
+            async def reserve_withdrawal(active_session):
+                await db.sellers.update_one({"id": seller["id"]}, {"$inc": {"wallet_revision": 1}}, session=active_session)
+                fresh_balance = await _compute_balance(db, seller["id"], session=active_session)
+                if req.amount > fresh_balance["available"]:
+                    raise HTTPException(status_code=409, detail="Solde insuffisant")
+                await db.withdrawals.insert_one(withdrawal, session=active_session)
+            await session.with_transaction(reserve_withdrawal)
+    except OperationFailure as error:
+        if error.code in {20, 303}:
+            raise HTTPException(status_code=503, detail="Retraits temporairement indisponibles")
+        raise
     withdrawal.pop("_id", None)
     return withdrawal
 
