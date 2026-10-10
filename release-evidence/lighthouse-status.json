@@ -1,0 +1,19 @@
+{
+  "status": "BLOCKED",
+  "attempts": [
+    {
+      "result": "dependency download did not complete in initial execution",
+      "log": "lighthouse.log"
+    },
+    {
+      "result": "ERR_MODULE_NOT_FOUND: debug",
+      "log": "lighthouse-retry.log"
+    },
+    {
+      "result": "direct installed CLI did not produce a report after several minutes; bounded execution stopped",
+      "log": "lighthouse-direct.log"
+    }
+  ],
+  "score": null,
+  "time": "2026-10-10T21:37:24.359Z"
+}
