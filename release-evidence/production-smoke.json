@@ -1,0 +1,38 @@
+{
+  "base": "https://sellers-hub-2-production.up.railway.app",
+  "time": "2026-10-10T21:25:41.370Z",
+  "rows": [
+    {
+      "path": "/api/",
+      "http": 200,
+      "result": "PASS",
+      "type": "object"
+    },
+    {
+      "path": "/api/health",
+      "http": 200,
+      "result": "FAIL",
+      "health": {
+        "status": "degraded",
+        "checks": {
+          "mongodb": "error: name 'get_db' is not defined",
+          "fx_rate": "unknown"
+        },
+        "response_ms": 0,
+        "version": "1.0.0"
+      }
+    },
+    {
+      "path": "/api/countries",
+      "http": 200,
+      "result": "PASS",
+      "type": "array"
+    },
+    {
+      "path": "/api/products?country_code=CD",
+      "http": 200,
+      "result": "PASS",
+      "type": "array"
+    }
+  ]
+}

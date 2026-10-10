@@ -1,0 +1,24 @@
+[
+  {
+    "version": "0.1.1-green.1",
+    "file": "C-green-b71f84e-web-pwa.zip",
+    "bytes": 2512667,
+    "sha256": "b777fc8ded581760632d5a0157a99fad930573808c07baf59273e03dc8e59940",
+    "sourceSha": "b71f84ece757f00208df300e99bd9b418ae5fb40",
+    "buildSha": "138be800420b368a8313323e73d4b48f70e043f0",
+    "run": 38087197065,
+    "tests": "Web/backend/Android CI PASS; device tests BLOCKED",
+    "restore": "Extract Web package to isolated static hosting; install debug APK only on test device with staging API."
+  },
+  {
+    "version": "0.1.1-green.1",
+    "file": "C-green-b71f84e-android-debug.zip",
+    "bytes": 6584385,
+    "sha256": "cf98421667e6695dd29501799711a9778e9302f5206c946d4a081a3077fc51de",
+    "sourceSha": "b71f84ece757f00208df300e99bd9b418ae5fb40",
+    "buildSha": "138be800420b368a8313323e73d4b48f70e043f0",
+    "run": 38087197065,
+    "tests": "Web/backend/Android CI PASS; device tests BLOCKED",
+    "restore": "Extract Web package to isolated static hosting; install debug APK only on test device with staging API."
+  }
+]

@@ -10,3 +10,5 @@ API: https://afrimarket-api-staging-staging.up.railway.app
 Staging references only its own private Mongo endpoint and synthetic database. New random JWT secret; PAYMENT_MODE=sandbox; no production SMS/email/payment/S3 credentials copied. Mongo staging is ephemeral, without a public proxy or persistent volume; data loss on restart is acceptable for synthetic test data. Production database backup/restore verification remains BLOCKED: volume existence is confirmed, backup schedule and coherent mongodump are not verified by available connector tools.
 
 Production promotion requires explicit user approval after review of build/test evidence, required blockers and rollback readiness. No production branches may be directly updated during preparation.
+
+Validated staging code SHA: b71f84ece757f00208df300e99bd9b418ae5fb40. Web deployment 26d4c19a-c892-4aa0-85f9-c8fd97165619 and API deployment 507be901-d5f2-43fc-899e-06911e7b22d8 both SUCCESS. Real browser session survives a simulated API disconnection (offline-session-after.json).

@@ -1,0 +1,38 @@
+{
+  "base": "https://afrimarket-api-staging-staging.up.railway.app",
+  "time": "2026-10-10T20:30:34.022Z",
+  "rows": [
+    {
+      "path": "/api/",
+      "http": 200,
+      "result": "PASS",
+      "type": "object"
+    },
+    {
+      "path": "/api/health",
+      "http": 200,
+      "result": "PASS",
+      "health": {
+        "status": "ok",
+        "checks": {
+          "mongodb": "ok",
+          "fx_rate": "no_data"
+        },
+        "response_ms": 3,
+        "version": "1.0.0"
+      }
+    },
+    {
+      "path": "/api/countries",
+      "http": 200,
+      "result": "PASS",
+      "type": "array"
+    },
+    {
+      "path": "/api/products?country_code=CD",
+      "http": 200,
+      "result": "PASS",
+      "type": "array"
+    }
+  ]
+}

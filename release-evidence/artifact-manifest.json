@@ -1,0 +1,60 @@
+{
+  "artifacts": [
+    {
+      "version": "A-original",
+      "sha": "6722492d85e0f8646ebe03c9b841c4a0e3611449",
+      "date": "2026-10-10T21:22:40.929Z",
+      "type": "source archive",
+      "file": "C:\\Users\\Djibril\\Documents\\ChatGPT\\Afrimarket-private-backups\\releases-20261010\\A-original-6722492d85e0-source.zip",
+      "sha256": "3f9ebc1885c20ec21bb4eb9fbc86c27499825dade18f76f78aac7f63ec1dfbd3",
+      "tools": {
+        "node": "v24.19.0",
+        "git": "git version 2.55.0.windows.5"
+      },
+      "tests": "Reference preserved; historical build not locally reproduced",
+      "restore": "Extract into a new checkout; restore exact Git tag; supply private environment variables separately. No database backup is included."
+    },
+    {
+      "version": "B-uiux-tip",
+      "sha": "83be26533e8bca3aa4ca1b1fa84c93f686aabec0",
+      "date": "2026-10-10T21:22:42.425Z",
+      "type": "source archive",
+      "file": "C:\\Users\\Djibril\\Documents\\ChatGPT\\Afrimarket-private-backups\\releases-20261010\\B-uiux-tip-83be26533e8b-source.zip",
+      "sha256": "fdb1c13d0ec281b061029150ac38e3a897757658a85f5036409476b03405c739",
+      "tools": {
+        "node": "v24.19.0",
+        "git": "git version 2.55.0.windows.5"
+      },
+      "tests": "Reference preserved; historical build not locally reproduced",
+      "restore": "Extract into a new checkout; restore exact Git tag; supply private environment variables separately. No database backup is included."
+    },
+    {
+      "version": "B-uiux-deployed",
+      "sha": "0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84",
+      "date": "2026-10-10T21:22:43.857Z",
+      "type": "source archive",
+      "file": "C:\\Users\\Djibril\\Documents\\ChatGPT\\Afrimarket-private-backups\\releases-20261010\\B-uiux-deployed-0e24300a3fa0-source.zip",
+      "sha256": "2c54433560c85a37b2d8e2fb7873d7c0e86b0bd2f4399fb0114060b76d6c43d4",
+      "tools": {
+        "node": "v24.19.0",
+        "git": "git version 2.55.0.windows.5"
+      },
+      "tests": "Reference preserved; historical build not locally reproduced",
+      "restore": "Extract into a new checkout; restore exact Git tag; supply private environment variables separately. No database backup is included."
+    },
+    {
+      "version": "C-green",
+      "sha": "b71f84ece757f00208df300e99bd9b418ae5fb40",
+      "date": "2026-10-10T21:22:45.516Z",
+      "type": "source archive",
+      "file": "C:\\Users\\Djibril\\Documents\\ChatGPT\\Afrimarket-private-backups\\releases-20261010\\C-green-b71f84ece757-source.zip",
+      "sha256": "aeff1bd06e2d07109f077e1c6e4dd865f01aef32393e9977b975f6f69f670802",
+      "tools": {
+        "node": "v24.19.0",
+        "git": "git version 2.55.0.windows.5"
+      },
+      "tests": "Railway backend 9 unit tests passed; staging web built; see evidence for remaining blockers",
+      "restore": "Extract into a new checkout; restore exact Git tag; supply private environment variables separately. No database backup is included."
+    }
+  ]
+}

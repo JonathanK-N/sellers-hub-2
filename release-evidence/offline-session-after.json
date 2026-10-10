@@ -1,0 +1,9 @@
+{
+  "test": "transient API disconnection preserves cached session",
+  "status": "PASS",
+  "sessionState": {
+    "token": true,
+    "user": true
+  },
+  "url": "https://afrimarket-web-staging-staging.up.railway.app/buyer/home"
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "file": "afrimarket-A-original-6722492d85e0f8646ebe03c9b841c4a0e3611449.zip",
+    "sha256": "b00eab9d1f17fba7727cd63972b026e144a9db81bbffaab351813345329efb63",
+    "bytes": 2162995
+  },
+  {
+    "file": "afrimarket-B-uiux-tip-83be26533e8bca3aa4ca1b1fa84c93f686aabec0.zip",
+    "sha256": "9141d8df6f0612b5554134ff662329deb3883098b466ddf2f9acd7913ea2ef71",
+    "bytes": 2511767
+  },
+  {
+    "file": "afrimarket-B-uiux-deployed-0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84.zip",
+    "sha256": "ec89fcce5e16eb52b87719414236e61ecb12e12dc5538df994afa69289a62ed1",
+    "bytes": 2181887
+  }
+]

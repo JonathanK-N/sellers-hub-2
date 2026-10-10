@@ -1,35 +1,38 @@
-# Test report — preliminary
+# Rapport de validation — AfriMarket
 
-Only evidence from actually executed commands may be marked PASS. Installation logs and command failures are retained under release-evidence. Static checks and mocked tests cannot certify complete workflows.
+Auteur : Jonathan Kakesa (JonathanK-N). Date : 10 octobre 2026.
 
-| Area | Status at preparation | Evidence / limitation |
+La palette verte originale a été restaurée en conservant la structure UI-UX. La production est restée inchangée. Une PR en brouillon et un staging isolé permettent la revue. Les validations ci-dessous décrivent uniquement les actions réellement exécutées.
+
+| Domaine | Résultat | Preuve ou limite |
 |---|---|---|
-| Git access/inventory | PASS | GitHub connector, fetched six branches |
-| Railway production inventory | PASS | production-inventory.json |
-| Source backup | PASS | seven remote archive branches/tags, verified Git bundle |
-| Mongo coherent backup/restoration | BLOCKED | No verified dump or backup schedule |
-| Main/UI backend equivalence | PASS | git diff backend empty before health fix |
-| Static palette/PWA checks | Pending execution | static-validation.log |
-| Service worker regression | Pending execution | service-worker-tests.log |
-| Frontend build | BLOCKED initially | dependency download timed out; retry log retained |
-| Backend unit regression | BLOCKED initially | pytest unavailable; installation in progress |
-| Production public GET smoke | Pending execution | production-smoke.json |
-| PWA installation/update/Lighthouse | BLOCKED | Browser evidence required |
-| Android local build/device | BLOCKED | Java/SDK/adb absent |
-| CI | Prepared | Actual run results required |
-| Staging | Prepared | Actual deployments/tests required |
+| Sauvegardes Git | PASS | Sept références distantes archivées, tags et bundle vérifié |
+| Sauvegarde Mongo cohérente / restauration | BLOCKED | Volume inventorié, aucun dump restauré ni planning vérifié |
+| Builds Web / backend / Android | PASS sur b71f84e | Actions 38087197065, trois jobs SUCCESS |
+| Tests backend | PASS | Neuf tests santé et modèles ; build Railway et CI |
+| Builds de référence A et B | PASS | Actions 38085613413 ; checksums dans reference-web-artifacts.json |
+| Responsive 390 / 768 / 1440 | PASS | browser-validation.json et captures ; aucune erreur JS relevée |
+| Modal authentification / fermeture Escape | PASS | browser-validation.json |
+| Panier authentifié / route commande | PASS | pwa-cart-validation.json |
+| Service worker réel / cache green-v7 | PASS | pwa-cart-validation.json |
+| Cache ancien / API hors connexion | PASS, test isolé | service-worker-tests.log ; ne certifie pas un appareil installé |
+| Session en coupure réseau | PASS | offline-session-after.json ; cache conservé sur erreur réseau |
+| Santé staging | PASS | staging-smoke.json |
+| Santé production | FAIL | Réponse degraded, get_db absent ; correction disponible uniquement sur staging |
+| Administrateur / listes / KYC lecture | PASS | Sept vérifications staging-admin-validation.json |
+| Acheteur / vendeur / livreur inscription, OTP, login | PASS | staging-integration.json, comptes synthétiques |
+| Produit vendeur, boutique, commande retrait cash | PASS | staging-integration.json ; aucun paiement réel |
+| Messages / notifications / historique / profil | PASS pour opérations consignées | Ne certifie pas tous les parcours métier |
+| Quantité nulle | FAIL initial puis PASS après correction | Rejet HTTP 422 ; tests modèles |
+| APK debug | Build PASS ; appareil BLOCKED | Application .staging, API staging, ressources Web embarquées |
+| Paiements, remboursements, KYC upload, livraison complète | BLOCKED | Intégrations externes et parcours complets non certifiés |
+| Installation PWA Android/iOS / mise à jour installée | BLOCKED | Aucun appareil physique disponible |
+| Lighthouse | BLOCKED | Installation locale non terminée ; aucun rapport ni score disponible |
+| Contraste petits textes | OPEN | Blanc sur vert ~3,38:1 et ambre ~2,15:1 ; palette exacte conservée |
 
-All buyer registration/login, search/filter, product detail, cart, order, payment, history, profile, notifications, messages and disputes flows are BLOCKED as full end-to-end certifications until tested using synthetic staging accounts. All seller registration/shop/products/orders/dashboard/wallet/KYC/premium flows, deliverer registration/validation/dashboard/deliveries/status flows and admin auth/users/sellers/products/KYC/disputes/fraud/deliverers/geography/orders flows have the same BLOCKED certification status. Premium payment availability is explicitly disabled in existing UI; mark its paid enrollment NOT IMPLEMENTED for the current user interface, rather than claiming a successful payment.
+Les échecs initiaux d’installation locale, le premier build Android échoué et les anomalies constatées restent traçables. Les builds cloud ont résolu les limitations de compilation locale. Aucun résultat statique ou test simulé ne vaut certification métier complète.
 
-| Anomaly | Priority | Cause | Correction | State |
-|---|---|---|---|---|
-| Orange/black identity mismatch | P1 | UI-UX brand replacement | Provenance restoration + tokens | Implemented, browser validation pending |
-| Deployed frontend differs from branch tip | P1 | Last two deploys failed | Preserve actual deployed SHA separately | Documented |
-| False degraded health | P1 | get_db not imported | Import + mocked regression tests | Implemented, test pending |
-| Missing PWA screenshot | P2 | Manifest references absent file | Remove entry | Implemented |
-| Cache deletion too broad | P2 | Deletes all caches | Scope to afrimarket prefix | Implemented |
-| Historical small-text contrast | P2 | Exact palette + white text | Focus outline; contrast changes need design resolution | Open |
-| Favorite heart does nothing | P2 | Existing handler only preventDefault | No speculative feature added | Open |
-| APK points to production URL | P1 for test package | Remote Capacitor server | Use explicit staging override for test artifact | Open |
+PR : https://github.com/JonathanK-N/sellers-hub-2/pull/1
+Staging : https://afrimarket-web-staging-staging.up.railway.app
 
-Loop 1: observe production/branches → preserve references/config → restore theme → identify health/PWA defects → implement regression checks. Loop 2: build/test → retain dependency timeout and missing screenshot failures → registry retry/manifest fix → re-test → document. Do not change acceptance thresholds or remove failing tests to claim success.
+La mise en production reste conditionnée à la sauvegarde Mongo vérifiée, aux validations des parcours sensibles et des appareils, puis à l’approbation du propriétaire.
