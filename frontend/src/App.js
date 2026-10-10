@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import InstallPrompt from "./components/InstallPrompt";
@@ -10,60 +11,60 @@ import SmoothScroll from "./components/SmoothScroll";
 import { CartProvider } from "./context/CartContext";
 
 import Landing from "./pages/Landing";
-import Register from "./pages/auth/Register";
-import Login from "./pages/auth/Login";
-import VerifyOtp from "./pages/auth/VerifyOtp";
-import ForgotPassword from "./pages/auth/ForgotPassword";
-import AdminLogin from "./pages/admin/AdminLogin";
+const Register = lazy(() => import("./pages/auth/Register"));
+const Login = lazy(() => import("./pages/auth/Login"));
+const VerifyOtp = lazy(() => import("./pages/auth/VerifyOtp"));
+const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
+const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 
-import BuyerHome from "./pages/buyer/Home";
-import SearchPage from "./pages/buyer/Search";
-import ProductDetail from "./pages/buyer/ProductDetail";
-import Cart from "./pages/buyer/Cart";
-import Checkout from "./pages/buyer/Checkout";
-import BuyerOrders from "./pages/buyer/Orders";
-import OrderDetail from "./pages/buyer/OrderDetail";
-import OrderGroup from "./pages/buyer/OrderGroup";
-import Profile from "./pages/buyer/Profile";
-import PaymentSuccess from "./pages/buyer/PaymentSuccess";
-import PaymentFailed from "./pages/buyer/PaymentFailed";
-import BuyerKycVerification from "./pages/buyer/BuyerKycVerification";
-import BecomeDeliverer from "./pages/BecomeDeliverer";
-import AdminDelivererApplications from "./pages/admin/DelivererApplications";
-import SellerDelivererApplications from "./pages/seller/DelivererApplications";
+const BuyerHome = lazy(() => import("./pages/buyer/Home"));
+const SearchPage = lazy(() => import("./pages/buyer/Search"));
+const ProductDetail = lazy(() => import("./pages/buyer/ProductDetail"));
+const Cart = lazy(() => import("./pages/buyer/Cart"));
+const Checkout = lazy(() => import("./pages/buyer/Checkout"));
+const BuyerOrders = lazy(() => import("./pages/buyer/Orders"));
+const OrderDetail = lazy(() => import("./pages/buyer/OrderDetail"));
+const OrderGroup = lazy(() => import("./pages/buyer/OrderGroup"));
+const Profile = lazy(() => import("./pages/buyer/Profile"));
+const PaymentSuccess = lazy(() => import("./pages/buyer/PaymentSuccess"));
+const PaymentFailed = lazy(() => import("./pages/buyer/PaymentFailed"));
+const BuyerKycVerification = lazy(() => import("./pages/buyer/BuyerKycVerification"));
+const BecomeDeliverer = lazy(() => import("./pages/BecomeDeliverer"));
+const AdminDelivererApplications = lazy(() => import("./pages/admin/DelivererApplications"));
+const SellerDelivererApplications = lazy(() => import("./pages/seller/DelivererApplications"));
 
-import SellerSetup from "./pages/seller/Setup";
-import SellerDashboard from "./pages/seller/Dashboard";
-import SellerProducts from "./pages/seller/Products";
-import SellerAddProduct from "./pages/seller/AddProduct";
-import SellerEditProduct from "./pages/seller/EditProduct";
-import SellerOrders from "./pages/seller/SellerOrders";
-import SellerWallet from "./pages/seller/Wallet";
-import SellerKyc from "./pages/seller/Kyc";
-import SellerScan from "./pages/seller/Scan";
-import SellerPremium from "./pages/seller/Premium";
-import EditProfile from "./pages/seller/EditProfile";
-import BuyerProfile from "./pages/seller/BuyerProfile";
-import ShopProfile from "./pages/buyer/ShopProfile";
+const SellerSetup = lazy(() => import("./pages/seller/Setup"));
+const SellerDashboard = lazy(() => import("./pages/seller/Dashboard"));
+const SellerProducts = lazy(() => import("./pages/seller/Products"));
+const SellerAddProduct = lazy(() => import("./pages/seller/AddProduct"));
+const SellerEditProduct = lazy(() => import("./pages/seller/EditProduct"));
+const SellerOrders = lazy(() => import("./pages/seller/SellerOrders"));
+const SellerWallet = lazy(() => import("./pages/seller/Wallet"));
+const SellerKyc = lazy(() => import("./pages/seller/Kyc"));
+const SellerScan = lazy(() => import("./pages/seller/Scan"));
+const SellerPremium = lazy(() => import("./pages/seller/Premium"));
+const EditProfile = lazy(() => import("./pages/seller/EditProfile"));
+const BuyerProfile = lazy(() => import("./pages/seller/BuyerProfile"));
+const ShopProfile = lazy(() => import("./pages/buyer/ShopProfile"));
 
-import AdminOverview from "./pages/admin/Overview";
-import AdminUsers from "./pages/admin/Users";
-import AdminSellers from "./pages/admin/Sellers";
-import AdminOrders from "./pages/admin/AdminOrders";
-import AdminKyc from "./pages/admin/Kyc";
-import AdminDisputes from "./pages/admin/Disputes";
-import AdminFraud from "./pages/admin/Fraud";
-import AdminDeliverers from "./pages/admin/Deliverers";
-import AdminGeo from "./pages/admin/Geo";
-import AdminBuyerKyc from "./pages/admin/BuyerKyc";
-import AdminProducts from "./pages/admin/Products";
-import AdminBanners from "./pages/admin/Banners";
+const AdminOverview = lazy(() => import("./pages/admin/Overview"));
+const AdminUsers = lazy(() => import("./pages/admin/Users"));
+const AdminSellers = lazy(() => import("./pages/admin/Sellers"));
+const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
+const AdminKyc = lazy(() => import("./pages/admin/Kyc"));
+const AdminDisputes = lazy(() => import("./pages/admin/Disputes"));
+const AdminFraud = lazy(() => import("./pages/admin/Fraud"));
+const AdminDeliverers = lazy(() => import("./pages/admin/Deliverers"));
+const AdminGeo = lazy(() => import("./pages/admin/Geo"));
+const AdminBuyerKyc = lazy(() => import("./pages/admin/BuyerKyc"));
+const AdminProducts = lazy(() => import("./pages/admin/Products"));
+const AdminBanners = lazy(() => import("./pages/admin/Banners"));
 
-import Messages from "./pages/Messages";
-import ChatThread from "./pages/ChatThread";
-import OpenDispute from "./pages/buyer/OpenDispute";
-import DelivererDashboard from "./pages/deliverer/Dashboard";
-import Notifications from "./pages/Notifications";
+const Messages = lazy(() => import("./pages/Messages"));
+const ChatThread = lazy(() => import("./pages/ChatThread"));
+const OpenDispute = lazy(() => import("./pages/buyer/OpenDispute"));
+const DelivererDashboard = lazy(() => import("./pages/deliverer/Dashboard"));
+const Notifications = lazy(() => import("./pages/Notifications"));
 import { useParams as useQrParams } from "react-router-dom";
 
 // Gestion du scan QR Click & Collect.
@@ -131,6 +132,7 @@ function App() {
           <InstallPrompt />
           <SmoothScroll />
           <CartDrawerMount />
+          <Suspense fallback={<div role="status" className="min-h-screen flex items-center justify-center text-afri-secondary">Chargement…</div>}>
           <Routes>
             <Route path="/" element={<RoleRedirect />} />
             <Route path="/auth/register" element={<Register />} />
@@ -198,6 +200,7 @@ function App() {
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          </Suspense>
           </AuthModalProvider>
         </BrowserRouter>
       </CartProvider>

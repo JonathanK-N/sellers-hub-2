@@ -1,7 +1,7 @@
 name: AfriMarket release validation
 on:
   pull_request:
-    branches: [main, ui-ux]
+    branches: [main, ui-ux, fix/restore-original-green-theme]
   workflow_dispatch:
 permissions:
   contents: read

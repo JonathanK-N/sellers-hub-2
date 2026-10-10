@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useCallback, useMemo } from "react";
-import AuthModal from "../components/auth/AuthModal";
+import { createContext, useContext, useState, useCallback, useMemo, lazy, Suspense } from "react";
+const AuthModal = lazy(() => import("../components/auth/AuthModal"));
 
 const AuthModalContext = createContext(null);
 
@@ -19,7 +19,7 @@ export function AuthModalProvider({ children }) {
   return (
     <AuthModalContext.Provider value={value}>
       {children}
-      {mode && <AuthModal mode={mode} onClose={closeAuth} onModeChange={setMode} />}
+      {mode && <Suspense fallback={<div role="status" aria-live="polite" className="fixed inset-0 z-50 flex items-center justify-center bg-white/90 text-afri-secondary">Chargement…</div>}><AuthModal mode={mode} onClose={closeAuth} onModeChange={setMode} /></Suspense>}
     </AuthModalContext.Provider>
   );
 }
