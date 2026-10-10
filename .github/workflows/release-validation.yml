@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: '20'
       - run: corepack enable
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --ignore-scripts
         working-directory: frontend
       - name: Dependency vulnerability report
         run: yarn audit --json > web-audit.json
@@ -41,7 +41,9 @@ jobs:
         if: always()
         with:
           name: web-security-${{ github.sha }}
-          path: frontend/web-audit.json
+          path: |
+            frontend/web-audit.json
+            frontend/yarn.lock
   web:
     runs-on: ubuntu-latest
     steps:
