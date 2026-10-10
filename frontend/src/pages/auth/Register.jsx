@@ -22,10 +22,10 @@ export default function Register() {
       </Link>
 
       <header className="px-6 pt-8 pb-5 flex flex-col items-center text-center border-b border-gray-100">
-        <div className="w-12 h-12 rounded-xl bg-[#0b0b0d] text-[#f97316] flex items-center justify-center font-black text-xl mb-3">
+        <div className="w-12 h-12 rounded-xl bg-afri-secondary text-afri-primary flex items-center justify-center font-black text-xl mb-3">
           A
         </div>
-        <h1 className="font-display font-black text-xl text-gray-900">Créer un compte</h1>
+        <h1 className="font-display font-black text-xl text-afri-secondary">Créer un compte</h1>
         <p className="text-sm text-gray-500 mt-1">
           Rejoignez la communauté AfriMarket · Étape {step} sur 2
         </p>

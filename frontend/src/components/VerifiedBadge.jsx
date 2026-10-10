@@ -8,7 +8,7 @@ export default function VerifiedBadge({ size = "sm" }) {
   return (
     <span
       data-testid="verified-badge"
-      className={`inline-flex items-center gap-1 rounded-full bg-orange-50 text-[#f97316] font-bold uppercase tracking-wide ${cls}`}
+      className={`inline-flex items-center gap-1 rounded-full var(--afri-success-bg) text-afri-primary font-bold uppercase tracking-wide ${cls}`}
     >
       <ShieldCheck size={size === "lg" ? 14 : 11} />
       Vérifié

@@ -73,7 +73,7 @@ function TrackingMap({ tracking }) {
 
         if (tracking?.deliverer_location) {
           const icon = L.divIcon({
-            html: `<div style="background:#f97316;width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;">🛵</div>`,
+            html: `<div style="background:var(--afri-primary);width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;">🛵</div>`,
             iconSize: [36, 36],
             iconAnchor: [18, 18],
             className: "",
@@ -84,7 +84,7 @@ function TrackingMap({ tracking }) {
 
         if (tracking?.delivery_neighborhood) {
           const destIcon = L.divIcon({
-            html: `<div style="background:#0b0b0d;width:32px;height:32px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:16px;">🏠</div>`,
+            html: `<div style="background:var(--afri-secondary);width:32px;height:32px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:16px;">🏠</div>`,
             iconSize: [32, 32], iconAnchor: [16, 16], className: "",
           });
           L.marker(defaultCenter, { icon: destIcon }).addTo(map)
@@ -115,7 +115,7 @@ function TrackingMap({ tracking }) {
     } else {
       const L = window.L;
       const icon = L.divIcon({
-        html: `<div style="background:#f97316;width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;">🛵</div>`,
+        html: `<div style="background:var(--afri-primary);width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;">🛵</div>`,
         iconSize: [36, 36], iconAnchor: [18, 18], className: "",
       });
       markerRef.current = L.marker([lat, lng], { icon }).addTo(mapInstanceRef.current)
@@ -128,7 +128,7 @@ function TrackingMap({ tracking }) {
     <div className="relative rounded-xl overflow-hidden border border-gray-100 shadow-sm">
       <div ref={mapRef} style={{ height: 220, width: "100%", background: "#f3f4f6" }} />
       {!mapReady && !mapError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-orange-50 text-xs text-gray-900">
+        <div className="absolute inset-0 flex items-center justify-center bg-afri-soft text-xs text-afri-secondary">
           Chargement de la carte…
         </div>
       )}
@@ -138,7 +138,7 @@ function TrackingMap({ tracking }) {
         </div>
       )}
       {tracking?.deliverer_location && mapReady && (
-        <div className={`absolute top-2 right-2 flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full ${tracking.location_fresh ? "bg-orange-50 text-gray-900" : "bg-gray-100 text-gray-500"}`}>
+        <div className={`absolute top-2 right-2 flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full ${tracking.location_fresh ? "bg-afri-soft text-afri-secondary" : "bg-gray-100 text-gray-500"}`}>
           {tracking.location_fresh ? <Wifi size={10} /> : <WifiOff size={10} />}
           {tracking.location_fresh ? "En direct" : "Position ancienne"}
         </div>
@@ -264,7 +264,7 @@ export default function OrderDetail() {
           to   { opacity: 1; transform: scale(1); }
         }
       `}</style>
-      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-afri-secondary text-white px-4 py-3 flex items-center gap-3 shadow-md">
         <Link to={isSeller ? "/seller/orders" : "/buyer/orders"} className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
@@ -273,7 +273,7 @@ export default function OrderDetail() {
           <p className="text-[10px] text-emerald-200 uppercase">#{order.id.slice(0, 8)}</p>
         </div>
         {showTracking && (
-          <div className="ml-auto flex items-center gap-1 bg-[#0b0b0d] px-2 py-1 rounded-full text-[10px] font-semibold animate-pulse">
+          <div className="ml-auto flex items-center gap-1 bg-afri-primary px-2 py-1 rounded-full text-[10px] font-semibold animate-pulse">
             <Navigation size={10} /> En livraison
           </div>
         )}
@@ -282,11 +282,11 @@ export default function OrderDetail() {
       <div className="px-4 mt-4 space-y-3">
         {/* Escrow banner — masqué pour paiement en espèces (escrow non applicable) */}
         {order.payment_method !== "cash" && (
-        <div className={`rounded-xl p-4 flex items-center gap-3 ${order.escrow_status === "released" ? "bg-emerald-100 border-emerald-300" : "bg-orange-50 border-[#f97316]/30"} border`}>
-          <div className="w-9 h-9 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0">
+        <div className={`rounded-xl p-4 flex items-center gap-3 ${order.escrow_status === "released" ? "bg-emerald-100 border-emerald-300" : "var(--afri-success-bg) border-afri-primary/30"} border`}>
+          <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={18} />
           </div>
-          <div className="text-xs text-gray-900 flex-1">
+          <div className="text-xs text-afri-secondary flex-1">
             <p className="font-semibold">
               {order.escrow_status === "released"
                 ? `${formatPrice(order.total_amount, order.currency)} libéré au vendeur`
@@ -305,7 +305,7 @@ export default function OrderDetail() {
         {showTracking && (
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-4 pt-3 pb-2 flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center">
+              <div className="w-7 h-7 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center">
                 <MapPin size={14} />
               </div>
               <div>
@@ -333,7 +333,7 @@ export default function OrderDetail() {
               const event = order.timeline.find((t) => t.status === s.key);
               return (
                 <li key={s.key} className="flex items-start gap-3" data-testid={`timeline-step-${s.key}`}>
-                  <Icon size={20} className={done ? "text-[#f97316]" : "text-gray-300"} />
+                  <Icon size={20} className={done ? "text-afri-primary" : "text-gray-300"} />
                   <div className="flex-1">
                     <div className={`text-sm font-semibold ${done ? "text-gray-900" : "text-gray-400"}`}>
                       {s.label}
@@ -363,7 +363,7 @@ export default function OrderDetail() {
                   <div className="text-sm font-semibold text-gray-900">{it.name}</div>
                   <div className="text-xs text-gray-500">x{it.quantity} · {formatPrice(it.price, order.currency)}</div>
                 </div>
-                <div className="font-semibold text-sm text-gray-900">{formatPrice(it.subtotal, order.currency)}</div>
+                <div className="font-semibold text-sm text-afri-secondary">{formatPrice(it.subtotal, order.currency)}</div>
               </div>
             ))}
           </div>
@@ -373,7 +373,7 @@ export default function OrderDetail() {
               <span>{formatPrice(order.delivery_fee, order.currency)}</span>
             </div>
           )}
-          <div className={`${order.delivery_fee > 0 ? "mt-1" : "border-t border-gray-100 mt-3 pt-3"} flex justify-between font-display font-bold text-base text-gray-900`}>
+          <div className={`${order.delivery_fee > 0 ? "mt-1" : "border-t border-gray-100 mt-3 pt-3"} flex justify-between font-display font-bold text-base text-afri-secondary`}>
             <span>Total</span>
             <span>{formatPrice(order.amount_due ?? order.total_amount, order.currency)}</span>
           </div>
@@ -381,13 +381,13 @@ export default function OrderDetail() {
 
         {/* Acheteur — instruction retrait boutique */}
         {isBuyer && order.delivery_mode === "collect" && ["ready_for_pickup","confirmed","preparing"].includes(order.status) && (
-          <section className="bg-orange-50 border border-[#f97316]/30 rounded-xl p-4 flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0">
+          <section className="var(--afri-success-bg) border border-afri-primary/30 rounded-xl p-4 flex items-start gap-3">
+            <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
               <Store size={18} />
             </div>
-            <div className="text-sm text-gray-900">
+            <div className="text-sm text-afri-secondary">
               <p className="font-semibold">Présentez-vous en boutique</p>
-              <p className="mt-0.5 text-xs leading-relaxed text-gray-900/80">
+              <p className="mt-0.5 text-xs leading-relaxed text-afri-secondary/80">
                 Le vendeur confirmera la remise après réception de votre paiement en espèces.
               </p>
               {order.pickup_slot && (
@@ -399,8 +399,8 @@ export default function OrderDetail() {
 
         {/* Vendeur — bouton confirmer remise cash */}
         {isSeller && order.delivery_mode === "collect" && ["ready_for_pickup","confirmed","preparing"].includes(order.status) && !collectConfirmed && (
-          <section className="bg-white rounded-xl border-2 border-[#f97316] shadow-sm p-4" data-testid="confirm-collect-section">
-            <h3 className="text-sm font-bold text-gray-900 mb-1">Remise en boutique</h3>
+          <section className="bg-white rounded-xl border-2 border-afri-primary shadow-sm p-4" data-testid="confirm-collect-section">
+            <h3 className="text-sm font-bold text-afri-secondary mb-1">Remise en boutique</h3>
             <p className="text-xs text-gray-500 mb-4">
               Appuyez après avoir remis la commande à l'acheteur et reçu le paiement en espèces.
             </p>
@@ -408,7 +408,7 @@ export default function OrderDetail() {
               data-testid="confirm-collect-btn"
               disabled={confirmingCollect}
               onClick={confirmCollect}
-              className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] active:scale-95 text-white rounded-xl py-4 font-bold text-base transition-all disabled:opacity-60 flex items-center justify-center gap-2 shadow-md"
+              className="w-full bg-afri-primary hover:bg-afri-primary-hover active:scale-95 text-white rounded-xl py-4 font-bold text-base transition-all disabled:opacity-60 flex items-center justify-center gap-2 shadow-md"
             >
               {confirmingCollect ? (
                 <>
@@ -431,21 +431,21 @@ export default function OrderDetail() {
         {/* Vendeur — écran succès animé */}
         {isSeller && order.delivery_mode === "collect" && (collectConfirmed || order.status === "collected") && (
           <section
-            className="bg-white rounded-xl border-2 border-[#f97316] shadow-sm p-6 flex flex-col items-center text-center gap-3"
+            className="bg-white rounded-xl border-2 border-afri-primary shadow-sm p-6 flex flex-col items-center text-center gap-3"
             style={{ animation: "fadeInScale 0.4s cubic-bezier(0.34,1.56,0.64,1) both" }}
             data-testid="collect-confirmed-banner"
           >
             <div
-              className="w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center"
+              className="w-16 h-16 rounded-full var(--afri-success-bg) flex items-center justify-center"
               style={{ animation: "popIn 0.5s 0.15s cubic-bezier(0.34,1.56,0.64,1) both", opacity: 0 }}
             >
               <CheckCircle2 size={36} className="text-green-600" />
             </div>
-            <h3 className="font-display font-black text-xl text-gray-900">Remise confirmée !</h3>
+            <h3 className="font-display font-black text-xl text-afri-secondary">Remise confirmée !</h3>
             <p className="text-sm text-gray-600">
               Commande <span className="font-bold">#{order.id.slice(0,8).toUpperCase()}</span> remise à l'acheteur.
             </p>
-            <p className="text-sm font-bold text-[#f97316]">✓ Paiement cash encaissé</p>
+            <p className="text-sm font-bold text-afri-primary">✓ Paiement cash encaissé</p>
           </section>
         )}
 
@@ -454,7 +454,7 @@ export default function OrderDetail() {
           <button
             data-testid="chat-with-seller-btn"
             onClick={() => nav(`/messages/${order.buyer_id}__${order.seller_id}`, { state: { other_name: order.seller_name } })}
-            className="w-full bg-white border border-[#f97316] text-[#f97316] hover:bg-orange-50 rounded-lg py-2.5 font-semibold transition-colors flex items-center justify-center gap-2 text-sm"
+            className="w-full bg-white border border-afri-primary text-afri-primary hover:var(--afri-success-bg) rounded-lg py-2.5 font-semibold transition-colors flex items-center justify-center gap-2 text-sm"
           >
             <MessageSquare size={16} /> Discuter avec le vendeur
           </button>
@@ -462,14 +462,14 @@ export default function OrderDetail() {
 
         {/* Buyer: confirmation code */}
         {isBuyer && order.delivery_mode === "delivery" && order.escrow_status === "held" && (
-          <section className="bg-white rounded-xl border-2 border-[#f97316] shadow-sm p-4">
-            <h3 className="text-xs font-bold uppercase tracking-wide text-[#f97316] mb-2">
+          <section className="bg-white rounded-xl border-2 border-afri-accent shadow-sm p-4">
+            <h3 className="text-xs font-bold uppercase tracking-wide text-afri-accent mb-2">
               Code de confirmation
             </h3>
             <p className="text-xs text-gray-600 mb-3">
               Donnez ce code au livreur uniquement à la réception. Cela libérera le paiement.
             </p>
-            <div className="text-4xl font-display font-black tracking-[0.5rem] text-center bg-[#FEF3E2] py-4 rounded-lg text-gray-900" data-testid="confirmation-code-display">
+            <div className="text-4xl font-display font-black tracking-[0.5rem] text-center bg-[#FEF3E2] py-4 rounded-lg text-afri-secondary" data-testid="confirmation-code-display">
               {order.confirmation_code}
             </div>
             <div className="mt-3 pt-3 border-t border-gray-100">
@@ -481,13 +481,13 @@ export default function OrderDetail() {
                   onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                   placeholder="6 chiffres"
                   maxLength={6}
-                  className="flex-1 border border-gray-300 rounded-lg p-2.5 text-center font-bold tracking-widest outline-none focus:ring-2 focus:ring-[#f97316]"
+                  className="flex-1 border border-gray-300 rounded-lg p-2.5 text-center font-bold tracking-widest outline-none focus:ring-2 focus:ring-afri-primary"
                 />
                 <button
                   data-testid="confirm-delivery-btn"
                   disabled={busy || code.length !== 6}
                   onClick={confirmDelivery}
-                  className="bg-[#0b0b0d] hover:bg-[#1f2937] text-white px-4 rounded-lg text-sm font-semibold disabled:opacity-50"
+                  className="bg-afri-primary hover:bg-afri-primary-hover text-white px-4 rounded-lg text-sm font-semibold disabled:opacity-50"
                 >
                   Valider
                 </button>
@@ -500,7 +500,7 @@ export default function OrderDetail() {
         {isSeller && order.delivery_mode === "delivery" && ["confirmed", "preparing"].includes(order.status) && (
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
             <div className="flex items-center gap-2 mb-1">
-              <Bike size={18} className="text-[#f97316]" />
+              <Bike size={18} className="text-afri-primary" />
               <h3 className="text-sm font-semibold text-gray-900">Livreur</h3>
             </div>
             {order.deliverer_name ? (
@@ -513,7 +513,7 @@ export default function OrderDetail() {
                 <button
                   data-testid="load-deliverers-btn"
                   onClick={loadDeliverers}
-                  className="w-full border border-[#f97316] text-[#f97316] rounded-lg py-2.5 font-semibold text-sm hover:bg-orange-50"
+                  className="w-full border border-afri-primary text-afri-primary rounded-lg py-2.5 font-semibold text-sm hover:var(--afri-success-bg)"
                 >
                   Assigner un livreur
                 </button>
@@ -528,10 +528,10 @@ export default function OrderDetail() {
                     onClick={() => assign(d.id)}
                     disabled={busy}
                     data-testid={`assign-deliverer-${d.id}`}
-                    className="w-full flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-[#f97316] disabled:opacity-50"
+                    className="w-full flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-afri-primary disabled:opacity-50"
                   >
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center">
                         <Bike size={15} />
                       </div>
                       <div className="text-left">
@@ -539,7 +539,7 @@ export default function OrderDetail() {
                         <div className="text-xs text-gray-500">{d.vehicle} · {d.active_deliveries} en cours</div>
                       </div>
                     </div>
-                    <span className="text-xs text-[#f97316] font-medium">Choisir</span>
+                    <span className="text-xs text-afri-primary font-medium">Choisir</span>
                   </button>
                 ))}
               </div>
@@ -553,7 +553,7 @@ export default function OrderDetail() {
             data-testid="advance-order-btn"
             disabled={busy}
             onClick={advance}
-            className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50"
+            className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50"
           >
             {order.status === "confirmed" ? "Marquer en préparation" : (order.delivery_mode === "delivery" ? "Marquer en livraison" : "Prêt pour retrait")}
           </button>
@@ -572,7 +572,7 @@ export default function OrderDetail() {
         {/* Payment */}
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
           {order.payment_method === "cash" ? (
-            <Banknote size={18} className="text-[#f97316]" />
+            <Banknote size={18} className="text-afri-primary" />
           ) : (
             <Lock size={18} className="text-gray-400" />
           )}

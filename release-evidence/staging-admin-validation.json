@@ -1,0 +1,39 @@
+{
+  "rows": [
+    {
+      "test": "admin authentication",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/admin/users",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/admin/sellers",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/admin/products",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/admin/orders",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/admin/kyc/pending",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/admin/buyer-kyc/pending",
+      "status": "PASS",
+      "http": 200
+    }
+  ]
+}

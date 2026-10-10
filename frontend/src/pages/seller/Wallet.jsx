@@ -68,7 +68,7 @@ export default function SellerWallet() {
       <TopBar title="Portefeuille" showCart={false} />
 
       <div className="px-4 mt-4 space-y-3">
-        <section className="rounded-2xl bg-gradient-to-br from-[#0b0b0d] to-[#f97316] text-white p-5 shadow">
+        <section className="rounded-2xl bg-gradient-to-br from-afri-secondary to-afri-primary text-white p-5 shadow">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-emerald-100 text-xs uppercase tracking-wider font-bold">
               <WalletIcon size={14} /> Solde disponible
@@ -81,7 +81,7 @@ export default function SellerWallet() {
             data-testid="open-withdraw-btn"
             onClick={() => setShowWithdraw(true)}
             disabled={balance.available <= 0}
-            className="mt-4 bg-white text-gray-900 rounded-lg py-2.5 px-4 font-semibold text-sm disabled:opacity-50 flex items-center justify-center gap-2 w-full"
+            className="mt-4 bg-white text-afri-secondary rounded-lg py-2.5 px-4 font-semibold text-sm disabled:opacity-50 flex items-center justify-center gap-2 w-full"
           >
             <ArrowDownToLine size={16} /> Retirer
           </button>
@@ -100,7 +100,7 @@ export default function SellerWallet() {
             <div className="divide-y divide-gray-100">
               {txs.map((t) => (
                 <div key={t.id} className="py-3 flex items-center gap-3" data-testid={`tx-${t.id}`}>
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center ${t.type === "sale" ? "bg-orange-50 text-[#f97316]" : "bg-amber-50 text-[#f97316]"}`}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center ${t.type === "sale" ? "var(--afri-success-bg) text-afri-primary" : "bg-amber-50 text-afri-accent"}`}>
                     {t.type === "sale" ? <TrendingUp size={16} /> : <ArrowDownToLine size={16} />}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -112,7 +112,7 @@ export default function SellerWallet() {
                       <span>· {timeAgo(t.created_at)}</span>
                     </div>
                   </div>
-                  <div className={`font-display font-bold text-sm ${t.amount < 0 ? "text-[#E24B4A]" : "text-gray-900"}`}>
+                  <div className={`font-display font-bold text-sm ${t.amount < 0 ? "text-[#E24B4A]" : "text-afri-secondary"}`}>
                     {t.amount > 0 ? "+" : ""}{formatPrice(t.amount, t.currency)}
                   </div>
                 </div>
@@ -125,7 +125,7 @@ export default function SellerWallet() {
       {showWithdraw && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-end justify-center" onClick={() => setShowWithdraw(false)}>
           <div className="bg-white w-full max-w-md rounded-t-2xl p-5 space-y-3" onClick={(e) => e.stopPropagation()}>
-            <h3 className="font-display font-bold text-lg text-gray-900">Retirer vers Mobile Money</h3>
+            <h3 className="font-display font-bold text-lg text-afri-secondary">Retirer vers Mobile Money</h3>
             <div>
               <label className="text-xs font-medium text-gray-700">Montant ({balance.currency})</label>
               <input
@@ -134,7 +134,7 @@ export default function SellerWallet() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder={`Max ${balance.available.toFixed(0)}`}
-                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]"
+                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
               />
             </div>
             <div>
@@ -144,7 +144,7 @@ export default function SellerWallet() {
                 value={number}
                 onChange={(e) => setNumber(e.target.value)}
                 placeholder="Ex: +243812345678"
-                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]"
+                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
               />
             </div>
             <div>
@@ -153,7 +153,7 @@ export default function SellerWallet() {
                 data-testid="withdraw-operator-select"
                 value={operator}
                 onChange={(e) => setOperator(e.target.value)}
-                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]"
+                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
               >
                 {operators.map((op) => <option key={op}>{op}</option>)}
               </select>
@@ -162,7 +162,7 @@ export default function SellerWallet() {
               data-testid="confirm-withdraw-btn"
               disabled={loading}
               onClick={submit}
-              className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold disabled:opacity-50"
+              className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold disabled:opacity-50"
             >
               {loading ? "Traitement…" : "Confirmer le retrait"}
             </button>
@@ -182,7 +182,7 @@ function MiniStat({ icon: Icon, label, value, negative }) {
       <div className="flex items-center gap-2 text-[10px] uppercase font-bold text-gray-500">
         <Icon size={12} /> {label}
       </div>
-      <div className={`font-display font-bold text-base mt-1 ${negative ? "text-[#E24B4A]" : "text-gray-900"}`}>{value}</div>
+      <div className={`font-display font-bold text-base mt-1 ${negative ? "text-[#E24B4A]" : "text-afri-secondary"}`}>{value}</div>
     </div>
   );
 }

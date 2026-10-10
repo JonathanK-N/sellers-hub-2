@@ -1,0 +1,86 @@
+name: AfriMarket release validation
+on:
+  pull_request:
+    branches: [main, ui-ux]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+        working-directory: frontend
+      - run: yarn build
+        working-directory: frontend
+        env:
+          REACT_APP_BACKEND_URL: https://afrimarket-api-staging-staging.up.railway.app
+          CI: 'false'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/validate_release.py
+      - run: node scripts/test_service_worker.cjs
+      - name: Record Web build metadata
+        run: |
+          node -e "const fs=require('fs'); fs.writeFileSync('frontend/build/release-metadata.json',JSON.stringify({version:'0.1.1-green.1',sourceSha:process.env.SOURCE_SHA,buildSha:process.env.GITHUB_SHA,date:new Date().toISOString(),type:'Web/PWA staging',tools:{node:process.version},api:'https://afrimarket-api-staging-staging.up.railway.app'},null,2));"
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: afrimarket-web-${{ github.sha }}
+          path: frontend/build
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r backend/requirements.txt
+      - run: python -m compileall -q backend
+      - run: python -m pytest backend/tests/test_health_unit.py backend/tests/test_models_unit.py -q
+        env:
+          PYTHONPATH: backend
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
+          log-accepted-android-sdk-licenses: false
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile && yarn build
+        working-directory: frontend
+        env:
+          REACT_APP_BACKEND_URL: https://afrimarket-api-staging-staging.up.railway.app
+          CI: 'false'
+      - name: Bundle corrected UI in test APK instead of loading production website
+        working-directory: frontend
+        run: |
+          node -e "const fs=require('fs'); const p='capacitor.config.json'; const c=JSON.parse(fs.readFileSync(p)); delete c.server.url; fs.writeFileSync(p,JSON.stringify(c,null,2));"
+          npx cap sync android
+      - run: chmod +x gradlew && ./gradlew assembleDebug
+        working-directory: frontend/android
+      - name: Record Android build metadata
+        run: |
+          node -e "const fs=require('fs'),cp=require('child_process'); fs.writeFileSync('frontend/android/app/build/outputs/apk/debug/release-metadata.json',JSON.stringify({version:'1.0.1-green.1-debug',sourceSha:process.env.SOURCE_SHA,buildSha:process.env.GITHUB_SHA,date:new Date().toISOString(),type:'Android debug staging',tools:{node:process.version,java:cp.execSync('java -version 2>&1').toString().trim(),androidSdk:34,gradlePlugin:'8.2.1'},api:'https://afrimarket-api-staging-staging.up.railway.app'},null,2));"
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: afrimarket-android-debug-${{ github.sha }}
+          path: frontend/android/app/build/outputs/apk/debug/*

@@ -54,11 +54,11 @@ export default function Landing() {
       {/* HEADER */}
       <header
         data-testid="guest-top-header"
-        className="sticky top-0 z-40 bg-[#0b0b0d] text-white shadow-md"
+        className="sticky top-0 z-40 bg-afri-secondary text-white shadow-md"
       >
         <div className={`${WRAP} py-3 flex items-center justify-between gap-4`}>
           <div className="flex items-center gap-2 shrink-0">
-            <div className="w-8 h-8 rounded-md bg-[#f97316] flex items-center justify-center font-black text-white">
+            <div className="w-8 h-8 rounded-md bg-afri-primary flex items-center justify-center font-black text-white">
               A
             </div>
             <span className="font-display font-black text-lg tracking-tight">AfriMarket</span>
@@ -90,7 +90,7 @@ export default function Landing() {
               type="button"
               onClick={() => openAuth("register")}
               data-testid="guest-register-btn"
-              className="text-xs md:text-sm font-semibold bg-[#f97316] hover:bg-[#ea580c] transition-colors rounded-full px-3 md:px-4 py-1.5 md:py-2"
+              className="text-xs md:text-sm font-semibold bg-afri-primary hover:bg-afri-primary-hover transition-colors rounded-full px-3 md:px-4 py-1.5 md:py-2"
             >
               S'inscrire
             </button>
@@ -98,7 +98,7 @@ export default function Landing() {
         </div>
 
         {/* CATEGORY STRIP */}
-        <div className="bg-[#17171a] border-t border-white/5">
+        <div className="bg-afri-secondary border-t border-white/5">
           <div className={`${WRAP} py-2 flex gap-5 overflow-x-auto no-scrollbar`}>
             {CATEGORIES.map((c) => {
               const Icon = c.icon;
@@ -110,7 +110,7 @@ export default function Landing() {
                   onClick={() => setCat(c.value)}
                   className={`flex items-center gap-1.5 whitespace-nowrap text-xs md:text-sm font-medium pb-1.5 border-b-2 transition-colors ${
                     active
-                      ? "text-[#f97316] border-[#f97316]"
+                      ? "text-afri-primary border-afri-primary"
                       : "text-gray-300 border-transparent hover:text-white"
                   }`}
                 >
@@ -125,7 +125,7 @@ export default function Landing() {
 
       {/* HERO */}
       <section className={`${WRAP} mt-4 md:mt-6`}>
-        <div className="rounded-2xl overflow-hidden bg-[#0b0b0d] text-white relative min-h-[300px] md:min-h-[420px] flex items-center p-6 md:p-14">
+        <div className="rounded-2xl overflow-hidden bg-afri-secondary text-white relative min-h-[300px] md:min-h-[420px] flex items-center p-6 md:p-14">
           <img
             src="https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?crop=entropy&cs=srgb&fm=jpg&w=1600&q=70"
             alt="Marché africain"
@@ -155,7 +155,7 @@ export default function Landing() {
             <button
               onClick={() => nav("/buyer/search")}
               data-testid="hero-explore-btn"
-              className="mt-5 md:mt-7 inline-flex items-center gap-2 bg-white text-[#0b0b0d] rounded-full px-5 md:px-6 py-2.5 md:py-3.5 text-sm md:text-base font-bold hover:bg-gray-100 transition-colors"
+              className="mt-5 md:mt-7 inline-flex items-center gap-2 bg-white text-afri-secondary rounded-full px-5 md:px-6 py-2.5 md:py-3.5 text-sm md:text-base font-bold hover:bg-gray-100 transition-colors"
             >
               Explorer les produits <ArrowRight size={15} />
             </button>
@@ -187,7 +187,7 @@ export default function Landing() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Rechercher un produit ou une boutique…"
-            className="w-full bg-white border border-gray-200 rounded-full py-3 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#f97316]"
+            className="w-full bg-white border border-gray-200 rounded-full py-3 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
           />
         </div>
       </form>
@@ -208,7 +208,7 @@ export default function Landing() {
       <section className={`${WRAP} mt-6 md:mt-10`}>
         <div className="flex items-center justify-between mb-3 md:mb-5">
           <div className="flex items-center gap-2">
-            <span className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#0b0b0d] text-[#f97316] flex items-center justify-center shrink-0">
+            <span className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-afri-secondary text-afri-primary flex items-center justify-center shrink-0">
               <Sparkles size={16} />
             </span>
             <h2 className="font-display font-bold text-lg md:text-2xl text-gray-900">
@@ -253,7 +253,7 @@ export default function Landing() {
               type="button"
               onClick={() => openAuth("register")}
               data-testid="cta-register"
-              className="bg-[#f97316] hover:bg-[#ea580c] text-white rounded-full py-3 px-6 font-semibold transition-colors flex justify-center items-center gap-2"
+              className="bg-afri-primary hover:bg-afri-primary-hover text-white rounded-full py-3 px-6 font-semibold transition-colors flex justify-center items-center gap-2"
             >
               <UserPlus size={18} /> Créer mon compte
             </button>
@@ -261,7 +261,7 @@ export default function Landing() {
               type="button"
               onClick={() => openAuth("login")}
               data-testid="cta-login"
-              className="bg-gray-100 hover:bg-gray-200 text-[#0b0b0d] rounded-full py-3 px-6 font-semibold transition-colors flex justify-center items-center gap-2"
+              className="bg-gray-100 hover:bg-gray-200 text-afri-secondary rounded-full py-3 px-6 font-semibold transition-colors flex justify-center items-center gap-2"
             >
               <LogIn size={18} /> Se connecter
             </button>
@@ -280,7 +280,7 @@ export default function Landing() {
             { flag: "🇸🇳", name: "Sénégal" },
             { flag: "🇧🇯", name: "Bénin" },
           ].map((c) => (
-            <div key={c.name} className="rounded-lg bg-white border border-gray-100 p-2 md:p-3 text-center hover:border-[#f97316] transition-colors">
+            <div key={c.name} className="rounded-lg bg-white border border-gray-100 p-2 md:p-3 text-center hover:border-afri-primary transition-colors">
               <div className="text-xl md:text-2xl">{c.flag}</div>
               <div className="text-[10px] md:text-xs text-gray-600 mt-1 leading-tight">{c.name}</div>
             </div>
@@ -289,12 +289,12 @@ export default function Landing() {
       </section>
 
       {/* FOOTER */}
-      <footer className="mt-10 md:mt-16 bg-[#0b0b0d] text-gray-300">
+      <footer className="mt-10 md:mt-16 bg-afri-secondary text-gray-300">
         <div className={`${WRAP} pt-10 pb-8 md:pt-14 md:pb-10`}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-md bg-[#f97316] flex items-center justify-center font-black text-white text-sm">
+                <div className="w-7 h-7 rounded-md bg-afri-primary flex items-center justify-center font-black text-white text-sm">
                   A
                 </div>
                 <span className="font-display font-black text-white">AfriMarket</span>
@@ -306,15 +306,15 @@ export default function Landing() {
             <div>
               <div className="text-white font-semibold mb-2 text-sm">AfriMarket</div>
               <ul className="space-y-1.5 text-xs md:text-sm text-gray-400">
-                <li><Link to="/auth/register" className="hover:text-[#f97316]">Devenir vendeur</Link></li>
-                <li><Link to="/buyer/search" className="hover:text-[#f97316]">Toutes les boutiques</Link></li>
+                <li><Link to="/auth/register" className="hover:text-afri-primary">Devenir vendeur</Link></li>
+                <li><Link to="/buyer/search" className="hover:text-afri-primary">Toutes les boutiques</Link></li>
               </ul>
             </div>
             <div>
               <div className="text-white font-semibold mb-2 text-sm">Aide</div>
               <ul className="space-y-1.5 text-xs md:text-sm text-gray-400">
-                <li><button type="button" onClick={() => openAuth("login")} className="hover:text-[#f97316]">Se connecter</button></li>
-                <li><button type="button" onClick={() => openAuth("register")} className="hover:text-[#f97316]">Créer un compte</button></li>
+                <li><button type="button" onClick={() => openAuth("login")} className="hover:text-afri-primary">Se connecter</button></li>
+                <li><button type="button" onClick={() => openAuth("register")} className="hover:text-afri-primary">Créer un compte</button></li>
               </ul>
             </div>
             <div>
@@ -339,7 +339,7 @@ export default function Landing() {
 function TrustItem({ icon: Icon, label }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 md:p-4 flex flex-col items-center gap-1.5 text-center">
-      <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#0b0b0d] text-[#f97316] flex items-center justify-center">
+      <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-afri-secondary text-afri-primary flex items-center justify-center">
         <Icon size={16} />
       </div>
       <span className="text-[10px] md:text-xs font-medium text-gray-700 leading-tight">{label}</span>

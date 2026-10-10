@@ -69,7 +69,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Ex: Jean Mbo"
-                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
+                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
               />
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   placeholder="ex: 812345678"
                   inputMode="tel"
-                  className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
+                  className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
                 />
               </div>
             </div>
@@ -104,7 +104,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="Au moins 6 caractères"
-                className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
+                className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
               />
               <button
                 type="button"
@@ -129,7 +129,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
                   onClick={() => setForm({ ...form, role: r })}
                   className={`py-3 px-2 rounded-lg font-semibold text-sm border-2 transition-all ${
                     form.role === r
-                      ? "border-[#f97316] bg-orange-50 text-gray-900"
+                      ? "border-afri-primary bg-afri-soft text-gray-900"
                       : "border-gray-200 bg-white text-gray-600"
                   }`}
                 >
@@ -143,7 +143,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
             data-testid="register-step-next"
             disabled={!form.name || !form.phone || form.password.length < 6}
             onClick={() => setStep(2)}
-            className="w-full bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50 flex justify-center items-center gap-2"
+            className="w-full bg-afri-primary var(--afri-primary-hover) text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50 flex justify-center items-center gap-2"
           >
             Suivant <ChevronRight size={18} />
           </button>
@@ -153,13 +153,13 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
               <button
                 type="button"
                 onClick={() => onSwitch("login")}
-                className="text-[#f97316] font-semibold"
+                className="text-afri-primary font-semibold"
                 data-testid="link-to-login"
               >
                 Se connecter
               </button>
             ) : (
-              <Link to="/auth/login" className="text-[#f97316] font-semibold" data-testid="link-to-login">
+              <Link to="/auth/login" className="text-afri-primary font-semibold" data-testid="link-to-login">
                 Se connecter
               </Link>
             )}
@@ -180,7 +180,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
                   onClick={() => setForm({ ...form, country_code: c.code })}
                   className={`flex items-center gap-3 p-3 rounded-lg border-2 text-left transition-all ${
                     form.country_code === c.code
-                      ? "border-[#f97316] bg-orange-50"
+                      ? "border-afri-primary bg-afri-soft"
                       : "border-gray-200 bg-white"
                   }`}
                 >
@@ -197,7 +197,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
           </div>
 
           {current && (
-            <div className="rounded-lg bg-orange-50 border border-orange-200 p-3 text-xs text-gray-800">
+            <div className="rounded-lg bg-afri-soft border border-afri-primary/20 p-3 text-xs text-gray-800">
               <div className="font-semibold mb-1">Profil configuré :</div>
               <div>📍 Pays : {current.name}</div>
               <div>💰 Devise : {current.currency_symbol}</div>
@@ -217,7 +217,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
               disabled={loading}
               onClick={submit}
               data-testid="register-submit-btn"
-              className="bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
+              className="bg-afri-primary var(--afri-primary-hover) text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
             >
               {loading ? "Envoi…" : "Recevoir le code"}
             </button>

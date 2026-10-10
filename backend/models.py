@@ -159,9 +159,9 @@ class ProductCreateRequest(BaseModel):
     description: str = ""
     long_description: str = ""   # description détaillée du produit
     specs: List[ProductSpec] = Field(default_factory=list)  # ex: [{"label":"Couleur","value":"Vert"}]
-    price: float
+    price: float = Field(ge=0)
     currency: Optional[str] = None  # "FC" | "USD" — si absent, hérite de user.currency
-    stock: int = 0
+    stock: int = Field(default=0, ge=0)
     category: str = "Général"
     photos: List[str] = Field(default_factory=list)
     delivery_modes: List[str] = Field(default_factory=lambda: ["delivery", "collect"])  # modes autorises pour ce produit
@@ -173,9 +173,9 @@ class ProductUpdateRequest(BaseModel):
     description: Optional[str] = None
     long_description: Optional[str] = None
     specs: Optional[List[ProductSpec]] = None
-    price: Optional[float] = None
+    price: Optional[float] = Field(default=None, ge=0)
     currency: Optional[str] = None  # "FC" | "USD"
-    stock: Optional[int] = None
+    stock: Optional[int] = Field(default=None, ge=0)
     category: Optional[str] = None
     photos: Optional[List[str]] = None
     delivery_modes: Optional[List[str]] = None
@@ -206,7 +206,7 @@ class ProductPublic(BaseModel):
 # ---------- Orders ----------
 class OrderItemRequest(BaseModel):
     product_id: str
-    quantity: int
+    quantity: int = Field(gt=0)
 
 
 class OrderCreateRequest(BaseModel):

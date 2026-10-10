@@ -1,0 +1,98 @@
+[
+  {
+    "file": "frontend/src/components/ProductCard.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/Landing.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/components/auth/AuthModal.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/components/auth/LoginForm.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/components/auth/RegisterForm.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/components/cart/CartDrawer.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminOrders.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/auth/ForgotPassword.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/auth/Login.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/auth/Register.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/auth/VerifyOtp.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Home.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "reason": "Reviewed new brand surfaces, CTA, focus and selected/success states; Fraud suspension warning preserved"
+  }
+]

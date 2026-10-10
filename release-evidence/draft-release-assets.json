@@ -1,0 +1,107 @@
+{
+  "release": "https://github.com/JonathanK-N/sellers-hub-2/releases/tag/untagged-a4e7d8ed6737cb76ed7d",
+  "assets": [
+    {
+      "name": "A-original-6722492d85e0-source.zip",
+      "id": 629028029,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/A-original-6722492d85e0-source.zip",
+      "size": 2440442
+    },
+    {
+      "name": "B-uiux-tip-83be26533e8b-source.zip",
+      "id": 629028049,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/B-uiux-tip-83be26533e8b-source.zip",
+      "size": 2456033
+    },
+    {
+      "name": "B-uiux-deployed-0e24300a3fa0-source.zip",
+      "id": 629028062,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/B-uiux-deployed-0e24300a3fa0-source.zip",
+      "size": 2450443
+    },
+    {
+      "name": "C-green-b71f84ece757-source.zip",
+      "id": 629028112,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/C-green-b71f84ece757-source.zip",
+      "size": 2503898
+    },
+    {
+      "name": "afrimarket-A-original-6722492d85e0f8646ebe03c9b841c4a0e3611449.zip",
+      "id": 629028138,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/afrimarket-A-original-6722492d85e0f8646ebe03c9b841c4a0e3611449.zip",
+      "size": 2162995
+    },
+    {
+      "name": "afrimarket-B-uiux-tip-83be26533e8bca3aa4ca1b1fa84c93f686aabec0.zip",
+      "id": 629028188,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/afrimarket-B-uiux-tip-83be26533e8bca3aa4ca1b1fa84c93f686aabec0.zip",
+      "size": 2511767
+    },
+    {
+      "name": "afrimarket-B-uiux-deployed-0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84.zip",
+      "id": 629028225,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/afrimarket-B-uiux-deployed-0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84.zip",
+      "size": 2181887
+    },
+    {
+      "name": "C-green-b71f84e-web-pwa.zip",
+      "id": 629028281,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/C-green-b71f84e-web-pwa.zip",
+      "size": 2512667
+    },
+    {
+      "name": "C-green-b71f84e-android-debug.zip",
+      "id": 629028345,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/C-green-b71f84e-android-debug.zip",
+      "size": 6584385
+    },
+    {
+      "name": "artifact-manifest.json",
+      "id": 629028483,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/artifact-manifest.json",
+      "size": 2974
+    },
+    {
+      "name": "reference-web-artifacts.json",
+      "id": 629028505,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/reference-web-artifacts.json",
+      "size": 589
+    },
+    {
+      "name": "green-build-artifacts.json",
+      "id": 629028517,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/green-build-artifacts.json",
+      "size": 1048
+    },
+    {
+      "name": "C-green-890d8e76341c-source.zip",
+      "id": 629041712,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-dcbade9f9c0f43451049/C-green-890d8e76341c-source.zip",
+      "size": 3915990
+    },
+    {
+      "name": "C-green-890d8e7-android-debug.zip",
+      "id": 629041747,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-dcbade9f9c0f43451049/C-green-890d8e7-android-debug.zip",
+      "size": 6585257
+    },
+    {
+      "name": "C-green-890d8e7-web-pwa.zip",
+      "id": 629041822,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-dcbade9f9c0f43451049/C-green-890d8e7-web-pwa.zip",
+      "size": 2513056
+    },
+    {
+      "name": "release-manifest-890d8e7.json",
+      "id": 629041846,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-dcbade9f9c0f43451049/release-manifest-890d8e7.json",
+      "size": 4474
+    },
+    {
+      "name": "lighthouse.json",
+      "id": 629052744,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-a4e7d8ed6737cb76ed7d/lighthouse.json",
+      "size": 601010
+    }
+  ]
+}

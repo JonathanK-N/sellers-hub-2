@@ -60,7 +60,7 @@ export default function OpenDispute() {
         <Link to={`/buyer/orders/${orderId}`} className="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="font-display font-black text-lg text-gray-900">Ouvrir un litige</h1>
+        <h1 className="font-display font-black text-lg text-afri-secondary">Ouvrir un litige</h1>
       </header>
 
       <div className="px-4 mt-4 space-y-4">
@@ -95,7 +95,7 @@ export default function OpenDispute() {
             onChange={(e) => setDetails(e.target.value)}
             placeholder="Décrivez le problème en détail…"
             rows={4}
-            className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316] resize-none"
+            className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary resize-none"
           />
         </div>
 

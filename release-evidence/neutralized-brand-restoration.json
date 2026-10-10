@@ -1,0 +1,765 @@
+[
+  {
+    "file": "frontend/src/pages/admin/AdminLogin.jsx",
+    "line": 38,
+    "before": "<h1 className=\"font-display font-black text-2xl text-gray-900 mt-3\">Administration</h1>",
+    "after": "<h1 className=\"font-display font-black text-2xl text-afri-secondary mt-3\">Administration</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminOrders.jsx",
+    "line": 48,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900\">Commandes</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary\">Commandes</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminOrders.jsx",
+    "line": 53,
+    "before": "<a href=\"/api/admin/export/orders\" className=\"flex items-center gap-1.5 text-xs font-semibold text-gray-900 border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft\">",
+    "after": "<a href=\"/api/admin/export/orders\" className=\"flex items-center gap-1.5 text-xs font-semibold text-afri-secondary border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminOrders.jsx",
+    "line": 106,
+    "before": "<td className=\"px-4 py-3 font-semibold text-gray-900\">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</td>",
+    "after": "<td className=\"px-4 py-3 font-semibold text-afri-secondary\">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</td>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminOrders.jsx",
+    "line": 108,
+    "before": "<span className=\"text-[10px] font-bold uppercase bg-afri-soft text-gray-900 px-2 py-0.5 rounded-full\">",
+    "after": "<span className=\"text-[10px] font-bold uppercase bg-afri-soft text-afri-secondary px-2 py-0.5 rounded-full\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminOrders.jsx",
+    "line": 137,
+    "before": "<h2 className=\"font-display font-black text-lg text-gray-900\">Commande #{selected.id.slice(0, 8)}</h2>",
+    "after": "<h2 className=\"font-display font-black text-lg text-afri-secondary\">Commande #{selected.id.slice(0, 8)}</h2>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 143,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900\">Affiches & Banners</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary\">Affiches & Banners</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 172,
+    "before": "promo.visible ? \"bg-afri-soft text-gray-900 hover:bg-[#c8ede1]\" : \"bg-gray-100 text-gray-500 hover:bg-gray-200\"",
+    "after": "promo.visible ? \"bg-afri-soft text-afri-secondary hover:bg-[#c8ede1]\" : \"bg-gray-100 text-gray-500 hover:bg-gray-200\"",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 215,
+    "before": "className=\"flex items-center gap-1.5 text-sm font-semibold text-gray-900 border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft transition-colors\">",
+    "after": "className=\"flex items-center gap-1.5 text-sm font-semibold text-afri-secondary border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft transition-colors\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 284,
+    "before": "<h2 className=\"font-display font-black text-lg text-gray-900\">Nouvelle bannière</h2>",
+    "after": "<h2 className=\"font-display font-black text-lg text-afri-secondary\">Nouvelle bannière</h2>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/BuyerKyc.jsx",
+    "line": 42,
+    "before": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-gray-900\">Vérification identité acheteurs</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-afri-secondary\">Vérification identité acheteurs</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/DelivererApplications.jsx",
+    "line": 72,
+    "before": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-gray-900\">Candidatures livreurs — Réseau AfriMarket</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-afri-secondary\">Candidatures livreurs — Réseau AfriMarket</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Deliverers.jsx",
+    "line": 31,
+    "before": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-gray-900\">Livreurs</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-afri-secondary\">Livreurs</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Disputes.jsx",
+    "line": 35,
+    "before": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-gray-900\">Litiges</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-afri-secondary\">Litiges</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Disputes.jsx",
+    "line": 65,
+    "before": "<span className=\"font-semibold text-gray-900\">{formatPrice(d.order.total_amount, d.order.currency)}</span>",
+    "after": "<span className=\"font-semibold text-afri-secondary\">{formatPrice(d.order.total_amount, d.order.currency)}</span>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Fraud.jsx",
+    "line": 79,
+    "before": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-gray-900\">Détection de fraude</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-afri-secondary\">Détection de fraude</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Geo.jsx",
+    "line": 60,
+    "before": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-gray-900\">Géographie</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-afri-secondary\">Géographie</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Geo.jsx",
+    "line": 135,
+    "before": "<span className=\"font-display font-black text-lg text-gray-900\">{formatPrice(c.commission, c.currency)}</span>",
+    "after": "<span className=\"font-display font-black text-lg text-afri-secondary\">{formatPrice(c.commission, c.currency)}</span>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Kyc.jsx",
+    "line": 42,
+    "before": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-gray-900\">KYC en attente</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-afri-secondary\">KYC en attente</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Overview.jsx",
+    "line": 35,
+    "before": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-gray-900\">Vue d'ensemble</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl lg:text-2xl text-afri-secondary\">Vue d'ensemble</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Overview.jsx",
+    "line": 63,
+    "before": "<div className=\"font-display font-black text-3xl text-gray-900 mt-1\">{formatPrice(data.total_commission, \"FC\")}</div>",
+    "after": "<div className=\"font-display font-black text-3xl text-afri-secondary mt-1\">{formatPrice(data.total_commission, \"FC\")}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Overview.jsx",
+    "line": 72,
+    "before": "<div className=\"font-display font-black text-3xl text-gray-900 mt-1\">{formatPrice(data.premium_revenue || 0, \"FC\")}</div>",
+    "after": "<div className=\"font-display font-black text-3xl text-afri-secondary mt-1\">{formatPrice(data.premium_revenue || 0, \"FC\")}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Overview.jsx",
+    "line": 111,
+    "before": "<span className=\"font-semibold text-gray-900 text-sm\">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</span>",
+    "after": "<span className=\"font-semibold text-afri-secondary text-sm\">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</span>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Overview.jsx",
+    "line": 133,
+    "before": "<div className=\"font-display font-bold text-gray-900\">{formatPrice(stats.commission, \"FC\")}</div>",
+    "after": "<div className=\"font-display font-bold text-afri-secondary\">{formatPrice(stats.commission, \"FC\")}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Overview.jsx",
+    "line": 152,
+    "before": "<div className=\"font-display font-black text-2xl text-gray-900 mt-2\">{value ?? \"—\"}</div>",
+    "after": "<div className=\"font-display font-black text-2xl text-afri-secondary mt-2\">{value ?? \"—\"}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Products.jsx",
+    "line": 39,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900\">Produits</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary\">Produits</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Products.jsx",
+    "line": 88,
+    "before": "<td className=\"px-4 py-3 font-semibold text-gray-900\">{formatPrice(p.price, p.currency)}</td>",
+    "after": "<td className=\"px-4 py-3 font-semibold text-afri-secondary\">{formatPrice(p.price, p.currency)}</td>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Products.jsx",
+    "line": 118,
+    "before": "<h2 className=\"font-display font-black text-lg text-gray-900\">{selected.name}</h2>",
+    "after": "<h2 className=\"font-display font-black text-lg text-afri-secondary\">{selected.name}</h2>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 51,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900\">Vendeurs & Boutiques</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary\">Vendeurs & Boutiques</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 111,
+    "before": "<button onClick={() => openDetail(s)} className=\"flex items-center gap-1.5 text-xs font-semibold text-gray-900 hover:underline\">",
+    "after": "<button onClick={() => openDetail(s)} className=\"flex items-center gap-1.5 text-xs font-semibold text-afri-secondary hover:underline\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 137,
+    "before": "<h2 className=\"font-display font-black text-xl text-gray-900\">{selected.shop_name}</h2>",
+    "after": "<h2 className=\"font-display font-black text-xl text-afri-secondary\">{selected.shop_name}</h2>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 167,
+    "before": "<span key={sp} className=\"text-xs bg-afri-soft text-gray-900 px-2 py-0.5 rounded-full\">{sp}</span>",
+    "after": "<span key={sp} className=\"text-xs bg-afri-soft text-afri-secondary px-2 py-0.5 rounded-full\">{sp}</span>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 144,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900\">Utilisateurs</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary\">Utilisateurs</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 152,
+    "before": "className=\"flex items-center gap-1.5 text-xs font-semibold text-gray-900 border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft\">",
+    "after": "className=\"flex items-center gap-1.5 text-xs font-semibold text-afri-secondary border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 278,
+    "before": "<h2 className=\"font-display font-black text-lg text-gray-900\">{selected.name}</h2>",
+    "after": "<h2 className=\"font-display font-black text-lg text-afri-secondary\">{selected.name}</h2>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/auth/ForgotPassword.jsx",
+    "line": 62,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900\">Mot de passe oublié</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary\">Mot de passe oublié</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/auth/Login.jsx",
+    "line": 25,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900\">Connexion</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary\">Connexion</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/auth/Register.jsx",
+    "line": 28,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900\">Créer un compte</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary\">Créer un compte</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/auth/VerifyOtp.jsx",
+    "line": 71,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900\">Vérification</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary\">Vérification</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 71,
+    "before": "<h1 className=\"font-display font-black text-lg text-gray-900\">Vérification d'identité</h1>",
+    "after": "<h1 className=\"font-display font-black text-lg text-afri-secondary\">Vérification d'identité</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 80,
+    "before": "<div className=\"text-xs uppercase font-bold text-gray-900\">Statut actuel</div>",
+    "after": "<div className=\"text-xs uppercase font-bold text-afri-secondary\">Statut actuel</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 91,
+    "before": "Faites vérifier votre identité pour obtenir le badge <span className=\"font-semibold text-gray-900\">Vérifié</span>, visible par les vendeurs et qui renforce la confiance lors de vos commandes.",
+    "after": "Faites vérifier votre identité pour obtenir le badge <span className=\"font-semibold text-afri-secondary\">Vérifié</span>, visible par les vendeurs et qui renforce la confiance lors de vos commandes.",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 151,
+    "before": "<div className=\"text-xs text-gray-900\">",
+    "after": "<div className=\"text-xs text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Cart.jsx",
+    "line": 73,
+    "before": "<span className=\"text-sm font-bold text-gray-900\">",
+    "after": "<span className=\"text-sm font-bold text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Cart.jsx",
+    "line": 143,
+    "before": "<span className=\"font-display font-black text-xl text-gray-900\" data-testid=\"cart-total\">",
+    "after": "<span className=\"font-display font-black text-xl text-afri-secondary\" data-testid=\"cart-total\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 197,
+    "before": "<p className=\"text-sm font-bold text-gray-900\">Paiement en espèces</p>",
+    "after": "<p className=\"text-sm font-bold text-afri-secondary\">Paiement en espèces</p>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 215,
+    "before": "<div className=\"text-xs text-gray-900\">",
+    "after": "<div className=\"text-xs text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 235,
+    "before": "<div className=\"border-t border-gray-100 pt-2 mt-2 flex justify-between font-display font-black text-lg text-gray-900\">",
+    "after": "<div className=\"border-t border-gray-100 pt-2 mt-2 flex justify-between font-display font-black text-lg text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 272,
+    "before": "<span className={`text-sm font-semibold ${active && !disabled ? \"text-gray-900\" : \"text-gray-700\"}`}>{label}</span>",
+    "after": "<span className={`text-sm font-semibold ${active && !disabled ? \"text-afri-secondary\" : \"text-gray-700\"}`}>{label}</span>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OpenDispute.jsx",
+    "line": 63,
+    "before": "<h1 className=\"font-display font-black text-lg text-gray-900\">Ouvrir un litige</h1>",
+    "after": "<h1 className=\"font-display font-black text-lg text-afri-secondary\">Ouvrir un litige</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 131,
+    "before": "<div className=\"absolute inset-0 flex items-center justify-center bg-afri-soft text-xs text-gray-900\">",
+    "after": "<div className=\"absolute inset-0 flex items-center justify-center bg-afri-soft text-xs text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 141,
+    "before": "<div className={`absolute top-2 right-2 flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full ${tracking.location_fresh ? \"bg-afri-soft text-gray-900\" : \"bg-gray-100 text-gray-500\"}`}>",
+    "after": "<div className={`absolute top-2 right-2 flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full ${tracking.location_fresh ? \"bg-afri-soft text-afri-secondary\" : \"bg-gray-100 text-gray-500\"}`}>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 289,
+    "before": "<div className=\"text-xs text-gray-900 flex-1\">",
+    "after": "<div className=\"text-xs text-afri-secondary flex-1\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 366,
+    "before": "<div className=\"font-semibold text-sm text-gray-900\">{formatPrice(it.subtotal, order.currency)}</div>",
+    "after": "<div className=\"font-semibold text-sm text-afri-secondary\">{formatPrice(it.subtotal, order.currency)}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 376,
+    "before": "<div className={`${order.delivery_fee > 0 ? \"mt-1\" : \"border-t border-gray-100 mt-3 pt-3\"} flex justify-between font-display font-bold text-base text-gray-900`}>",
+    "after": "<div className={`${order.delivery_fee > 0 ? \"mt-1\" : \"border-t border-gray-100 mt-3 pt-3\"} flex justify-between font-display font-bold text-base text-afri-secondary`}>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 388,
+    "before": "<div className=\"text-sm text-gray-900\">",
+    "after": "<div className=\"text-sm text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 390,
+    "before": "<p className=\"mt-0.5 text-xs leading-relaxed text-gray-900/80\">",
+    "after": "<p className=\"mt-0.5 text-xs leading-relaxed text-afri-secondary/80\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 403,
+    "before": "<h3 className=\"text-sm font-bold text-gray-900 mb-1\">Remise en boutique</h3>",
+    "after": "<h3 className=\"text-sm font-bold text-afri-secondary mb-1\">Remise en boutique</h3>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 444,
+    "before": "<h3 className=\"font-display font-black text-xl text-gray-900\">Remise confirmée !</h3>",
+    "after": "<h3 className=\"font-display font-black text-xl text-afri-secondary\">Remise confirmée !</h3>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 472,
+    "before": "<div className=\"text-4xl font-display font-black tracking-[0.5rem] text-center bg-[#FEF3E2] py-4 rounded-lg text-gray-900\" data-testid=\"confirmation-code-display\">",
+    "after": "<div className=\"text-4xl font-display font-black tracking-[0.5rem] text-center bg-[#FEF3E2] py-4 rounded-lg text-afri-secondary\" data-testid=\"confirmation-code-display\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 24,
+    "before": "delivered: \"bg-afri-soft text-gray-900\",",
+    "after": "delivered: \"bg-afri-soft text-afri-secondary\",",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 25,
+    "before": "collected: \"bg-afri-soft text-gray-900\",",
+    "after": "collected: \"bg-afri-soft text-afri-secondary\",",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 103,
+    "before": "<div className=\"text-xs text-gray-900\">",
+    "after": "<div className=\"text-xs text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 148,
+    "before": "<span className=\"font-display font-black text-base text-gray-900\">",
+    "after": "<span className=\"font-display font-black text-base text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 160,
+    "before": "<section className=\"bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex justify-between font-display font-black text-lg text-gray-900\">",
+    "after": "<section className=\"bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex justify-between font-display font-black text-lg text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Orders.jsx",
+    "line": 154,
+    "before": "<span className=\"font-display font-bold text-gray-900\">",
+    "after": "<span className=\"font-display font-bold text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/PaymentFailed.jsx",
+    "line": 10,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900 mt-4\">Paiement échoué</h1>",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary mt-4\">Paiement échoué</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/PaymentSuccess.jsx",
+    "line": 55,
+    "before": "<h1 className=\"font-display font-black text-xl text-gray-900 mt-4\">",
+    "after": "<h1 className=\"font-display font-black text-xl text-afri-secondary mt-4\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ProductDetail.jsx",
+    "line": 99,
+    "before": "<span className=\"font-display font-black text-2xl text-gray-900\">",
+    "after": "<span className=\"font-display font-black text-2xl text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 62,
+    "before": "<Link to=\"/auth/login\" className=\"absolute top-3 right-3 flex items-center gap-1 text-xs font-semibold bg-white/90 backdrop-blur text-gray-900 px-3 py-1.5 rounded-full\">",
+    "after": "<Link to=\"/auth/login\" className=\"absolute top-3 right-3 flex items-center gap-1 text-xs font-semibold bg-white/90 backdrop-blur text-afri-secondary px-3 py-1.5 rounded-full\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 89,
+    "before": "{seller.product_specialties.map(s => <span key={s} className=\"text-xs bg-afri-soft text-gray-900 font-medium px-2.5 py-1 rounded-full\">{s}</span>)}",
+    "after": "{seller.product_specialties.map(s => <span key={s} className=\"text-xs bg-afri-soft text-afri-secondary font-medium px-2.5 py-1 rounded-full\">{s}</span>)}",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 186,
+    "before": "<p className=\"text-sm text-gray-900 font-medium mb-3\">",
+    "after": "<p className=\"text-sm text-afri-secondary font-medium mb-3\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 14,
+    "before": "delivered: { label: \"Livré\", color: \"bg-afri-soft text-gray-900\", next: null },",
+    "after": "delivered: { label: \"Livré\", color: \"bg-afri-soft text-afri-secondary\", next: null },",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 226,
+    "before": "<span className=\"font-display font-black text-gray-900\">{formatPrice(d.total_amount, d.currency)}</span>",
+    "after": "<span className=\"font-display font-black text-afri-secondary\">{formatPrice(d.total_amount, d.currency)}</span>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 301,
+    "before": "<div className={`font-display font-black text-gray-900 mt-1 ${small ? \"text-sm\" : \"text-xl\"}`}>{value}</div>",
+    "after": "<div className={`font-display font-black text-afri-secondary mt-1 ${small ? \"text-sm\" : \"text-xl\"}`}>{value}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 86,
+    "before": "<h1 className=\"font-display font-black text-lg text-gray-900\">Nouveau produit</h1>",
+    "after": "<h1 className=\"font-display font-black text-lg text-afri-secondary\">Nouveau produit</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 131,
+    "before": "className=\"border border-gray-300 rounded-lg px-3 bg-white text-sm font-bold focus:ring-2 focus:ring-afri-primary outline-none text-gray-900 min-w-[64px]\"",
+    "after": "className=\"border border-gray-300 rounded-lg px-3 bg-white text-sm font-bold focus:ring-2 focus:ring-afri-primary outline-none text-afri-secondary min-w-[64px]\"",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 169,
+    "before": "<span className={`text-xs font-semibold ${form.delivery_modes.includes(\"delivery\") ? \"text-gray-900\" : \"text-gray-600\"}`}>Livraison</span>",
+    "after": "<span className={`text-xs font-semibold ${form.delivery_modes.includes(\"delivery\") ? \"text-afri-secondary\" : \"text-gray-600\"}`}>Livraison</span>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 174,
+    "before": "<span className={`text-xs font-semibold ${form.delivery_modes.includes(\"collect\") ? \"text-gray-900\" : \"text-gray-600\"}`}>Retrait boutique</span>",
+    "after": "<span className={`text-xs font-semibold ${form.delivery_modes.includes(\"collect\") ? \"text-afri-secondary\" : \"text-gray-600\"}`}>Retrait boutique</span>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/BuyerProfile.jsx",
+    "line": 38,
+    "before": "<User size={36} className=\"text-gray-900\" />",
+    "after": "<User size={36} className=\"text-afri-secondary\" />",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/BuyerProfile.jsx",
+    "line": 47,
+    "before": "<div className=\"text-2xl font-black text-gray-900\">{total_orders}</div>",
+    "after": "<div className=\"text-2xl font-black text-afri-secondary\">{total_orders}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/BuyerProfile.jsx",
+    "line": 51,
+    "before": "<div className=\"text-2xl font-black text-gray-900\">{formatPrice(total_spent, \"FC\")}</div>",
+    "after": "<div className=\"text-2xl font-black text-afri-secondary\">{formatPrice(total_spent, \"FC\")}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/BuyerProfile.jsx",
+    "line": 76,
+    "before": "<p className=\"text-sm font-bold text-gray-900\">{formatPrice(o.total_amount, \"FC\")}</p>",
+    "after": "<p className=\"text-sm font-bold text-afri-secondary\">{formatPrice(o.total_amount, \"FC\")}</p>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 49,
+    "before": "<Link to=\"/seller/edit-profile\" className=\"flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-gray-900 shadow-sm\">",
+    "after": "<Link to=\"/seller/edit-profile\" className=\"flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-sm\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 52,
+    "before": "<Link to={`/shop/${data.shop?.id}`} className=\"flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-gray-900 shadow-sm\">",
+    "after": "<Link to={`/shop/${data.shop?.id}`} className=\"flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-sm\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 60,
+    "before": "className=\"flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-gray-900 shadow-sm\"",
+    "after": "className=\"flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-sm\"",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 128,
+    "before": "<div className=\"font-display font-bold text-gray-900\">{formatPrice(o.total_amount, o.currency)}</div>",
+    "after": "<div className=\"font-display font-bold text-afri-secondary\">{formatPrice(o.total_amount, o.currency)}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 161,
+    "before": "<div className=\"font-display font-black text-xl text-gray-900 mt-2\">{value}</div>",
+    "after": "<div className=\"font-display font-black text-xl text-afri-secondary mt-2\">{value}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 109,
+    "before": "<h1 className=\"font-display font-black text-lg text-gray-900\">Modifier le produit</h1>",
+    "after": "<h1 className=\"font-display font-black text-lg text-afri-secondary\">Modifier le produit</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 154,
+    "before": "className=\"border border-gray-300 rounded-lg px-3 bg-white text-sm font-bold focus:ring-2 focus:ring-afri-primary outline-none text-gray-900 min-w-[64px]\"",
+    "after": "className=\"border border-gray-300 rounded-lg px-3 bg-white text-sm font-bold focus:ring-2 focus:ring-afri-primary outline-none text-afri-secondary min-w-[64px]\"",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 192,
+    "before": "<span className={`text-xs font-semibold ${form.delivery_modes.includes(\"delivery\") ? \"text-gray-900\" : \"text-gray-600\"}`}>Livraison</span>",
+    "after": "<span className={`text-xs font-semibold ${form.delivery_modes.includes(\"delivery\") ? \"text-afri-secondary\" : \"text-gray-600\"}`}>Livraison</span>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 197,
+    "before": "<span className={`text-xs font-semibold ${form.delivery_modes.includes(\"collect\") ? \"text-gray-900\" : \"text-gray-600\"}`}>Retrait boutique</span>",
+    "after": "<span className={`text-xs font-semibold ${form.delivery_modes.includes(\"collect\") ? \"text-afri-secondary\" : \"text-gray-600\"}`}>Retrait boutique</span>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 170,
+    "before": "<span key={s} className=\"flex items-center gap-1 bg-afri-soft text-gray-900 text-xs font-medium px-3 py-1.5 rounded-full\">",
+    "after": "<span key={s} className=\"flex items-center gap-1 bg-afri-soft text-afri-secondary text-xs font-medium px-3 py-1.5 rounded-full\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 218,
+    "before": "<p className={`text-sm font-semibold ${!isAfrimarket ? \"text-gray-900\" : \"text-gray-700\"}`}>",
+    "after": "<p className={`text-sm font-semibold ${!isAfrimarket ? \"text-afri-secondary\" : \"text-gray-700\"}`}>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 262,
+    "before": "<p className={`text-sm font-semibold ${isAfrimarket ? \"text-gray-900\" : \"text-gray-700\"}`}>",
+    "after": "<p className={`text-sm font-semibold ${isAfrimarket ? \"text-afri-secondary\" : \"text-gray-700\"}`}>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 341,
+    "before": "<h3 className=\"text-sm font-bold text-gray-900 mb-3 pb-2 border-b border-gray-100\">{title}</h3>",
+    "after": "<h3 className=\"text-sm font-bold text-afri-secondary mb-3 pb-2 border-b border-gray-100\">{title}</h3>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 72,
+    "before": "<h1 className=\"font-display font-black text-lg text-gray-900\">Vérification KYC</h1>",
+    "after": "<h1 className=\"font-display font-black text-lg text-afri-secondary\">Vérification KYC</h1>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 81,
+    "before": "<div className=\"text-xs uppercase font-bold text-gray-900\">Statut actuel</div>",
+    "after": "<div className=\"text-xs uppercase font-bold text-afri-secondary\">Statut actuel</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Products.jsx",
+    "line": 62,
+    "before": "<div className=\"text-sm font-bold text-gray-900\">{formatPrice(p.price, p.currency)}</div>",
+    "after": "<div className=\"text-sm font-bold text-afri-secondary\">{formatPrice(p.price, p.currency)}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Scan.jsx",
+    "line": 119,
+    "before": "<h2 className=\"font-display font-black text-2xl text-gray-900\">Retrait validé !</h2>",
+    "after": "<h2 className=\"font-display font-black text-2xl text-afri-secondary\">Retrait validé !</h2>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Scan.jsx",
+    "line": 125,
+    "before": "<p className=\"text-2xl font-display font-black text-gray-900 mt-4\">",
+    "after": "<p className=\"text-2xl font-display font-black text-afri-secondary mt-4\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/SellerOrders.jsx",
+    "line": 143,
+    "before": "<span className=\"font-display font-bold text-gray-900\">",
+    "after": "<span className=\"font-display font-bold text-afri-secondary\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 117,
+    "before": "<span key={s} className=\"flex items-center gap-1 bg-afri-soft text-gray-900 text-xs font-medium px-3 py-1.5 rounded-full\">",
+    "after": "<span key={s} className=\"flex items-center gap-1 bg-afri-soft text-afri-secondary text-xs font-medium px-3 py-1.5 rounded-full\">",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 167,
+    "before": "<p className=\"text-xs text-gray-900\"><strong>Astuce GPS :</strong> Ouvre Google Maps, appuie longuement sur ta boutique, et copie les coordonnées affichées en bas de l'écran.</p>",
+    "after": "<p className=\"text-xs text-afri-secondary\"><strong>Astuce GPS :</strong> Ouvre Google Maps, appuie longuement sur ta boutique, et copie les coordonnées affichées en bas de l'écran.</p>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 193,
+    "before": "<p className=\"text-xs text-gray-900\">Ces liens apparaîtront sur votre page boutique publique et permettront aux clients de vous contacter directement.</p>",
+    "after": "<p className=\"text-xs text-afri-secondary\">Ces liens apparaîtront sur votre page boutique publique et permettront aux clients de vous contacter directement.</p>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Wallet.jsx",
+    "line": 84,
+    "before": "className=\"mt-4 bg-white text-gray-900 rounded-lg py-2.5 px-4 font-semibold text-sm disabled:opacity-50 flex items-center justify-center gap-2 w-full\"",
+    "after": "className=\"mt-4 bg-white text-afri-secondary rounded-lg py-2.5 px-4 font-semibold text-sm disabled:opacity-50 flex items-center justify-center gap-2 w-full\"",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Wallet.jsx",
+    "line": 115,
+    "before": "<div className={`font-display font-bold text-sm ${t.amount < 0 ? \"text-[#E24B4A]\" : \"text-gray-900\"}`}>",
+    "after": "<div className={`font-display font-bold text-sm ${t.amount < 0 ? \"text-[#E24B4A]\" : \"text-afri-secondary\"}`}>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Wallet.jsx",
+    "line": 128,
+    "before": "<h3 className=\"font-display font-bold text-lg text-gray-900\">Retirer vers Mobile Money</h3>",
+    "after": "<h3 className=\"font-display font-bold text-lg text-afri-secondary\">Retirer vers Mobile Money</h3>",
+    "method": "exact main correspondence after masking color utilities"
+  },
+  {
+    "file": "frontend/src/pages/seller/Wallet.jsx",
+    "line": 185,
+    "before": "<div className={`font-display font-bold text-base mt-1 ${negative ? \"text-[#E24B4A]\" : \"text-gray-900\"}`}>{value}</div>",
+    "after": "<div className={`font-display font-bold text-base mt-1 ${negative ? \"text-[#E24B4A]\" : \"text-afri-secondary\"}`}>{value}</div>",
+    "method": "exact main correspondence after masking color utilities"
+  }
+]

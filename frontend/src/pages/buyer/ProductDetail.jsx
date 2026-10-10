@@ -67,7 +67,7 @@ export default function ProductDetail({ guest = false }) {
         </Link>
         <span className="font-display font-bold text-sm text-gray-900 truncate flex-1">{p.name}</span>
         {isGuestView && (
-          <Link to="/auth/login" className="text-xs font-semibold text-[#f97316] flex items-center gap-1 shrink-0">
+          <Link to="/auth/login" className="text-xs font-semibold text-afri-primary flex items-center gap-1 shrink-0">
             <LogIn size={14} /> Connexion
           </Link>
         )}
@@ -96,7 +96,7 @@ export default function ProductDetail({ guest = false }) {
         <h1 className="font-display font-black text-2xl text-gray-900 leading-tight">{p.name}</h1>
         <div className="mt-2">
           <div className="flex items-baseline gap-2">
-            <span className="font-display font-black text-2xl text-gray-900">
+            <span className="font-display font-black text-2xl text-afri-secondary">
               {formatPrice(displayPrice(p).amount, displayPrice(p).currency)}
             </span>
             {p.stock > 0 ? (
@@ -130,7 +130,7 @@ export default function ProductDetail({ guest = false }) {
             <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5">
               {p.seller_rating > 0 && (
                 <span className="flex items-center gap-1">
-                  <Star size={12} className="text-[#f97316] fill-[#f97316]" />
+                  <Star size={12} className="text-afri-accent fill-afri-accent" />
                   {p.seller_rating.toFixed(1)}
                 </span>
               )}
@@ -154,10 +154,10 @@ export default function ProductDetail({ guest = false }) {
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Livraison</h3>
           <div className="flex items-center gap-2 text-sm text-gray-700">
-            <Truck size={16} className="text-[#f97316]" /> Livraison à domicile disponible
+            <Truck size={16} className="text-afri-primary" /> Livraison à domicile disponible
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-700 mt-1.5">
-            <Store size={16} className="text-[#f97316]" /> Retrait en boutique (Click & Collect)
+            <Store size={16} className="text-afri-primary" /> Retrait en boutique (Click & Collect)
           </div>
         </div>
 
@@ -180,7 +180,7 @@ export default function ProductDetail({ guest = false }) {
                   <div className="flex items-center gap-2">
                     <div className="flex gap-0.5">
                       {[1,2,3,4,5].map((n) => (
-                        <Star key={n} size={12} className={n <= r.rating ? "text-[#f97316] fill-[#f97316]" : "text-gray-200"} />
+                        <Star key={n} size={12} className={n <= r.rating ? "text-afri-accent fill-afri-accent" : "text-gray-200"} />
                       ))}
                     </div>
                     <span className="text-xs text-gray-500">{r.buyer_name} · {timeAgo(r.created_at)}</span>
@@ -220,7 +220,7 @@ export default function ProductDetail({ guest = false }) {
           <button
             data-testid="add-to-cart-btn"
             onClick={handleAdd}
-            className="flex-1 bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2"
+            className="flex-1 bg-afri-primary var(--afri-primary-hover) text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2"
           >
             {isGuestView ? (<><LogIn size={16} /> Se connecter pour commander</>) : "Ajouter au panier"}
           </button>

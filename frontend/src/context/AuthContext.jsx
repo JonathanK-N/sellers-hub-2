@@ -25,10 +25,12 @@ export function AuthProvider({ children }) {
       const { data } = await api.get("/auth/me");
       setUser(data);
       localStorage.setItem("afri_user", JSON.stringify(data));
-    } catch {
-      setUser(null);
-      localStorage.removeItem("afri_user");
-      localStorage.removeItem("afri_token");
+    } catch (error) {
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        setUser(null);
+        localStorage.removeItem("afri_user");
+        localStorage.removeItem("afri_token");
+      }
     } finally {
       setLoading(false);
     }

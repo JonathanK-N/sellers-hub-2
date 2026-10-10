@@ -48,7 +48,7 @@ export default function AdminSellers() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl text-gray-900">Vendeurs & Boutiques</h1>
+          <h1 className="font-display font-black text-xl text-afri-secondary">Vendeurs & Boutiques</h1>
           <p className="text-xs text-gray-500">{sellers.length} boutiques</p>
         </div>
       </header>
@@ -57,7 +57,7 @@ export default function AdminSellers() {
         <div className="relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Boutique, propriétaire, téléphone…"
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]" />
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
         </div>
 
         {loading ? (
@@ -67,17 +67,17 @@ export default function AdminSellers() {
             {filtered.map((s) => (
               <div key={s.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden" data-testid={`seller-card-${s.id}`}>
                 {/* Banner */}
-                <div className="h-20 bg-gradient-to-r from-[#0b0b0d] to-[#f97316] relative">
+                <div className="h-20 bg-gradient-to-r from-afri-secondary to-afri-primary relative">
                   {s.banner_url && <img src={s.banner_url} alt="" className="w-full h-full object-cover" />}
                   {s.premium && (
-                    <span className="absolute top-2 right-2 flex items-center gap-1 bg-[#f97316] text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
+                    <span className="absolute top-2 right-2 flex items-center gap-1 bg-afri-accent text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
                       <Crown size={11} /> Premium
                     </span>
                   )}
                 </div>
                 <div className="p-4">
                   <div className="flex items-start gap-3 -mt-8 mb-3">
-                    <div className="w-14 h-14 rounded-xl border-2 border-white shadow-sm bg-orange-50 text-[#f97316] flex items-center justify-center font-display font-black text-xl overflow-hidden">
+                    <div className="w-14 h-14 rounded-xl border-2 border-white shadow-sm var(--afri-success-bg) text-afri-primary flex items-center justify-center font-display font-black text-xl overflow-hidden">
                       {s.logo_url ? <img src={s.logo_url} alt="" className="w-full h-full object-cover" /> : s.shop_name?.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 pt-8 min-w-0">
@@ -94,7 +94,7 @@ export default function AdminSellers() {
                     <div>Quartier : <span className="font-medium text-gray-900">{s.neighborhood || "—"}</span></div>
                     {s.rating > 0 && (
                       <div className="flex items-center gap-1">
-                        <Star size={11} className="text-[#f97316] fill-[#f97316]" />
+                        <Star size={11} className="text-afri-accent fill-afri-accent" />
                         <span className="font-medium text-gray-900">{s.rating.toFixed(1)}</span>
                         <span className="text-gray-500">({s.review_count} avis)</span>
                       </div>
@@ -102,13 +102,13 @@ export default function AdminSellers() {
                   </div>
                   <div className="flex items-center justify-between mt-3">
                     <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${
-                      s.kyc_status === "level3" ? "bg-orange-50 text-[#f97316]" :
+                      s.kyc_status === "level3" ? "var(--afri-success-bg) text-afri-primary" :
                       s.kyc_status === "level2" ? "bg-blue-50 text-blue-700" :
                       "bg-amber-50 text-amber-700"
                     }`}>
                       KYC {s.kyc_status}
                     </span>
-                    <button onClick={() => openDetail(s)} className="flex items-center gap-1.5 text-xs font-semibold text-gray-900 hover:underline">
+                    <button onClick={() => openDetail(s)} className="flex items-center gap-1.5 text-xs font-semibold text-afri-secondary hover:underline">
                       <Eye size={14} /> Voir détails
                     </button>
                   </div>
@@ -123,20 +123,20 @@ export default function AdminSellers() {
       {selected && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <div className="h-32 bg-gradient-to-r from-[#0b0b0d] to-[#f97316] relative rounded-t-2xl overflow-hidden">
+            <div className="h-32 bg-gradient-to-r from-afri-secondary to-afri-primary relative rounded-t-2xl overflow-hidden">
               {selected.banner_url && <img src={selected.banner_url} alt="" className="w-full h-full object-cover" />}
-              <button onClick={() => setSelected(null)} className="absolute top-3 right-3 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center hover:bg-black/60">✕</button>
+              <button onClick={() => setSelected(null)} className="absolute top-3 right-3 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center hover:bg-afri-primary-hover/60">✕</button>
             </div>
             <div className="px-6 pb-6">
               <div className="flex items-end gap-4 -mt-8 mb-4">
-                <div className="w-20 h-20 rounded-xl border-3 border-white shadow-md bg-orange-50 text-[#f97316] flex items-center justify-center font-display font-black text-2xl overflow-hidden">
+                <div className="w-20 h-20 rounded-xl border-3 border-white shadow-md var(--afri-success-bg) text-afri-primary flex items-center justify-center font-display font-black text-2xl overflow-hidden">
                   {selected.logo_url ? <img src={selected.logo_url} alt="" className="w-full h-full object-cover" /> : selected.shop_name?.charAt(0)}
                 </div>
                 <div className="pb-2">
                   <div className="flex items-center gap-2">
-                    <h2 className="font-display font-black text-xl text-gray-900">{selected.shop_name}</h2>
+                    <h2 className="font-display font-black text-xl text-afri-secondary">{selected.shop_name}</h2>
                     {selected.badge_verified && <ShieldCheck size={18} className="text-green-600" />}
-                    {selected.premium && <Crown size={16} className="text-[#f97316]" />}
+                    {selected.premium && <Crown size={16} className="text-afri-accent" />}
                   </div>
                   <p className="text-sm text-gray-500">{selected.owner_name} · {selected.owner_phone}</p>
                 </div>
@@ -164,7 +164,7 @@ export default function AdminSellers() {
                   <div className="text-xs font-semibold text-gray-500 mb-2">Spécialités</div>
                   <div className="flex flex-wrap gap-1.5">
                     {selected.specialties.map((sp) => (
-                      <span key={sp} className="text-xs bg-orange-50 text-gray-900 px-2 py-0.5 rounded-full">{sp}</span>
+                      <span key={sp} className="text-xs bg-afri-soft text-afri-secondary px-2 py-0.5 rounded-full">{sp}</span>
                     ))}
                   </div>
                 </div>

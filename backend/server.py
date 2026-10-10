@@ -10,7 +10,7 @@ import logging
 from fastapi import FastAPI, APIRouter
 from starlette.middleware.cors import CORSMiddleware
 
-from db import init_db, close_db
+from db import init_db, close_db, get_db
 from rate_limit import limiter, rate_limit_handler
 from slowapi.errors import RateLimitExceeded
 from seed_data import seed_all

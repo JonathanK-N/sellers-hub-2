@@ -1,0 +1,39 @@
+{
+  "rows": [
+    {
+      "test": "viewport 390",
+      "status": "PASS",
+      "color": "rgb(8, 80, 65)",
+      "overflow": false
+    },
+    {
+      "test": "auth modal open/escape 390",
+      "status": "PASS"
+    },
+    {
+      "test": "viewport 768",
+      "status": "PASS",
+      "color": "rgb(8, 80, 65)",
+      "overflow": false
+    },
+    {
+      "test": "auth modal open/escape 768",
+      "status": "PASS"
+    },
+    {
+      "test": "viewport 1440",
+      "status": "PASS",
+      "color": "rgb(8, 80, 65)",
+      "overflow": false
+    },
+    {
+      "test": "auth modal open/escape 1440",
+      "status": "PASS"
+    },
+    {
+      "test": "browser JS errors",
+      "status": "PASS",
+      "errors": []
+    }
+  ]
+}

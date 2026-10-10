@@ -84,8 +84,8 @@ export default function BuyerHome() {
             onClick={() => setCat(c.value)}
             className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition-colors ${
               cat === c.value
-                ? "bg-[#f97316] text-white border-[#f97316]"
-                : "bg-white text-gray-700 border-gray-200 hover:border-[#f97316]"
+                ? "bg-afri-primary text-white border-afri-primary"
+                : "bg-white text-gray-700 border-gray-200 hover:border-afri-primary"
             }`}
           >
             {c.label}
@@ -112,7 +112,7 @@ export default function BuyerHome() {
       <section className="px-4 md:px-8 mt-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-lg bg-[#0b0b0d] text-[#f97316] flex items-center justify-center shrink-0">
+            <span className="w-8 h-8 rounded-lg bg-afri-primary text-afri-primary flex items-center justify-center shrink-0">
               <Sparkles size={16} />
             </span>
             <h2 className="font-display font-bold text-lg text-gray-900">
@@ -148,7 +148,7 @@ export default function BuyerHome() {
 
 function PromoBlock({ title, subtitle }) {
   return (
-    <div className="rounded-xl bg-gradient-to-r from-[#0b0b0d] to-[#f97316] text-white p-4 flex items-center gap-3 overflow-hidden relative">
+    <div className="rounded-xl bg-gradient-to-r from-afri-secondary to-afri-primary text-white p-4 flex items-center gap-3 overflow-hidden relative">
       <div className="w-12 h-12 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
         <Sparkles size={22} />
       </div>

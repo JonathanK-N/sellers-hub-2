@@ -70,7 +70,7 @@ export default function CartDrawer({ onClose }) {
               type="button"
               onClick={() => go("/buyer/search")}
               data-testid="cart-drawer-browse"
-              className="mt-2 bg-[#0b0b0d] hover:bg-black text-white rounded-full py-2.5 px-6 font-semibold transition-colors"
+              className="mt-2 bg-afri-primary hover:bg-afri-primary-hover text-white rounded-full py-2.5 px-6 font-semibold transition-colors"
             >
               Parcourir les produits
             </button>
@@ -144,7 +144,7 @@ export default function CartDrawer({ onClose }) {
                 type="button"
                 onClick={() => go("/buyer/cart")}
                 data-testid="cart-drawer-checkout"
-                className="w-full bg-[#0b0b0d] hover:bg-black text-white rounded-full py-3 font-semibold transition-colors"
+                className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-full py-3 font-semibold transition-colors"
               >
                 Voir le panier et commander
               </button>

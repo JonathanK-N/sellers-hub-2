@@ -6,7 +6,7 @@ import api, { formatApiError, API_BASE } from "../../lib/api";
 import AdminSidebar from "../../components/AdminSidebar";
 import { formatPrice } from "../../lib/format";
 
-const COLORS = { CD: "#f97316", CM: "#fbbf24", CI: "#0b0b0d", SN: "#3B82F6", BJ: "#8B5CF6" };
+const COLORS = { CD: "var(--afri-primary)", CM: "var(--afri-accent)", CI: "var(--afri-secondary)", SN: "#3B82F6", BJ: "#8B5CF6" };
 
 export default function AdminGeo() {
   const [overview, setOverview] = useState([]);
@@ -57,7 +57,7 @@ export default function AdminGeo() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex justify-between items-center">
         <div>
-          <h1 className="font-display font-black text-xl lg:text-2xl text-gray-900">Géographie</h1>
+          <h1 className="font-display font-black text-xl lg:text-2xl text-afri-secondary">Géographie</h1>
           <p className="text-xs text-gray-500 mt-0.5">Performance par pays · 5 marchés</p>
         </div>
         <div className="flex gap-2">
@@ -104,7 +104,7 @@ export default function AdminGeo() {
                 <button
                   data-testid={`toggle-country-${c.code}`}
                   onClick={() => toggle(c.code, c.is_active)}
-                  className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 ${c.is_active ? "bg-orange-50 text-[#f97316]" : "bg-gray-100 text-gray-500"}`}
+                  className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 ${c.is_active ? "var(--afri-success-bg) text-afri-primary" : "bg-gray-100 text-gray-500"}`}
                 >
                   <Power size={11} /> {c.is_active ? "Actif" : "Inactif"}
                 </button>
@@ -132,7 +132,7 @@ export default function AdminGeo() {
                 </div>
                 <div className="pt-3 border-t border-gray-100 flex justify-between items-baseline">
                   <span className="text-xs text-gray-500 uppercase font-bold">Commission</span>
-                  <span className="font-display font-black text-lg text-gray-900">{formatPrice(c.commission, c.currency)}</span>
+                  <span className="font-display font-black text-lg text-afri-secondary">{formatPrice(c.commission, c.currency)}</span>
                 </div>
               </div>
             </div>

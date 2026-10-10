@@ -78,7 +78,7 @@ export default function LoginForm({ onSuccess, onSwitch }) {
               onChange={(e) => setPhone(e.target.value)}
               placeholder="812345678"
               inputMode="tel"
-              className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
+              className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
             />
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function LoginForm({ onSuccess, onSwitch }) {
             onChange={(e) => setPassword(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && phone && password && submit()}
             placeholder="••••••••"
-            className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
+            className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
           />
           <button
             type="button"
@@ -110,7 +110,7 @@ export default function LoginForm({ onSuccess, onSwitch }) {
         <Link
           to="/auth/forgot"
           onClick={onSuccess}
-          className="text-xs text-[#f97316] font-medium mt-1.5 inline-block"
+          className="text-xs text-afri-primary font-medium mt-1.5 inline-block"
           data-testid="link-forgot"
         >
           Mot de passe oublié ?
@@ -121,7 +121,7 @@ export default function LoginForm({ onSuccess, onSwitch }) {
         data-testid="login-submit-btn"
         disabled={loading || !phone || !password}
         onClick={submit}
-        className="w-full bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
+        className="w-full bg-afri-primary var(--afri-primary-hover) text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
       >
         {loading ? "Connexion…" : "Se connecter"}
       </button>
@@ -132,13 +132,13 @@ export default function LoginForm({ onSuccess, onSwitch }) {
           <button
             type="button"
             onClick={() => onSwitch("register")}
-            className="text-[#f97316] font-semibold"
+            className="text-afri-primary font-semibold"
             data-testid="link-to-register"
           >
             Créer un compte
           </button>
         ) : (
-          <Link to="/auth/register" className="text-[#f97316] font-semibold" data-testid="link-to-register">
+          <Link to="/auth/register" className="text-afri-primary font-semibold" data-testid="link-to-register">
             Créer un compte
           </Link>
         )}

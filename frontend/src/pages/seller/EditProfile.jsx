@@ -122,17 +122,17 @@ export default function EditProfile() {
 
   return (
     <div className="mobile-shell pb-24">
-      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-afri-secondary text-white px-4 py-3 flex items-center gap-3 shadow-md">
         <Link to="/seller/dashboard" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center"><ArrowLeft size={20} /></Link>
         <h1 className="font-display font-black text-xl flex-1">Profil boutique</h1>
-        <button onClick={save} disabled={loading} className="bg-[#f97316] text-white rounded-lg px-4 py-2 text-sm font-semibold flex items-center gap-1.5 disabled:opacity-50">
+        <button onClick={save} disabled={loading} className="bg-afri-accent text-white rounded-lg px-4 py-2 text-sm font-semibold flex items-center gap-1.5 disabled:opacity-50">
           <Save size={16} /> {loading ? "…" : "Enregistrer"}
         </button>
       </header>
 
       {/* BANNIÈRE + LOGO */}
       <div className="relative">
-        <div onClick={() => bannerRef.current?.click()} className="w-full h-32 bg-gradient-to-r from-[#0b0b0d] to-[#f97316] flex items-center justify-center cursor-pointer overflow-hidden relative group">
+        <div onClick={() => bannerRef.current?.click()} className="w-full h-32 bg-gradient-to-r from-afri-secondary to-afri-primary flex items-center justify-center cursor-pointer overflow-hidden relative group">
           {form.shop_banner_url ? <img src={photoUrl(form.shop_banner_url)} alt="bannière" className="w-full h-full object-cover" /> : null}
           <div className={`${form.shop_banner_url ? "absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100" : ""} flex items-center justify-center flex-col gap-1`}>
             <Camera size={20} className="text-white" />
@@ -163,11 +163,11 @@ export default function EditProfile() {
           <Field label="Produits vendus">
             <div className="flex gap-2">
               <input value={specialty} onChange={e => setSpecialty(e.target.value)} onKeyDown={e => e.key === "Enter" && addSpecialty()} placeholder="Ajouter un tag" className={`${inp} flex-1`} />
-              <button onClick={addSpecialty} className="w-10 h-10 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0"><Plus size={18} /></button>
+              <button onClick={addSpecialty} className="w-10 h-10 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center shrink-0"><Plus size={18} /></button>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
               {form.product_specialties.map(s => (
-                <span key={s} className="flex items-center gap-1 bg-orange-50 text-gray-900 text-xs font-medium px-3 py-1.5 rounded-full">
+                <span key={s} className="flex items-center gap-1 bg-afri-soft text-afri-secondary text-xs font-medium px-3 py-1.5 rounded-full">
                   {s}<button onClick={() => set("product_specialties", form.product_specialties.filter(x => x !== s))}><X size={12} /></button>
                 </span>
               ))}
@@ -192,7 +192,7 @@ export default function EditProfile() {
                   navigator.clipboard.writeText(shopId);
                   toast.success("ID copié");
                 }}
-                className="w-10 h-10 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0"
+                className="w-10 h-10 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center shrink-0"
               >
                 <Copy size={16} />
               </button>
@@ -208,21 +208,21 @@ export default function EditProfile() {
             <div
               onClick={() => !isAfrimarket || toggleDeliveryService()}
               className={`flex items-start gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                !isAfrimarket ? "border-[#f97316] bg-orange-50" : "border-gray-200 bg-white"
+                !isAfrimarket ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"
               }`}
             >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${!isAfrimarket ? "bg-[#0b0b0d] text-white" : "bg-gray-100 text-gray-500"}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${!isAfrimarket ? "bg-afri-primary text-white" : "bg-gray-100 text-gray-500"}`}>
                 <Package size={16} />
               </div>
               <div className="flex-1">
-                <p className={`text-sm font-semibold ${!isAfrimarket ? "text-gray-900" : "text-gray-700"}`}>
+                <p className={`text-sm font-semibold ${!isAfrimarket ? "text-afri-secondary" : "text-gray-700"}`}>
                   Je gère ma propre livraison
                 </p>
                 <p className="text-xs text-gray-500 mt-0.5">
                   Vous utilisez vos propres livreurs hors AfriMarket. Aucun frais de livraison affiché aux acheteurs.
                 </p>
               </div>
-              <div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${!isAfrimarket ? "border-[#f97316] bg-[#0b0b0d]" : "border-gray-300"}`} />
+              <div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${!isAfrimarket ? "border-afri-primary bg-afri-primary" : "border-gray-300"}`} />
             </div>
 
             {!isAfrimarket && (
@@ -236,7 +236,7 @@ export default function EditProfile() {
                       onClick={() => set("self_delivery_fee", tier)}
                       className={`text-xs font-semibold py-2 rounded-lg border transition-colors ${
                         form.self_delivery_fee === tier
-                          ? "bg-[#0b0b0d] text-white border-[#f97316]"
+                          ? "bg-afri-primary text-white border-afri-primary"
                           : "bg-white text-gray-600 border-gray-200"
                       }`}
                     >
@@ -251,26 +251,26 @@ export default function EditProfile() {
             <div
               onClick={() => isAfrimarket || toggleDeliveryService()}
               className={`flex items-start gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                isAfrimarket ? "border-[#f97316] bg-orange-50" : "border-gray-200 bg-white"
+                isAfrimarket ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"
               } ${!isPremium ? "opacity-60" : ""}`}
             >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isAfrimarket ? "bg-[#0b0b0d] text-white" : "bg-gray-100 text-gray-500"}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isAfrimarket ? "bg-afri-primary text-white" : "bg-gray-100 text-gray-500"}`}>
                 <Truck size={16} />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <p className={`text-sm font-semibold ${isAfrimarket ? "text-gray-900" : "text-gray-700"}`}>
+                  <p className={`text-sm font-semibold ${isAfrimarket ? "text-afri-secondary" : "text-gray-700"}`}>
                     Réseau de livreurs AfriMarket
                   </p>
                   {!isPremium && (
-                    <span className="text-[10px] bg-[#f97316] text-white px-2 py-0.5 rounded-full font-semibold">Premium</span>
+                    <span className="text-[10px] bg-afri-accent text-white px-2 py-0.5 rounded-full font-semibold">Premium</span>
                   )}
                 </div>
                 <p className="text-xs text-gray-500 mt-0.5">
                   Accès aux livreurs indépendants AfriMarket. Frais de livraison : 16 000 FC (dont 11 500 FC au livreur).
                 </p>
               </div>
-              <div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${isAfrimarket ? "border-[#f97316] bg-[#0b0b0d]" : "border-gray-300"}`} />
+              <div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${isAfrimarket ? "border-afri-primary bg-afri-primary" : "border-gray-300"}`} />
             </div>
           </div>
           {togglingDelivery && <p className="text-xs text-gray-500 text-center mt-2 animate-pulse">Mise à jour…</p>}
@@ -334,11 +334,11 @@ export default function EditProfile() {
   );
 }
 
-const inp = "w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]";
+const inp = "w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary";
 function Section({ title, children }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-      <h3 className="text-sm font-bold text-gray-900 mb-3 pb-2 border-b border-gray-100">{title}</h3>
+      <h3 className="text-sm font-bold text-afri-secondary mb-3 pb-2 border-b border-gray-100">{title}</h3>
       <div className="space-y-3">{children}</div>
     </div>
   );
