@@ -287,7 +287,7 @@ def get_payment_mode() -> str:
 
 
 def is_sandbox() -> bool:
-    return get_payment_mode() != "production"
+    return get_payment_mode() == "sandbox"
 
 
 _PROVIDERS = {
