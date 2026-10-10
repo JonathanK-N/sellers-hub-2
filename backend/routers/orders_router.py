@@ -348,10 +348,12 @@ async def advance_order(order_id: str, user: dict = Depends(require_role("seller
         raise HTTPException(status_code=400, detail="Transition impossible")
     new_status, label = next_state
     event = _timeline_event(new_status, label)
-    await db.orders.update_one(
-        {"id": order_id},
+    result = await db.orders.update_one(
+        {"id": order_id, "status": o["status"]},
         {"$set": {"status": new_status}, "$push": {"timeline": event}},
     )
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Commande déjà modifiée")
     o["status"] = new_status
     o["timeline"].append(event)
     return o

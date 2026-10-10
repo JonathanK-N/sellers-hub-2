@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.1.1-green.1",
+  "version": "1.0.1-green-rc.2",
   "private": true,
   "engines": {
     "node": ">=20.0.0"
