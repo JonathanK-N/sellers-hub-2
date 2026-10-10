@@ -283,7 +283,7 @@ class OrangeProvider(BaseProvider):
 
 
 def get_payment_mode() -> str:
-    return (os.environ.get("PAYMENT_MODE") or "sandbox").lower()
+    return (os.environ.get("PAYMENT_MODE") or "live").lower()
 
 
 def is_sandbox() -> bool:

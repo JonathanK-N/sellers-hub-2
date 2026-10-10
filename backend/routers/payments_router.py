@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 from db import get_db
 from auth import require_role
-from payments.service import get_provider, cinetpay_configured, CinetPayProvider
+from payments.service import get_provider, cinetpay_configured, CinetPayProvider, is_sandbox
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/payments", tags=["payments"])
@@ -59,6 +59,8 @@ async def init_payment(req: InitRequest, user: dict = Depends(require_role("buye
 
     # ── Mobile Money via CinetPay ─────────────────────────────────────────────
     if not cinetpay_configured():
+        if not is_sandbox():
+            raise HTTPException(status_code=503, detail="Prestataire de paiement non configuré")
         return {"simulated": True, "status": "captured_in_escrow", "order_group_id": req.order_group_id}
 
     provider = get_provider(group.get("payment_method", ""))
@@ -85,6 +87,8 @@ async def cinetpay_webhook(request: Request):
     """CinetPay notify_url callback. Verifies the transaction status server-side
     (never trusts the POST body alone), then releases or fails the order group.
     """
+    if not cinetpay_configured():
+        raise HTTPException(status_code=503, detail="Webhook du prestataire indisponible")
     db = get_db()
     form = {}
     try:
