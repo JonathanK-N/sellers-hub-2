@@ -76,7 +76,8 @@
     "start": "craco start",
     "build": "craco build",
     "serve": "serve -s build -l $PORT",
-    "test": "craco test"
+    "test": "craco test",
+    "postinstall": "node scripts/patch-capacitor-tar.cjs"
   },
   "browserslist": {
     "production": [
