@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { AuthModalProvider } from "./context/AuthModalContext";
 import CartDrawerMount from "./components/cart/CartDrawerMount";
 import SmoothScroll from "./components/SmoothScroll";
+import PageBoundary from "./components/PageBoundary";
 import { CartProvider } from "./context/CartContext";
 
 import Landing from "./pages/Landing";
@@ -132,6 +133,7 @@ function App() {
           <InstallPrompt />
           <SmoothScroll />
           <CartDrawerMount />
+          <PageBoundary>
           <Suspense fallback={<div role="status" className="min-h-screen flex items-center justify-center text-afri-secondary">Chargement…</div>}>
           <Routes>
             <Route path="/" element={<RoleRedirect />} />
@@ -201,6 +203,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           </Suspense>
+          </PageBoundary>
           </AuthModalProvider>
         </BrowserRouter>
       </CartProvider>

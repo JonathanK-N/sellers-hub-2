@@ -6,6 +6,42 @@ on:
 permissions:
   contents: read
 jobs:
+  security-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pip-audit ruff
+      - name: Undefined names
+        run: ruff check backend --select F821
+      - name: Dependency vulnerability report
+        if: always()
+        run: pip-audit -r backend/requirements.txt --format json --output backend-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-security-${{ github.sha }}
+          path: backend-audit.json
+  security-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+        working-directory: frontend
+      - name: Dependency vulnerability report
+        run: yarn audit --json > web-audit.json
+        working-directory: frontend
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: web-security-${{ github.sha }}
+          path: frontend/web-audit.json
   web:
     runs-on: ubuntu-latest
     steps:
