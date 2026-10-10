@@ -6,6 +6,46 @@ on:
 permissions:
   contents: read
 jobs:
+  android-emulator:
+    needs: android
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools emulator system-images;android-34;google_apis;x86_64'
+          log-accepted-android-sdk-licenses: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: afrimarket-android-debug-${{ github.sha }}
+          path: android-apk
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow
+      - name: Boot isolated Android emulator
+        run: |
+          test -e /dev/kvm
+          sudo chmod 666 /dev/kvm
+          echo no | avdmanager create avd -n afrimarket-ci -k 'system-images;android-34;google_apis;x86_64' --force
+          "$ANDROID_HOME/emulator/emulator" -avd afrimarket-ci -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect > emulator.log 2>&1 &
+          adb wait-for-device
+          for attempt in $(seq 1 90); do test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 && break; sleep 2; done
+          test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1
+          adb shell input keyevent 82
+      - run: python scripts/android_emulator_smoke.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-emulator-${{ github.sha }}
+          path: |
+            android-emulator-evidence
+            emulator.log
   security-backend:
     runs-on: ubuntu-latest
     steps:
