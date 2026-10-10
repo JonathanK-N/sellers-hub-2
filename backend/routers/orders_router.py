@@ -264,6 +264,9 @@ async def my_orders(user: dict = Depends(get_current_user_dep)):
         } if order_ids else set()
 
     for o in orders:
+        if user["role"] != "buyer":
+            o.pop("confirmation_code", None)
+            o.pop("qr_code", None)
         s = sellers.get(o["seller_id"])
         if s:
             o["seller_name"] = s.get("shop_name")
@@ -289,7 +292,7 @@ async def get_order_group(group_id: str, user: dict = Depends(get_current_user_d
     group = await db.order_groups.find_one({"id": group_id}, {"_id": 0})
     if not group:
         raise HTTPException(status_code=404, detail="Groupe de commandes introuvable")
-    if user["role"] == "buyer" and group["buyer_id"] != user["id"]:
+    if user["role"] != "admin" and (user["role"] != "buyer" or group["buyer_id"] != user["id"]):
         raise HTTPException(status_code=403, detail="Accès refusé")
     orders = await db.orders.find({"order_group_id": group_id}, {"_id": 0}).to_list(50)
     for o in orders:
@@ -319,7 +322,13 @@ async def get_order(order_id: str, user: dict = Depends(get_current_user_dep)):
         my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
         if not my_seller or my_seller["id"] != o["seller_id"]:
             raise HTTPException(status_code=403, detail="Accès refusé")
-        # Hide confirmation code from seller until delivery
+    if user["role"] == "deliverer" and o.get("deliverer_id") != user["id"]:
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    if user["role"] not in {"buyer", "seller", "deliverer", "admin"}:
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    if user["role"] not in {"buyer", "admin"}:
+        o.pop("confirmation_code", None)
+        o.pop("qr_code", None)
     return o
 
 
@@ -358,6 +367,8 @@ async def advance_order(order_id: str, user: dict = Depends(require_role("seller
         raise HTTPException(status_code=409, detail="Commande déjà modifiée")
     o["status"] = new_status
     o["timeline"].append(event)
+    o.pop("confirmation_code", None)
+    o.pop("qr_code", None)
     return o
 
 

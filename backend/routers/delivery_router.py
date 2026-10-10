@@ -184,6 +184,10 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
     o = await db.orders.find_one({"id": order_id, "deliverer_id": user["id"]}, {"_id": 0})
     if not o:
         raise HTTPException(status_code=404, detail="Livraison introuvable")
+    if o.get("delivery_mode") != "delivery" or o.get("status") != "out_for_delivery":
+        raise HTTPException(status_code=409, detail="Livraison non disponible pour confirmation")
+    if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
+        raise HTTPException(status_code=409, detail="Paiement non confirmé")
     if o["escrow_status"] != "held":
         raise HTTPException(status_code=400, detail="Escrow déjà libéré")
     if o.get("confirmation_code") != req.code.strip():
@@ -193,11 +197,13 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
     PLATFORM_PART = 4_500.0
 
     event = _timeline_event("delivered", "Livré et paiement libéré")
-    await db.orders.update_one(
-        {"id": order_id},
+    result = await db.orders.update_one(
+        {"id": order_id, "deliverer_id": user["id"], "status": "out_for_delivery", "escrow_status": "held"},
         {"$set": {"status": "delivered", "escrow_status": "released", "delivered_at": _now()},
          "$push": {"timeline": event}},
     )
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Livraison déjà modifiée")
     await db.transactions.update_one(
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
@@ -205,7 +211,7 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
 
     # Crediter le wallet du livreur si delivery_fee AfriMarket
     delivery_fee = o.get("delivery_fee", 0)
-    if delivery_fee > 0:
+    if delivery_fee == LIVREUR_PART + PLATFORM_PART:
         await db.deliverer_wallets.update_one(
             {"user_id": user["id"]},
             {"$inc": {"balance": LIVREUR_PART}, "$set": {"currency": o.get("currency", "CDF"), "user_id": user["id"]}},
@@ -266,7 +272,7 @@ async def get_tracking(order_id: str, user: dict = Depends(get_current_user_dep)
         {"id": order_id},
         {"_id": 0, "status": 1, "deliverer_location": 1, "deliverer_name": 1,
          "delivery_neighborhood": 1, "delivery_landmark": 1,
-         "buyer_id": 1, "seller_id": 1},
+         "buyer_id": 1, "seller_id": 1, "deliverer_id": 1},
     )
     if not o:
         raise HTTPException(status_code=404, detail="Commande introuvable")
@@ -276,6 +282,10 @@ async def get_tracking(order_id: str, user: dict = Depends(get_current_user_dep)
         my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0, "id": 1})
         if not my_seller or my_seller["id"] != o.get("seller_id"):
             raise HTTPException(status_code=403, detail="Acces refuse")
+    if user["role"] == "deliverer" and o.get("deliverer_id") != user["id"]:
+        raise HTTPException(status_code=403, detail="Acces refuse")
+    if user["role"] not in {"buyer", "seller", "deliverer", "admin"}:
+        raise HTTPException(status_code=403, detail="Acces refuse")
     loc = o.get("deliverer_location")
     fresh = False
     if loc:
