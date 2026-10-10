@@ -140,7 +140,7 @@ export default function AdminBanners() {
 
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl text-gray-900">Affiches & Banners</h1>
+          <h1 className="font-display font-black text-xl text-afri-secondary">Affiches & Banners</h1>
           <p className="text-xs text-gray-500">Gérez le contenu affiché aux utilisateurs</p>
         </div>
         <div className="flex gap-2">
@@ -169,7 +169,7 @@ export default function AdminBanners() {
               onClick={togglePromoVisible}
               disabled={promoLoading}
               className={`flex items-center gap-1.5 text-sm font-semibold px-3 py-1.5 rounded-lg transition-colors ${
-                promo.visible ? "bg-afri-soft text-gray-900 hover:bg-[#c8ede1]" : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                promo.visible ? "bg-afri-soft text-afri-secondary hover:bg-[#c8ede1]" : "bg-gray-100 text-gray-500 hover:bg-gray-200"
               }`}
             >
               {promo.visible ? <Eye size={15} /> : <EyeOff size={15} />}
@@ -212,7 +212,7 @@ export default function AdminBanners() {
               </div>
             ) : (
               <button onClick={() => setPromoEditing(true)}
-                className="flex items-center gap-1.5 text-sm font-semibold text-gray-900 border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft transition-colors">
+                className="flex items-center gap-1.5 text-sm font-semibold text-afri-secondary border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft transition-colors">
                 <Pencil size={14} /> Modifier le texte
               </button>
             )}
@@ -281,7 +281,7 @@ export default function AdminBanners() {
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="font-display font-black text-lg text-gray-900">Nouvelle bannière</h2>
+              <h2 className="font-display font-black text-lg text-afri-secondary">Nouvelle bannière</h2>
               <button onClick={() => { setCreating(false); resetForm(); }} className="p-2 hover:bg-gray-100 rounded-lg text-gray-500">✕</button>
             </div>
             <div className="p-6 space-y-4">

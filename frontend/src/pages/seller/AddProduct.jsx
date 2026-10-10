@@ -83,7 +83,7 @@ export default function SellerAddProduct() {
         <Link to="/seller/products" className="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="font-display font-black text-lg text-gray-900">Nouveau produit</h1>
+        <h1 className="font-display font-black text-lg text-afri-secondary">Nouveau produit</h1>
       </header>
 
       <div className="px-4 mt-4 space-y-4">
@@ -128,7 +128,7 @@ export default function SellerAddProduct() {
               data-testid="product-currency-select"
               value={form.currency}
               onChange={(e) => setForm({ ...form, currency: e.target.value })}
-              className="border border-gray-300 rounded-lg px-3 bg-white text-sm font-bold focus:ring-2 focus:ring-afri-primary outline-none text-gray-900 min-w-[64px]"
+              className="border border-gray-300 rounded-lg px-3 bg-white text-sm font-bold focus:ring-2 focus:ring-afri-primary outline-none text-afri-secondary min-w-[64px]"
             >
               {CURRENCIES.map((c) => <option key={c.value} value={c.value}>{c.value}</option>)}
             </select>
@@ -166,12 +166,12 @@ export default function SellerAddProduct() {
             <button type="button" data-testid="product-mode-delivery" onClick={() => toggleMode("delivery")}
               className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes("delivery") ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"}`}>
               <Truck size={18} className={form.delivery_modes.includes("delivery") ? "text-afri-primary" : "text-gray-400"} />
-              <span className={`text-xs font-semibold ${form.delivery_modes.includes("delivery") ? "text-gray-900" : "text-gray-600"}`}>Livraison</span>
+              <span className={`text-xs font-semibold ${form.delivery_modes.includes("delivery") ? "text-afri-secondary" : "text-gray-600"}`}>Livraison</span>
             </button>
             <button type="button" data-testid="product-mode-collect" onClick={() => toggleMode("collect")}
               className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes("collect") ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"}`}>
               <Store size={18} className={form.delivery_modes.includes("collect") ? "text-afri-primary" : "text-gray-400"} />
-              <span className={`text-xs font-semibold ${form.delivery_modes.includes("collect") ? "text-gray-900" : "text-gray-600"}`}>Retrait boutique</span>
+              <span className={`text-xs font-semibold ${form.delivery_modes.includes("collect") ? "text-afri-secondary" : "text-gray-600"}`}>Retrait boutique</span>
             </button>
           </div>
         </div>

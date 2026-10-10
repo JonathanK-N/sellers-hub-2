@@ -69,7 +69,7 @@ export default function SellerKyc() {
         <Link to="/seller/dashboard" className="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="font-display font-black text-lg text-gray-900">Vérification KYC</h1>
+        <h1 className="font-display font-black text-lg text-afri-secondary">Vérification KYC</h1>
       </header>
 
       <div className="px-4 mt-4 space-y-4">
@@ -78,7 +78,7 @@ export default function SellerKyc() {
             <ShieldCheck size={22} />
           </div>
           <div>
-            <div className="text-xs uppercase font-bold text-gray-900">Statut actuel</div>
+            <div className="text-xs uppercase font-bold text-afri-secondary">Statut actuel</div>
             <span data-testid="kyc-current-status" className={`inline-block mt-1 text-xs font-bold px-2.5 py-1 rounded-full ${lbl.color}`}>
               {lbl.label}
             </span>

@@ -52,7 +52,7 @@ export default function PaymentSuccess() {
       <div className="w-16 h-16 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center mx-auto">
         {status === "checking" ? <Loader2 size={32} className="animate-spin" /> : <CheckCircle2 size={32} />}
       </div>
-      <h1 className="font-display font-black text-xl text-gray-900 mt-4">
+      <h1 className="font-display font-black text-xl text-afri-secondary mt-4">
         {status === "checking" ? "Vérification du paiement…" : "Paiement reçu"}
       </h1>
       <p className="text-gray-500 text-sm mt-2">

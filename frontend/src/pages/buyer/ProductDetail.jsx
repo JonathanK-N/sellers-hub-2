@@ -96,7 +96,7 @@ export default function ProductDetail({ guest = false }) {
         <h1 className="font-display font-black text-2xl text-gray-900 leading-tight">{p.name}</h1>
         <div className="mt-2">
           <div className="flex items-baseline gap-2">
-            <span className="font-display font-black text-2xl text-gray-900">
+            <span className="font-display font-black text-2xl text-afri-secondary">
               {formatPrice(displayPrice(p).amount, displayPrice(p).currency)}
             </span>
             {p.stock > 0 ? (

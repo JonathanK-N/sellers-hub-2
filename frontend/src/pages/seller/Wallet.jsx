@@ -81,7 +81,7 @@ export default function SellerWallet() {
             data-testid="open-withdraw-btn"
             onClick={() => setShowWithdraw(true)}
             disabled={balance.available <= 0}
-            className="mt-4 bg-white text-gray-900 rounded-lg py-2.5 px-4 font-semibold text-sm disabled:opacity-50 flex items-center justify-center gap-2 w-full"
+            className="mt-4 bg-white text-afri-secondary rounded-lg py-2.5 px-4 font-semibold text-sm disabled:opacity-50 flex items-center justify-center gap-2 w-full"
           >
             <ArrowDownToLine size={16} /> Retirer
           </button>
@@ -112,7 +112,7 @@ export default function SellerWallet() {
                       <span>· {timeAgo(t.created_at)}</span>
                     </div>
                   </div>
-                  <div className={`font-display font-bold text-sm ${t.amount < 0 ? "text-[#E24B4A]" : "text-gray-900"}`}>
+                  <div className={`font-display font-bold text-sm ${t.amount < 0 ? "text-[#E24B4A]" : "text-afri-secondary"}`}>
                     {t.amount > 0 ? "+" : ""}{formatPrice(t.amount, t.currency)}
                   </div>
                 </div>
@@ -125,7 +125,7 @@ export default function SellerWallet() {
       {showWithdraw && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-end justify-center" onClick={() => setShowWithdraw(false)}>
           <div className="bg-white w-full max-w-md rounded-t-2xl p-5 space-y-3" onClick={(e) => e.stopPropagation()}>
-            <h3 className="font-display font-bold text-lg text-gray-900">Retirer vers Mobile Money</h3>
+            <h3 className="font-display font-bold text-lg text-afri-secondary">Retirer vers Mobile Money</h3>
             <div>
               <label className="text-xs font-medium text-gray-700">Montant ({balance.currency})</label>
               <input
@@ -182,7 +182,7 @@ function MiniStat({ icon: Icon, label, value, negative }) {
       <div className="flex items-center gap-2 text-[10px] uppercase font-bold text-gray-500">
         <Icon size={12} /> {label}
       </div>
-      <div className={`font-display font-bold text-base mt-1 ${negative ? "text-[#E24B4A]" : "text-gray-900"}`}>{value}</div>
+      <div className={`font-display font-bold text-base mt-1 ${negative ? "text-[#E24B4A]" : "text-afri-secondary"}`}>{value}</div>
     </div>
   );
 }

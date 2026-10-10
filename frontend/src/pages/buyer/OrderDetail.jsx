@@ -128,7 +128,7 @@ function TrackingMap({ tracking }) {
     <div className="relative rounded-xl overflow-hidden border border-gray-100 shadow-sm">
       <div ref={mapRef} style={{ height: 220, width: "100%", background: "#f3f4f6" }} />
       {!mapReady && !mapError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-afri-soft text-xs text-gray-900">
+        <div className="absolute inset-0 flex items-center justify-center bg-afri-soft text-xs text-afri-secondary">
           Chargement de la carte…
         </div>
       )}
@@ -138,7 +138,7 @@ function TrackingMap({ tracking }) {
         </div>
       )}
       {tracking?.deliverer_location && mapReady && (
-        <div className={`absolute top-2 right-2 flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full ${tracking.location_fresh ? "bg-afri-soft text-gray-900" : "bg-gray-100 text-gray-500"}`}>
+        <div className={`absolute top-2 right-2 flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full ${tracking.location_fresh ? "bg-afri-soft text-afri-secondary" : "bg-gray-100 text-gray-500"}`}>
           {tracking.location_fresh ? <Wifi size={10} /> : <WifiOff size={10} />}
           {tracking.location_fresh ? "En direct" : "Position ancienne"}
         </div>
@@ -286,7 +286,7 @@ export default function OrderDetail() {
           <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={18} />
           </div>
-          <div className="text-xs text-gray-900 flex-1">
+          <div className="text-xs text-afri-secondary flex-1">
             <p className="font-semibold">
               {order.escrow_status === "released"
                 ? `${formatPrice(order.total_amount, order.currency)} libéré au vendeur`
@@ -363,7 +363,7 @@ export default function OrderDetail() {
                   <div className="text-sm font-semibold text-gray-900">{it.name}</div>
                   <div className="text-xs text-gray-500">x{it.quantity} · {formatPrice(it.price, order.currency)}</div>
                 </div>
-                <div className="font-semibold text-sm text-gray-900">{formatPrice(it.subtotal, order.currency)}</div>
+                <div className="font-semibold text-sm text-afri-secondary">{formatPrice(it.subtotal, order.currency)}</div>
               </div>
             ))}
           </div>
@@ -373,7 +373,7 @@ export default function OrderDetail() {
               <span>{formatPrice(order.delivery_fee, order.currency)}</span>
             </div>
           )}
-          <div className={`${order.delivery_fee > 0 ? "mt-1" : "border-t border-gray-100 mt-3 pt-3"} flex justify-between font-display font-bold text-base text-gray-900`}>
+          <div className={`${order.delivery_fee > 0 ? "mt-1" : "border-t border-gray-100 mt-3 pt-3"} flex justify-between font-display font-bold text-base text-afri-secondary`}>
             <span>Total</span>
             <span>{formatPrice(order.amount_due ?? order.total_amount, order.currency)}</span>
           </div>
@@ -385,9 +385,9 @@ export default function OrderDetail() {
             <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
               <Store size={18} />
             </div>
-            <div className="text-sm text-gray-900">
+            <div className="text-sm text-afri-secondary">
               <p className="font-semibold">Présentez-vous en boutique</p>
-              <p className="mt-0.5 text-xs leading-relaxed text-gray-900/80">
+              <p className="mt-0.5 text-xs leading-relaxed text-afri-secondary/80">
                 Le vendeur confirmera la remise après réception de votre paiement en espèces.
               </p>
               {order.pickup_slot && (
@@ -400,7 +400,7 @@ export default function OrderDetail() {
         {/* Vendeur — bouton confirmer remise cash */}
         {isSeller && order.delivery_mode === "collect" && ["ready_for_pickup","confirmed","preparing"].includes(order.status) && !collectConfirmed && (
           <section className="bg-white rounded-xl border-2 border-afri-primary shadow-sm p-4" data-testid="confirm-collect-section">
-            <h3 className="text-sm font-bold text-gray-900 mb-1">Remise en boutique</h3>
+            <h3 className="text-sm font-bold text-afri-secondary mb-1">Remise en boutique</h3>
             <p className="text-xs text-gray-500 mb-4">
               Appuyez après avoir remis la commande à l'acheteur et reçu le paiement en espèces.
             </p>
@@ -441,7 +441,7 @@ export default function OrderDetail() {
             >
               <CheckCircle2 size={36} className="text-green-600" />
             </div>
-            <h3 className="font-display font-black text-xl text-gray-900">Remise confirmée !</h3>
+            <h3 className="font-display font-black text-xl text-afri-secondary">Remise confirmée !</h3>
             <p className="text-sm text-gray-600">
               Commande <span className="font-bold">#{order.id.slice(0,8).toUpperCase()}</span> remise à l'acheteur.
             </p>
@@ -469,7 +469,7 @@ export default function OrderDetail() {
             <p className="text-xs text-gray-600 mb-3">
               Donnez ce code au livreur uniquement à la réception. Cela libérera le paiement.
             </p>
-            <div className="text-4xl font-display font-black tracking-[0.5rem] text-center bg-[#FEF3E2] py-4 rounded-lg text-gray-900" data-testid="confirmation-code-display">
+            <div className="text-4xl font-display font-black tracking-[0.5rem] text-center bg-[#FEF3E2] py-4 rounded-lg text-afri-secondary" data-testid="confirmation-code-display">
               {order.confirmation_code}
             </div>
             <div className="mt-3 pt-3 border-t border-gray-100">

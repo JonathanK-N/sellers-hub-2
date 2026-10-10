@@ -35,7 +35,7 @@ export default function AdminLogin() {
           <div className="w-14 h-14 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center">
             <ShieldCheck size={28} />
           </div>
-          <h1 className="font-display font-black text-2xl text-gray-900 mt-3">Administration</h1>
+          <h1 className="font-display font-black text-2xl text-afri-secondary mt-3">Administration</h1>
           <p className="text-sm text-gray-500 mt-1">Accès réservé aux administrateurs AfriMarket.</p>
         </div>
 

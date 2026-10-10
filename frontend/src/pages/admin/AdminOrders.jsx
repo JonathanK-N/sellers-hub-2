@@ -45,12 +45,12 @@ export default function AdminOrders() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl text-gray-900">Commandes</h1>
+          <h1 className="font-display font-black text-xl text-afri-secondary">Commandes</h1>
           <p className="text-xs text-gray-500">{orders.length} commandes</p>
         </div>
         <div className="flex gap-2">
           <button onClick={load} className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className="text-gray-500" /></button>
-          <a href="/api/admin/export/orders" className="flex items-center gap-1.5 text-xs font-semibold text-gray-900 border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft">
+          <a href="/api/admin/export/orders" className="flex items-center gap-1.5 text-xs font-semibold text-afri-secondary border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft">
             <Download size={14} /> CSV
           </a>
         </div>
@@ -103,9 +103,9 @@ export default function AdminOrders() {
                     <td className="px-4 py-3 text-gray-700">{o.buyer_name || "—"}</td>
                     <td className="px-4 py-3 text-gray-700">{o.seller_name || "—"}</td>
                     <td className="px-4 py-3 text-gray-600">{o.delivery_mode === "delivery" ? "🚚 Livraison" : "🏪 Retrait"}</td>
-                    <td className="px-4 py-3 font-semibold text-gray-900">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</td>
+                    <td className="px-4 py-3 font-semibold text-afri-secondary">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</td>
                     <td className="px-4 py-3">
-                      <span className="text-[10px] font-bold uppercase bg-afri-soft text-gray-900 px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-bold uppercase bg-afri-soft text-afri-secondary px-2 py-0.5 rounded-full">
                         {o.payment_method === "cash" ? "Cash" : o.payment_method}
                       </span>
                     </td>
@@ -134,7 +134,7 @@ export default function AdminOrders() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-100 flex items-center justify-between">
               <div>
-                <h2 className="font-display font-black text-lg text-gray-900">Commande #{selected.id.slice(0, 8)}</h2>
+                <h2 className="font-display font-black text-lg text-afri-secondary">Commande #{selected.id.slice(0, 8)}</h2>
                 <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${STATUS_COLORS[selected.status] || "bg-gray-100"}`}>
                   {STATUS_LABELS[selected.status] || selected.status}
                 </span>

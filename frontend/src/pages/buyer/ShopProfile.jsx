@@ -59,7 +59,7 @@ export default function ShopProfile({ guest = false }) {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
         </Link>
         {isGuestView && (
-          <Link to="/auth/login" className="absolute top-3 right-3 flex items-center gap-1 text-xs font-semibold bg-white/90 backdrop-blur text-gray-900 px-3 py-1.5 rounded-full">
+          <Link to="/auth/login" className="absolute top-3 right-3 flex items-center gap-1 text-xs font-semibold bg-white/90 backdrop-blur text-afri-secondary px-3 py-1.5 rounded-full">
             <LogIn size={13} /> Connexion
           </Link>
         )}
@@ -86,7 +86,7 @@ export default function ShopProfile({ guest = false }) {
         {/* Tags spécialités */}
         {(seller.product_specialties || []).length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-2">
-            {seller.product_specialties.map(s => <span key={s} className="text-xs bg-afri-soft text-gray-900 font-medium px-2.5 py-1 rounded-full">{s}</span>)}
+            {seller.product_specialties.map(s => <span key={s} className="text-xs bg-afri-soft text-afri-secondary font-medium px-2.5 py-1 rounded-full">{s}</span>)}
           </div>
         )}
 
@@ -183,7 +183,7 @@ export default function ShopProfile({ guest = false }) {
         {/* CTA bas de page (guest only) */}
         {isGuestView && (
           <div className="mt-6 var(--afri-success-bg) rounded-xl p-4 text-center">
-            <p className="text-sm text-gray-900 font-medium mb-3">
+            <p className="text-sm text-afri-secondary font-medium mb-3">
               Connectez-vous pour commander chez {seller.shop_name}
             </p>
             <Link to="/auth/register" className="inline-block bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors">

@@ -141,7 +141,7 @@ export default function AdminUsers() {
 
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl text-gray-900">Utilisateurs</h1>
+          <h1 className="font-display font-black text-xl text-afri-secondary">Utilisateurs</h1>
           <p className="text-xs text-gray-500">{users.length} inscrits</p>
         </div>
         <div className="flex gap-2">
@@ -149,7 +149,7 @@ export default function AdminUsers() {
             <RefreshCw size={16} className={`text-gray-500 ${loading ? "animate-spin" : ""}`} />
           </button>
           <a href="/api/admin/export/users"
-            className="flex items-center gap-1.5 text-xs font-semibold text-gray-900 border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft">
+            className="flex items-center gap-1.5 text-xs font-semibold text-afri-secondary border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft">
             <Download size={14} /> CSV
           </a>
         </div>
@@ -275,7 +275,7 @@ export default function AdminUsers() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-y-auto">
             <div className="p-5 border-b border-gray-100 flex items-center justify-between">
               <div>
-                <h2 className="font-display font-black text-lg text-gray-900">{selected.name}</h2>
+                <h2 className="font-display font-black text-lg text-afri-secondary">{selected.name}</h2>
                 <p className="text-xs text-gray-500">{selected.phone} · #{selected.id.slice(0, 8)}</p>
               </div>
               <button onClick={() => setSelected(null)} className="p-2 hover:bg-gray-100 rounded-lg text-gray-400">

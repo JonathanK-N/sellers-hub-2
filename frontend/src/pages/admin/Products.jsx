@@ -36,7 +36,7 @@ export default function AdminProducts() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl text-gray-900">Produits</h1>
+          <h1 className="font-display font-black text-xl text-afri-secondary">Produits</h1>
           <p className="text-xs text-gray-500">{products.length} produits</p>
         </div>
         <button onClick={load} className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className="text-gray-500" /></button>
@@ -85,7 +85,7 @@ export default function AdminProducts() {
                       </td>
                       <td className="px-4 py-3 text-gray-700">{p.seller_name || "—"}</td>
                       <td className="px-4 py-3 text-gray-600">{p.category}</td>
-                      <td className="px-4 py-3 font-semibold text-gray-900">{formatPrice(p.price, p.currency)}</td>
+                      <td className="px-4 py-3 font-semibold text-afri-secondary">{formatPrice(p.price, p.currency)}</td>
                       <td className="px-4 py-3 text-gray-600">{p.stock}</td>
                       <td className="px-4 py-3">
                         <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
@@ -115,7 +115,7 @@ export default function AdminProducts() {
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-y-auto">
             <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="font-display font-black text-lg text-gray-900">{selected.name}</h2>
+              <h2 className="font-display font-black text-lg text-afri-secondary">{selected.name}</h2>
               <button onClick={() => setSelected(null)} className="p-2 hover:bg-gray-100 rounded-lg text-gray-500">✕</button>
             </div>
             <div className="p-5 space-y-4">

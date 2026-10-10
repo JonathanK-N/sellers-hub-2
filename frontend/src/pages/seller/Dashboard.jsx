@@ -46,10 +46,10 @@ export default function SellerDashboard() {
 
         {/* Profile quick actions */}
         <div className="flex gap-2">
-          <Link to="/seller/edit-profile" className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-gray-900 shadow-sm">
+          <Link to="/seller/edit-profile" className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-sm">
             <Pencil size={15} /> Modifier le profil
           </Link>
-          <Link to={`/shop/${data.shop?.id}`} className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-gray-900 shadow-sm">
+          <Link to={`/shop/${data.shop?.id}`} className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-sm">
             <Eye size={15} /> Voir ma boutique
           </Link>
         </div>
@@ -57,7 +57,7 @@ export default function SellerDashboard() {
         <Link
           to="/seller/deliverer-applications"
           data-testid="goto-deliverer-applications"
-          className="flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-gray-900 shadow-sm"
+          className="flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-sm"
         >
           <Truck size={15} /> Candidatures livreurs
         </Link>
@@ -125,7 +125,7 @@ export default function SellerDashboard() {
                     <div className="text-sm font-semibold text-gray-900 truncate">{o.items[0]?.name}</div>
                     <div className="text-[10px] text-gray-500 uppercase font-bold mt-0.5">{o.status}</div>
                   </div>
-                  <div className="font-display font-bold text-gray-900">{formatPrice(o.total_amount, o.currency)}</div>
+                  <div className="font-display font-bold text-afri-secondary">{formatPrice(o.total_amount, o.currency)}</div>
                 </button>
               ))}
             </div>
@@ -158,7 +158,7 @@ function Stat({ icon: Icon, label, value, sub }) {
       <div className="w-9 h-9 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center">
         <Icon size={18} />
       </div>
-      <div className="font-display font-black text-xl text-gray-900 mt-2">{value}</div>
+      <div className="font-display font-black text-xl text-afri-secondary mt-2">{value}</div>
       <div className="text-xs text-gray-600">{label}</div>
       {sub && <div className="text-[10px] text-gray-400 mt-0.5">{sub}</div>}
     </div>

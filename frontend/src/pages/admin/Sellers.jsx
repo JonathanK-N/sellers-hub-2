@@ -48,7 +48,7 @@ export default function AdminSellers() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl text-gray-900">Vendeurs & Boutiques</h1>
+          <h1 className="font-display font-black text-xl text-afri-secondary">Vendeurs & Boutiques</h1>
           <p className="text-xs text-gray-500">{sellers.length} boutiques</p>
         </div>
       </header>
@@ -108,7 +108,7 @@ export default function AdminSellers() {
                     }`}>
                       KYC {s.kyc_status}
                     </span>
-                    <button onClick={() => openDetail(s)} className="flex items-center gap-1.5 text-xs font-semibold text-gray-900 hover:underline">
+                    <button onClick={() => openDetail(s)} className="flex items-center gap-1.5 text-xs font-semibold text-afri-secondary hover:underline">
                       <Eye size={14} /> Voir détails
                     </button>
                   </div>
@@ -134,7 +134,7 @@ export default function AdminSellers() {
                 </div>
                 <div className="pb-2">
                   <div className="flex items-center gap-2">
-                    <h2 className="font-display font-black text-xl text-gray-900">{selected.shop_name}</h2>
+                    <h2 className="font-display font-black text-xl text-afri-secondary">{selected.shop_name}</h2>
                     {selected.badge_verified && <ShieldCheck size={18} className="text-green-600" />}
                     {selected.premium && <Crown size={16} className="text-afri-accent" />}
                   </div>
@@ -164,7 +164,7 @@ export default function AdminSellers() {
                   <div className="text-xs font-semibold text-gray-500 mb-2">Spécialités</div>
                   <div className="flex flex-wrap gap-1.5">
                     {selected.specialties.map((sp) => (
-                      <span key={sp} className="text-xs bg-afri-soft text-gray-900 px-2 py-0.5 rounded-full">{sp}</span>
+                      <span key={sp} className="text-xs bg-afri-soft text-afri-secondary px-2 py-0.5 rounded-full">{sp}</span>
                     ))}
                   </div>
                 </div>

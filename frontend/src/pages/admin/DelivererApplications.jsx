@@ -69,7 +69,7 @@ export default function AdminDelivererApplications() {
           </button>
         )}
         <div>
-          <h1 className="font-display font-black text-xl lg:text-2xl text-gray-900">Candidatures livreurs — Réseau AfriMarket</h1>
+          <h1 className="font-display font-black text-xl lg:text-2xl text-afri-secondary">Candidatures livreurs — Réseau AfriMarket</h1>
           <p className="text-xs text-gray-500 mt-0.5">Validez les candidats pour le réseau de livreurs indépendants</p>
         </div>
       </header>

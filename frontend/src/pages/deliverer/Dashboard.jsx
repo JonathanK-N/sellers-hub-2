@@ -11,7 +11,7 @@ const STATUS_FLOW = {
   assigned: { label: "À récupérer", color: "bg-[#E6F1FB] text-[#0C447C]", next: "picked-up", nextLabel: "Colis récupéré" },
   picked_up: { label: "Récupéré", color: "bg-[#FAEEDA] text-[#633806]", next: "en-route", nextLabel: "Je suis en route" },
   out_for_delivery: { label: "En livraison", color: "bg-[#FAEEDA] text-[#633806]", next: "confirm", nextLabel: "Confirmer livraison" },
-  delivered: { label: "Livré", color: "bg-afri-soft text-gray-900", next: null },
+  delivered: { label: "Livré", color: "bg-afri-soft text-afri-secondary", next: null },
 };
 
 export default function DelivererDashboard() {
@@ -223,7 +223,7 @@ export default function DelivererDashboard() {
                     </div>
                     <div className="flex items-center justify-between pt-1 border-t border-gray-50">
                       <span className="text-xs text-gray-400">{timeAgo(d.created_at)}</span>
-                      <span className="font-display font-black text-gray-900">{formatPrice(d.total_amount, d.currency)}</span>
+                      <span className="font-display font-black text-afri-secondary">{formatPrice(d.total_amount, d.currency)}</span>
                     </div>
 
                     {codeFor === d.id ? (
@@ -298,7 +298,7 @@ function StatMini({ icon: Icon, label, value, small }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center">
       <Icon size={16} className="text-afri-primary mx-auto" />
-      <div className={`font-display font-black text-gray-900 mt-1 ${small ? "text-sm" : "text-xl"}`}>{value}</div>
+      <div className={`font-display font-black text-afri-secondary mt-1 ${small ? "text-sm" : "text-xl"}`}>{value}</div>
       <div className="text-[10px] text-gray-500">{label}</div>
     </div>
   );

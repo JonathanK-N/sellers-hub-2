@@ -68,7 +68,7 @@ export default function BuyerKycVerification() {
         <Link to="/buyer/profile" className="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="font-display font-black text-lg text-gray-900">Vérification d'identité</h1>
+        <h1 className="font-display font-black text-lg text-afri-secondary">Vérification d'identité</h1>
       </header>
 
       <div className="px-4 mt-4 space-y-4">
@@ -77,7 +77,7 @@ export default function BuyerKycVerification() {
             <ShieldCheck size={22} />
           </div>
           <div>
-            <div className="text-xs uppercase font-bold text-gray-900">Statut actuel</div>
+            <div className="text-xs uppercase font-bold text-afri-secondary">Statut actuel</div>
             <span data-testid="buyer-kyc-current-status" className={`inline-block mt-1 text-xs font-bold px-2.5 py-1 rounded-full ${lbl.color}`}>
               {lbl.label}
             </span>
@@ -88,7 +88,7 @@ export default function BuyerKycVerification() {
         </section>
 
         <p className="text-xs text-gray-500 leading-relaxed">
-          Faites vérifier votre identité pour obtenir le badge <span className="font-semibold text-gray-900">Vérifié</span>, visible par les vendeurs et qui renforce la confiance lors de vos commandes.
+          Faites vérifier votre identité pour obtenir le badge <span className="font-semibold text-afri-secondary">Vérifié</span>, visible par les vendeurs et qui renforce la confiance lors de vos commandes.
         </p>
 
         <div className="space-y-3">
@@ -148,7 +148,7 @@ export default function BuyerKycVerification() {
         {status.buyer_kyc_status === "verified" && (
           <div className="rounded-xl var(--afri-success-bg) border border-afri-primary/30 p-4 flex items-start gap-3" data-testid="buyer-kyc-verified-banner">
             <ShieldCheck size={18} className="text-green-600 shrink-0 mt-0.5" />
-            <div className="text-xs text-gray-900">
+            <div className="text-xs text-afri-secondary">
               <p className="font-semibold">Profil vérifié</p>
               <p className="mt-0.5 opacity-80">Votre badge Vérifié est visible par les vendeurs.</p>
             </div>

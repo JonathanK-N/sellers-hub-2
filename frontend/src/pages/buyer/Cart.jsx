@@ -70,7 +70,7 @@ export default function Cart() {
                         <div className="flex-1 min-w-0">
                           <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">{it.name}</h3>
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="text-sm font-bold text-gray-900">
+                            <span className="text-sm font-bold text-afri-secondary">
                               {formatPrice(amount, currency)}
                             </span>
                             {it.currency === "USD" && (
@@ -140,7 +140,7 @@ export default function Cart() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-600">Total</span>
               <div className="text-right">
-                <span className="font-display font-black text-xl text-gray-900" data-testid="cart-total">
+                <span className="font-display font-black text-xl text-afri-secondary" data-testid="cart-total">
                   {checkoutCurrency === "USD"
                     ? formatPrice(totalUSD, "USD")
                     : formatPrice(totalFC, "FC")}

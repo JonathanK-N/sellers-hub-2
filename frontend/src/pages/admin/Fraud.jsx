@@ -76,7 +76,7 @@ export default function AdminFraud() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div>
-          <h1 className="font-display font-black text-xl lg:text-2xl text-gray-900">Détection de fraude</h1>
+          <h1 className="font-display font-black text-xl lg:text-2xl text-afri-secondary">Détection de fraude</h1>
           <p className="text-xs text-gray-500 mt-0.5">Scoring automatique des comptes à risque</p>
         </div>
         <button

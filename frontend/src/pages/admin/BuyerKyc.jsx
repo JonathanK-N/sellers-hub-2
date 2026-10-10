@@ -39,7 +39,7 @@ export default function AdminBuyerKyc() {
     <div className="min-h-screen bg-gray-50 lg:pl-[250px]">
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10">
-        <h1 className="font-display font-black text-xl lg:text-2xl text-gray-900">Vérification identité acheteurs</h1>
+        <h1 className="font-display font-black text-xl lg:text-2xl text-afri-secondary">Vérification identité acheteurs</h1>
         <p className="text-xs text-gray-500 mt-0.5">Validez les profils pour attribuer le badge Vérifié</p>
       </header>
       <main className="p-6 lg:p-10 max-w-7xl">

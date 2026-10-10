@@ -114,7 +114,7 @@ export default function SellerSetup() {
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {form.product_specialties.map(s => (
-                  <span key={s} className="flex items-center gap-1 bg-afri-soft text-gray-900 text-xs font-medium px-3 py-1.5 rounded-full">
+                  <span key={s} className="flex items-center gap-1 bg-afri-soft text-afri-secondary text-xs font-medium px-3 py-1.5 rounded-full">
                     {s}<button onClick={() => set("product_specialties", form.product_specialties.filter(x => x !== s))}><X size={12} /></button>
                   </span>
                 ))}
@@ -164,7 +164,7 @@ export default function SellerSetup() {
               </div>
             </div>
             <div className="bg-afri-soft rounded-lg p-3">
-              <p className="text-xs text-gray-900"><strong>Astuce GPS :</strong> Ouvre Google Maps, appuie longuement sur ta boutique, et copie les coordonnées affichées en bas de l'écran.</p>
+              <p className="text-xs text-afri-secondary"><strong>Astuce GPS :</strong> Ouvre Google Maps, appuie longuement sur ta boutique, et copie les coordonnées affichées en bas de l'écran.</p>
             </div>
           </div>
         )}
@@ -190,7 +190,7 @@ export default function SellerSetup() {
               ))}
             </div>
             <div className="bg-afri-soft rounded-lg p-3">
-              <p className="text-xs text-gray-900">Ces liens apparaîtront sur votre page boutique publique et permettront aux clients de vous contacter directement.</p>
+              <p className="text-xs text-afri-secondary">Ces liens apparaîtront sur votre page boutique publique et permettront aux clients de vous contacter directement.</p>
             </div>
           </div>
         )}

@@ -7,7 +7,7 @@ export default function PaymentFailed() {
       <div className="w-16 h-16 rounded-full bg-[#FCEBEB] text-[#791F1F] flex items-center justify-center mx-auto">
         <XCircle size={32} />
       </div>
-      <h1 className="font-display font-black text-xl text-gray-900 mt-4">Paiement échoué</h1>
+      <h1 className="font-display font-black text-xl text-afri-secondary mt-4">Paiement échoué</h1>
       <p className="text-gray-500 text-sm mt-2">
         Le paiement n'a pas pu être finalisé. Aucun montant n'a été débité. Vous pouvez réessayer.
       </p>

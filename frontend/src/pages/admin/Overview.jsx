@@ -32,7 +32,7 @@ export default function AdminOverview() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl lg:text-2xl text-gray-900">Vue d'ensemble</h1>
+          <h1 className="font-display font-black text-xl lg:text-2xl text-afri-secondary">Vue d'ensemble</h1>
           <p className="text-xs text-gray-500 mt-0.5">AfriMarket · Administration</p>
         </div>
         <button onClick={load} className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className={`text-gray-500 ${loading ? "animate-spin" : ""}`} /></button>
@@ -60,7 +60,7 @@ export default function AdminOverview() {
                   <div className="w-10 h-10 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center"><TrendingUp size={20} /></div>
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wide text-gray-500">Commission totale</div>
-                    <div className="font-display font-black text-3xl text-gray-900 mt-1">{formatPrice(data.total_commission, "FC")}</div>
+                    <div className="font-display font-black text-3xl text-afri-secondary mt-1">{formatPrice(data.total_commission, "FC")}</div>
                   </div>
                 </div>
               </div>
@@ -69,7 +69,7 @@ export default function AdminOverview() {
                   <div className="w-10 h-10 rounded-lg bg-[#FAEEDA] text-[#BA7517] flex items-center justify-center"><Crown size={20} /></div>
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wide text-gray-500">Revenus Premium</div>
-                    <div className="font-display font-black text-3xl text-gray-900 mt-1">{formatPrice(data.premium_revenue || 0, "FC")}</div>
+                    <div className="font-display font-black text-3xl text-afri-secondary mt-1">{formatPrice(data.premium_revenue || 0, "FC")}</div>
                     <div className="text-xs text-gray-500 mt-0.5">{data.premium_active || 0} boutiques Premium actives</div>
                   </div>
                 </div>
@@ -108,7 +108,7 @@ export default function AdminOverview() {
                         <div className="text-sm text-gray-700">{o.buyer_name || "—"} → {o.seller_name || "—"}</div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="font-semibold text-gray-900 text-sm">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</span>
+                        <span className="font-semibold text-afri-secondary text-sm">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</span>
                         <span className="text-xs text-gray-400">{timeAgo(o.created_at)}</span>
                       </div>
                     </div>
@@ -130,7 +130,7 @@ export default function AdminOverview() {
                         <div className="text-sm font-semibold text-gray-900">{COUNTRY_NAMES[code]}</div>
                         <div className="text-xs text-gray-500">{stats.orders} commandes</div>
                       </div>
-                      <div className="font-display font-bold text-gray-900">{formatPrice(stats.commission, "FC")}</div>
+                      <div className="font-display font-bold text-afri-secondary">{formatPrice(stats.commission, "FC")}</div>
                     </div>
                   );
                 })}
@@ -149,7 +149,7 @@ function Stat({ icon: Icon, label, value, highlight }) {
       <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${highlight ? "bg-amber-50 text-afri-accent" : "var(--afri-success-bg) text-afri-primary"}`}>
         <Icon size={18} />
       </div>
-      <div className="font-display font-black text-2xl text-gray-900 mt-2">{value ?? "—"}</div>
+      <div className="font-display font-black text-2xl text-afri-secondary mt-2">{value ?? "—"}</div>
       <div className="text-xs text-gray-500">{label}</div>
     </div>
   );

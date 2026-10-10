@@ -1,0 +1,6 @@
+{
+  "requested_at": "2026-10-10",
+  "purpose": "Build preserved A and B reference versions without changing their source or production configuration.",
+  "api_environment": "isolated synthetic staging",
+  "warning": "Reference web builds do not certify historical feature behavior."
+}

@@ -140,7 +140,7 @@ export default function SellerOrders() {
                         <ShieldCheck size={12} className={o.escrow_status === "released" ? "text-green-600" : "text-gray-400"} />
                         {o.escrow_status === "released" ? "Payé" : "En escrow"}
                       </div>
-                      <span className="font-display font-bold text-gray-900">
+                      <span className="font-display font-bold text-afri-secondary">
                         {formatPrice(o.amount_due ?? o.total_amount, o.currency)}
                       </span>
                     </div>

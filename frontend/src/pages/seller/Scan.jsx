@@ -116,13 +116,13 @@ export default function SellerScan() {
           <CheckCircle2 size={48} className="text-green-600" />
         </div>
         <div>
-          <h2 className="font-display font-black text-2xl text-gray-900">Retrait validé !</h2>
+          <h2 className="font-display font-black text-2xl text-afri-secondary">Retrait validé !</h2>
           <p className="text-gray-600 mt-2">
             Commande <span className="font-bold">#{success.orderRef}</span>
             <br />confirmée pour <span className="font-semibold">{success.buyerName}</span>.
           </p>
           {success.total > 0 && (
-            <p className="text-2xl font-display font-black text-gray-900 mt-4">
+            <p className="text-2xl font-display font-black text-afri-secondary mt-4">
               {new Intl.NumberFormat("fr-FR").format(success.total)}{" "}
               <span className="text-lg">{success.currency}</span>
             </p>

@@ -21,8 +21,8 @@ const STATUS_COLORS = {
   preparing: "bg-[#FAEEDA] text-[#633806]",
   out_for_delivery: "bg-[#FAEEDA] text-[#633806]",
   ready_for_pickup: "bg-[#FAEEDA] text-[#633806]",
-  delivered: "bg-afri-soft text-gray-900",
-  collected: "bg-afri-soft text-gray-900",
+  delivered: "bg-afri-soft text-afri-secondary",
+  collected: "bg-afri-soft text-afri-secondary",
   cancelled: "bg-[#FCEBEB] text-[#791F1F]",
 };
 
@@ -100,7 +100,7 @@ export default function OrderGroup() {
           <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
             <Lock size={18} />
           </div>
-          <div className="text-xs text-gray-900">
+          <div className="text-xs text-afri-secondary">
             <p className="font-semibold">Paiement réparti en escrow</p>
             <p className="mt-0.5 leading-relaxed">
               Le total de {formatPrice(group.grand_total, currency)} est bloqué. Chaque vendeur est payé séparément à la confirmation de sa propre livraison.
@@ -145,7 +145,7 @@ export default function OrderGroup() {
                   {o.items.length} article{o.items.length > 1 ? "s" : ""} · {o.delivery_mode === "delivery" ? "Livraison" : "Retrait"}
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="font-display font-black text-base text-gray-900">
+                  <span className="font-display font-black text-base text-afri-secondary">
                     {formatPrice(o.amount_due ?? o.total_amount, currency)}
                   </span>
                   <span className="text-afri-primary flex items-center gap-1 text-sm font-medium">
@@ -157,7 +157,7 @@ export default function OrderGroup() {
           ))}
         </div>
 
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex justify-between font-display font-black text-lg text-gray-900">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex justify-between font-display font-black text-lg text-afri-secondary">
           <span>Total payé</span>
           <span data-testid="group-total">{formatPrice(group.grand_total, currency)}</span>
         </section>

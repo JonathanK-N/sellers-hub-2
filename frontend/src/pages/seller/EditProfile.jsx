@@ -167,7 +167,7 @@ export default function EditProfile() {
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
               {form.product_specialties.map(s => (
-                <span key={s} className="flex items-center gap-1 bg-afri-soft text-gray-900 text-xs font-medium px-3 py-1.5 rounded-full">
+                <span key={s} className="flex items-center gap-1 bg-afri-soft text-afri-secondary text-xs font-medium px-3 py-1.5 rounded-full">
                   {s}<button onClick={() => set("product_specialties", form.product_specialties.filter(x => x !== s))}><X size={12} /></button>
                 </span>
               ))}
@@ -215,7 +215,7 @@ export default function EditProfile() {
                 <Package size={16} />
               </div>
               <div className="flex-1">
-                <p className={`text-sm font-semibold ${!isAfrimarket ? "text-gray-900" : "text-gray-700"}`}>
+                <p className={`text-sm font-semibold ${!isAfrimarket ? "text-afri-secondary" : "text-gray-700"}`}>
                   Je gère ma propre livraison
                 </p>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -259,7 +259,7 @@ export default function EditProfile() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <p className={`text-sm font-semibold ${isAfrimarket ? "text-gray-900" : "text-gray-700"}`}>
+                  <p className={`text-sm font-semibold ${isAfrimarket ? "text-afri-secondary" : "text-gray-700"}`}>
                     Réseau de livreurs AfriMarket
                   </p>
                   {!isPremium && (
@@ -338,7 +338,7 @@ const inp = "w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outlin
 function Section({ title, children }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-      <h3 className="text-sm font-bold text-gray-900 mb-3 pb-2 border-b border-gray-100">{title}</h3>
+      <h3 className="text-sm font-bold text-afri-secondary mb-3 pb-2 border-b border-gray-100">{title}</h3>
       <div className="space-y-3">{children}</div>
     </div>
   );

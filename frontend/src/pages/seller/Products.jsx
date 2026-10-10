@@ -59,7 +59,7 @@ export default function SellerProducts() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-semibold text-gray-900 line-clamp-1">{p.name}</div>
-                  <div className="text-sm font-bold text-gray-900">{formatPrice(p.price, p.currency)}</div>
+                  <div className="text-sm font-bold text-afri-secondary">{formatPrice(p.price, p.currency)}</div>
                   <div className="text-[10px] uppercase font-bold mt-1 text-gray-500">
                     Stock : <span className={p.stock > 0 ? "text-afri-primary" : "text-[#E24B4A]"}>{p.stock}</span>
                   </div>

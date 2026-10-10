@@ -194,7 +194,7 @@ export default function Checkout() {
               <Banknote size={20} />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-bold text-gray-900">Paiement en espèces</p>
+              <p className="text-sm font-bold text-afri-secondary">Paiement en espèces</p>
               <p className="text-xs text-afri-primary">À la livraison / au retrait · en <strong>{checkoutCurrency}</strong></p>
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function Checkout() {
           <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={18} />
           </div>
-          <div className="text-xs text-gray-900">
+          <div className="text-xs text-afri-secondary">
             <p className="font-semibold">Paiement sécurisé</p>
             <p className="mt-0.5 leading-relaxed">
               Vous payez en espèces en <strong>{checkoutCurrency}</strong> à la livraison ou au retrait.
@@ -232,7 +232,7 @@ export default function Checkout() {
               Taux BCC · 1 USD = {new Intl.NumberFormat("fr-FR").format(Math.round(fxRate))} FC
             </p>
           )}
-          <div className="border-t border-gray-100 pt-2 mt-2 flex justify-between font-display font-black text-lg text-gray-900">
+          <div className="border-t border-gray-100 pt-2 mt-2 flex justify-between font-display font-black text-lg text-afri-secondary">
             <span>Total</span>
             <span data-testid="checkout-total">{formatPrice(payableTotalDisplay, checkoutCurrency)}</span>
           </div>
@@ -269,7 +269,7 @@ function ModeBtn({ icon: Icon, label, active, disabled, onClick, testid }) {
           : "border-gray-200 bg-white"
       }`}>
       <Icon size={22} className={active && !disabled ? "text-afri-primary" : "text-gray-500"} />
-      <span className={`text-sm font-semibold ${active && !disabled ? "text-gray-900" : "text-gray-700"}`}>{label}</span>
+      <span className={`text-sm font-semibold ${active && !disabled ? "text-afri-secondary" : "text-gray-700"}`}>{label}</span>
     </button>
   );
 }

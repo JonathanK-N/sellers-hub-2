@@ -59,7 +59,7 @@ export default function ForgotPassword() {
         <div className="w-12 h-12 rounded-xl bg-afri-secondary text-afri-primary flex items-center justify-center font-black text-xl mb-3">
           A
         </div>
-        <h1 className="font-display font-black text-xl text-gray-900">Mot de passe oublié</h1>
+        <h1 className="font-display font-black text-xl text-afri-secondary">Mot de passe oublié</h1>
         <p className="text-sm text-gray-500 mt-1">Réinitialisez votre accès AfriMarket</p>
       </header>
 
