@@ -68,7 +68,7 @@ export default function SellerWallet() {
       <TopBar title="Portefeuille" showCart={false} />
 
       <div className="px-4 mt-4 space-y-3">
-        <section className="rounded-2xl bg-gradient-to-br from-[#0b0b0d] to-[#f97316] text-white p-5 shadow">
+        <section className="rounded-2xl bg-gradient-to-br from-afri-secondary to-afri-primary text-white p-5 shadow">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-emerald-100 text-xs uppercase tracking-wider font-bold">
               <WalletIcon size={14} /> Solde disponible
@@ -100,7 +100,7 @@ export default function SellerWallet() {
             <div className="divide-y divide-gray-100">
               {txs.map((t) => (
                 <div key={t.id} className="py-3 flex items-center gap-3" data-testid={`tx-${t.id}`}>
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center ${t.type === "sale" ? "bg-orange-50 text-[#f97316]" : "bg-amber-50 text-[#f97316]"}`}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center ${t.type === "sale" ? "var(--afri-success-bg) text-afri-primary" : "bg-amber-50 text-afri-accent"}`}>
                     {t.type === "sale" ? <TrendingUp size={16} /> : <ArrowDownToLine size={16} />}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -134,7 +134,7 @@ export default function SellerWallet() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder={`Max ${balance.available.toFixed(0)}`}
-                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]"
+                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
               />
             </div>
             <div>
@@ -144,7 +144,7 @@ export default function SellerWallet() {
                 value={number}
                 onChange={(e) => setNumber(e.target.value)}
                 placeholder="Ex: +243812345678"
-                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]"
+                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
               />
             </div>
             <div>
@@ -153,7 +153,7 @@ export default function SellerWallet() {
                 data-testid="withdraw-operator-select"
                 value={operator}
                 onChange={(e) => setOperator(e.target.value)}
-                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]"
+                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
               >
                 {operators.map((op) => <option key={op}>{op}</option>)}
               </select>
@@ -162,7 +162,7 @@ export default function SellerWallet() {
               data-testid="confirm-withdraw-btn"
               disabled={loading}
               onClick={submit}
-              className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold disabled:opacity-50"
+              className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold disabled:opacity-50"
             >
               {loading ? "Traitement…" : "Confirmer le retrait"}
             </button>

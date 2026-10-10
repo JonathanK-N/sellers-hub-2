@@ -67,7 +67,7 @@ export default function SellerDashboard() {
           onClick={() => nav("/seller/premium")}
           data-testid="premium-banner"
           className="w-full text-left rounded-xl p-3 flex items-center gap-3 transition-opacity hover:opacity-90"
-          style={{ background: data.shop.premium ? "linear-gradient(135deg, #f97316 0%, #c2410c 100%)" : "#0b0b0d" }}
+          style={{ background: data.shop.premium ? "linear-gradient(135deg, var(--afri-accent) 0%, #BA7517 100%)" : "var(--afri-secondary)" }}
         >
           <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
             <Crown size={18} className="text-white" />
@@ -97,7 +97,7 @@ export default function SellerDashboard() {
         <button
           data-testid="add-product-quick-btn"
           onClick={() => nav("/seller/products/new")}
-          className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2"
         >
           <Plus size={18} /> Ajouter un produit
         </button>
@@ -119,7 +119,7 @@ export default function SellerDashboard() {
                   key={o.id}
                   onClick={() => nav(`/buyer/orders/${o.id}`)}
                   data-testid={`recent-order-${o.id}`}
-                  className="w-full text-left p-3 rounded-lg border border-gray-100 hover:border-[#f97316] transition-colors flex justify-between items-center"
+                  className="w-full text-left p-3 rounded-lg border border-gray-100 hover:border-afri-primary transition-colors flex justify-between items-center"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-semibold text-gray-900 truncate">{o.items[0]?.name}</div>
@@ -133,7 +133,7 @@ export default function SellerDashboard() {
         </section>
 
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-full ${data.shop.badge_verified ? "bg-[#0b0b0d]" : "bg-gray-200"} text-white flex items-center justify-center`}>
+          <div className={`w-10 h-10 rounded-full ${data.shop.badge_verified ? "bg-afri-primary" : "bg-gray-200"} text-white flex items-center justify-center`}>
             <ShieldCheck size={18} />
           </div>
           <div>
@@ -155,7 +155,7 @@ export default function SellerDashboard() {
 function Stat({ icon: Icon, label, value, sub }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-      <div className="w-9 h-9 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center">
+      <div className="w-9 h-9 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center">
         <Icon size={18} />
       </div>
       <div className="font-display font-black text-xl text-gray-900 mt-2">{value}</div>
@@ -170,9 +170,9 @@ function QuickAction({ icon: Icon, label, onClick, testid }) {
     <button
       onClick={onClick}
       data-testid={testid}
-      className="bg-white rounded-xl border border-gray-100 shadow-sm py-3 flex flex-col items-center gap-1.5 text-xs font-semibold text-gray-700 hover:border-[#f97316] hover:text-[#f97316] transition-colors"
+      className="bg-white rounded-xl border border-gray-100 shadow-sm py-3 flex flex-col items-center gap-1.5 text-xs font-semibold text-gray-700 hover:border-afri-primary hover:text-afri-primary transition-colors"
     >
-      <Icon size={20} className="text-[#f97316]" />
+      <Icon size={20} className="text-afri-primary" />
       {label}
     </button>
   );

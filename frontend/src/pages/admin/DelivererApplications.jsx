@@ -87,21 +87,21 @@ export default function AdminDelivererApplications() {
                   key={a.id}
                   onClick={() => openDetail(a.id)}
                   data-testid={`application-card-${a.id}`}
-                  className="text-left bg-white rounded-xl border border-gray-200 shadow-sm p-5 hover:border-[#f97316] transition-colors"
+                  className="text-left bg-white rounded-xl border border-gray-200 shadow-sm p-5 hover:border-afri-primary transition-colors"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-12 h-12 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center shrink-0">
                       <Truck size={20} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-display font-bold text-gray-900 truncate">{a.full_name}</div>
                       <div className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
-                        <Phone size={11} /> {a.phone} {a.phone_verified && <Check size={11} className="text-[#f97316]" />}
+                        <Phone size={11} /> {a.phone} {a.phone_verified && <Check size={11} className="text-afri-primary" />}
                       </div>
                       <div className="text-xs text-gray-600 mt-1 capitalize">{a.vehicle}</div>
                     </div>
                   </div>
-                  <div className="mt-3 text-[10px] font-semibold text-[#f97316] uppercase tracking-wide">
+                  <div className="mt-3 text-[10px] font-semibold text-afri-primary uppercase tracking-wide">
                     Voir le dossier →
                   </div>
                 </button>
@@ -114,7 +114,7 @@ export default function AdminDelivererApplications() {
           <div className="max-w-3xl">
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-14 h-14 rounded-xl bg-orange-50 text-[#f97316] flex items-center justify-center">
+                <div className="w-14 h-14 rounded-xl var(--afri-success-bg) text-afri-primary flex items-center justify-center">
                   <Truck size={24} />
                 </div>
                 <div>
@@ -147,7 +147,7 @@ export default function AdminDelivererApplications() {
               </div>
 
               <div className="flex items-center gap-2 text-xs text-gray-500 mb-6 bg-gray-50 rounded-lg p-3">
-                <Check size={14} className={detail.contract_accepted ? "text-[#f97316]" : "text-gray-300"} />
+                <Check size={14} className={detail.contract_accepted ? "text-afri-primary" : "text-gray-300"} />
                 Contrat {detail.contract_accepted ? "accepté" : "non accepté"} par le candidat
               </div>
 
@@ -155,7 +155,7 @@ export default function AdminDelivererApplications() {
                 <button
                   data-testid={`approve-application-${detail.id}`}
                   onClick={() => approve(detail.id)}
-                  className="bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 text-sm font-semibold flex items-center justify-center gap-2"
+                  className="bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 text-sm font-semibold flex items-center justify-center gap-2"
                 >
                   <Check size={16} /> Approuver
                 </button>
@@ -183,7 +183,7 @@ function InfoRow({ icon: Icon, label, value, verified, capitalize, span2 }) {
       </div>
       <div className={`text-sm text-gray-900 mt-0.5 flex items-center gap-1.5 ${capitalize ? "capitalize" : ""}`}>
         {value}
-        {verified && <Check size={13} className="text-[#f97316]" />}
+        {verified && <Check size={13} className="text-afri-primary" />}
       </div>
     </div>
   );

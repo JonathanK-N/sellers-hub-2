@@ -112,7 +112,7 @@ export default function SellerScan() {
   if (success) {
     return (
       <div className="mobile-shell flex flex-col items-center justify-center px-6 text-center gap-6 bg-white min-h-screen">
-        <div className="w-24 h-24 rounded-full bg-orange-50 flex items-center justify-center">
+        <div className="w-24 h-24 rounded-full var(--afri-success-bg) flex items-center justify-center">
           <CheckCircle2 size={48} className="text-green-600" />
         </div>
         <div>
@@ -127,14 +127,14 @@ export default function SellerScan() {
               <span className="text-lg">{success.currency}</span>
             </p>
           )}
-          <p className="text-sm text-[#f97316] font-semibold mt-2">
+          <p className="text-sm text-afri-primary font-semibold mt-2">
             Paiement libéré au vendeur ✓
           </p>
         </div>
         <div className="w-full space-y-3 mt-4">
           <button
             onClick={() => nav("/seller/orders")}
-            className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold flex items-center justify-center gap-2 transition-colors"
+            className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold flex items-center justify-center gap-2 transition-colors"
           >
             <Package size={18} /> Voir mes commandes
           </button>
@@ -167,7 +167,7 @@ export default function SellerScan() {
         </Link>
         <h1 className="font-display font-bold text-lg">Scanner QR retrait</h1>
         {busy && (
-          <span className="ml-auto text-xs text-[#f97316] font-semibold animate-pulse">
+          <span className="ml-auto text-xs text-afri-primary font-semibold animate-pulse">
             Validation…
           </span>
         )}
@@ -179,7 +179,7 @@ export default function SellerScan() {
             data-testid="scan-mode-camera"
             onClick={() => { startedRef.current = false; setMode("camera"); }}
             className={`py-2.5 rounded-lg text-sm font-semibold transition-colors ${
-              mode === "camera" ? "bg-[#0b0b0d]" : "bg-white/10"
+              mode === "camera" ? "bg-afri-primary" : "bg-white/10"
             }`}
           >
             <Camera size={14} className="inline mr-1" /> Caméra
@@ -188,7 +188,7 @@ export default function SellerScan() {
             data-testid="scan-mode-manual"
             onClick={() => setMode("manual")}
             className={`py-2.5 rounded-lg text-sm font-semibold transition-colors ${
-              mode === "manual" ? "bg-[#0b0b0d]" : "bg-white/10"
+              mode === "manual" ? "bg-afri-primary" : "bg-white/10"
             }`}
           >
             <Keyboard size={14} className="inline mr-1" /> Manuel
@@ -219,13 +219,13 @@ export default function SellerScan() {
               onChange={(e) => setManualToken(e.target.value)}
               placeholder="Collez le token ou l'URL complète ici…"
               rows={3}
-              className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316] resize-none"
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary resize-none"
             />
             <button
               data-testid="manual-scan-submit"
               disabled={busy || !manualToken.trim()}
               onClick={() => processQr(manualToken.trim())}
-              className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold disabled:opacity-50 transition-colors"
+              className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold disabled:opacity-50 transition-colors"
             >
               {busy ? "Validation…" : "Valider"}
             </button>

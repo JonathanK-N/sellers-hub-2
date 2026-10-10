@@ -3,16 +3,17 @@
 @tailwind utilities;
 
 :root {
+  --afri-primary-rgb: 29 158 117;
+  --afri-primary-hover-rgb: 22 130 96;
+  --afri-secondary-rgb: 8 80 65;
+  --afri-soft-rgb: 225 245 238;
+  --afri-accent-rgb: 239 159 39;
   --afri-primary: #1d9e75;
   --afri-primary-hover: #168260;
   --afri-secondary: #085041;
   --afri-accent: #ef9f27;
   --afri-error: #e24b4a;
   --afri-success-bg: #e1f5ee;
-  --afri-dark: #0b0b0d;
-  --afri-dark-2: #17171a;
-  --afri-orange: #f97316;
-  --afri-orange-hover: #ea580c;
 }
 
 html, body {
@@ -239,15 +240,15 @@ code {
 }
 .afri-btn:active { transform: scale(0.98); }
 .afri-btn-primary {
-  background-color: #0b0b0d;
+  background-color: var(--afri-primary);
   color: #fff;
 }
-.afri-btn-primary:hover { background-color: #1f2937; }
+.afri-btn-primary:hover { background-color: var(--afri-primary-hover); }
 .afri-btn-accent {
-  background-color: #f97316;
+  background-color: var(--afri-accent);
   color: #fff;
 }
-.afri-btn-accent:hover { background-color: #ea580c; }
+.afri-btn-accent:hover { background-color: #d98b1a; }
 
 /* Respect des preferences systeme de reduction d'animation */
 @media (prefers-reduced-motion: reduce) {
@@ -265,3 +266,6 @@ code {
   }
   .afri-skeleton::after { animation: none; }
 }
+
+/* Keyboard focus uses the historical dark green for a visible boundary. */
+:focus-visible { outline: 2px solid var(--afri-secondary); outline-offset: 3px; }

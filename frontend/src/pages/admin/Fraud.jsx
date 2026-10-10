@@ -27,7 +27,7 @@ const STATUS_LABEL = {
 
 function scoreColor(score) {
   if (score >= 90) return "#E24B4A";
-  if (score >= 70) return "#f97316";
+  if (score >= 70) return "var(--afri-accent)";
   return "#378ADD";
 }
 
@@ -83,7 +83,7 @@ export default function AdminFraud() {
           onClick={runScan}
           disabled={scanning}
           data-testid="fraud-scan-btn"
-          className="flex items-center gap-2 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50"
         >
           <RefreshCw size={16} className={scanning ? "animate-spin" : ""} />
           {scanning ? "Analyse…" : "Lancer un scan"}
@@ -94,7 +94,7 @@ export default function AdminFraud() {
         {stats && (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <StatCard label="Alertes totales" value={stats.total_alerts} />
-            <StatCard label="Alertes ouvertes" value={stats.open_alerts} accent="#f97316" />
+            <StatCard label="Alertes ouvertes" value={stats.open_alerts} accent="var(--afri-accent)" />
             <StatCard label="Critiques" value={stats.danger_alerts} accent="#E24B4A" />
             <StatCard label="Comptes suspendus" value={stats.suspended_users} accent="#A32D2D" />
           </div>
@@ -109,7 +109,7 @@ export default function AdminFraud() {
                   <XAxis dataKey="day" tickLine={false} axisLine={false} fontSize={11} stroke="#9ca3af" />
                   <Bar dataKey="count" radius={[4, 4, 0, 0]}>
                     {stats.trend.map((d, i) => (
-                      <Cell key={i} fill={d.count > 0 ? "#f97316" : "#D3D1C7"} />
+                      <Cell key={i} fill={d.count > 0 ? "var(--afri-primary)" : "#D3D1C7"} />
                     ))}
                   </Bar>
                 </BarChart>
@@ -203,7 +203,7 @@ function StatCard({ label, value, accent }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
       <div className="text-xs text-gray-500">{label}</div>
-      <div className="text-2xl font-display font-black mt-1" style={{ color: accent || "#0b0b0d" }}>
+      <div className="text-2xl font-display font-black mt-1" style={{ color: accent || "var(--afri-secondary)" }}>
         {value}
       </div>
     </div>

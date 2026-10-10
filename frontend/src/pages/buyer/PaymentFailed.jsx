@@ -15,7 +15,7 @@ export default function PaymentFailed() {
       <div className="mt-6 space-y-2">
         <Link
           to="/buyer/cart"
-          className="block w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors"
+          className="block w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold transition-colors"
         >
           Retour au panier
         </Link>

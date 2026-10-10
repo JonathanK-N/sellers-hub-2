@@ -28,10 +28,10 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
   return (
     <header
       data-testid="top-header"
-      className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 md:px-8 py-3 flex justify-between items-center shadow-md"
+      className="sticky top-0 z-40 bg-afri-secondary text-white px-4 md:px-8 py-3 flex justify-between items-center shadow-md"
     >
       <Link to="/buyer/home" className="flex items-center gap-2" data-testid="logo-link">
-        <div className="w-8 h-8 rounded-md bg-[#f97316] flex items-center justify-center font-black text-white">
+        <div className="w-8 h-8 rounded-md bg-afri-primary flex items-center justify-center font-black text-white">
           A
         </div>
         <span className="font-display font-black text-lg tracking-tight">{title}</span>
@@ -46,7 +46,7 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
         >
           <Bell size={20} />
           {notifCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-[#f97316] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white">
+            <span className="absolute -top-1 -right-1 bg-afri-accent text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white">
               {notifCount}
             </span>
           )}
@@ -63,7 +63,7 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
             {count > 0 && (
               <span
                 data-testid="cart-badge"
-                className="absolute -top-1 -right-1 bg-[#f97316] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1"
+                className="absolute -top-1 -right-1 bg-afri-accent text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1"
               >
                 {count}
               </span>

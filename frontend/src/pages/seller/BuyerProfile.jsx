@@ -24,7 +24,7 @@ export default function BuyerProfile() {
 
   return (
     <div className="mobile-shell pb-12">
-      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3">
+      <header className="sticky top-0 z-40 bg-afri-secondary text-white px-4 py-3 flex items-center gap-3">
         <Link to="/seller/orders" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center">
           <ArrowLeft size={20} />
         </Link>
@@ -34,7 +34,7 @@ export default function BuyerProfile() {
       <div className="px-4 mt-5">
         {/* Avatar + nom */}
         <div className="flex flex-col items-center text-center py-5">
-          <div className="w-20 h-20 rounded-full bg-orange-50 flex items-center justify-center mb-3">
+          <div className="w-20 h-20 rounded-full var(--afri-success-bg) flex items-center justify-center mb-3">
             <User size={36} className="text-gray-900" />
           </div>
           <h2 className="font-display font-black text-xl text-gray-900">{buyer.name}</h2>
@@ -55,7 +55,7 @@ export default function BuyerProfile() {
 
         {/* Historique commandes */}
         <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-          <ShoppingBag size={16} className="text-[#f97316]" /> Historique des commandes
+          <ShoppingBag size={16} className="text-afri-primary" /> Historique des commandes
         </h3>
         {orders.length === 0
           ? <p className="text-sm text-gray-400 text-center py-6">Aucune commande pour l'instant.</p>

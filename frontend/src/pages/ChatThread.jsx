@@ -48,7 +48,7 @@ export default function ChatThread() {
 
   return (
     <div className="mobile-shell !pb-0 flex flex-col h-screen">
-      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-afri-secondary text-white px-4 py-3 flex items-center gap-3 shadow-md">
         <Link to="/messages" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
@@ -65,7 +65,7 @@ export default function ChatThread() {
           const mine = m.from_user_id === user.id;
           return (
             <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm ${mine ? "bg-[#0b0b0d] text-white rounded-br-sm" : "bg-white border border-gray-100 text-gray-900 rounded-bl-sm"}`}>
+              <div className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm ${mine ? "bg-afri-primary text-white rounded-br-sm" : "bg-white border border-gray-100 text-gray-900 rounded-bl-sm"}`}>
                 {m.text}
                 <div className={`text-[9px] mt-1 ${mine ? "text-emerald-100" : "text-gray-400"}`}>
                   {new Date(m.created_at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
@@ -83,13 +83,13 @@ export default function ChatThread() {
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
           placeholder="Votre message…"
-          className="flex-1 border border-gray-300 rounded-full px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]"
+          className="flex-1 border border-gray-300 rounded-full px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
         />
         <button
           data-testid="chat-send-btn"
           disabled={sending || !text.trim()}
           onClick={send}
-          className="w-10 h-10 rounded-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white flex items-center justify-center disabled:opacity-50"
+          className="w-10 h-10 rounded-full bg-afri-primary hover:bg-afri-primary-hover text-white flex items-center justify-center disabled:opacity-50"
         >
           <Send size={18} />
         </button>

@@ -9,8 +9,8 @@ const STATUS_COLORS = {
   preparing:        "bg-amber-50 text-amber-700",
   ready_for_pickup: "bg-purple-50 text-purple-700",
   out_for_delivery: "bg-indigo-50 text-indigo-700",
-  delivered:        "bg-orange-50 text-[#f97316]",
-  collected:        "bg-orange-50 text-[#f97316]",
+  delivered:        "bg-afri-soft text-afri-primary",
+  collected:        "bg-afri-soft text-afri-primary",
   cancelled:        "bg-red-50 text-red-600",
 };
 const STATUS_LABELS = {
@@ -50,7 +50,7 @@ export default function AdminOrders() {
         </div>
         <div className="flex gap-2">
           <button onClick={load} className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className="text-gray-500" /></button>
-          <a href="/api/admin/export/orders" className="flex items-center gap-1.5 text-xs font-semibold text-gray-900 border border-[#0b0b0d] px-3 py-1.5 rounded-lg hover:bg-orange-50">
+          <a href="/api/admin/export/orders" className="flex items-center gap-1.5 text-xs font-semibold text-gray-900 border border-afri-primary px-3 py-1.5 rounded-lg hover:bg-afri-soft">
             <Download size={14} /> CSV
           </a>
         </div>
@@ -61,15 +61,15 @@ export default function AdminOrders() {
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="ID, acheteur, vendeur…"
-              className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]" />
+              className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
           </div>
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
-            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-[#f97316]">
+            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-afri-primary">
             <option value="all">Tous statuts</option>
             {Object.entries(STATUS_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
           <select value={modeFilter} onChange={(e) => setModeFilter(e.target.value)}
-            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-[#f97316]">
+            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-afri-primary">
             <option value="all">Tous modes</option>
             <option value="delivery">Livraison</option>
             <option value="collect">Retrait</option>
@@ -105,7 +105,7 @@ export default function AdminOrders() {
                     <td className="px-4 py-3 text-gray-600">{o.delivery_mode === "delivery" ? "🚚 Livraison" : "🏪 Retrait"}</td>
                     <td className="px-4 py-3 font-semibold text-gray-900">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</td>
                     <td className="px-4 py-3">
-                      <span className="text-[10px] font-bold uppercase bg-orange-50 text-gray-900 px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-bold uppercase bg-afri-soft text-gray-900 px-2 py-0.5 rounded-full">
                         {o.payment_method === "cash" ? "Cash" : o.payment_method}
                       </span>
                     </td>

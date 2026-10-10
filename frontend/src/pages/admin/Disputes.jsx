@@ -91,7 +91,7 @@ export default function AdminDisputes() {
                         <button
                           data-testid={`release-seller-${d.id}`}
                           onClick={() => resolve(d.id, "release_seller")}
-                          className="bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-2 text-sm font-semibold"
+                          className="bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-2 text-sm font-semibold"
                         >
                           Libérer vendeur
                         </button>

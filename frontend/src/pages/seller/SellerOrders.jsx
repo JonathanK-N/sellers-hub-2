@@ -61,7 +61,7 @@ function RateBuyerModal({ order, onClose, onRated }) {
         <div className="flex justify-center gap-2 my-5">
           {[1, 2, 3, 4, 5].map((n) => (
             <button key={n} data-testid={`rate-buyer-star-${n}`} onClick={() => setRating(n)}>
-              <Star size={32} className={n <= rating ? "text-[#f97316] fill-[#f97316]" : "text-gray-200"} />
+              <Star size={32} className={n <= rating ? "text-afri-accent fill-afri-accent" : "text-gray-200"} />
             </button>
           ))}
         </div>
@@ -69,7 +69,7 @@ function RateBuyerModal({ order, onClose, onRated }) {
           data-testid="submit-buyer-rating-btn"
           disabled={busy}
           onClick={submit}
-          className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold disabled:opacity-50"
+          className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold disabled:opacity-50"
         >
           {busy ? "Envoi…" : "Valider la note"}
         </button>
@@ -150,7 +150,7 @@ export default function SellerOrders() {
                     <button
                       data-testid={`rate-buyer-btn-${o.id}`}
                       onClick={() => setRateTarget(o)}
-                      className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-[#f97316] bg-[#FEF3E2] py-2.5 border-t border-amber-100"
+                      className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-afri-accent bg-[#FEF3E2] py-2.5 border-t border-amber-100"
                     >
                       <Star size={13} /> Noter ce client
                     </button>

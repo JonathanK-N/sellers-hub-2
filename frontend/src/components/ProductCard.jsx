@@ -31,17 +31,17 @@ export default function ProductCard({ product, guest = false, className = "" }) 
           type="button"
           aria-label="Ajouter aux favoris"
           onClick={(e) => e.preventDefault()}
-          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gray-500 hover:text-[#f97316] shadow-sm transition-colors"
+          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gray-500 hover:text-afri-primary shadow-sm transition-colors"
         >
           <Heart size={14} />
         </button>
         {product.seller_premium && (
-          <span className="absolute top-2 left-2 flex items-center gap-1 bg-[#f97316] text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm">
+          <span className="absolute top-2 left-2 flex items-center gap-1 bg-afri-accent text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm">
             <Crown size={11} /> Premium
           </span>
         )}
         {product.currency === "USD" && (
-          <span className="absolute bottom-2 left-2 bg-[#0b0b0d] text-white px-1.5 py-0.5 rounded text-[10px] font-bold">
+          <span className="absolute bottom-2 left-2 bg-afri-secondary text-white px-1.5 py-0.5 rounded text-[10px] font-bold">
             $USD
           </span>
         )}
@@ -73,13 +73,13 @@ export default function ProductCard({ product, guest = false, className = "" }) 
           <div className="flex items-center gap-2">
             {product.seller_rating > 0 && (
               <span className="flex items-center gap-0.5 text-xs text-gray-600">
-                <Star size={12} className="text-[#f97316] fill-[#f97316]" />
+                <Star size={12} className="text-afri-accent fill-afri-accent" />
                 {product.seller_rating.toFixed(1)}
               </span>
             )}
             <span
               aria-hidden="true"
-              className="w-7 h-7 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0 transition-colors group-hover:bg-[#f97316]"
+              className="w-7 h-7 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0 transition-colors group-hover:bg-afri-primary"
             >
               <ShoppingCart size={13} />
             </span>

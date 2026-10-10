@@ -65,7 +65,7 @@ export default function VerifyOtp() {
         <ArrowLeft size={20} />
       </Link>
       <header className="px-6 pt-8 pb-5 flex flex-col items-center text-center border-b border-gray-100">
-        <div className="w-12 h-12 rounded-xl bg-[#0b0b0d] text-[#f97316] flex items-center justify-center font-black text-xl mb-3">
+        <div className="w-12 h-12 rounded-xl bg-afri-secondary text-afri-primary flex items-center justify-center font-black text-xl mb-3">
           A
         </div>
         <h1 className="font-display font-black text-xl text-gray-900">Vérification</h1>
@@ -84,14 +84,14 @@ export default function VerifyOtp() {
           maxLength={6}
           inputMode="numeric"
           placeholder="000000"
-          className="w-full text-center text-3xl tracking-[1rem] font-display font-bold py-4 rounded-lg border-2 border-gray-200 focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 outline-none"
+          className="w-full text-center text-3xl tracking-[1rem] font-display font-bold py-4 rounded-lg border-2 border-gray-200 focus:border-afri-primary focus:ring-2 focus:ring-afri-primary/20 outline-none"
         />
 
         <button
           data-testid="otp-verify-btn"
           disabled={loading || code.length !== 6}
           onClick={submit}
-          className="w-full bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
+          className="w-full bg-afri-primary var(--afri-primary-hover) text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
         >
           {loading ? "Vérification…" : "Vérifier le code"}
         </button>
@@ -103,7 +103,7 @@ export default function VerifyOtp() {
             <button
               data-testid="otp-resend-btn"
               onClick={resend}
-              className="text-sm text-[#f97316] font-semibold hover:underline"
+              className="text-sm text-afri-primary font-semibold hover:underline"
             >
               Renvoyer le code
             </button>

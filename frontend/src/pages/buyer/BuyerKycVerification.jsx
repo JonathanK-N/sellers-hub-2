@@ -7,7 +7,7 @@ import api, { formatApiError, API_BASE } from "../../lib/api";
 const STATUS_LABEL = {
   none: { label: "Non vérifié", color: "bg-gray-100 text-gray-700" },
   pending_review: { label: "En attente de vérification", color: "bg-amber-50 text-amber-700" },
-  verified: { label: "Profil vérifié", color: "bg-orange-50 text-[#f97316]" },
+  verified: { label: "Profil vérifié", color: "var(--afri-success-bg) text-afri-primary" },
   rejected: { label: "Rejeté", color: "bg-red-50 text-red-700" },
 };
 
@@ -72,8 +72,8 @@ export default function BuyerKycVerification() {
       </header>
 
       <div className="px-4 mt-4 space-y-4">
-        <section className="rounded-xl border-2 border-[#f97316]/30 bg-orange-50 p-4 flex items-center gap-3">
-          <div className="w-12 h-12 rounded-lg bg-[#0b0b0d] text-white flex items-center justify-center shrink-0">
+        <section className="rounded-xl border-2 border-afri-primary/30 var(--afri-success-bg) p-4 flex items-center gap-3">
+          <div className="w-12 h-12 rounded-lg bg-afri-primary text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={22} />
           </div>
           <div>
@@ -97,16 +97,16 @@ export default function BuyerKycVerification() {
             return (
               <div key={s.key} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4" data-testid={`buyer-kyc-step-${s.key}`}>
                 <div className="flex items-start gap-3">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? "bg-orange-50 text-[#f97316]" : "bg-gray-100 text-gray-400"}`}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? "var(--afri-success-bg) text-afri-primary" : "bg-gray-100 text-gray-400"}`}>
                     {uploaded ? <CheckCircle2 size={18} /> : <Upload size={18} />}
                   </div>
                   <div className="flex-1">
                     <div className="font-display font-bold text-gray-900 text-sm">{s.title}</div>
                     <p className="text-xs text-gray-500 mt-0.5">{s.desc}</p>
                     {uploaded ? (
-                      <p className="text-[10px] text-[#f97316] mt-2 font-semibold">✓ Document reçu</p>
+                      <p className="text-[10px] text-afri-primary mt-2 font-semibold">✓ Document reçu</p>
                     ) : (
-                      <label className="mt-3 inline-flex items-center gap-2 px-3 py-2 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg text-xs font-semibold cursor-pointer" data-testid={`buyer-upload-${s.key}-btn`}>
+                      <label className="mt-3 inline-flex items-center gap-2 px-3 py-2 bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg text-xs font-semibold cursor-pointer" data-testid={`buyer-upload-${s.key}-btn`}>
                         <Upload size={14} />
                         {uploading[s.key] ? "Envoi…" : "Téléverser"}
                         <input
@@ -129,7 +129,7 @@ export default function BuyerKycVerification() {
           <button
             data-testid="buyer-kyc-submit-btn"
             onClick={submit}
-            className="w-full bg-[#0b0b0d] hover:bg-[#063b30] text-white rounded-lg py-3 font-semibold transition-colors"
+            className="w-full bg-afri-secondary hover:bg-[#063b30] text-white rounded-lg py-3 font-semibold transition-colors"
           >
             Soumettre pour vérification
           </button>
@@ -146,7 +146,7 @@ export default function BuyerKycVerification() {
         )}
 
         {status.buyer_kyc_status === "verified" && (
-          <div className="rounded-xl bg-orange-50 border border-[#f97316]/30 p-4 flex items-start gap-3" data-testid="buyer-kyc-verified-banner">
+          <div className="rounded-xl var(--afri-success-bg) border border-afri-primary/30 p-4 flex items-start gap-3" data-testid="buyer-kyc-verified-banner">
             <ShieldCheck size={18} className="text-green-600 shrink-0 mt-0.5" />
             <div className="text-xs text-gray-900">
               <p className="font-semibold">Profil vérifié</p>

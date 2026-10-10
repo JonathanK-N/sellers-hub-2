@@ -54,7 +54,7 @@ export default function SearchPage() {
 
   return (
     <div className="mobile-shell shell-wide">
-      <header className="sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 md:px-8 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-afri-secondary text-white px-4 md:px-8 py-3 flex items-center gap-3 shadow-md">
         <Link to="/buyer/home" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
@@ -77,7 +77,7 @@ export default function SearchPage() {
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
-              <MapPin size={16} className="text-[#f97316]" />
+              <MapPin size={16} className="text-afri-primary" />
               Rayon : {radius} km
             </div>
             <span className="text-xs text-gray-500">{products.length} résultat{products.length !== 1 ? "s" : ""}</span>
@@ -99,7 +99,7 @@ export default function SearchPage() {
                 onClick={() => setRadius(p)}
                 className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors ${
                   radius === p
-                    ? "bg-[#0b0b0d] text-white border-[#f97316]"
+                    ? "bg-afri-primary text-white border-afri-primary"
                     : "bg-white text-gray-700 border-gray-200"
                 }`}
               >
@@ -109,7 +109,7 @@ export default function SearchPage() {
           </div>
 
           {q && (
-            <p className="text-xs text-gray-500 mt-3 bg-orange-50 rounded-lg px-3 py-2">
+            <p className="text-xs text-gray-500 mt-3 var(--afri-success-bg) rounded-lg px-3 py-2">
               La recherche par mot-clé ignore le rayon : tous les produits correspondants sont affichés, quel que soit l'emplacement du vendeur.
             </p>
           )}
@@ -139,7 +139,7 @@ export default function SearchPage() {
                   onClick={() => setSort(o.v)}
                   className={`py-2 rounded-lg text-xs font-semibold border transition-colors ${
                     sort === o.v
-                      ? "bg-[#0b0b0d] text-white border-[#0b0b0d]"
+                      ? "bg-afri-primary text-white border-afri-primary"
                       : "bg-white text-gray-700 border-gray-200"
                   }`}
                 >

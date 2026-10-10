@@ -1,0 +1,3098 @@
+[
+  {
+    "file": "frontend/src/components/AdminSidebar.jsx",
+    "line": 30,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"flex flex-col h-full bg-[#0b0b0d] text-white px-4 py-6\">",
+    "after": "<div className=\"flex flex-col h-full bg-[#085041] text-white px-4 py-6\">"
+  },
+  {
+    "file": "frontend/src/components/AdminSidebar.jsx",
+    "line": 33,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-10 h-10 rounded-lg bg-[#0b0b0d] flex items-center justify-center font-black text-white text-lg font-display\">A</div>",
+    "after": "<div className=\"w-10 h-10 rounded-lg bg-[#1D9E75] flex items-center justify-center font-black text-white text-lg font-display\">A</div>"
+  },
+  {
+    "file": "frontend/src/components/AdminSidebar.jsx",
+    "line": 53,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "isActive ? \"bg-[#0b0b0d] text-white\" : \"text-emerald-100 hover:bg-white/10\"",
+    "after": "isActive ? \"bg-[#1D9E75] text-white\" : \"text-emerald-100 hover:bg-white/10\""
+  },
+  {
+    "file": "frontend/src/components/AdminSidebar.jsx",
+    "line": 82,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"lg:hidden fixed top-3 left-3 z-50 w-10 h-10 bg-[#0b0b0d] text-white rounded-lg flex items-center justify-center shadow-lg\">",
+    "after": "className=\"lg:hidden fixed top-3 left-3 z-50 w-10 h-10 bg-[#085041] text-white rounded-lg flex items-center justify-center shadow-lg\">"
+  },
+  {
+    "file": "frontend/src/components/AdminSidebar.jsx",
+    "line": 97,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<aside data-testid=\"admin-sidebar\" className=\"hidden lg:block bg-[#0b0b0d] text-white w-[250px] h-screen fixed top-0 left-0\">",
+    "after": "<aside data-testid=\"admin-sidebar\" className=\"hidden lg:block bg-[#085041] text-white w-[250px] h-screen fixed top-0 left-0\">"
+  },
+  {
+    "file": "frontend/src/components/BannerCarousel.jsx",
+    "line": 65,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className={`relative w-full aspect-[2.5/1] bg-gradient-to-r from-[#0b0b0d] to-[#f97316] overflow-hidden ${b.link_url ? \"cursor-pointer\" : \"\"}`}",
+    "after": "className={`relative w-full aspect-[2.5/1] bg-gradient-to-r from-[#085041] to-[#1D9E75] overflow-hidden ${b.link_url ? \"cursor-pointer\" : \"\"}`}"
+  },
+  {
+    "file": "frontend/src/components/BottomNav.jsx",
+    "line": 32,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"absolute top-1 right-1/4 bg-[#f97316] text-white text-[10px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1\">",
+    "after": "<span className=\"absolute top-1 right-1/4 bg-[#EF9F27] text-white text-[10px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1\">"
+  },
+  {
+    "file": "frontend/src/components/BottomNav.jsx",
+    "line": 61,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "isActive ? \"text-[#f97316] font-semibold\" : \"text-gray-500\"",
+    "after": "isActive ? \"text-[#1D9E75] font-semibold\" : \"text-gray-500\""
+  },
+  {
+    "file": "frontend/src/components/InstallPrompt.jsx",
+    "line": 39,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-10 h-10 rounded-lg bg-[#0b0b0d] text-white flex items-center justify-center shrink-0 font-display font-black\">A</div>",
+    "after": "<div className=\"w-10 h-10 rounded-lg bg-[#085041] text-white flex items-center justify-center shrink-0 font-display font-black\">A</div>"
+  },
+  {
+    "file": "frontend/src/components/InstallPrompt.jsx",
+    "line": 44,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<button onClick={install} data-testid=\"pwa-install-btn\" className=\"bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg px-3 py-2 text-sm font-semibold flex items-center gap-1.5 shrink-0\">",
+    "after": "<button onClick={install} data-testid=\"pwa-install-btn\" className=\"bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg px-3 py-2 text-sm font-semibold flex items-center gap-1.5 shrink-0\">"
+  },
+  {
+    "file": "frontend/src/components/MessagesIndicator.jsx",
+    "line": 41,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"absolute -top-1 -right-1 bg-[#f97316] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white\">",
+    "after": "<span className=\"absolute -top-1 -right-1 bg-[#EF9F27] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white\">"
+  },
+  {
+    "file": "frontend/src/components/ProductCard.jsx",
+    "line": 39,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"absolute top-2 left-2 flex items-center gap-1 bg-[#f97316] text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm\">",
+    "after": "<span className=\"absolute top-2 left-2 flex items-center gap-1 bg-[#EF9F27] text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm\">"
+  },
+  {
+    "file": "frontend/src/components/ProductCard.jsx",
+    "line": 44,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"absolute bottom-2 left-2 bg-[#0b0b0d] text-white px-1.5 py-0.5 rounded text-[10px] font-bold\">",
+    "after": "<span className=\"absolute bottom-2 left-2 bg-[#085041] text-white px-1.5 py-0.5 rounded text-[10px] font-bold\">"
+  },
+  {
+    "file": "frontend/src/components/ProductCard.jsx",
+    "line": 76,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Star size={12} className=\"text-[#f97316] fill-[#f97316]\" />",
+    "after": "<Star size={12} className=\"text-[#EF9F27] fill-[#EF9F27]\" />"
+  },
+  {
+    "file": "frontend/src/components/ReviewPrompt.jsx",
+    "line": 27,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Star key={n} size={18} className={n <= existing.rating ? \"text-[#f97316] fill-[#f97316]\" : \"text-gray-200\"} />",
+    "after": "<Star key={n} size={18} className={n <= existing.rating ? \"text-[#EF9F27] fill-[#EF9F27]\" : \"text-gray-200\"} />"
+  },
+  {
+    "file": "frontend/src/components/ReviewPrompt.jsx",
+    "line": 57,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<section className=\"bg-white rounded-xl border-2 border-[#f97316]/40 shadow-sm p-4\" data-testid=\"review-prompt\">",
+    "after": "<section className=\"bg-white rounded-xl border-2 border-[#EF9F27]/40 shadow-sm p-4\" data-testid=\"review-prompt\">"
+  },
+  {
+    "file": "frontend/src/components/ReviewPrompt.jsx",
+    "line": 69,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Star size={28} className={(hover || rating) >= n ? \"text-[#f97316] fill-[#f97316]\" : \"text-gray-300\"} />",
+    "after": "<Star size={28} className={(hover || rating) >= n ? \"text-[#EF9F27] fill-[#EF9F27]\" : \"text-gray-300\"} />"
+  },
+  {
+    "file": "frontend/src/components/ReviewPrompt.jsx",
+    "line": 79,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-3 border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316] resize-none\"",
+    "after": "className=\"w-full mt-3 border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] resize-none\""
+  },
+  {
+    "file": "frontend/src/components/ReviewPrompt.jsx",
+    "line": 85,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-3 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-2.5 text-sm font-semibold disabled:opacity-50\"",
+    "after": "className=\"w-full mt-3 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-2.5 text-sm font-semibold disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/components/TopBar.jsx",
+    "line": 31,
+    "method": "main correspondence",
+    "similarity": 0.963302752293578,
+    "before": "className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 md:px-8 py-3 flex justify-between items-center shadow-md\"",
+    "after": "className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 md:px-8 py-3 flex justify-between items-center shadow-md\""
+  },
+  {
+    "file": "frontend/src/components/TopBar.jsx",
+    "line": 34,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-8 h-8 rounded-md bg-[#f97316] flex items-center justify-center font-black text-white\">",
+    "after": "<div className=\"w-8 h-8 rounded-md bg-[#1D9E75] flex items-center justify-center font-black text-white\">"
+  },
+  {
+    "file": "frontend/src/components/TopBar.jsx",
+    "line": 49,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"absolute -top-1 -right-1 bg-[#f97316] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white\">",
+    "after": "<span className=\"absolute -top-1 -right-1 bg-[#EF9F27] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white\">"
+  },
+  {
+    "file": "frontend/src/components/TopBar.jsx",
+    "line": 66,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"absolute -top-1 -right-1 bg-[#f97316] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1\"",
+    "after": "className=\"absolute -top-1 -right-1 bg-[#EF9F27] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1\""
+  },
+  {
+    "file": "frontend/src/components/VerifiedBadge.jsx",
+    "line": 11,
+    "method": "main correspondence",
+    "similarity": 0.9790794979079498,
+    "before": "className={`inline-flex items-center gap-1 rounded-full bg-orange-50 text-[#f97316] font-bold uppercase tracking-wide ${cls}`}",
+    "after": "className={`inline-flex items-center gap-1 rounded-full #E1F5EE text-[#1D9E75] font-bold uppercase tracking-wide ${cls}`}"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 263,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-gradient-to-br from-[#0b0b0d] to-[#f97316] text-white px-4 pt-4 pb-6 shadow-lg\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-gradient-to-br from-[#085041] to-[#1D9E75] text-white px-4 pt-4 pb-6 shadow-lg\">"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 285,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-20 h-20 mx-auto rounded-2xl bg-[#0b0b0d] flex items-center justify-center text-white shadow-xl\" style={{ animation: \"pulseRing 2.5s infinite\" }}>",
+    "after": "<div className=\"w-20 h-20 mx-auto rounded-2xl bg-[#1D9E75] flex items-center justify-center text-white shadow-xl\" style={{ animation: \"pulseRing 2.5s infinite\" }}>"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 303,
+    "method": "main correspondence",
+    "similarity": 0.9753694581280788,
+    "before": "<div className=\"w-10 h-10 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-10 h-10 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 317,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-7 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-xl py-3.5 font-semibold transition-colors flex items-center justify-center gap-2 shadow-md\"",
+    "after": "className=\"w-full mt-7 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-xl py-3.5 font-semibold transition-colors flex items-center justify-center gap-2 shadow-md\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 338,
+    "method": "main correspondence",
+    "similarity": 0.9735449735449735,
+    "before": "form.application_type === \"afrimarket\" ? \"border-[#f97316] bg-orange-50\" : \"border-gray-200 bg-white\"",
+    "after": "form.application_type === \"afrimarket\" ? \"border-[#1D9E75] #E1F5EE\" : \"border-gray-200 bg-white\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 342,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${form.application_type === \"afrimarket\" ? \"bg-[#0b0b0d] text-white\" : \"bg-gray-100 text-gray-500\"}`}>",
+    "after": "<div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${form.application_type === \"afrimarket\" ? \"bg-[#1D9E75] text-white\" : \"bg-gray-100 text-gray-500\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 356,
+    "method": "main correspondence",
+    "similarity": 0.9717514124293786,
+    "before": "form.application_type === \"shop\" ? \"border-[#f97316] bg-orange-50\" : \"border-gray-200 bg-white\"",
+    "after": "form.application_type === \"shop\" ? \"border-[#1D9E75] #E1F5EE\" : \"border-gray-200 bg-white\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 360,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${form.application_type === \"shop\" ? \"bg-[#0b0b0d] text-white\" : \"bg-gray-100 text-gray-500\"}`}>",
+    "after": "<div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${form.application_type === \"shop\" ? \"bg-[#1D9E75] text-white\" : \"bg-gray-100 text-gray-500\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 379,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\"",
+    "after": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 393,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex-1 bg-[#0b0b0d] hover:bg-[#1f2937] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"flex-1 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 422,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "form.vehicle === opt.v ? \"bg-[#0b0b0d] text-white border-[#0b0b0d]\" : \"bg-white text-gray-700 border-gray-200\"",
+    "after": "form.vehicle === opt.v ? \"bg-[#085041] text-white border-[#085041]\" : \"bg-white text-gray-700 border-gray-200\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 440,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex-1 bg-[#0b0b0d] hover:bg-[#1f2937] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"flex-1 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 463,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-5 bg-[#0b0b0d] hover:bg-[#1f2937] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"w-full mt-5 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 476,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3.5 text-center text-2xl font-bold tracking-[0.4em] outline-none focus:ring-2 focus:ring-[#f97316]\"",
+    "after": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3.5 text-center text-2xl font-bold tracking-[0.4em] outline-none focus:ring-2 focus:ring-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 484,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "otpVerified ? \"bg-emerald-500 text-white\" : \"bg-[#0b0b0d] hover:bg-[#1f2937] disabled:opacity-40 text-white\"",
+    "after": "otpVerified ? \"bg-emerald-500 text-white\" : \"bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-40 text-white\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 515,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"relative rounded-xl overflow-hidden border-2 border-[#f97316]\">",
+    "after": "<div className=\"relative rounded-xl overflow-hidden border-2 border-[#1D9E75]\">"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 517,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"absolute top-2 right-2 bg-[#0b0b0d] text-white rounded-full p-1.5\">",
+    "after": "<div className=\"absolute top-2 right-2 bg-[#1D9E75] text-white rounded-full p-1.5\">"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 528,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex flex-col items-center justify-center gap-2 h-48 rounded-xl border-2 border-dashed border-gray-300 hover:border-[#f97316] cursor-pointer transition-colors bg-white\"",
+    "after": "className=\"flex flex-col items-center justify-center gap-2 h-48 rounded-xl border-2 border-dashed border-gray-300 hover:border-[#1D9E75] cursor-pointer transition-colors bg-white\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 530,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "{loading ? <Loader2 size={28} className=\"text-[#f97316] animate-spin\" /> : <FileText size={28} className=\"text-gray-400\" />}",
+    "after": "{loading ? <Loader2 size={28} className=\"text-[#1D9E75] animate-spin\" /> : <FileText size={28} className=\"text-gray-400\" />}"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 546,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex-1 bg-[#0b0b0d] hover:bg-[#1f2937] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"flex-1 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 601,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"mt-0.5 w-5 h-5 rounded accent-[#f97316]\"",
+    "after": "className=\"mt-0.5 w-5 h-5 rounded accent-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 617,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex-1 bg-[#0b0b0d] hover:bg-[#1f2937] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"flex-1 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 639,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Link to=\"/buyer/profile\" className=\"inline-block mt-6 text-[#f97316] font-semibold text-sm\">",
+    "after": "<Link to=\"/buyer/profile\" className=\"inline-block mt-6 text-[#1D9E75] font-semibold text-sm\">"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 663,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-6 bg-[#0b0b0d] hover:bg-[#1f2937] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2 shadow-md\"",
+    "after": "className=\"w-full mt-6 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2 shadow-md\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 676,
+    "method": "main correspondence",
+    "similarity": 0.9834983498349835,
+    "before": "<div className=\"w-20 h-20 mx-auto rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center\" style={{ animation: \"pulseRing 2.5s infinite\" }}>",
+    "after": "<div className=\"w-20 h-20 mx-auto rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center\" style={{ animation: \"pulseRing 2.5s infinite\" }}>"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 689,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"inline-block mt-6 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-xl px-6 py-3 font-semibold\"",
+    "after": "className=\"inline-block mt-6 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-xl px-6 py-3 font-semibold\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 715,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className={`w-full ${Icon ? \"pl-10\" : \"pl-3\"} pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm outline-none focus:ring-2 focus:ring-[#f97316] disabled:bg-gray-50 disabled:text-gray-400`}",
+    "after": "className={`w-full ${Icon ? \"pl-10\" : \"pl-3\"} pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] disabled:bg-gray-50 disabled:text-gray-400`}"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 728,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "{verified && <Check size={13} className=\"text-[#f97316]\" />}",
+    "after": "{verified && <Check size={13} className=\"text-[#1D9E75]\" />}"
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 864,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex-1 bg-[#0b0b0d] hover:bg-[#1f2937] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"flex-1 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/BecomeDeliverer.jsx",
+    "line": 874,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/ChatThread.jsx",
+    "line": 51,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/ChatThread.jsx",
+    "line": 68,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm ${mine ? \"bg-[#0b0b0d] text-white rounded-br-sm\" : \"bg-white border border-gray-100 text-gray-900 rounded-bl-sm\"}`}>",
+    "after": "<div className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm ${mine ? \"bg-[#1D9E75] text-white rounded-br-sm\" : \"bg-white border border-gray-100 text-gray-900 rounded-bl-sm\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/ChatThread.jsx",
+    "line": 86,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex-1 border border-gray-300 rounded-full px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\"",
+    "after": "className=\"flex-1 border border-gray-300 rounded-full px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/ChatThread.jsx",
+    "line": 92,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-10 h-10 rounded-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white flex items-center justify-center disabled:opacity-50\"",
+    "after": "className=\"w-10 h-10 rounded-full bg-[#1D9E75] hover:bg-[#168260] text-white flex items-center justify-center disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/Landing.jsx",
+    "line": 61,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-8 h-8 rounded-md bg-[#f97316] flex items-center justify-center font-black text-white\">",
+    "after": "<div className=\"w-8 h-8 rounded-md bg-[#1D9E75] flex items-center justify-center font-black text-white\">"
+  },
+  {
+    "file": "frontend/src/pages/Landing.jsx",
+    "line": 190,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-white border border-gray-200 rounded-full py-3 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\"",
+    "after": "className=\"w-full bg-white border border-gray-200 rounded-full py-3 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/Landing.jsx",
+    "line": 256,
+    "method": "main correspondence",
+    "similarity": 0.9790209790209791,
+    "before": "className=\"bg-[#f97316] hover:bg-[#ea580c] text-white rounded-full py-3 px-6 font-semibold transition-colors flex justify-center items-center gap-2\"",
+    "after": "className=\"bg-[#1D9E75] hover:bg-[#168260] text-white rounded-full py-3 px-6 font-semibold transition-colors flex justify-center items-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/Landing.jsx",
+    "line": 297,
+    "method": "main correspondence",
+    "similarity": 0.9433962264150944,
+    "before": "<div className=\"w-7 h-7 rounded-md bg-[#f97316] flex items-center justify-center font-black text-white text-sm\">",
+    "after": "<div className=\"w-7 h-7 rounded-md bg-[#1D9E75] flex items-center justify-center font-black text-white text-sm\">"
+  },
+  {
+    "file": "frontend/src/pages/Messages.jsx",
+    "line": 36,
+    "method": "main correspondence",
+    "similarity": 0.975609756097561,
+    "before": "<div className=\"w-16 h-16 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center mx-auto\">",
+    "after": "<div className=\"w-16 h-16 rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center mx-auto\">"
+  },
+  {
+    "file": "frontend/src/pages/Messages.jsx",
+    "line": 48,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-3 flex items-center gap-3 hover:border-[#f97316] transition-colors\"",
+    "after": "className=\"w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-3 flex items-center gap-3 hover:border-[#1D9E75] transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/Messages.jsx",
+    "line": 50,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-11 h-11 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center font-display font-black\">",
+    "after": "<div className=\"w-11 h-11 rounded-full bg-[#1D9E75] text-white flex items-center justify-center font-display font-black\">"
+  },
+  {
+    "file": "frontend/src/pages/Messages.jsx",
+    "line": 61,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"ml-2 bg-[#f97316] text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1.5\">",
+    "after": "<span className=\"ml-2 bg-[#EF9F27] text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1.5\">"
+  },
+  {
+    "file": "frontend/src/pages/Notifications.jsx",
+    "line": 76,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/Notifications.jsx",
+    "line": 92,
+    "method": "main correspondence",
+    "similarity": 0.9819494584837545,
+    "before": "<div className={`w-9 h-9 rounded-full flex items-center justify-center ${pushOn ? \"bg-orange-50 text-[#f97316]\" : \"bg-gray-100 text-gray-400\"}`}>",
+    "after": "<div className={`w-9 h-9 rounded-full flex items-center justify-center ${pushOn ? \"#E1F5EE text-[#1D9E75]\" : \"bg-gray-100 text-gray-400\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/Notifications.jsx",
+    "line": 105,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className={`relative w-12 h-7 rounded-full transition-colors ${pushOn ? \"bg-[#0b0b0d]\" : \"bg-gray-300\"}`}",
+    "after": "className={`relative w-12 h-7 rounded-full transition-colors ${pushOn ? \"bg-[#1D9E75]\" : \"bg-gray-300\"}`}"
+  },
+  {
+    "file": "frontend/src/pages/Notifications.jsx",
+    "line": 113,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"text-xs text-[#f97316] font-medium mt-3\"",
+    "after": "className=\"text-xs text-[#1D9E75] font-medium mt-3\""
+  },
+  {
+    "file": "frontend/src/pages/Notifications.jsx",
+    "line": 126,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className={`relative w-10 h-6 rounded-full transition-colors ${p.enabled ? \"bg-[#0b0b0d]\" : \"bg-gray-300\"}`}",
+    "after": "className={`relative w-10 h-6 rounded-full transition-colors ${p.enabled ? \"bg-[#1D9E75]\" : \"bg-gray-300\"}`}"
+  },
+  {
+    "file": "frontend/src/pages/Notifications.jsx",
+    "line": 153,
+    "method": "main correspondence",
+    "similarity": 0.96,
+    "before": "n.read ? \"bg-white border-gray-100\" : \"bg-orange-50 border-[#9FE1CB]\"",
+    "after": "n.read ? \"bg-white border-gray-100\" : \"#E1F5EE border-[#9FE1CB]\""
+  },
+  {
+    "file": "frontend/src/pages/Notifications.jsx",
+    "line": 157,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${n.read ? \"bg-transparent\" : \"bg-[#0b0b0d]\"}`} />",
+    "after": "<div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${n.read ? \"bg-transparent\" : \"bg-[#1D9E75]\"}`} />"
+  },
+  {
+    "file": "frontend/src/components/auth/LoginForm.jsx",
+    "line": 81,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\"",
+    "after": "className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\""
+  },
+  {
+    "file": "frontend/src/components/auth/LoginForm.jsx",
+    "line": 98,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\"",
+    "after": "className=\"w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\""
+  },
+  {
+    "file": "frontend/src/components/auth/LoginForm.jsx",
+    "line": 124,
+    "method": "main correspondence",
+    "similarity": 0.9558232931726908,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50\"",
+    "after": "className=\"w-full bg-[#1D9E75] #168260 text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/components/auth/LoginForm.jsx",
+    "line": 141,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Link to=\"/auth/register\" className=\"text-[#f97316] font-semibold\" data-testid=\"link-to-register\">",
+    "after": "<Link to=\"/auth/register\" className=\"text-[#1D9E75] font-semibold\" data-testid=\"link-to-register\">"
+  },
+  {
+    "file": "frontend/src/components/auth/RegisterForm.jsx",
+    "line": 72,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\"",
+    "after": "className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\""
+  },
+  {
+    "file": "frontend/src/components/auth/RegisterForm.jsx",
+    "line": 91,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\"",
+    "after": "className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\""
+  },
+  {
+    "file": "frontend/src/components/auth/RegisterForm.jsx",
+    "line": 107,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\"",
+    "after": "className=\"w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\""
+  },
+  {
+    "file": "frontend/src/components/auth/RegisterForm.jsx",
+    "line": 146,
+    "method": "main correspondence",
+    "similarity": 0.9663608562691132,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50 flex justify-center items-center gap-2\"",
+    "after": "className=\"w-full bg-[#1D9E75] #168260 text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50 flex justify-center items-center gap-2\""
+  },
+  {
+    "file": "frontend/src/components/auth/RegisterForm.jsx",
+    "line": 162,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Link to=\"/auth/login\" className=\"text-[#f97316] font-semibold\" data-testid=\"link-to-login\">",
+    "after": "<Link to=\"/auth/login\" className=\"text-[#1D9E75] font-semibold\" data-testid=\"link-to-login\">"
+  },
+  {
+    "file": "frontend/src/components/auth/RegisterForm.jsx",
+    "line": 220,
+    "method": "main correspondence",
+    "similarity": 0.9531914893617022,
+    "before": "className=\"bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50\"",
+    "after": "className=\"bg-[#1D9E75] #168260 text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminLogin.jsx",
+    "line": 32,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"min-h-screen bg-[#0b0b0d] flex items-center justify-center px-4\">",
+    "after": "<div className=\"min-h-screen bg-[#085041] flex items-center justify-center px-4\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminLogin.jsx",
+    "line": 35,
+    "method": "main correspondence",
+    "similarity": 0.9735449735449735,
+    "before": "<div className=\"w-14 h-14 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-14 h-14 rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminLogin.jsx",
+    "line": 53,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\"",
+    "after": "className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\""
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminLogin.jsx",
+    "line": 68,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\"",
+    "after": "className=\"w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\""
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminLogin.jsx",
+    "line": 85,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminOrders.jsx",
+    "line": 64,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "className=\"w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminOrders.jsx",
+    "line": 67,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-[#f97316]\">",
+    "after": "className=\"border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-[#1D9E75]\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/AdminOrders.jsx",
+    "line": 72,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-[#f97316]\">",
+    "after": "className=\"border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none bg-white focus:ring-2 focus:ring-[#1D9E75]\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 148,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<button onClick={() => { resetForm(); setCreating(true); }} className=\"flex items-center gap-1.5 text-sm font-semibold bg-[#0b0b0d] text-white px-4 py-2 rounded-lg hover:bg-[#1f2937]\">",
+    "after": "<button onClick={() => { resetForm(); setCreating(true); }} className=\"flex items-center gap-1.5 text-sm font-semibold bg-[#1D9E75] text-white px-4 py-2 rounded-lg hover:bg-[#168260]\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 160,
+    "method": "main correspondence",
+    "similarity": 0.9723756906077348,
+    "before": "<div className=\"w-8 h-8 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-8 h-8 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 182,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`rounded-xl bg-gradient-to-r from-[#0b0b0d] to-[#f97316] text-white p-4 flex items-center gap-3 mb-4 ${!promo.visible ? \"opacity-40\" : \"\"}`}>",
+    "after": "<div className={`rounded-xl bg-gradient-to-r from-[#085041] to-[#1D9E75] text-white p-4 flex items-center gap-3 mb-4 ${!promo.visible ? \"opacity-40\" : \"\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 195,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "className=\"w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 200,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "className=\"w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 204,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex items-center gap-1.5 bg-[#0b0b0d] text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 hover:bg-[#1f2937]\">",
+    "after": "className=\"flex items-center gap-1.5 bg-[#1D9E75] text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 hover:bg-[#168260]\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 233,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<button onClick={() => { resetForm(); setCreating(true); }} className=\"mt-4 bg-[#0b0b0d] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#1f2937]\">",
+    "after": "<button onClick={() => { resetForm(); setCreating(true); }} className=\"mt-4 bg-[#1D9E75] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#168260]\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 252,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<button onClick={() => toggleActive(b)} className={`p-1.5 rounded-lg hover:bg-gray-100 ${b.is_active ? \"text-[#f97316]\" : \"text-gray-400\"}`}>",
+    "after": "<button onClick={() => toggleActive(b)} className={`p-1.5 rounded-lg hover:bg-gray-100 ${b.is_active ? \"text-[#1D9E75]\" : \"text-gray-400\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 267,
+    "method": "main correspondence",
+    "similarity": 0.9818181818181818,
+    "before": "<span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${b.is_active ? \"bg-orange-50 text-[#f97316]\" : \"bg-gray-100 text-gray-500\"}`}>",
+    "after": "<span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${b.is_active ? \"#E1F5EE text-[#1D9E75]\" : \"bg-gray-100 text-gray-500\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 291,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "uploadError ? \"border-red-300 bg-red-50\" : formImgSrc ? \"border-[#f97316]\" : \"border-gray-300 hover:border-[#f97316]\"",
+    "after": "uploadError ? \"border-red-300 bg-red-50\" : formImgSrc ? \"border-[#1D9E75]\" : \"border-gray-300 hover:border-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 297,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "{!uploading && form.image_url && <div className=\"absolute top-2 right-2 bg-[#0b0b0d] text-white text-[10px] font-bold px-2 py-0.5 rounded-full\">✓ Uploadée</div>}",
+    "after": "{!uploading && form.image_url && <div className=\"absolute top-2 right-2 bg-[#1D9E75] text-white text-[10px] font-bold px-2 py-0.5 rounded-full\">✓ Uploadée</div>}"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 325,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#f97316]\">",
+    "after": "className=\"w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#1D9E75]\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 333,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#f97316]\">",
+    "after": "className=\"w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#1D9E75]\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 339,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed\">",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Banners.jsx",
+    "line": 355,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "className=\"w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/admin/BuyerKyc.jsx",
+    "line": 55,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<div className=\"w-12 h-12 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-12 h-12 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/BuyerKyc.jsx",
+    "line": 72,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-2.5 text-sm font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-2.5 text-sm font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/admin/DelivererApplications.jsx",
+    "line": 90,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"text-left bg-white rounded-xl border border-gray-200 shadow-sm p-5 hover:border-[#f97316] transition-colors\"",
+    "after": "className=\"text-left bg-white rounded-xl border border-gray-200 shadow-sm p-5 hover:border-[#1D9E75] transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/admin/DelivererApplications.jsx",
+    "line": 93,
+    "method": "main correspondence",
+    "similarity": 0.9753694581280788,
+    "before": "<div className=\"w-12 h-12 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-12 h-12 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/DelivererApplications.jsx",
+    "line": 99,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Phone size={11} /> {a.phone} {a.phone_verified && <Check size={11} className=\"text-[#f97316]\" />}",
+    "after": "<Phone size={11} /> {a.phone} {a.phone_verified && <Check size={11} className=\"text-[#1D9E75]\" />}"
+  },
+  {
+    "file": "frontend/src/pages/admin/DelivererApplications.jsx",
+    "line": 104,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"mt-3 text-[10px] font-semibold text-[#f97316] uppercase tracking-wide\">",
+    "after": "<div className=\"mt-3 text-[10px] font-semibold text-[#1D9E75] uppercase tracking-wide\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/DelivererApplications.jsx",
+    "line": 117,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<div className=\"w-14 h-14 rounded-xl bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-14 h-14 rounded-xl #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/DelivererApplications.jsx",
+    "line": 150,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Check size={14} className={detail.contract_accepted ? \"text-[#f97316]\" : \"text-gray-300\"} />",
+    "after": "<Check size={14} className={detail.contract_accepted ? \"text-[#1D9E75]\" : \"text-gray-300\"} />"
+  },
+  {
+    "file": "frontend/src/pages/admin/DelivererApplications.jsx",
+    "line": 158,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 text-sm font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 text-sm font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/admin/DelivererApplications.jsx",
+    "line": 186,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "{verified && <Check size={13} className=\"text-[#f97316]\" />}",
+    "after": "{verified && <Check size={13} className=\"text-[#1D9E75]\" />}"
+  },
+  {
+    "file": "frontend/src/pages/admin/Deliverers.jsx",
+    "line": 43,
+    "method": "main correspondence",
+    "similarity": 0.9753694581280788,
+    "before": "<div className=\"w-11 h-11 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-11 h-11 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Disputes.jsx",
+    "line": 94,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-2 text-sm font-semibold\"",
+    "after": "className=\"bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-2 text-sm font-semibold\""
+  },
+  {
+    "file": "frontend/src/pages/admin/Fraud.jsx",
+    "line": 30,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "if (score >= 70) return \"#f97316\";",
+    "after": "if (score >= 70) return \"#EF9F27\";"
+  },
+  {
+    "file": "frontend/src/pages/admin/Fraud.jsx",
+    "line": 86,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex items-center gap-2 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50\"",
+    "after": "className=\"flex items-center gap-2 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/admin/Fraud.jsx",
+    "line": 97,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<StatCard label=\"Alertes ouvertes\" value={stats.open_alerts} accent=\"#f97316\" />",
+    "after": "<StatCard label=\"Alertes ouvertes\" value={stats.open_alerts} accent=\"#EF9F27\" />"
+  },
+  {
+    "file": "frontend/src/pages/admin/Fraud.jsx",
+    "line": 112,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Cell key={i} fill={d.count > 0 ? \"#f97316\" : \"#D3D1C7\"} />",
+    "after": "<Cell key={i} fill={d.count > 0 ? \"#1D9E75\" : \"#D3D1C7\"} />"
+  },
+  {
+    "file": "frontend/src/pages/admin/Fraud.jsx",
+    "line": 206,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"text-2xl font-display font-black mt-1\" style={{ color: accent || \"#0b0b0d\" }}>",
+    "after": "<div className=\"text-2xl font-display font-black mt-1\" style={{ color: accent || \"#085041\" }}>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Geo.jsx",
+    "line": 9,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "const COLORS = { CD: \"#f97316\", CM: \"#fbbf24\", CI: \"#0b0b0d\", SN: \"#3B82F6\", BJ: \"#8B5CF6\" };",
+    "after": "const COLORS = { CD: \"#1D9E75\", CM: \"#EF9F27\", CI: \"#085041\", SN: \"#3B82F6\", BJ: \"#8B5CF6\" };"
+  },
+  {
+    "file": "frontend/src/pages/admin/Geo.jsx",
+    "line": 107,
+    "method": "main correspondence",
+    "similarity": 0.9838187702265372,
+    "before": "className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 ${c.is_active ? \"bg-orange-50 text-[#f97316]\" : \"bg-gray-100 text-gray-500\"}`}",
+    "after": "className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 ${c.is_active ? \"#E1F5EE text-[#1D9E75]\" : \"bg-gray-100 text-gray-500\"}`}"
+  },
+  {
+    "file": "frontend/src/pages/admin/Kyc.jsx",
+    "line": 55,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<div className=\"w-12 h-12 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-12 h-12 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Kyc.jsx",
+    "line": 70,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-2.5 text-sm font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-2.5 text-sm font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/admin/Overview.jsx",
+    "line": 60,
+    "method": "main correspondence",
+    "similarity": 0.9795918367346939,
+    "before": "<div className=\"w-10 h-10 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center\"><TrendingUp size={20} /></div>",
+    "after": "<div className=\"w-10 h-10 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center\"><TrendingUp size={20} /></div>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Overview.jsx",
+    "line": 148,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`bg-white rounded-xl border shadow-sm p-4 ${highlight ? \"border-[#f97316]\" : \"border-gray-200\"}`}>",
+    "after": "<div className={`bg-white rounded-xl border shadow-sm p-4 ${highlight ? \"border-[#EF9F27]\" : \"border-gray-200\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Overview.jsx",
+    "line": 149,
+    "method": "main correspondence",
+    "similarity": 0.9811320754716981,
+    "before": "<div className={`w-9 h-9 rounded-lg flex items-center justify-center ${highlight ? \"bg-amber-50 text-[#f97316]\" : \"bg-orange-50 text-[#f97316]\"}`}>",
+    "after": "<div className={`w-9 h-9 rounded-lg flex items-center justify-center ${highlight ? \"bg-amber-50 text-[#EF9F27]\" : \"#E1F5EE text-[#1D9E75]\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Products.jsx",
+    "line": 49,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "className=\"w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/admin/Products.jsx",
+    "line": 92,
+    "method": "main correspondence",
+    "similarity": 0.9629629629629629,
+    "before": "p.is_active ? \"bg-orange-50 text-[#f97316]\" : \"bg-red-50 text-red-600\"}`}>",
+    "after": "p.is_active ? \"#E1F5EE text-[#1D9E75]\" : \"bg-red-50 text-red-600\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Products.jsx",
+    "line": 99,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<button onClick={() => toggle(p)} className={`p-1.5 hover:bg-gray-100 rounded-lg ${p.is_active ? \"text-red-500\" : \"text-[#f97316]\"}`}>",
+    "after": "<button onClick={() => toggle(p)} className={`p-1.5 hover:bg-gray-100 rounded-lg ${p.is_active ? \"text-red-500\" : \"text-[#1D9E75]\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Products.jsx",
+    "line": 147,
+    "method": "main correspondence",
+    "similarity": 0.9769585253456221,
+    "before": "selected.is_active ? \"bg-red-50 text-red-600 hover:bg-red-100\" : \"bg-orange-50 text-[#f97316] hover:bg-[#c8ede1]\"}`}>",
+    "after": "selected.is_active ? \"bg-red-50 text-red-600 hover:bg-red-100\" : \"#E1F5EE text-[#1D9E75] hover:bg-[#c8ede1]\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 60,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "className=\"w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 70,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"h-20 bg-gradient-to-r from-[#0b0b0d] to-[#f97316] relative\">",
+    "after": "<div className=\"h-20 bg-gradient-to-r from-[#085041] to-[#1D9E75] relative\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 73,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"absolute top-2 right-2 flex items-center gap-1 bg-[#f97316] text-white px-2 py-0.5 rounded-full text-[10px] font-bold\">",
+    "after": "<span className=\"absolute top-2 right-2 flex items-center gap-1 bg-[#EF9F27] text-white px-2 py-0.5 rounded-full text-[10px] font-bold\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 80,
+    "method": "main correspondence",
+    "similarity": 0.9855072463768116,
+    "before": "<div className=\"w-14 h-14 rounded-xl border-2 border-white shadow-sm bg-orange-50 text-[#f97316] flex items-center justify-center font-display font-black text-xl overflow-hidden\">",
+    "after": "<div className=\"w-14 h-14 rounded-xl border-2 border-white shadow-sm #E1F5EE text-[#1D9E75] flex items-center justify-center font-display font-black text-xl overflow-hidden\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 97,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Star size={11} className=\"text-[#f97316] fill-[#f97316]\" />",
+    "after": "<Star size={11} className=\"text-[#EF9F27] fill-[#EF9F27]\" />"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 105,
+    "method": "main correspondence",
+    "similarity": 0.9523809523809523,
+    "before": "s.kyc_status === \"level3\" ? \"bg-orange-50 text-[#f97316]\" :",
+    "after": "s.kyc_status === \"level3\" ? \"#E1F5EE text-[#1D9E75]\" :"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 126,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"h-32 bg-gradient-to-r from-[#0b0b0d] to-[#f97316] relative rounded-t-2xl overflow-hidden\">",
+    "after": "<div className=\"h-32 bg-gradient-to-r from-[#085041] to-[#1D9E75] relative rounded-t-2xl overflow-hidden\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 132,
+    "method": "main correspondence",
+    "similarity": 0.9855907780979827,
+    "before": "<div className=\"w-20 h-20 rounded-xl border-3 border-white shadow-md bg-orange-50 text-[#f97316] flex items-center justify-center font-display font-black text-2xl overflow-hidden\">",
+    "after": "<div className=\"w-20 h-20 rounded-xl border-3 border-white shadow-md #E1F5EE text-[#1D9E75] flex items-center justify-center font-display font-black text-2xl overflow-hidden\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Sellers.jsx",
+    "line": 139,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "{selected.premium && <Crown size={16} className=\"text-[#f97316]\" />}",
+    "after": "{selected.premium && <Crown size={16} className=\"text-[#EF9F27]\" />}"
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 164,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "className=\"w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 167,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316] bg-white\">",
+    "after": "className=\"border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] bg-white\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 213,
+    "method": "main correspondence",
+    "similarity": 0.9746192893401016,
+    "before": "<span className=\"text-[10px] font-bold text-[#f97316] bg-orange-50 px-2 py-0.5 rounded-full\">Actif</span>",
+    "after": "<span className=\"text-[10px] font-bold text-[#1D9E75] #E1F5EE px-2 py-0.5 rounded-full\">Actif</span>"
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 250,
+    "method": "main correspondence",
+    "similarity": 0.9664429530201343,
+    "before": "title=\"Réactiver\" className=\"p-1.5 hover:bg-orange-50 rounded-lg text-[#f97316]\">",
+    "after": "title=\"Réactiver\" className=\"p-1.5 hover:#E1F5EE rounded-lg text-[#1D9E75]\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 317,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full flex items-center justify-center gap-1.5 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-2.5 text-sm font-semibold\">",
+    "after": "className=\"w-full flex items-center justify-center gap-1.5 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-2.5 text-sm font-semibold\">"
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 368,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316] resize-none\"",
+    "after": "className=\"w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] resize-none\""
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 390,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "? \"bg-[#0b0b0d] hover:bg-[#1f2937]\"",
+    "after": "? \"bg-[#1D9E75] hover:bg-[#168260]\""
+  },
+  {
+    "file": "frontend/src/pages/admin/Users.jsx",
+    "line": 436,
+    "method": "main correspondence",
+    "similarity": 0.981549815498155,
+    "before": "<span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.is_active ? \"bg-orange-50 text-[#f97316]\" : \"bg-red-100 text-red-600\"}`}>",
+    "after": "<span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.is_active ? \"#E1F5EE text-[#1D9E75]\" : \"bg-red-100 text-red-600\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/auth/ForgotPassword.jsx",
+    "line": 76,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input data-testid=\"forgot-phone-input\" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder=\"812345678\" inputMode=\"tel\" className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#f97316] outline-none\" />",
+    "after": "<input data-testid=\"forgot-phone-input\" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder=\"812345678\" inputMode=\"tel\" className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none\" />"
+  },
+  {
+    "file": "frontend/src/pages/auth/ForgotPassword.jsx",
+    "line": 79,
+    "method": "main correspondence",
+    "similarity": 0.9659442724458205,
+    "before": "<button disabled={loading || !phone} onClick={requestCode} className=\"w-full bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 font-semibold disabled:opacity-50\">",
+    "after": "<button disabled={loading || !phone} onClick={requestCode} className=\"w-full bg-[#1D9E75] #168260 text-white rounded-lg py-3 font-semibold disabled:opacity-50\">"
+  },
+  {
+    "file": "frontend/src/pages/auth/ForgotPassword.jsx",
+    "line": 88,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input data-testid=\"forgot-code-input\" value={code} onChange={(e) => setCode(e.target.value)} placeholder=\"Code à 6 chiffres\" inputMode=\"numeric\" maxLength={6} className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm tracking-widest focus:ring-2 focus:ring-[#f97316] outline-none\" />",
+    "after": "<input data-testid=\"forgot-code-input\" value={code} onChange={(e) => setCode(e.target.value)} placeholder=\"Code à 6 chiffres\" inputMode=\"numeric\" maxLength={6} className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm tracking-widest focus:ring-2 focus:ring-[#1D9E75] outline-none\" />"
+  },
+  {
+    "file": "frontend/src/pages/auth/ForgotPassword.jsx",
+    "line": 92,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input data-testid=\"forgot-newpass-input\" type=\"password\" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder=\"Nouveau mot de passe (6+ caractères)\" className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#f97316] outline-none\" />",
+    "after": "<input data-testid=\"forgot-newpass-input\" type=\"password\" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder=\"Nouveau mot de passe (6+ caractères)\" className=\"w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none\" />"
+  },
+  {
+    "file": "frontend/src/pages/auth/ForgotPassword.jsx",
+    "line": 94,
+    "method": "main correspondence",
+    "similarity": 0.9717223650385605,
+    "before": "<button disabled={loading || code.length !== 6 || newPassword.length < 6} onClick={doReset} className=\"w-full bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 font-semibold disabled:opacity-50\">",
+    "after": "<button disabled={loading || code.length !== 6 || newPassword.length < 6} onClick={doReset} className=\"w-full bg-[#1D9E75] #168260 text-white rounded-lg py-3 font-semibold disabled:opacity-50\">"
+  },
+  {
+    "file": "frontend/src/pages/auth/VerifyOtp.jsx",
+    "line": 87,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full text-center text-3xl tracking-[1rem] font-display font-bold py-4 rounded-lg border-2 border-gray-200 focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 outline-none\"",
+    "after": "className=\"w-full text-center text-3xl tracking-[1rem] font-display font-bold py-4 rounded-lg border-2 border-gray-200 focus:border-[#1D9E75] focus:ring-2 focus:ring-[#1D9E75]/20 outline-none\""
+  },
+  {
+    "file": "frontend/src/pages/auth/VerifyOtp.jsx",
+    "line": 94,
+    "method": "main correspondence",
+    "similarity": 0.9558232931726908,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50\"",
+    "after": "className=\"w-full bg-[#1D9E75] #168260 text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/auth/VerifyOtp.jsx",
+    "line": 106,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"text-sm text-[#f97316] font-semibold hover:underline\"",
+    "after": "className=\"text-sm text-[#1D9E75] font-semibold hover:underline\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 10,
+    "method": "main correspondence",
+    "similarity": 0.9640287769784173,
+    "before": "verified: { label: \"Profil vérifié\", color: \"bg-orange-50 text-[#f97316]\" },",
+    "after": "verified: { label: \"Profil vérifié\", color: \"#E1F5EE text-[#1D9E75]\" },"
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 75,
+    "method": "main correspondence",
+    "similarity": 0.9738219895287958,
+    "before": "<section className=\"rounded-xl border-2 border-[#f97316]/30 bg-orange-50 p-4 flex items-center gap-3\">",
+    "after": "<section className=\"rounded-xl border-2 border-[#1D9E75]/30 #E1F5EE p-4 flex items-center gap-3\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 76,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-12 h-12 rounded-lg bg-[#0b0b0d] text-white flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-12 h-12 rounded-lg bg-[#1D9E75] text-white flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 100,
+    "method": "main correspondence",
+    "similarity": 0.9832775919732442,
+    "before": "<div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? \"bg-orange-50 text-[#f97316]\" : \"bg-gray-100 text-gray-400\"}`}>",
+    "after": "<div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? \"#E1F5EE text-[#1D9E75]\" : \"bg-gray-100 text-gray-400\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 107,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<p className=\"text-[10px] text-[#f97316] mt-2 font-semibold\">✓ Document reçu</p>",
+    "after": "<p className=\"text-[10px] text-[#1D9E75] mt-2 font-semibold\">✓ Document reçu</p>"
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 109,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<label className=\"mt-3 inline-flex items-center gap-2 px-3 py-2 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg text-xs font-semibold cursor-pointer\" data-testid={`buyer-upload-${s.key}-btn`}>",
+    "after": "<label className=\"mt-3 inline-flex items-center gap-2 px-3 py-2 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg text-xs font-semibold cursor-pointer\" data-testid={`buyer-upload-${s.key}-btn`}>"
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 132,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#063b30] text-white rounded-lg py-3 font-semibold transition-colors\"",
+    "after": "className=\"w-full bg-[#085041] hover:bg-[#063b30] text-white rounded-lg py-3 font-semibold transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/BuyerKycVerification.jsx",
+    "line": 149,
+    "method": "main correspondence",
+    "similarity": 0.980544747081712,
+    "before": "<div className=\"rounded-xl bg-orange-50 border border-[#f97316]/30 p-4 flex items-start gap-3\" data-testid=\"buyer-kyc-verified-banner\">",
+    "after": "<div className=\"rounded-xl #E1F5EE border border-[#1D9E75]/30 p-4 flex items-start gap-3\" data-testid=\"buyer-kyc-verified-banner\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Cart.jsx",
+    "line": 18,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Cart.jsx",
+    "line": 27,
+    "method": "main correspondence",
+    "similarity": 0.975609756097561,
+    "before": "<div className=\"w-20 h-20 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center mx-auto\">",
+    "after": "<div className=\"w-20 h-20 rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center mx-auto\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Cart.jsx",
+    "line": 33,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"inline-block mt-6 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 px-6 font-semibold transition-colors\">",
+    "after": "className=\"inline-block mt-6 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 px-6 font-semibold transition-colors\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Cart.jsx",
+    "line": 52,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<div className=\"w-6 h-6 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-6 h-6 rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Cart.jsx",
+    "line": 120,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "? \"bg-[#0b0b0d] text-white\"",
+    "after": "? \"bg-[#085041] text-white\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Cart.jsx",
+    "line": 130,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "? \"bg-[#0b0b0d] text-white\"",
+    "after": "? \"bg-[#085041] text-white\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Cart.jsx",
+    "line": 162,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 86,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Link to=\"/buyer/home\" className=\"text-[#f97316] font-semibold mt-2 inline-block\">",
+    "after": "<Link to=\"/buyer/home\" className=\"text-[#1D9E75] font-semibold mt-2 inline-block\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 134,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 180,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] outline-none\">",
+    "after": "className=\"w-full border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 192,
+    "method": "main correspondence",
+    "similarity": 0.9717514124293786,
+    "before": "<div className=\"flex items-center gap-3 p-3 rounded-lg border-2 border-[#f97316] bg-orange-50\">",
+    "after": "<div className=\"flex items-center gap-3 p-3 rounded-lg border-2 border-[#1D9E75] #E1F5EE\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 193,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-10 h-10 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-10 h-10 rounded-full bg-[#1D9E75] text-white flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 198,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<p className=\"text-xs text-[#f97316]\">À la livraison / au retrait · en <strong>{checkoutCurrency}</strong></p>",
+    "after": "<p className=\"text-xs text-[#1D9E75]\">À la livraison / au retrait · en <strong>{checkoutCurrency}</strong></p>"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 205,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"text-[#f97316] font-semibold\">Disponible très prochainement</span> sur AfriMarket.",
+    "after": "<span className=\"text-[#1D9E75] font-semibold\">Disponible très prochainement</span> sur AfriMarket."
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 211,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<section className=\"bg-orange-50 border border-[#f97316]/30 rounded-xl p-4 flex items-start gap-3\">",
+    "after": "<section className=\"#E1F5EE border border-[#1D9E75]/30 rounded-xl p-4 flex items-start gap-3\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 212,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-9 h-9 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-9 h-9 rounded-full bg-[#1D9E75] text-white flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 253,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 271,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Icon size={22} className={active && !disabled ? \"text-[#f97316]\" : \"text-gray-500\"} />",
+    "after": "<Icon size={22} className={active && !disabled ? \"text-[#1D9E75]\" : \"text-gray-500\"} />"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Checkout.jsx",
+    "line": 283,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\" />",
+    "after": "className=\"w-full mt-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\" />"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Home.jsx",
+    "line": 87,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "? \"bg-[#f97316] text-white border-[#f97316]\"",
+    "after": "? \"bg-[#1D9E75] text-white border-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Home.jsx",
+    "line": 88,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": ": \"bg-white text-gray-700 border-gray-200 hover:border-[#f97316]\"",
+    "after": ": \"bg-white text-gray-700 border-gray-200 hover:border-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Home.jsx",
+    "line": 151,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"rounded-xl bg-gradient-to-r from-[#0b0b0d] to-[#f97316] text-white p-4 flex items-center gap-3 overflow-hidden relative\">",
+    "after": "<div className=\"rounded-xl bg-gradient-to-r from-[#085041] to-[#1D9E75] text-white p-4 flex items-center gap-3 overflow-hidden relative\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OpenDispute.jsx",
+    "line": 98,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316] resize-none\"",
+    "after": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] resize-none\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 76,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "html: `<div style=\"background:#f97316;width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;\">🛵</div>`,",
+    "after": "html: `<div style=\"background:#1D9E75;width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;\">🛵</div>`,"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 87,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "html: `<div style=\"background:#0b0b0d;width:32px;height:32px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:16px;\">🏠</div>`,",
+    "after": "html: `<div style=\"background:#085041;width:32px;height:32px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:16px;\">🏠</div>`,"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 118,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "html: `<div style=\"background:#f97316;width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;\">🛵</div>`,",
+    "after": "html: `<div style=\"background:#1D9E75;width:36px;height:36px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-size:18px;\">🛵</div>`,"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 267,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 276,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"ml-auto flex items-center gap-1 bg-[#0b0b0d] px-2 py-1 rounded-full text-[10px] font-semibold animate-pulse\">",
+    "after": "<div className=\"ml-auto flex items-center gap-1 bg-[#1D9E75] px-2 py-1 rounded-full text-[10px] font-semibold animate-pulse\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 285,
+    "method": "main correspondence",
+    "similarity": 0.9832775919732442,
+    "before": "<div className={`rounded-xl p-4 flex items-center gap-3 ${order.escrow_status === \"released\" ? \"bg-emerald-100 border-emerald-300\" : \"bg-orange-50 border-[#f97316]/30\"} border`}>",
+    "after": "<div className={`rounded-xl p-4 flex items-center gap-3 ${order.escrow_status === \"released\" ? \"bg-emerald-100 border-emerald-300\" : \"#E1F5EE border-[#1D9E75]/30\"} border`}>"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 286,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-9 h-9 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-9 h-9 rounded-full bg-[#1D9E75] text-white flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 308,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<div className=\"w-7 h-7 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-7 h-7 rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 336,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Icon size={20} className={done ? \"text-[#f97316]\" : \"text-gray-300\"} />",
+    "after": "<Icon size={20} className={done ? \"text-[#1D9E75]\" : \"text-gray-300\"} />"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 384,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<section className=\"bg-orange-50 border border-[#f97316]/30 rounded-xl p-4 flex items-start gap-3\">",
+    "after": "<section className=\"#E1F5EE border border-[#1D9E75]/30 rounded-xl p-4 flex items-start gap-3\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 385,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-9 h-9 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-9 h-9 rounded-full bg-[#1D9E75] text-white flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 402,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<section className=\"bg-white rounded-xl border-2 border-[#f97316] shadow-sm p-4\" data-testid=\"confirm-collect-section\">",
+    "after": "<section className=\"bg-white rounded-xl border-2 border-[#1D9E75] shadow-sm p-4\" data-testid=\"confirm-collect-section\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 411,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] active:scale-95 text-white rounded-xl py-4 font-bold text-base transition-all disabled:opacity-60 flex items-center justify-center gap-2 shadow-md\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] active:scale-95 text-white rounded-xl py-4 font-bold text-base transition-all disabled:opacity-60 flex items-center justify-center gap-2 shadow-md\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 434,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"bg-white rounded-xl border-2 border-[#f97316] shadow-sm p-6 flex flex-col items-center text-center gap-3\"",
+    "after": "className=\"bg-white rounded-xl border-2 border-[#1D9E75] shadow-sm p-6 flex flex-col items-center text-center gap-3\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 439,
+    "method": "main correspondence",
+    "similarity": 0.9668874172185431,
+    "before": "className=\"w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center\"",
+    "after": "className=\"w-16 h-16 rounded-full #E1F5EE flex items-center justify-center\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 448,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<p className=\"text-sm font-bold text-[#f97316]\">✓ Paiement cash encaissé</p>",
+    "after": "<p className=\"text-sm font-bold text-[#1D9E75]\">✓ Paiement cash encaissé</p>"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 457,
+    "method": "main correspondence",
+    "similarity": 0.9855907780979827,
+    "before": "className=\"w-full bg-white border border-[#f97316] text-[#f97316] hover:bg-orange-50 rounded-lg py-2.5 font-semibold transition-colors flex items-center justify-center gap-2 text-sm\"",
+    "after": "className=\"w-full bg-white border border-[#1D9E75] text-[#1D9E75] hover:#E1F5EE rounded-lg py-2.5 font-semibold transition-colors flex items-center justify-center gap-2 text-sm\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 465,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<section className=\"bg-white rounded-xl border-2 border-[#f97316] shadow-sm p-4\">",
+    "after": "<section className=\"bg-white rounded-xl border-2 border-[#EF9F27] shadow-sm p-4\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 466,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<h3 className=\"text-xs font-bold uppercase tracking-wide text-[#f97316] mb-2\">",
+    "after": "<h3 className=\"text-xs font-bold uppercase tracking-wide text-[#EF9F27] mb-2\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 484,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex-1 border border-gray-300 rounded-lg p-2.5 text-center font-bold tracking-widest outline-none focus:ring-2 focus:ring-[#f97316]\"",
+    "after": "className=\"flex-1 border border-gray-300 rounded-lg p-2.5 text-center font-bold tracking-widest outline-none focus:ring-2 focus:ring-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 490,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"bg-[#0b0b0d] hover:bg-[#1f2937] text-white px-4 rounded-lg text-sm font-semibold disabled:opacity-50\"",
+    "after": "className=\"bg-[#1D9E75] hover:bg-[#168260] text-white px-4 rounded-lg text-sm font-semibold disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 503,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Bike size={18} className=\"text-[#f97316]\" />",
+    "after": "<Bike size={18} className=\"text-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 516,
+    "method": "main correspondence",
+    "similarity": 0.9767441860465116,
+    "before": "className=\"w-full border border-[#f97316] text-[#f97316] rounded-lg py-2.5 font-semibold text-sm hover:bg-orange-50\"",
+    "after": "className=\"w-full border border-[#1D9E75] text-[#1D9E75] rounded-lg py-2.5 font-semibold text-sm hover:#E1F5EE\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 531,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-[#f97316] disabled:opacity-50\"",
+    "after": "className=\"w-full flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-[#1D9E75] disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 534,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<div className=\"w-8 h-8 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-8 h-8 rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 542,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"text-xs text-[#f97316] font-medium\">Choisir</span>",
+    "after": "<span className=\"text-xs text-[#1D9E75] font-medium\">Choisir</span>"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 556,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderDetail.jsx",
+    "line": 575,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Banknote size={18} className=\"text-[#f97316]\" />",
+    "after": "<Banknote size={18} className=\"text-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 70,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Link to=\"/buyer/orders\" className=\"text-[#f97316] font-semibold mt-2 inline-block\">",
+    "after": "<Link to=\"/buyer/orders\" className=\"text-[#1D9E75] font-semibold mt-2 inline-block\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 81,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 91,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Package size={18} className=\"text-[#f97316]\" />",
+    "after": "<Package size={18} className=\"text-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 99,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<section className=\"bg-orange-50 border border-[#f97316]/30 rounded-xl p-4 flex items-start gap-3\">",
+    "after": "<section className=\"#E1F5EE border border-[#1D9E75]/30 rounded-xl p-4 flex items-start gap-3\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 100,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-9 h-9 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-9 h-9 rounded-full bg-[#1D9E75] text-white flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 115,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full flex items-center justify-center gap-2 bg-[#0b0b0d] hover:bg-[#1f2937] disabled:opacity-60 text-white rounded-xl py-3.5 font-semibold transition-colors\"",
+    "after": "className=\"w-full flex items-center justify-center gap-2 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-60 text-white rounded-xl py-3.5 font-semibold transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 132,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"block bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:border-[#f97316]/40 transition-colors\"",
+    "after": "className=\"block bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:border-[#1D9E75]/40 transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 135,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<div className=\"w-6 h-6 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-6 h-6 rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/OrderGroup.jsx",
+    "line": 151,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"text-[#f97316] flex items-center gap-1 text-sm font-medium\">",
+    "after": "<span className=\"text-[#1D9E75] flex items-center gap-1 text-sm font-medium\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Orders.jsx",
+    "line": 65,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Star size={32} className={n <= rating ? \"text-[#f97316] fill-[#f97316]\" : \"text-gray-200\"} />",
+    "after": "<Star size={32} className={n <= rating ? \"text-[#EF9F27] fill-[#EF9F27]\" : \"text-gray-200\"} />"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Orders.jsx",
+    "line": 75,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316] resize-none mb-3\"",
+    "after": "className=\"w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] resize-none mb-3\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Orders.jsx",
+    "line": 81,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold disabled:opacity-50\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Orders.jsx",
+    "line": 164,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-[#f97316] bg-[#FEF3E2] py-2.5 border-t border-amber-100\"",
+    "after": "className=\"w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-[#EF9F27] bg-[#FEF3E2] py-2.5 border-t border-amber-100\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/PaymentFailed.jsx",
+    "line": 18,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"block w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors\"",
+    "after": "className=\"block w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/PaymentSuccess.jsx",
+    "line": 52,
+    "method": "main correspondence",
+    "similarity": 0.975609756097561,
+    "before": "<div className=\"w-16 h-16 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center mx-auto\">",
+    "after": "<div className=\"w-16 h-16 rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center mx-auto\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/PaymentSuccess.jsx",
+    "line": 69,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"block w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors\"",
+    "after": "className=\"block w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/ProductDetail.jsx",
+    "line": 70,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Link to=\"/auth/login\" className=\"text-xs font-semibold text-[#f97316] flex items-center gap-1 shrink-0\">",
+    "after": "<Link to=\"/auth/login\" className=\"text-xs font-semibold text-[#1D9E75] flex items-center gap-1 shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ProductDetail.jsx",
+    "line": 133,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Star size={12} className=\"text-[#f97316] fill-[#f97316]\" />",
+    "after": "<Star size={12} className=\"text-[#EF9F27] fill-[#EF9F27]\" />"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ProductDetail.jsx",
+    "line": 157,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Truck size={16} className=\"text-[#f97316]\" /> Livraison à domicile disponible",
+    "after": "<Truck size={16} className=\"text-[#1D9E75]\" /> Livraison à domicile disponible"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ProductDetail.jsx",
+    "line": 160,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Store size={16} className=\"text-[#f97316]\" /> Retrait en boutique (Click & Collect)",
+    "after": "<Store size={16} className=\"text-[#1D9E75]\" /> Retrait en boutique (Click & Collect)"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ProductDetail.jsx",
+    "line": 183,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Star key={n} size={12} className={n <= r.rating ? \"text-[#f97316] fill-[#f97316]\" : \"text-gray-200\"} />",
+    "after": "<Star key={n} size={12} className={n <= r.rating ? \"text-[#EF9F27] fill-[#EF9F27]\" : \"text-gray-200\"} />"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ProductDetail.jsx",
+    "line": 223,
+    "method": "main correspondence",
+    "similarity": 0.9602888086642599,
+    "before": "className=\"flex-1 bg-[#0b0b0d] hover:bg-black text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2\"",
+    "after": "className=\"flex-1 bg-[#1D9E75] #168260 text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Profile.jsx",
+    "line": 53,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"relative w-14 h-14 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center font-display font-black text-xl overflow-hidden shrink-0\"",
+    "after": "className=\"relative w-14 h-14 rounded-full bg-[#1D9E75] text-white flex items-center justify-center font-display font-black text-xl overflow-hidden shrink-0\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Profile.jsx",
+    "line": 60,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"absolute bottom-0 right-0 w-5 h-5 bg-[#0b0b0d] rounded-full flex items-center justify-center border-2 border-white\">",
+    "after": "<span className=\"absolute bottom-0 right-0 w-5 h-5 bg-[#085041] rounded-full flex items-center justify-center border-2 border-white\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Profile.jsx",
+    "line": 69,
+    "method": "main correspondence",
+    "similarity": 0.9771689497716894,
+    "before": "<span className=\"inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-orange-50 text-[#f97316]\">",
+    "after": "<span className=\"inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded-full #E1F5EE text-[#1D9E75]\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Profile.jsx",
+    "line": 73,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span data-testid=\"buyer-verified-badge\" className=\"inline-flex items-center gap-0.5 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#f97316]/15 text-[#BA7517]\">",
+    "after": "<span data-testid=\"buyer-verified-badge\" className=\"inline-flex items-center gap-0.5 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EF9F27]/15 text-[#BA7517]\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Profile.jsx",
+    "line": 85,
+    "method": "main correspondence",
+    "similarity": 0.9808429118773946,
+    "before": "className=\"w-full bg-white border border-[#f97316] rounded-xl shadow-sm p-4 flex items-center gap-3 hover:bg-orange-50 transition-colors\"",
+    "after": "className=\"w-full bg-white border border-[#1D9E75] rounded-xl shadow-sm p-4 flex items-center gap-3 hover:#E1F5EE transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Profile.jsx",
+    "line": 87,
+    "method": "main correspondence",
+    "similarity": 0.9753694581280788,
+    "before": "<div className=\"w-9 h-9 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-9 h-9 rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Profile.jsx",
+    "line": 102,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-gradient-to-r from-[#0b0b0d] to-[#f97316] rounded-xl shadow-sm p-4 flex items-center gap-3 text-white hover:opacity-95 transition-opacity\"",
+    "after": "className=\"w-full bg-gradient-to-r from-[#085041] to-[#1D9E75] rounded-xl shadow-sm p-4 flex items-center gap-3 text-white hover:opacity-95 transition-opacity\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Profile.jsx",
+    "line": 125,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] text-white rounded-lg py-3 px-4 font-semibold transition-colors flex items-center justify-center gap-2\"",
+    "after": "className=\"w-full bg-[#085041] text-white rounded-lg py-3 px-4 font-semibold transition-colors flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Profile.jsx",
+    "line": 134,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] text-white rounded-lg py-3 px-4 font-semibold transition-colors flex items-center justify-center gap-2\"",
+    "after": "className=\"w-full bg-[#085041] text-white rounded-lg py-3 px-4 font-semibold transition-colors flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Search.jsx",
+    "line": 57,
+    "method": "main correspondence",
+    "similarity": 0.9629629629629629,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 md:px-8 py-3 flex items-center gap-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 md:px-8 py-3 flex items-center gap-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Search.jsx",
+    "line": 80,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<MapPin size={16} className=\"text-[#f97316]\" />",
+    "after": "<MapPin size={16} className=\"text-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Search.jsx",
+    "line": 102,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "? \"bg-[#0b0b0d] text-white border-[#f97316]\"",
+    "after": "? \"bg-[#1D9E75] text-white border-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/Search.jsx",
+    "line": 112,
+    "method": "main correspondence",
+    "similarity": 0.965034965034965,
+    "before": "<p className=\"text-xs text-gray-500 mt-3 bg-orange-50 rounded-lg px-3 py-2\">",
+    "after": "<p className=\"text-xs text-gray-500 mt-3 #E1F5EE rounded-lg px-3 py-2\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/Search.jsx",
+    "line": 142,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "? \"bg-[#0b0b0d] text-white border-[#0b0b0d]\"",
+    "after": "? \"bg-[#1D9E75] text-white border-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 48,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-full h-36 overflow-hidden bg-gradient-to-r from-[#0b0b0d] to-[#f97316]\">",
+    "after": "<div className=\"w-full h-36 overflow-hidden bg-gradient-to-r from-[#085041] to-[#1D9E75]\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 55,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": ": <div className=\"w-full h-full bg-[#0b0b0d] flex items-center justify-center\"><span className=\"text-white text-3xl font-black\">{seller.shop_name[0]}</span></div>}",
+    "after": ": <div className=\"w-full h-full bg-[#085041] flex items-center justify-center\"><span className=\"text-white text-3xl font-black\">{seller.shop_name[0]}</span></div>}"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 75,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "{seller.premium && <Crown size={16} className=\"text-[#f97316]\" />}",
+    "after": "{seller.premium && <Crown size={16} className=\"text-[#EF9F27]\" />}"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 80,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"flex items-center gap-1 bg-[#f97316]/10 text-[#BA7517] px-3 py-1.5 rounded-full\">",
+    "after": "<div className=\"flex items-center gap-1 bg-[#EF9F27]/10 text-[#BA7517] px-3 py-1.5 rounded-full\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 106,
+    "method": "main correspondence",
+    "similarity": 0.9859943977591037,
+    "before": "className=\"w-full mt-4 bg-white border border-[#f97316] text-[#f97316] hover:bg-orange-50 rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm transition-colors\"",
+    "after": "className=\"w-full mt-4 bg-white border border-[#1D9E75] text-[#1D9E75] hover:#E1F5EE rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 151,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Package size={16} className=\"text-[#f97316]\" /> Produits ({products.length})",
+    "after": "<Package size={16} className=\"text-[#1D9E75]\" /> Produits ({products.length})"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 165,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Star size={16} className=\"text-[#f97316]\" /> Avis clients ({reviews.length})",
+    "after": "<Star size={16} className=\"text-[#EF9F27]\" /> Avis clients ({reviews.length})"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 172,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "{[1,2,3,4,5].map(i => <Star key={i} size={12} fill={i <= r.rating ? \"#f97316\" : \"transparent\"} className={i <= r.rating ? \"text-[#f97316]\" : \"text-gray-300\"} />)}",
+    "after": "{[1,2,3,4,5].map(i => <Star key={i} size={12} fill={i <= r.rating ? \"#EF9F27\" : \"transparent\"} className={i <= r.rating ? \"text-[#EF9F27]\" : \"text-gray-300\"} />)}"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 185,
+    "method": "main correspondence",
+    "similarity": 0.9565217391304348,
+    "before": "<div className=\"mt-6 bg-orange-50 rounded-xl p-4 text-center\">",
+    "after": "<div className=\"mt-6 #E1F5EE rounded-xl p-4 text-center\">"
+  },
+  {
+    "file": "frontend/src/pages/buyer/ShopProfile.jsx",
+    "line": 189,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Link to=\"/auth/register\" className=\"inline-block bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors\">",
+    "after": "<Link to=\"/auth/register\" className=\"inline-block bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors\">"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 134,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 142,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"relative w-9 h-9 rounded-lg bg-[#0b0b0d] flex items-center justify-center overflow-hidden shrink-0\"",
+    "after": "className=\"relative w-9 h-9 rounded-lg bg-[#1D9E75] flex items-center justify-center overflow-hidden shrink-0\""
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 149,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"absolute bottom-0 right-0 w-4 h-4 bg-[#0b0b0d] rounded-full flex items-center justify-center border border-white\">",
+    "after": "<span className=\"absolute bottom-0 right-0 w-4 h-4 bg-[#085041] rounded-full flex items-center justify-center border border-white\">"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 155,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"font-display font-black text-lg leading-tight flex items-center gap-2\">Livreur{active.length > 0 && [\"assigned\",\"picked_up\",\"out_for_delivery\"].includes(active[0]?.status) && <span className=\"text-[9px] bg-[#0b0b0d] px-1.5 py-0.5 rounded-full font-semibold animate-pulse\">GPS</span>}</div>",
+    "after": "<div className=\"font-display font-black text-lg leading-tight flex items-center gap-2\">Livreur{active.length > 0 && [\"assigned\",\"picked_up\",\"out_for_delivery\"].includes(active[0]?.status) && <span className=\"text-[9px] bg-[#1D9E75] px-1.5 py-0.5 rounded-full font-semibold animate-pulse\">GPS</span>}</div>"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 175,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"mx-4 mt-3 bg-[#0b0b0d] rounded-xl p-4 text-white\">",
+    "after": "<div className=\"mx-4 mt-3 bg-[#085041] rounded-xl p-4 text-white\">"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 215,
+    "method": "main correspondence",
+    "similarity": 0.9753694581280788,
+    "before": "<div className=\"w-7 h-7 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-7 h-7 rounded-full #E6F1FB text-[#0C447C] flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 238,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full border border-gray-300 rounded-lg p-3 text-center text-lg tracking-widest font-mono focus:ring-2 focus:ring-[#f97316] outline-none\"",
+    "after": "className=\"w-full border border-gray-300 rounded-lg p-3 text-center text-lg tracking-widest font-mono focus:ring-2 focus:ring-[#1D9E75] outline-none\""
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 248,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"py-2.5 rounded-lg bg-[#0b0b0d] text-white text-sm font-semibold disabled:opacity-50\"",
+    "after": "className=\"py-2.5 rounded-lg bg-[#1D9E75] text-white text-sm font-semibold disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 259,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-2.5 font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-50\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-2.5 font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 285,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"text-xs text-[#f97316] font-medium flex items-center gap-1\">",
+    "after": "<span className=\"text-xs text-[#1D9E75] font-medium flex items-center gap-1\">"
+  },
+  {
+    "file": "frontend/src/pages/deliverer/Dashboard.jsx",
+    "line": 300,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Icon size={16} className=\"text-[#f97316] mx-auto\" />",
+    "after": "<Icon size={16} className=\"text-[#1D9E75] mx-auto\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 104,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<label data-testid=\"add-photo-btn\" className=\"aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-[#f97316] hover:text-[#f97316] cursor-pointer transition-colors\">",
+    "after": "<label data-testid=\"add-photo-btn\" className=\"aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-[#1D9E75] hover:text-[#1D9E75] cursor-pointer transition-colors\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 125,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\"",
+    "after": "className=\"flex-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\""
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 150,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] outline-none\">",
+    "after": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 158,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-2 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] outline-none\" autoFocus />",
+    "after": "className=\"w-full mt-2 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none\" autoFocus />"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 167,
+    "method": "main correspondence",
+    "similarity": 0.9868073878627969,
+    "before": "className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes(\"delivery\") ? \"border-[#f97316] bg-orange-50\" : \"border-gray-200 bg-white\"}`}>",
+    "after": "className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes(\"delivery\") ? \"border-[#1D9E75] #E1F5EE\" : \"border-gray-200 bg-white\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 168,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Truck size={18} className={form.delivery_modes.includes(\"delivery\") ? \"text-[#f97316]\" : \"text-gray-400\"} />",
+    "after": "<Truck size={18} className={form.delivery_modes.includes(\"delivery\") ? \"text-[#1D9E75]\" : \"text-gray-400\"} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 172,
+    "method": "main correspondence",
+    "similarity": 0.986737400530504,
+    "before": "className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes(\"collect\") ? \"border-[#f97316] bg-orange-50\" : \"border-gray-200 bg-white\"}`}>",
+    "after": "className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes(\"collect\") ? \"border-[#1D9E75] #E1F5EE\" : \"border-gray-200 bg-white\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 173,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Store size={18} className={form.delivery_modes.includes(\"collect\") ? \"text-[#f97316]\" : \"text-gray-400\"} />",
+    "after": "<Store size={18} className={form.delivery_modes.includes(\"collect\") ? \"text-[#1D9E75]\" : \"text-gray-400\"} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 180,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50\">",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 194,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\" />",
+    "after": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/AddProduct.jsx",
+    "line": 205,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none resize-none\" />",
+    "after": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none resize-none\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/BuyerProfile.jsx",
+    "line": 27,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/BuyerProfile.jsx",
+    "line": 37,
+    "method": "main correspondence",
+    "similarity": 0.9710982658959537,
+    "before": "<div className=\"w-20 h-20 rounded-full bg-orange-50 flex items-center justify-center mb-3\">",
+    "after": "<div className=\"w-20 h-20 rounded-full #E1F5EE flex items-center justify-center mb-3\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/BuyerProfile.jsx",
+    "line": 58,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<ShoppingBag size={16} className=\"text-[#f97316]\" /> Historique des commandes",
+    "after": "<ShoppingBag size={16} className=\"text-[#1D9E75]\" /> Historique des commandes"
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 70,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "style={{ background: data.shop.premium ? \"linear-gradient(135deg, #f97316 0%, #c2410c 100%)\" : \"#0b0b0d\" }}",
+    "after": "style={{ background: data.shop.premium ? \"linear-gradient(135deg, #EF9F27 0%, #BA7517 100%)\" : \"#085041\" }}"
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 100,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 122,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full text-left p-3 rounded-lg border border-gray-100 hover:border-[#f97316] transition-colors flex justify-between items-center\"",
+    "after": "className=\"w-full text-left p-3 rounded-lg border border-gray-100 hover:border-[#1D9E75] transition-colors flex justify-between items-center\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 136,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`w-10 h-10 rounded-full ${data.shop.badge_verified ? \"bg-[#0b0b0d]\" : \"bg-gray-200\"} text-white flex items-center justify-center`}>",
+    "after": "<div className={`w-10 h-10 rounded-full ${data.shop.badge_verified ? \"bg-[#1D9E75]\" : \"bg-gray-200\"} text-white flex items-center justify-center`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 158,
+    "method": "main correspondence",
+    "similarity": 0.9723756906077348,
+    "before": "<div className=\"w-9 h-9 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-9 h-9 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 173,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"bg-white rounded-xl border border-gray-100 shadow-sm py-3 flex flex-col items-center gap-1.5 text-xs font-semibold text-gray-700 hover:border-[#f97316] hover:text-[#f97316] transition-colors\"",
+    "after": "className=\"bg-white rounded-xl border border-gray-100 shadow-sm py-3 flex flex-col items-center gap-1.5 text-xs font-semibold text-gray-700 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Dashboard.jsx",
+    "line": 175,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Icon size={20} className=\"text-[#f97316]\" />",
+    "after": "<Icon size={20} className=\"text-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/DelivererApplications.jsx",
+    "line": 65,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/DelivererApplications.jsx",
+    "line": 95,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-4 hover:border-[#f97316] transition-colors\"",
+    "after": "className=\"w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-4 hover:border-[#1D9E75] transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/seller/DelivererApplications.jsx",
+    "line": 98,
+    "method": "main correspondence",
+    "similarity": 0.9753694581280788,
+    "before": "<div className=\"w-11 h-11 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0\">",
+    "after": "<div className=\"w-11 h-11 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center shrink-0\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/DelivererApplications.jsx",
+    "line": 104,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Phone size={11} /> {a.phone} {a.phone_verified && <Check size={11} className=\"text-[#f97316]\" />}",
+    "after": "<Phone size={11} /> {a.phone} {a.phone_verified && <Check size={11} className=\"text-[#1D9E75]\" />}"
+  },
+  {
+    "file": "frontend/src/pages/seller/DelivererApplications.jsx",
+    "line": 117,
+    "method": "main correspondence",
+    "similarity": 0.972972972972973,
+    "before": "<div className=\"w-12 h-12 rounded-xl bg-orange-50 text-[#f97316] flex items-center justify-center\">",
+    "after": "<div className=\"w-12 h-12 rounded-xl #E1F5EE text-[#1D9E75] flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/DelivererApplications.jsx",
+    "line": 141,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Check size={14} className={detail.contract_accepted ? \"text-[#f97316]\" : \"text-gray-300\"} />",
+    "after": "<Check size={14} className={detail.contract_accepted ? \"text-[#1D9E75]\" : \"text-gray-300\"} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/DelivererApplications.jsx",
+    "line": 149,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 text-sm font-semibold flex items-center justify-center gap-2\"",
+    "after": "className=\"bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 text-sm font-semibold flex items-center justify-center gap-2\""
+  },
+  {
+    "file": "frontend/src/pages/seller/DelivererApplications.jsx",
+    "line": 178,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "{verified && <Check size={13} className=\"text-[#f97316]\" />}",
+    "after": "{verified && <Check size={13} className=\"text-[#1D9E75]\" />}"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 127,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<label data-testid=\"add-photo-btn\" className=\"aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-[#f97316] hover:text-[#f97316] cursor-pointer transition-colors\">",
+    "after": "<label data-testid=\"add-photo-btn\" className=\"aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-[#1D9E75] hover:text-[#1D9E75] cursor-pointer transition-colors\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 148,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"flex-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\"",
+    "after": "className=\"flex-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\""
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 173,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] outline-none\">",
+    "after": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 181,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-2 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] outline-none\" autoFocus />",
+    "after": "className=\"w-full mt-2 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] outline-none\" autoFocus />"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 190,
+    "method": "main correspondence",
+    "similarity": 0.9868073878627969,
+    "before": "className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes(\"delivery\") ? \"border-[#f97316] bg-orange-50\" : \"border-gray-200 bg-white\"}`}>",
+    "after": "className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes(\"delivery\") ? \"border-[#1D9E75] #E1F5EE\" : \"border-gray-200 bg-white\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 191,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Truck size={18} className={form.delivery_modes.includes(\"delivery\") ? \"text-[#f97316]\" : \"text-gray-400\"} />",
+    "after": "<Truck size={18} className={form.delivery_modes.includes(\"delivery\") ? \"text-[#1D9E75]\" : \"text-gray-400\"} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 195,
+    "method": "main correspondence",
+    "similarity": 0.986737400530504,
+    "before": "className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes(\"collect\") ? \"border-[#f97316] bg-orange-50\" : \"border-gray-200 bg-white\"}`}>",
+    "after": "className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes(\"collect\") ? \"border-[#1D9E75] #E1F5EE\" : \"border-gray-200 bg-white\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 196,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Store size={18} className={form.delivery_modes.includes(\"collect\") ? \"text-[#f97316]\" : \"text-gray-400\"} />",
+    "after": "<Store size={18} className={form.delivery_modes.includes(\"collect\") ? \"text-[#1D9E75]\" : \"text-gray-400\"} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 203,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50\">",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 217,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none\" />",
+    "after": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProduct.jsx",
+    "line": 228,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none resize-none\" />",
+    "after": "className=\"w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent outline-none resize-none\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 125,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 128,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<button onClick={save} disabled={loading} className=\"bg-[#f97316] text-white rounded-lg px-4 py-2 text-sm font-semibold flex items-center gap-1.5 disabled:opacity-50\">",
+    "after": "<button onClick={save} disabled={loading} className=\"bg-[#EF9F27] text-white rounded-lg px-4 py-2 text-sm font-semibold flex items-center gap-1.5 disabled:opacity-50\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 135,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div onClick={() => bannerRef.current?.click()} className=\"w-full h-32 bg-gradient-to-r from-[#0b0b0d] to-[#f97316] flex items-center justify-center cursor-pointer overflow-hidden relative group\">",
+    "after": "<div onClick={() => bannerRef.current?.click()} className=\"w-full h-32 bg-gradient-to-r from-[#085041] to-[#1D9E75] flex items-center justify-center cursor-pointer overflow-hidden relative group\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 166,
+    "method": "main correspondence",
+    "similarity": 0.9838187702265372,
+    "before": "<button onClick={addSpecialty} className=\"w-10 h-10 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0\"><Plus size={18} /></button>",
+    "after": "<button onClick={addSpecialty} className=\"w-10 h-10 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center shrink-0\"><Plus size={18} /></button>"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 195,
+    "method": "main correspondence",
+    "similarity": 0.9738219895287958,
+    "before": "className=\"w-10 h-10 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0\"",
+    "after": "className=\"w-10 h-10 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center shrink-0\""
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 211,
+    "method": "main correspondence",
+    "similarity": 0.9640287769784173,
+    "before": "!isAfrimarket ? \"border-[#f97316] bg-orange-50\" : \"border-gray-200 bg-white\"",
+    "after": "!isAfrimarket ? \"border-[#1D9E75] #E1F5EE\" : \"border-gray-200 bg-white\""
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 214,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${!isAfrimarket ? \"bg-[#0b0b0d] text-white\" : \"bg-gray-100 text-gray-500\"}`}>",
+    "after": "<div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${!isAfrimarket ? \"bg-[#1D9E75] text-white\" : \"bg-gray-100 text-gray-500\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 225,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${!isAfrimarket ? \"border-[#f97316] bg-[#0b0b0d]\" : \"border-gray-300\"}`} />",
+    "after": "<div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${!isAfrimarket ? \"border-[#1D9E75] bg-[#1D9E75]\" : \"border-gray-300\"}`} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 239,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "? \"bg-[#0b0b0d] text-white border-[#f97316]\"",
+    "after": "? \"bg-[#1D9E75] text-white border-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 254,
+    "method": "main correspondence",
+    "similarity": 0.9635036496350365,
+    "before": "isAfrimarket ? \"border-[#f97316] bg-orange-50\" : \"border-gray-200 bg-white\"",
+    "after": "isAfrimarket ? \"border-[#1D9E75] #E1F5EE\" : \"border-gray-200 bg-white\""
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 257,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isAfrimarket ? \"bg-[#0b0b0d] text-white\" : \"bg-gray-100 text-gray-500\"}`}>",
+    "after": "<div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isAfrimarket ? \"bg-[#1D9E75] text-white\" : \"bg-gray-100 text-gray-500\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 266,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"text-[10px] bg-[#f97316] text-white px-2 py-0.5 rounded-full font-semibold\">Premium</span>",
+    "after": "<span className=\"text-[10px] bg-[#EF9F27] text-white px-2 py-0.5 rounded-full font-semibold\">Premium</span>"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 273,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${isAfrimarket ? \"border-[#f97316] bg-[#0b0b0d]\" : \"border-gray-300\"}`} />",
+    "after": "<div className={`w-4 h-4 rounded-full border-2 mt-1 shrink-0 ${isAfrimarket ? \"border-[#1D9E75] bg-[#1D9E75]\" : \"border-gray-300\"}`} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/EditProfile.jsx",
+    "line": 337,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "const inp = \"w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\";",
+    "after": "const inp = \"w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\";"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 11,
+    "method": "main correspondence",
+    "similarity": 0.9685534591194969,
+    "before": "level3: { label: \"Niveau 3 - Vendeur Vérifié\", color: \"bg-orange-50 text-[#f97316]\" },",
+    "after": "level3: { label: \"Niveau 3 - Vendeur Vérifié\", color: \"#E1F5EE text-[#1D9E75]\" },"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 76,
+    "method": "main correspondence",
+    "similarity": 0.9738219895287958,
+    "before": "<section className=\"rounded-xl border-2 border-[#f97316]/30 bg-orange-50 p-4 flex items-center gap-3\">",
+    "after": "<section className=\"rounded-xl border-2 border-[#1D9E75]/30 #E1F5EE p-4 flex items-center gap-3\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 77,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-12 h-12 rounded-lg bg-[#0b0b0d] text-white flex items-center justify-center\">",
+    "after": "<div className=\"w-12 h-12 rounded-lg bg-[#1D9E75] text-white flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 94,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`flex-1 h-1 rounded-full ${status.kyc_level >= 2 ? \"bg-[#0b0b0d]\" : \"bg-gray-200\"}`} />",
+    "after": "<div className={`flex-1 h-1 rounded-full ${status.kyc_level >= 2 ? \"bg-[#1D9E75]\" : \"bg-gray-200\"}`} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 96,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`flex-1 h-1 rounded-full ${status.kyc_level >= 3 ? \"bg-[#0b0b0d]\" : \"bg-gray-200\"}`} />",
+    "after": "<div className={`flex-1 h-1 rounded-full ${status.kyc_level >= 3 ? \"bg-[#1D9E75]\" : \"bg-gray-200\"}`} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 106,
+    "method": "main correspondence",
+    "similarity": 0.9832775919732442,
+    "before": "<div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? \"bg-orange-50 text-[#f97316]\" : \"bg-gray-100 text-gray-400\"}`}>",
+    "after": "<div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? \"#E1F5EE text-[#1D9E75]\" : \"bg-gray-100 text-gray-400\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 113,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<p className=\"text-[10px] text-[#f97316] mt-2 font-semibold\">✓ Document reçu</p>",
+    "after": "<p className=\"text-[10px] text-[#1D9E75] mt-2 font-semibold\">✓ Document reçu</p>"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 115,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<label className=\"mt-3 inline-flex items-center gap-2 px-3 py-2 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg text-xs font-semibold cursor-pointer\" data-testid={`upload-${s.key}-btn`}>",
+    "after": "<label className=\"mt-3 inline-flex items-center gap-2 px-3 py-2 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg text-xs font-semibold cursor-pointer\" data-testid={`upload-${s.key}-btn`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 138,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#063b30] text-white rounded-lg py-3 font-semibold transition-colors\"",
+    "after": "className=\"w-full bg-[#085041] hover:bg-[#063b30] text-white rounded-lg py-3 font-semibold transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Kyc.jsx",
+    "line": 160,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${active ? \"bg-[#0b0b0d] text-white\" : \"bg-gray-200 text-gray-400\"}`}>",
+    "after": "<div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${active ? \"bg-[#1D9E75] text-white\" : \"bg-gray-200 text-gray-400\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/Premium.jsx",
+    "line": 44,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<header className=\"sticky top-0 z-40 bg-[#0b0b0d] text-white px-4 py-3 flex items-center gap-3 shadow-md\">",
+    "after": "<header className=\"sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Premium.jsx",
+    "line": 52,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"rounded-2xl p-6 text-center\" style={{ background: \"linear-gradient(135deg, #f97316 0%, #c2410c 100%)\" }}>",
+    "after": "<div className=\"rounded-2xl p-6 text-center\" style={{ background: \"linear-gradient(135deg, #EF9F27 0%, #BA7517 100%)\" }}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/Premium.jsx",
+    "line": 79,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Sparkles size={16} className=\"text-[#f97316]\" /> Vos avantages Premium",
+    "after": "<Sparkles size={16} className=\"text-[#EF9F27]\" /> Vos avantages Premium"
+  },
+  {
+    "file": "frontend/src/pages/seller/Premium.jsx",
+    "line": 84,
+    "method": "main correspondence",
+    "similarity": 0.9769585253456221,
+    "before": "<div className=\"w-5 h-5 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center shrink-0 mt-0.5\">",
+    "after": "<div className=\"w-5 h-5 rounded-full #E1F5EE text-[#1D9E75] flex items-center justify-center shrink-0 mt-0.5\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Premium.jsx",
+    "line": 95,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"mt-5 rounded-2xl overflow-hidden border border-[#f97316]/30 shadow-sm\">",
+    "after": "<div className=\"mt-5 rounded-2xl overflow-hidden border border-[#EF9F27]/30 shadow-sm\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Premium.jsx",
+    "line": 97,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"relative h-36 bg-gradient-to-br from-[#f97316]/20 to-[#BA7517]/10 flex items-center justify-center\">",
+    "after": "<div className=\"relative h-36 bg-gradient-to-br from-[#EF9F27]/20 to-[#BA7517]/10 flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Premium.jsx",
+    "line": 99,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Crown size={100} className=\"text-[#f97316]\" />",
+    "after": "<Crown size={100} className=\"text-[#EF9F27]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Premium.jsx",
+    "line": 103,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-2 h-2 rounded-full bg-[#f97316] animate-pulse\" />",
+    "after": "<div className=\"w-2 h-2 rounded-full bg-[#EF9F27] animate-pulse\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Premium.jsx",
+    "line": 104,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-2 h-2 rounded-full bg-[#f97316] animate-pulse\" style={{ animationDelay: \"0.2s\" }} />",
+    "after": "<div className=\"w-2 h-2 rounded-full bg-[#EF9F27] animate-pulse\" style={{ animationDelay: \"0.2s\" }} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Premium.jsx",
+    "line": 105,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"w-2 h-2 rounded-full bg-[#f97316] animate-pulse\" style={{ animationDelay: \"0.4s\" }} />",
+    "after": "<div className=\"w-2 h-2 rounded-full bg-[#EF9F27] animate-pulse\" style={{ animationDelay: \"0.4s\" }} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Products.jsx",
+    "line": 40,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2 mb-4\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2 mb-4\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Products.jsx",
+    "line": 64,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "Stock : <span className={p.stock > 0 ? \"text-[#f97316]\" : \"text-[#E24B4A]\"}>{p.stock}</span>",
+    "after": "Stock : <span className={p.stock > 0 ? \"text-[#1D9E75]\" : \"text-[#E24B4A]\"}>{p.stock}</span>"
+  },
+  {
+    "file": "frontend/src/pages/seller/Products.jsx",
+    "line": 71,
+    "method": "main correspondence",
+    "similarity": 0.9532710280373832,
+    "before": "className=\"text-[#f97316] p-2 hover:bg-orange-50 rounded-lg\"",
+    "after": "className=\"text-[#1D9E75] p-2 hover:#E1F5EE rounded-lg\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Scan.jsx",
+    "line": 115,
+    "method": "main correspondence",
+    "similarity": 0.9693251533742331,
+    "before": "<div className=\"w-24 h-24 rounded-full bg-orange-50 flex items-center justify-center\">",
+    "after": "<div className=\"w-24 h-24 rounded-full #E1F5EE flex items-center justify-center\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Scan.jsx",
+    "line": 130,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<p className=\"text-sm text-[#f97316] font-semibold mt-2\">",
+    "after": "<p className=\"text-sm text-[#1D9E75] font-semibold mt-2\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Scan.jsx",
+    "line": 137,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold flex items-center justify-center gap-2 transition-colors\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold flex items-center justify-center gap-2 transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Scan.jsx",
+    "line": 170,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<span className=\"ml-auto text-xs text-[#f97316] font-semibold animate-pulse\">",
+    "after": "<span className=\"ml-auto text-xs text-[#1D9E75] font-semibold animate-pulse\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Scan.jsx",
+    "line": 182,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "mode === \"camera\" ? \"bg-[#0b0b0d]\" : \"bg-white/10\"",
+    "after": "mode === \"camera\" ? \"bg-[#1D9E75]\" : \"bg-white/10\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Scan.jsx",
+    "line": 191,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "mode === \"manual\" ? \"bg-[#0b0b0d]\" : \"bg-white/10\"",
+    "after": "mode === \"manual\" ? \"bg-[#1D9E75]\" : \"bg-white/10\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Scan.jsx",
+    "line": 222,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316] resize-none\"",
+    "after": "className=\"w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] resize-none\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Scan.jsx",
+    "line": 228,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold disabled:opacity-50 transition-colors\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold disabled:opacity-50 transition-colors\""
+  },
+  {
+    "file": "frontend/src/pages/seller/SellerOrders.jsx",
+    "line": 64,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<Star size={32} className={n <= rating ? \"text-[#f97316] fill-[#f97316]\" : \"text-gray-200\"} />",
+    "after": "<Star size={32} className={n <= rating ? \"text-[#EF9F27] fill-[#EF9F27]\" : \"text-gray-200\"} />"
+  },
+  {
+    "file": "frontend/src/pages/seller/SellerOrders.jsx",
+    "line": 72,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold disabled:opacity-50\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold disabled:opacity-50\""
+  },
+  {
+    "file": "frontend/src/pages/seller/SellerOrders.jsx",
+    "line": 153,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-[#f97316] bg-[#FEF3E2] py-2.5 border-t border-amber-100\"",
+    "after": "className=\"w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-[#EF9F27] bg-[#FEF3E2] py-2.5 border-t border-amber-100\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 75,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"bg-[#0b0b0d] px-5 pt-6 pb-4\">",
+    "after": "<div className=\"bg-[#085041] px-5 pt-6 pb-4\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 81,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "{STEPS.map((s, i) => <div key={i} className={`flex-1 h-1 rounded-full transition-all ${i <= step ? \"bg-[#f97316]\" : \"bg-white/20\"}`} />)}",
+    "after": "{STEPS.map((s, i) => <div key={i} className={`flex-1 h-1 rounded-full transition-all ${i <= step ? \"bg-[#EF9F27]\" : \"bg-white/20\"}`} />)}"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 83,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<div className=\"flex justify-between mt-1.5\">{STEPS.map((s, i) => <span key={i} className={`text-xs ${i === step ? \"text-[#f97316] font-semibold\" : \"text-white/50\"}`}>{s}</span>)}</div>",
+    "after": "<div className=\"flex justify-between mt-1.5\">{STEPS.map((s, i) => <span key={i} className={`text-xs ${i === step ? \"text-[#EF9F27] font-semibold\" : \"text-white/50\"}`}>{s}</span>)}</div>"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 94,
+    "method": "main correspondence",
+    "similarity": 0.9749303621169917,
+    "before": "<button onClick={() => logoRef.current?.click()} className=\"relative w-24 h-24 rounded-full overflow-hidden border-4 border-orange-100 bg-gray-100 flex items-center justify-center group\">",
+    "after": "<button onClick={() => logoRef.current?.click()} className=\"relative w-24 h-24 rounded-full overflow-hidden border-4 #E1F5EE bg-gray-100 flex items-center justify-center group\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 102,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input data-testid=\"setup-shop-name\" value={form.shop_name} onChange={e => set(\"shop_name\", e.target.value)} placeholder=\"ex: ÉlectroKin, Boutique Wax...\" className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "<input data-testid=\"setup-shop-name\" value={form.shop_name} onChange={e => set(\"shop_name\", e.target.value)} placeholder=\"ex: ÉlectroKin, Boutique Wax...\" className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 105,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<select value={form.category} onChange={e => set(\"category\", e.target.value)} className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-none bg-white focus:ring-2 focus:ring-[#f97316]\">",
+    "after": "<select value={form.category} onChange={e => set(\"category\", e.target.value)} className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-none bg-white focus:ring-2 focus:ring-[#1D9E75]\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 112,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input value={specialty} onChange={e => setSpecialty(e.target.value)} onKeyDown={e => e.key === \"Enter\" && addSpecialty()} placeholder=\"ex: Téléphones, Pagnes...\" className=\"flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "<input value={specialty} onChange={e => setSpecialty(e.target.value)} onKeyDown={e => e.key === \"Enter\" && addSpecialty()} placeholder=\"ex: Téléphones, Pagnes...\" className=\"flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 113,
+    "method": "main correspondence",
+    "similarity": 0.9828178694158075,
+    "before": "<button onClick={addSpecialty} className=\"w-10 h-10 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center\"><Plus size={18} /></button>",
+    "after": "<button onClick={addSpecialty} className=\"w-10 h-10 rounded-lg #E1F5EE text-[#1D9E75] flex items-center justify-center\"><Plus size={18} /></button>"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 131,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<textarea value={form.description} onChange={e => set(\"description\", e.target.value)} rows={2} placeholder=\"ex: Spécialiste en téléphones reconditionnés à Kinshasa, livraison disponible.\" className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none resize-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "<textarea value={form.description} onChange={e => set(\"description\", e.target.value)} rows={2} placeholder=\"ex: Spécialiste en téléphones reconditionnés à Kinshasa, livraison disponible.\" className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none resize-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 136,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<textarea value={form.long_description} onChange={e => set(\"long_description\", e.target.value)} rows={6} placeholder=\"Nous sommes une boutique familiale fondée en 2018 à Gombe. Notre mission est de vous proposer des produits électroniques de qualité à des prix accessibles. Toutes nos marchandises sont garanties 3 mois et vérifiées avant expédition…\" className=\"mt-1 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none resize-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "<textarea value={form.long_description} onChange={e => set(\"long_description\", e.target.value)} rows={6} placeholder=\"Nous sommes une boutique familiale fondée en 2018 à Gombe. Notre mission est de vous proposer des produits électroniques de qualité à des prix accessibles. Toutes nos marchandises sont garanties 3 mois et vérifiées avant expédition…\" className=\"mt-1 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none resize-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 140,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input value={form.opening_hours} onChange={e => set(\"opening_hours\", e.target.value)} placeholder=\"08:00-18:00\" className=\"w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "<input value={form.opening_hours} onChange={e => set(\"opening_hours\", e.target.value)} placeholder=\"08:00-18:00\" className=\"w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 152,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input data-testid=\"setup-neighborhood\" value={form.neighborhood} onChange={e => set(\"neighborhood\", e.target.value)} placeholder=\"ex: Gombe, Lingwala, Akwa…\" className=\"w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "<input data-testid=\"setup-neighborhood\" value={form.neighborhood} onChange={e => set(\"neighborhood\", e.target.value)} placeholder=\"ex: Gombe, Lingwala, Akwa…\" className=\"w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 156,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input value={form.address} onChange={e => set(\"address\", e.target.value)} placeholder=\"ex: Av. du Marché, n°12\" className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "<input value={form.address} onChange={e => set(\"address\", e.target.value)} placeholder=\"ex: Av. du Marché, n°12\" className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 160,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input type=\"number\" step=\"any\" value={form.latitude || \"\"} onChange={e => set(\"latitude\", parseFloat(e.target.value)||0)} placeholder=\"-4.32\" className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "<input type=\"number\" step=\"any\" value={form.latitude || \"\"} onChange={e => set(\"latitude\", parseFloat(e.target.value)||0)} placeholder=\"-4.32\" className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 163,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input type=\"number\" step=\"any\" value={form.longitude || \"\"} onChange={e => set(\"longitude\", parseFloat(e.target.value)||0)} placeholder=\"15.31\" className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\" />",
+    "after": "<input type=\"number\" step=\"any\" value={form.longitude || \"\"} onChange={e => set(\"longitude\", parseFloat(e.target.value)||0)} placeholder=\"15.31\" className=\"mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 187,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<input value={form.social_links[key]} onChange={e => setSocial(key, e.target.value)} placeholder={placeholder} className=\"w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#f97316] mt-0.5\" />",
+    "after": "<input value={form.social_links[key]} onChange={e => setSocial(key, e.target.value)} placeholder={placeholder} className=\"w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] mt-0.5\" />"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 207,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<button disabled={!canNext[step]} onClick={() => setStep(s => s + 1)} className=\"flex-1 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold flex items-center justify-center gap-1.5 text-sm disabled:opacity-50\">",
+    "after": "<button disabled={!canNext[step]} onClick={() => setStep(s => s + 1)} className=\"flex-1 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold flex items-center justify-center gap-1.5 text-sm disabled:opacity-50\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Setup.jsx",
+    "line": 211,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<button disabled={loading} onClick={submit} className=\"flex-1 bg-[#0b0b0d] hover:bg-[#0a6b55] text-white rounded-lg py-3 font-semibold text-sm disabled:opacity-50\">",
+    "after": "<button disabled={loading} onClick={submit} className=\"flex-1 bg-[#085041] hover:bg-[#0a6b55] text-white rounded-lg py-3 font-semibold text-sm disabled:opacity-50\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Wallet.jsx",
+    "line": 71,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "<section className=\"rounded-2xl bg-gradient-to-br from-[#0b0b0d] to-[#f97316] text-white p-5 shadow\">",
+    "after": "<section className=\"rounded-2xl bg-gradient-to-br from-[#085041] to-[#1D9E75] text-white p-5 shadow\">"
+  },
+  {
+    "file": "frontend/src/pages/seller/Wallet.jsx",
+    "line": 103,
+    "method": "main correspondence",
+    "similarity": 0.9824561403508771,
+    "before": "<div className={`w-9 h-9 rounded-full flex items-center justify-center ${t.type === \"sale\" ? \"bg-orange-50 text-[#f97316]\" : \"bg-amber-50 text-[#f97316]\"}`}>",
+    "after": "<div className={`w-9 h-9 rounded-full flex items-center justify-center ${t.type === \"sale\" ? \"#E1F5EE text-[#1D9E75]\" : \"bg-amber-50 text-[#EF9F27]\"}`}>"
+  },
+  {
+    "file": "frontend/src/pages/seller/Wallet.jsx",
+    "line": 137,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\"",
+    "after": "className=\"w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Wallet.jsx",
+    "line": 147,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\"",
+    "after": "className=\"w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Wallet.jsx",
+    "line": 156,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#f97316]\"",
+    "after": "className=\"w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]\""
+  },
+  {
+    "file": "frontend/src/pages/seller/Wallet.jsx",
+    "line": 165,
+    "method": "main correspondence",
+    "similarity": 1.0,
+    "before": "className=\"w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold disabled:opacity-50\"",
+    "after": "className=\"w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold disabled:opacity-50\""
+  }
+]

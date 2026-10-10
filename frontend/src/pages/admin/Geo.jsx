@@ -6,7 +6,7 @@ import api, { formatApiError, API_BASE } from "../../lib/api";
 import AdminSidebar from "../../components/AdminSidebar";
 import { formatPrice } from "../../lib/format";
 
-const COLORS = { CD: "#f97316", CM: "#fbbf24", CI: "#0b0b0d", SN: "#3B82F6", BJ: "#8B5CF6" };
+const COLORS = { CD: "var(--afri-primary)", CM: "var(--afri-accent)", CI: "var(--afri-secondary)", SN: "#3B82F6", BJ: "#8B5CF6" };
 
 export default function AdminGeo() {
   const [overview, setOverview] = useState([]);
@@ -104,7 +104,7 @@ export default function AdminGeo() {
                 <button
                   data-testid={`toggle-country-${c.code}`}
                   onClick={() => toggle(c.code, c.is_active)}
-                  className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 ${c.is_active ? "bg-orange-50 text-[#f97316]" : "bg-gray-100 text-gray-500"}`}
+                  className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 ${c.is_active ? "var(--afri-success-bg) text-afri-primary" : "bg-gray-100 text-gray-500"}`}
                 >
                   <Power size={11} /> {c.is_active ? "Actif" : "Inactif"}
                 </button>

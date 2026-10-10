@@ -45,14 +45,14 @@ export default function ShopProfile({ guest = false }) {
     <div className="mobile-shell pb-12">
       {/* BANNIÈRE */}
       <div className="relative">
-        <div className="w-full h-36 overflow-hidden bg-gradient-to-r from-[#0b0b0d] to-[#f97316]">
+        <div className="w-full h-36 overflow-hidden bg-gradient-to-r from-afri-secondary to-afri-primary">
           {seller.shop_banner_url && <img src={photoUrl(seller.shop_banner_url)} alt="bannière" className="w-full h-full object-cover" />}
         </div>
         {/* Logo flottant */}
         <div className="absolute left-4 -bottom-10 w-20 h-20 rounded-full border-4 border-white bg-gray-100 shadow-lg overflow-hidden">
           {seller.shop_logo_url
             ? <img src={photoUrl(seller.shop_logo_url)} alt="logo" className="w-full h-full object-cover" />
-            : <div className="w-full h-full bg-[#0b0b0d] flex items-center justify-center"><span className="text-white text-3xl font-black">{seller.shop_name[0]}</span></div>}
+            : <div className="w-full h-full bg-afri-secondary flex items-center justify-center"><span className="text-white text-3xl font-black">{seller.shop_name[0]}</span></div>}
         </div>
         {/* Bouton retour */}
         <Link to={backLink} className="absolute top-3 left-3 w-8 h-8 rounded-full bg-black/30 backdrop-blur flex items-center justify-center text-white">
@@ -72,12 +72,12 @@ export default function ShopProfile({ guest = false }) {
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="font-display font-black text-xl text-gray-900">{seller.shop_name}</h1>
               {seller.badge_verified && <ShieldCheck size={18} className="text-green-600" />}
-              {seller.premium && <Crown size={16} className="text-[#f97316]" />}
+              {seller.premium && <Crown size={16} className="text-afri-accent" />}
             </div>
             <p className="text-sm text-gray-500 mt-0.5">{seller.category}</p>
           </div>
           {seller.rating > 0 && (
-            <div className="flex items-center gap-1 bg-[#f97316]/10 text-[#BA7517] px-3 py-1.5 rounded-full">
+            <div className="flex items-center gap-1 bg-afri-accent/10 text-[#BA7517] px-3 py-1.5 rounded-full">
               <Star size={14} fill="currentColor" /><span className="text-sm font-bold">{seller.rating.toFixed(1)}</span>
             </div>
           )}
@@ -86,7 +86,7 @@ export default function ShopProfile({ guest = false }) {
         {/* Tags spécialités */}
         {(seller.product_specialties || []).length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-2">
-            {seller.product_specialties.map(s => <span key={s} className="text-xs bg-orange-50 text-gray-900 font-medium px-2.5 py-1 rounded-full">{s}</span>)}
+            {seller.product_specialties.map(s => <span key={s} className="text-xs bg-afri-soft text-gray-900 font-medium px-2.5 py-1 rounded-full">{s}</span>)}
           </div>
         )}
 
@@ -103,7 +103,7 @@ export default function ShopProfile({ guest = false }) {
         <button
           data-testid="contact-seller-btn"
           onClick={handleContact}
-          className="w-full mt-4 bg-white border border-[#f97316] text-[#f97316] hover:bg-orange-50 rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm transition-colors"
+          className="w-full mt-4 bg-white border border-afri-primary text-afri-primary hover:var(--afri-success-bg) rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm transition-colors"
         >
           <MessageSquare size={16} /> {isGuestView ? "Se connecter pour contacter ce vendeur" : "Contacter le vendeur"}
         </button>
@@ -148,7 +148,7 @@ export default function ShopProfile({ guest = false }) {
         {/* PRODUITS */}
         <div className="mt-5">
           <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-            <Package size={16} className="text-[#f97316]" /> Produits ({products.length})
+            <Package size={16} className="text-afri-primary" /> Produits ({products.length})
           </h3>
           {products.length === 0
             ? <p className="text-sm text-gray-400 text-center py-6">Aucun produit disponible pour l'instant.</p>
@@ -162,14 +162,14 @@ export default function ShopProfile({ guest = false }) {
         {reviews.length > 0 && (
           <div className="mt-5">
             <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-              <Star size={16} className="text-[#f97316]" /> Avis clients ({reviews.length})
+              <Star size={16} className="text-afri-accent" /> Avis clients ({reviews.length})
             </h3>
             <div className="space-y-3">
               {reviews.slice(0, 5).map(r => (
                 <div key={r.id} className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
                   <div className="flex items-center gap-2 mb-1.5">
                     <div className="flex">
-                      {[1,2,3,4,5].map(i => <Star key={i} size={12} fill={i <= r.rating ? "#f97316" : "transparent"} className={i <= r.rating ? "text-[#f97316]" : "text-gray-300"} />)}
+                      {[1,2,3,4,5].map(i => <Star key={i} size={12} fill={i <= r.rating ? "var(--afri-accent)" : "transparent"} className={i <= r.rating ? "text-afri-accent" : "text-gray-300"} />)}
                     </div>
                     <span className="text-xs text-gray-400">{timeAgo(r.created_at)}</span>
                   </div>
@@ -182,11 +182,11 @@ export default function ShopProfile({ guest = false }) {
 
         {/* CTA bas de page (guest only) */}
         {isGuestView && (
-          <div className="mt-6 bg-orange-50 rounded-xl p-4 text-center">
+          <div className="mt-6 var(--afri-success-bg) rounded-xl p-4 text-center">
             <p className="text-sm text-gray-900 font-medium mb-3">
               Connectez-vous pour commander chez {seller.shop_name}
             </p>
-            <Link to="/auth/register" className="inline-block bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors">
+            <Link to="/auth/register" className="inline-block bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors">
               Créer mon compte
             </Link>
           </div>

@@ -52,7 +52,7 @@ export default function AdminKyc() {
             {pending.map((s) => (
               <div key={s.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5" data-testid={`kyc-card-${s.id}`}>
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 rounded-lg bg-orange-50 text-[#f97316] flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center">
                     <ShieldCheck size={20} />
                   </div>
                   <div className="flex-1">
@@ -67,7 +67,7 @@ export default function AdminKyc() {
                   <button
                     data-testid={`approve-kyc-${s.id}`}
                     onClick={() => approve(s.id)}
-                    className="bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-2.5 text-sm font-semibold flex items-center justify-center gap-2"
+                    className="bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-2.5 text-sm font-semibold flex items-center justify-center gap-2"
                   >
                     <Check size={16} /> Approuver
                   </button>

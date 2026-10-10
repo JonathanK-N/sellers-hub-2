@@ -46,7 +46,7 @@ export default function AdminProducts() {
         <div className="relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Produit, boutique, catégorie…"
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#f97316]" />
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
         </div>
 
         {loading ? (
@@ -89,14 +89,14 @@ export default function AdminProducts() {
                       <td className="px-4 py-3 text-gray-600">{p.stock}</td>
                       <td className="px-4 py-3">
                         <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                          p.is_active ? "bg-orange-50 text-[#f97316]" : "bg-red-50 text-red-600"}`}>
+                          p.is_active ? "var(--afri-success-bg) text-afri-primary" : "bg-red-50 text-red-600"}`}>
                           {p.is_active ? "Actif" : "Désactivé"}
                         </span>
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1">
                           <button onClick={() => setSelected(p)} className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500"><Eye size={15} /></button>
-                          <button onClick={() => toggle(p)} className={`p-1.5 hover:bg-gray-100 rounded-lg ${p.is_active ? "text-red-500" : "text-[#f97316]"}`}>
+                          <button onClick={() => toggle(p)} className={`p-1.5 hover:bg-gray-100 rounded-lg ${p.is_active ? "text-red-500" : "text-afri-primary"}`}>
                             {p.is_active ? <ToggleRight size={15} /> : <ToggleLeft size={15} />}
                           </button>
                         </div>
@@ -144,7 +144,7 @@ export default function AdminProducts() {
               )}
               <button onClick={() => { toggle(selected); }}
                 className={`w-full py-2.5 rounded-lg font-semibold text-sm transition-colors ${
-                  selected.is_active ? "bg-red-50 text-red-600 hover:bg-red-100" : "bg-orange-50 text-[#f97316] hover:bg-[#c8ede1]"}`}>
+                  selected.is_active ? "bg-red-50 text-red-600 hover:bg-red-100" : "var(--afri-success-bg) text-afri-primary hover:bg-[#c8ede1]"}`}>
                 {selected.is_active ? "Désactiver ce produit" : "Réactiver ce produit"}
               </button>
             </div>

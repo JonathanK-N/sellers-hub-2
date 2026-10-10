@@ -124,7 +124,7 @@ export default function SellerEditProduct() {
               </div>
             ))}
             {photos.length < 5 && (
-              <label data-testid="add-photo-btn" className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-[#f97316] hover:text-[#f97316] cursor-pointer transition-colors">
+              <label data-testid="add-photo-btn" className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-afri-primary hover:text-afri-primary cursor-pointer transition-colors">
                 <Upload size={20} />
                 <span className="text-[10px] font-semibold mt-1">{uploading ? "..." : "Ajouter"}</span>
                 <input type="file" accept="image/*" className="hidden" onChange={handleUpload} disabled={uploading} />
@@ -145,13 +145,13 @@ export default function SellerEditProduct() {
               value={form.price} type="number"
               onChange={(e) => setForm({ ...form, price: e.target.value })}
               placeholder={form.currency === "USD" ? "Ex: 25.00" : "Ex: 50000"}
-              className="flex-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none"
+              className="flex-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
             />
             <select
               data-testid="product-currency-select"
               value={form.currency}
               onChange={(e) => setForm({ ...form, currency: e.target.value })}
-              className="border border-gray-300 rounded-lg px-3 bg-white text-sm font-bold focus:ring-2 focus:ring-[#f97316] outline-none text-gray-900 min-w-[64px]"
+              className="border border-gray-300 rounded-lg px-3 bg-white text-sm font-bold focus:ring-2 focus:ring-afri-primary outline-none text-gray-900 min-w-[64px]"
             >
               {CURRENCIES.map((c) => <option key={c.value} value={c.value}>{c.value}</option>)}
             </select>
@@ -170,7 +170,7 @@ export default function SellerEditProduct() {
               if (e.target.value === "__other__") { setIsCustomCategory(true); setCustomCategory(""); }
               else { setIsCustomCategory(false); setForm({ ...form, category: e.target.value }); }
             }}
-            className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] outline-none">
+            className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary outline-none">
             {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
             <option value="__other__">Autre…</option>
           </select>
@@ -178,7 +178,7 @@ export default function SellerEditProduct() {
             <input data-testid="product-custom-category-input" value={customCategory}
               onChange={(e) => { setCustomCategory(e.target.value); setForm({ ...form, category: e.target.value }); }}
               placeholder="Nom de la nouvelle catégorie"
-              className="w-full mt-2 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] outline-none" autoFocus />
+              className="w-full mt-2 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary outline-none" autoFocus />
           )}
         </div>
 
@@ -187,20 +187,20 @@ export default function SellerEditProduct() {
           <p className="text-xs text-gray-500 mt-0.5 mb-2">Choisissez comment ce produit peut être obtenu par l'acheteur.</p>
           <div className="grid grid-cols-2 gap-2">
             <button type="button" data-testid="product-mode-delivery" onClick={() => toggleMode("delivery")}
-              className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes("delivery") ? "border-[#f97316] bg-orange-50" : "border-gray-200 bg-white"}`}>
-              <Truck size={18} className={form.delivery_modes.includes("delivery") ? "text-[#f97316]" : "text-gray-400"} />
+              className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes("delivery") ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"}`}>
+              <Truck size={18} className={form.delivery_modes.includes("delivery") ? "text-afri-primary" : "text-gray-400"} />
               <span className={`text-xs font-semibold ${form.delivery_modes.includes("delivery") ? "text-gray-900" : "text-gray-600"}`}>Livraison</span>
             </button>
             <button type="button" data-testid="product-mode-collect" onClick={() => toggleMode("collect")}
-              className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes("collect") ? "border-[#f97316] bg-orange-50" : "border-gray-200 bg-white"}`}>
-              <Store size={18} className={form.delivery_modes.includes("collect") ? "text-[#f97316]" : "text-gray-400"} />
+              className={`flex flex-col items-center gap-1.5 py-3 rounded-lg border-2 transition-all ${form.delivery_modes.includes("collect") ? "border-afri-primary var(--afri-success-bg)" : "border-gray-200 bg-white"}`}>
+              <Store size={18} className={form.delivery_modes.includes("collect") ? "text-afri-primary" : "text-gray-400"} />
               <span className={`text-xs font-semibold ${form.delivery_modes.includes("collect") ? "text-gray-900" : "text-gray-600"}`}>Retrait boutique</span>
             </button>
           </div>
         </div>
 
         <button data-testid="save-product-btn" disabled={loading} onClick={submit}
-          className="w-full bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50">
+          className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50">
           {loading ? "Enregistrement…" : "Enregistrer les modifications"}
         </button>
       </div>
@@ -214,7 +214,7 @@ function Input({ label, value, onChange, placeholder, testid, type = "text" }) {
       <label className="text-sm font-medium text-gray-700">{label}</label>
       <input data-testid={testid} value={value} type={type} onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none" />
+        className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none" />
     </div>
   );
 }
@@ -225,7 +225,7 @@ function Textarea({ label, value, onChange, placeholder, testid }) {
       <label className="text-sm font-medium text-gray-700">{label}</label>
       <textarea data-testid={testid} value={value} onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder} rows={3}
-        className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-[#f97316] focus:border-transparent outline-none resize-none" />
+        className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none resize-none" />
     </div>
   );
 }

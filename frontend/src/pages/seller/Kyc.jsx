@@ -8,7 +8,7 @@ const STATUS_LABEL = {
   level1: { label: "Niveau 1 - Téléphone vérifié", color: "bg-gray-100 text-gray-700" },
   pending_review: { label: "En attente de vérification", color: "bg-amber-50 text-amber-700" },
   level2: { label: "Niveau 2 - Pièce vérifiée", color: "bg-blue-50 text-blue-700" },
-  level3: { label: "Niveau 3 - Vendeur Vérifié", color: "bg-orange-50 text-[#f97316]" },
+  level3: { label: "Niveau 3 - Vendeur Vérifié", color: "var(--afri-success-bg) text-afri-primary" },
   rejected: { label: "Rejeté", color: "bg-red-50 text-red-700" },
 };
 
@@ -73,8 +73,8 @@ export default function SellerKyc() {
       </header>
 
       <div className="px-4 mt-4 space-y-4">
-        <section className="rounded-xl border-2 border-[#f97316]/30 bg-orange-50 p-4 flex items-center gap-3">
-          <div className="w-12 h-12 rounded-lg bg-[#0b0b0d] text-white flex items-center justify-center">
+        <section className="rounded-xl border-2 border-afri-primary/30 var(--afri-success-bg) p-4 flex items-center gap-3">
+          <div className="w-12 h-12 rounded-lg bg-afri-primary text-white flex items-center justify-center">
             <ShieldCheck size={22} />
           </div>
           <div>
@@ -91,9 +91,9 @@ export default function SellerKyc() {
         {/* Progress bar */}
         <div className="flex items-center gap-2">
           <LevelDot active={status.kyc_level >= 1} label="N1" />
-          <div className={`flex-1 h-1 rounded-full ${status.kyc_level >= 2 ? "bg-[#0b0b0d]" : "bg-gray-200"}`} />
+          <div className={`flex-1 h-1 rounded-full ${status.kyc_level >= 2 ? "bg-afri-primary" : "bg-gray-200"}`} />
           <LevelDot active={status.kyc_level >= 2} label="N2" />
-          <div className={`flex-1 h-1 rounded-full ${status.kyc_level >= 3 ? "bg-[#0b0b0d]" : "bg-gray-200"}`} />
+          <div className={`flex-1 h-1 rounded-full ${status.kyc_level >= 3 ? "bg-afri-primary" : "bg-gray-200"}`} />
           <LevelDot active={status.kyc_level >= 3} label="N3" />
         </div>
 
@@ -103,16 +103,16 @@ export default function SellerKyc() {
             return (
               <div key={s.key} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4" data-testid={`kyc-step-${s.key}`}>
                 <div className="flex items-start gap-3">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? "bg-orange-50 text-[#f97316]" : "bg-gray-100 text-gray-400"}`}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? "var(--afri-success-bg) text-afri-primary" : "bg-gray-100 text-gray-400"}`}>
                     {uploaded ? <CheckCircle2 size={18} /> : <Upload size={18} />}
                   </div>
                   <div className="flex-1">
                     <div className="font-display font-bold text-gray-900 text-sm">{s.title}</div>
                     <p className="text-xs text-gray-500 mt-0.5">{s.desc}</p>
                     {uploaded ? (
-                      <p className="text-[10px] text-[#f97316] mt-2 font-semibold">✓ Document reçu</p>
+                      <p className="text-[10px] text-afri-primary mt-2 font-semibold">✓ Document reçu</p>
                     ) : (
-                      <label className="mt-3 inline-flex items-center gap-2 px-3 py-2 bg-[#0b0b0d] hover:bg-[#1f2937] text-white rounded-lg text-xs font-semibold cursor-pointer" data-testid={`upload-${s.key}-btn`}>
+                      <label className="mt-3 inline-flex items-center gap-2 px-3 py-2 bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg text-xs font-semibold cursor-pointer" data-testid={`upload-${s.key}-btn`}>
                         <Upload size={14} />
                         {uploading[s.key] ? "Envoi…" : "Téléverser"}
                         <input
@@ -135,7 +135,7 @@ export default function SellerKyc() {
           <button
             data-testid="kyc-submit-btn"
             onClick={submit}
-            className="w-full bg-[#0b0b0d] hover:bg-[#063b30] text-white rounded-lg py-3 font-semibold transition-colors"
+            className="w-full bg-afri-secondary hover:bg-[#063b30] text-white rounded-lg py-3 font-semibold transition-colors"
           >
             Soumettre pour vérification
           </button>
@@ -157,7 +157,7 @@ export default function SellerKyc() {
 
 function LevelDot({ active, label }) {
   return (
-    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${active ? "bg-[#0b0b0d] text-white" : "bg-gray-200 text-gray-400"}`}>
+    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${active ? "bg-afri-primary text-white" : "bg-gray-200 text-gray-400"}`}>
       {label}
     </div>
   );

@@ -33,7 +33,7 @@ export default function ConversationsList() {
           <div className="space-y-3">{[1,2,3].map((i) => <div key={i} className="h-16 rounded-xl bg-gray-100 animate-pulse" />)}</div>
         ) : items.length === 0 ? (
           <div className="text-center py-12">
-            <div className="w-16 h-16 rounded-full bg-orange-50 text-[#f97316] flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center mx-auto">
               <MessageSquare size={28} />
             </div>
             <p className="text-sm text-gray-500 mt-3">Aucune conversation pour l'instant.</p>
@@ -45,9 +45,9 @@ export default function ConversationsList() {
                 key={c.conversation_id}
                 data-testid={`conversation-${c.conversation_id}`}
                 onClick={() => nav(`/messages/${c.conversation_id}`, { state: { other_name: c.other_name, buyer_id: c.buyer_id, seller_id: c.seller_id } })}
-                className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-3 flex items-center gap-3 hover:border-[#f97316] transition-colors"
+                className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-3 flex items-center gap-3 hover:border-afri-primary transition-colors"
               >
-                <div className="w-11 h-11 rounded-full bg-[#0b0b0d] text-white flex items-center justify-center font-display font-black">
+                <div className="w-11 h-11 rounded-full bg-afri-primary text-white flex items-center justify-center font-display font-black">
                   {c.other_name?.charAt(0).toUpperCase() || "?"}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -58,7 +58,7 @@ export default function ConversationsList() {
                   <p className="text-xs text-gray-500 truncate">{c.last_text}</p>
                 </div>
                 {c.unread_count > 0 && (
-                  <span className="ml-2 bg-[#f97316] text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1.5">
+                  <span className="ml-2 bg-afri-accent text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1.5">
                     {c.unread_count}
                   </span>
                 )}
