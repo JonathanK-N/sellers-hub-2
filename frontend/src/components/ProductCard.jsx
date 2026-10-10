@@ -56,12 +56,12 @@ export default function ProductCard({ product, guest = false, className = "" }) 
         <div className="flex items-center gap-1 text-xs text-gray-500">
           <span className="truncate">{product.seller_name || "Boutique"}</span>
           {product.seller_verified && (
-            <ShieldCheck size={12} className="text-green-600 shrink-0" />
+            <ShieldCheck size={12} className="text-afri-primary shrink-0" />
           )}
         </div>
         <div className="flex items-center justify-between mt-1">
           <div className="flex flex-col">
-            <span className="font-display font-bold text-gray-900">
+            <span className="font-display font-bold text-afri-secondary">
               {formatPrice(amount, currency)}
             </span>
             {product.currency === "USD" && (
@@ -79,7 +79,7 @@ export default function ProductCard({ product, guest = false, className = "" }) 
             )}
             <span
               aria-hidden="true"
-              className="w-7 h-7 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0 transition-colors group-hover:bg-afri-primary"
+              className="w-7 h-7 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0 transition-colors group-hover:bg-afri-primary-hover"
             >
               <ShoppingCart size={13} />
             </span>

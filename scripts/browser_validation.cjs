@@ -1,7 +1,7 @@
 const fs=require('fs');
 const {chromium}=require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 (async()=>{
- const browser=await chromium.launch({headless:true});
+ const browser=await chromium.launch({headless:true, channel: 'msedge'});
  const rows=[];
  const context=await browser.newContext();
  const page=await context.newPage();
