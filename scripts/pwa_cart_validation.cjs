@@ -18,13 +18,13 @@ const {chromium}=require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary-r
   await page.waitForURL('**/buyer/cart');
   rows.push({test:'cart drawer checkout route',status:'PASS'});
   console.log('Cart drawer tests passed');
-  await page.goto('https://afrimarket-web-staging-staging.up.railway.app/',{waitUntil:'networkidle'});
+  await page.goto('https://afrimarket-web-staging-staging.up.railway.app/buyer/home',{waitUntil:'domcontentloaded'});
   const sw=await page.evaluate(async()=>{const r=await Promise.race([navigator.serviceWorker.ready,new Promise((_,reject)=>setTimeout(()=>reject(new Error('Service worker did not become ready within 15 seconds')),15000))]);return {scope:r.scope,active:r.active?.scriptURL,keys:await caches.keys()};});
   rows.push({test:'real browser service worker active',status:sw.active?.endsWith('/service-worker.js')&&sw.keys.includes('afrimarket-green-v7')?'PASS':'FAIL',worker:sw});
   await context.setOffline(true);
   await page.reload({waitUntil:'domcontentloaded'});
-  await page.getByTestId('guest-top-header').waitFor();
-  const green=await page.getByTestId('guest-top-header').evaluate(el=>getComputedStyle(el).backgroundColor);
+  await page.getByTestId('top-header').waitFor();
+  const green=await page.getByTestId('top-header').evaluate(el=>getComputedStyle(el).backgroundColor);
   rows.push({test:'offline cached shell renders green header after reload',status:green==='rgb(8, 80, 65)'?'PASS':'FAIL',color:green});
   await context.setOffline(false);
   console.log(JSON.stringify({rows},null,2));
