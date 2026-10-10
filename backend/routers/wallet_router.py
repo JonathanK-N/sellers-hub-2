@@ -4,7 +4,7 @@ import logging
 from datetime import datetime, timezone, timedelta
 
 from fastapi import APIRouter, HTTPException, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from db import get_db
 from auth import require_role
@@ -18,7 +18,7 @@ def _now() -> str:
 
 
 class WithdrawRequest(BaseModel):
-    amount: float
+    amount: float = Field(gt=0, allow_inf_nan=False)
     mobile_money_number: str
     operator: str  # MTN MoMo, Airtel Money, etc.
 
