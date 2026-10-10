@@ -97,7 +97,7 @@ jobs:
           docker exec wallet-mongo mongosh --quiet --eval 'rs.initiate({_id:"test-rs",members:[{_id:0,host:"localhost:27017"}]})'
           for attempt in $(seq 1 30); do docker exec wallet-mongo mongosh --quiet --eval 'if(!db.hello().isWritablePrimary) quit(1)' && break; sleep 1; done
       - run: python -m compileall -q backend
-      - run: python -m pytest backend/tests/test_health_unit.py backend/tests/test_models_unit.py backend/tests/test_payment_security_unit.py backend/tests/test_stock_unit.py backend/tests/test_commerce_mongo.py backend/tests/test_order_handoff_unit.py backend/tests/test_financial_inputs_unit.py backend/tests/test_uploads_unit.py backend/tests/test_withdrawal_mongo.py -q
+      - run: python -m pytest backend/tests/test_health_unit.py backend/tests/test_models_unit.py backend/tests/test_payment_security_unit.py backend/tests/test_stock_unit.py backend/tests/test_commerce_mongo.py backend/tests/test_order_handoff_unit.py backend/tests/test_financial_inputs_unit.py backend/tests/test_uploads_unit.py backend/tests/test_withdrawal_mongo.py backend/tests/test_auth_security_unit.py -q
         env:
           PYTHONPATH: backend
           TEST_MONGO_URL: mongodb://127.0.0.1:27017

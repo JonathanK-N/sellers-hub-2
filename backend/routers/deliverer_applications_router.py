@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
 
 from db import get_db
-from auth import get_current_user_dep, require_role, generate_otp, OTP_EXPIRY_MINUTES
+from auth import get_current_user_dep, require_role, generate_otp, OTP_EXPIRY_MINUTES, otp_sandbox_enabled, require_otp_delivery
 from models import DelivererApplicationRequest, DelivererApplicationReject
 from s3_service import upload_private, generate_presigned_url
 from notifications import create_notification
@@ -68,7 +68,7 @@ async def send_application_otp(req: ApplicationOtpSendRequest, user: dict = Depe
     )
     await send_otp_sms(phone, code)
     resp = {"message": "Code envoyé.", "phone": phone}
-    if not is_sms_configured():
+    if not is_sms_configured() and otp_sandbox_enabled():
         resp["otp_dev"] = code
     return resp
 

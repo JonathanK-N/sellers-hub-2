@@ -131,3 +131,13 @@ async def get_current_user_optional(request: Request):
     if user and (user.get("banned") or user.get("suspended")):
         return None
     return user
+
+
+def otp_sandbox_enabled():
+    return os.environ.get("AUTH_MODE", "live").lower() == "sandbox"
+
+
+def require_otp_delivery():
+    from sms import is_sms_configured
+    if not is_sms_configured() and not otp_sandbox_enabled():
+        raise HTTPException(status_code=503, detail="Vérification téléphonique temporairement indisponible")
