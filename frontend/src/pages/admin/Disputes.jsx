@@ -83,10 +83,11 @@ export default function AdminDisputes() {
                         </button>
                         <button
                           data-testid={`partial-refund-${d.id}`}
-                          onClick={() => resolve(d.id, "partial_refund")}
-                          className="bg-white border-2 border-amber-500 text-amber-600 hover:bg-amber-50 rounded-lg py-2 text-sm font-semibold"
+                          disabled
+                          title="Remboursements partiels temporairement suspendus"
+                          className="bg-gray-100 border-2 border-gray-300 text-gray-600 rounded-lg py-2 text-sm font-semibold cursor-not-allowed"
                         >
-                          Partiel
+                          Partiel suspendu
                         </button>
                         <button
                           data-testid={`release-seller-${d.id}`}

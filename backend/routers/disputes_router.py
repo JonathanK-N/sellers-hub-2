@@ -104,6 +104,8 @@ async def admin_list(_: dict = Depends(require_role("admin"))):
 
 @router.post("/admin/disputes/{dispute_id}/resolve")
 async def admin_resolve(dispute_id: str, req: ResolveRequest, _: dict = Depends(require_role("admin"))):
+    if req.decision == "partial_refund":
+        raise HTTPException(status_code=503, detail="Les remboursements partiels sont temporairement suspendus")
     db = get_db()
     dispute = await db.disputes.find_one({"id": dispute_id}, {"_id": 0})
     if not dispute:
