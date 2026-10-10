@@ -6,6 +6,49 @@ on:
 permissions:
   contents: read
 jobs:
+  performance-comparison:
+    needs: web
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: release/afrimarket-phase1-final-20261010
+          path: perf-baseline
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile && yarn build
+        working-directory: perf-baseline/frontend
+        env:
+          REACT_APP_BACKEND_URL: https://afrimarket-api-staging-staging.up.railway.app
+          CI: 'false'
+      - uses: actions/download-artifact@v4
+        with:
+          name: afrimarket-web-${{ github.sha }}
+          path: perf-candidate
+      - name: Measure baseline and candidate sequentially on the same runner
+        run: |
+          mkdir performance-evidence
+          npm install --prefix /tmp/perf-tools lighthouse@13.5.0
+          perf-baseline/frontend/node_modules/.bin/serve -s perf-baseline/frontend/build -l tcp://127.0.0.1:8081 > performance-evidence/baseline-server.log 2>&1 &
+          perf-baseline/frontend/node_modules/.bin/serve -s perf-candidate -l tcp://127.0.0.1:8082 > performance-evidence/candidate-server.log 2>&1 &
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:8081/ >/dev/null && curl -fsS http://127.0.0.1:8082/ >/dev/null && break; sleep 1; done
+          google-chrome --version > performance-evidence/browser-version.txt
+          for attempt in 1 2 3; do
+            /tmp/perf-tools/node_modules/.bin/lighthouse http://127.0.0.1:8081 --chrome-flags='--headless --no-sandbox' --output=json --output-path=performance-evidence/baseline-$attempt.json --quiet
+            /tmp/perf-tools/node_modules/.bin/lighthouse http://127.0.0.1:8082 --chrome-flags='--headless --no-sandbox' --output=json --output-path=performance-evidence/candidate-$attempt.json --quiet
+          done
+          node -e "require('fs').writeFileSync('performance-evidence/context.json',JSON.stringify({baselineSha:'dd6d186a15abc88dfdc93702dbe0e91854639a4a',sourceSha:process.env.SOURCE_SHA,runner:process.env.RUNNER_OS,profile:'Lighthouse 13.5 default mobile; same runner; sequential; 3 pairs; local static hosts; staging API'},null,2));"
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-comparison-${{ github.sha }}
+          path: performance-evidence
   android-emulator:
     needs: android
     runs-on: ubuntu-latest
