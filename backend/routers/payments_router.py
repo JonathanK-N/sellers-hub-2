@@ -35,6 +35,9 @@ async def init_payment(req: InitRequest, user: dict = Depends(require_role("buye
         raise HTTPException(status_code=404, detail="Groupe de commandes introuvable")
     if group["buyer_id"] != user["id"]:
         raise HTTPException(status_code=403, detail="Accès refusé")
+    if group.get("payment_status") in {"paid", "cash_on_delivery"}:
+        return {"simulated": False, "cash": group.get("payment_method") == "cash",
+                "status": group["payment_status"], "order_group_id": req.order_group_id}
 
     # ── Cash on delivery: pas de prestataire externe ──────────────────────────
     if group.get("payment_method") == "cash":
@@ -43,11 +46,11 @@ async def init_payment(req: InitRequest, user: dict = Depends(require_role("buye
             {"$set": {"payment_status": "cash_on_delivery"}},
         )
         await db.orders.update_many(
-            {"order_group_id": req.order_group_id},
+            {"order_group_id": req.order_group_id, "escrow_status": "held"},
             {"$set": {"escrow_status": "held", "payment_confirmed": True}},
         )
         await db.transactions.update_many(
-            {"order_group_id": req.order_group_id},
+            {"order_group_id": req.order_group_id, "payment_status": {"$nin": ["released", "refunded", "partial_refund"]}},
             {"$set": {"payment_status": "cash_pending"}},
         )
         return {
@@ -123,15 +126,17 @@ async def cinetpay_webhook(request: Request):
     if not group:
         logger.warning(f"[CINETPAY] webhook for unknown group {transaction_id}")
         return {"ok": True}
+    if group.get("payment_status") == "paid":
+        return {"ok": True}
 
     if verified.status == "SUCCESS":
         await db.order_groups.update_one({"id": transaction_id}, {"$set": {"payment_status": "paid", "paid_at": _now()}})
         await db.orders.update_many(
-            {"order_group_id": transaction_id},
+            {"order_group_id": transaction_id, "escrow_status": "held", "status": {"$nin": ["cancelled", "delivered", "collected"]}},
             {"$set": {"escrow_status": "held", "payment_confirmed": True}},
         )
         await db.transactions.update_many(
-            {"order_group_id": transaction_id},
+            {"order_group_id": transaction_id, "payment_status": {"$nin": ["released", "refunded", "partial_refund"]}},
             {"$set": {"payment_status": "captured_in_escrow", "confirmed_at": _now()}},
         )
         logger.info(f"[CINETPAY] group {transaction_id} paid -> escrow held")
