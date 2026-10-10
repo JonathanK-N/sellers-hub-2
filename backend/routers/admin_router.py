@@ -42,7 +42,7 @@ async def admin_upload(file: UploadFile = File(...), _: dict = Depends(require_r
     raw_data = await file.read()
     # Redimensionner à max 1400px pour les bannières admin (légèrement plus grand que les produits)
     try:
-        from sellers_router import _resize_image
+        from routers.sellers_router import _resize_image
         data, content_type = _resize_image(raw_data, max_px=1400)
     except Exception:
         data, content_type = raw_data, file.content_type or "image/jpeg"
