@@ -10,4 +10,6 @@ Executed staging evidence: browser-validation.json covers 390/768/1440 widths an
 
 Explicit session regressions: service-worker interception disabled in the API simulation, refresh request observed, network abort preserves token/user (PASS); valid CORS HTTP 401 simulation clears token/user and redirects login (PASS). Initial rejection simulation without effective interception failed and is retained as test-harness diagnostic. No product workaround was added for that harness failure.
 
-Lighthouse final status BLOCKED: initial dependency installation incomplete; retry failed to resolve debug; direct cached CLI was stopped after several minutes without producing a JSON report. No score is claimed. Attempt summary: release-evidence/lighthouse-status.json.
+Lighthouse direct CLI eventually completed. Earlier package download and debug resolution errors are retained as failed attempts. Final execution summary: release-evidence/lighthouse-status.json; full report: lighthouse.json.
+
+Correction du statut Lighthouse : le lancement direct a finalement achevé l’audit et produit lighthouse.json (version 13.5.0). Scores : performance 43, accessibilité 94, bonnes pratiques 100, SEO 92. FCP 1,7 s, LCP 8,0 s, TBT 1850 ms, CLS 0,003. Performance insuffisante ; travail JS principal 8,5 s, JS inutilisé ~342 KiB et images ~226 KiB de gains estimés. Contrastes et absence de landmark main signalés. Le statut BLOCKED précédemment consigné était provisoire, remplacé par ce résultat exécuté ; aucune certification globale n’est revendiquée.

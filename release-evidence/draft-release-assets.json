@@ -1,5 +1,5 @@
 {
-  "release": "https://github.com/JonathanK-N/sellers-hub-2/releases/tag/untagged-dcbade9f9c0f43451049",
+  "release": "https://github.com/JonathanK-N/sellers-hub-2/releases/tag/untagged-a4e7d8ed6737cb76ed7d",
   "assets": [
     {
       "name": "A-original-6722492d85e0-source.zip",
@@ -96,6 +96,12 @@
       "id": 629041846,
       "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-dcbade9f9c0f43451049/release-manifest-890d8e7.json",
       "size": 4474
+    },
+    {
+      "name": "lighthouse.json",
+      "id": 629052744,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-a4e7d8ed6737cb76ed7d/lighthouse.json",
+      "size": 601010
     }
   ]
 }

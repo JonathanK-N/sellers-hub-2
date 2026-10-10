@@ -27,7 +27,7 @@ La palette verte originale a été restaurée en conservant la structure UI-UX. 
 | APK debug | Build PASS ; appareil BLOCKED | Application .staging, API staging, ressources Web embarquées |
 | Paiements, remboursements, KYC upload, livraison complète | BLOCKED | Intégrations externes et parcours complets non certifiés |
 | Installation PWA Android/iOS / mise à jour installée | BLOCKED | Aucun appareil physique disponible |
-| Lighthouse | BLOCKED | Installation locale non terminée ; aucun rapport ni score disponible |
+| Lighthouse | FAIL (performance) | 43 performance, 94 accessibilité, 100 bonnes pratiques, 92 SEO ; lighthouse.json |
 | Contraste petits textes | OPEN | Blanc sur vert ~3,38:1 et ambre ~2,15:1 ; palette exacte conservée |
 
 Les échecs initiaux d’installation locale, le premier build Android échoué et les anomalies constatées restent traçables. Les builds cloud ont résolu les limitations de compilation locale. Aucun résultat statique ou test simulé ne vaut certification métier complète.
@@ -36,3 +36,5 @@ PR : https://github.com/JonathanK-N/sellers-hub-2/pull/1
 Staging : https://afrimarket-web-staging-staging.up.railway.app
 
 La mise en production reste conditionnée à la sauvegarde Mongo vérifiée, aux validations des parcours sensibles et des appareils, puis à l’approbation du propriétaire.
+
+Lighthouse final : voir lighthouse-status.json et rapport brut lighthouse.json ; optimisation nécessaire avant production.

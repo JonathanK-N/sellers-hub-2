@@ -1,19 +1,20 @@
 {
-  "status": "BLOCKED",
-  "attempts": [
-    {
-      "result": "dependency download did not complete in initial execution",
-      "log": "lighthouse.log"
-    },
-    {
-      "result": "ERR_MODULE_NOT_FOUND: debug",
-      "log": "lighthouse-retry.log"
-    },
-    {
-      "result": "direct installed CLI did not produce a report after several minutes; bounded execution stopped",
-      "log": "lighthouse-direct.log"
-    }
-  ],
-  "score": null,
-  "time": "2026-10-10T21:37:24.359Z"
+  "status": "EXECUTED",
+  "version": "13.5.0",
+  "time": "2026-10-10T21:36:20.705Z",
+  "url": "https://afrimarket-web-staging-staging.up.railway.app/",
+  "scores": {
+    "performance": 43,
+    "accessibility": 94,
+    "best-practices": 100,
+    "seo": 92
+  },
+  "metrics": {
+    "fcp": "1.7 s",
+    "lcp": "8.0 s",
+    "tbt": "1,850 ms",
+    "cls": "0.003"
+  },
+  "conclusion": "Performance FAIL for production readiness; accessibility contrast findings remain OPEN. Scores describe one lab run, not exhaustive certification.",
+  "previousAttempts": "Installation/launch failures retained in local logs; direct CLI completed successfully."
 }
