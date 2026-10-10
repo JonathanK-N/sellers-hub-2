@@ -1,6 +1,6 @@
 # Matrice fonctionnelle — périmètre réellement testé
 
-Auteur : Jonathan Kakesa (JonathanK-N). Les PASS portent uniquement sur l’opération indiquée. Une lecture ne certifie pas les mutations ni le parcours complet. Preuves : staging-integration.json, staging-admin-validation.json, pwa-cart-validation.json et CI 38087197065.
+Auteur : Jonathan Kakesa (JonathanK-N). Les PASS portent uniquement sur l’opération indiquée. Une lecture ne certifie pas les mutations ni le parcours complet. Preuves : staging-integration.json, staging-admin-validation.json, pwa-cart-validation.json et CI 38087694857.
 
 ## Acheteurs
 

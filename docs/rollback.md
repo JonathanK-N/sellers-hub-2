@@ -7,3 +7,5 @@ Restoring a branch tip is insufficient: the actual deployed frontend differs fro
 Verified source bundle: sibling private directory Afrimarket-private-backups/pre-restoration-20261010.bundle; `git bundle verify` succeeded with complete history. To inspect recovery, clone the bundle into a new directory and resolve reference tags. This is source recovery, not database recovery.
 
 No production rollback was executed. End-to-end deployment rollback rehearsal and Mongo restoration are not yet certified.
+
+Source recovery rehearsal executed on 10 October 2026: cloned the verified bundle into sibling private source-recovery-check-20261010 and resolved origin/backup/afrimarket-main-20261010 to 6722492d85e0f8646ebe03c9b841c4a0e3611449. Source recovery PASS. This does not certify deployment rollback or Mongo restoration.

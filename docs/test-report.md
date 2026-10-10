@@ -8,7 +8,7 @@ La palette verte originale a été restaurée en conservant la structure UI-UX. 
 |---|---|---|
 | Sauvegardes Git | PASS | Sept références distantes archivées, tags et bundle vérifié |
 | Sauvegarde Mongo cohérente / restauration | BLOCKED | Volume inventorié, aucun dump restauré ni planning vérifié |
-| Builds Web / backend / Android | PASS sur b71f84e | Actions 38087197065, trois jobs SUCCESS |
+| Builds Web / backend / Android | PASS sur 890d8e7 | Actions 38087694857, trois jobs SUCCESS |
 | Tests backend | PASS | Neuf tests santé et modèles ; build Railway et CI |
 | Builds de référence A et B | PASS | Actions 38085613413 ; checksums dans reference-web-artifacts.json |
 | Responsive 390 / 768 / 1440 | PASS | browser-validation.json et captures ; aucune erreur JS relevée |

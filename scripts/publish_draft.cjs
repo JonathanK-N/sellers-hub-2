@@ -10,7 +10,7 @@ const path=require('path');
  if(!values.password)throw Error('GitHub authentication unavailable');
  const headers={Authorization:'Bearer '+values.password,Accept:'application/vnd.github+json'};
  const repo='https://api.github.com/repos/JonathanK-N/sellers-hub-2';
- const response=await fetch(repo+'/releases',{method:'POST',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify({tag_name:config.tag,target_commitish:config.sha,name:config.name,body:config.body,draft:true,prerelease:true}),signal:AbortSignal.timeout(30000)});
+ const response=await fetch(repo+'/releases'+(config.releaseId?'/'+config.releaseId:''),{method:config.releaseId?'PATCH':'POST',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify({tag_name:config.tag,target_commitish:config.sha,name:config.name,body:config.body,draft:true,prerelease:true}),signal:AbortSignal.timeout(30000)});
  const release=await response.json();
  if(!response.ok)throw Error('Draft release creation: '+response.status+' '+release.message);
  console.log(JSON.stringify({id:release.id,url:release.html_url,draft:release.draft,tag:release.tag_name}));

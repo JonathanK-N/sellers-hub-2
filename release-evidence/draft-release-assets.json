@@ -1,5 +1,5 @@
 {
-  "release": "https://github.com/JonathanK-N/sellers-hub-2/releases/tag/untagged-9fd79eb60abda7d39e73",
+  "release": "https://github.com/JonathanK-N/sellers-hub-2/releases/tag/untagged-dcbade9f9c0f43451049",
   "assets": [
     {
       "name": "A-original-6722492d85e0-source.zip",
@@ -72,6 +72,30 @@
       "id": 629028517,
       "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-9fd79eb60abda7d39e73/green-build-artifacts.json",
       "size": 1048
+    },
+    {
+      "name": "C-green-890d8e76341c-source.zip",
+      "id": 629041712,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-dcbade9f9c0f43451049/C-green-890d8e76341c-source.zip",
+      "size": 3915990
+    },
+    {
+      "name": "C-green-890d8e7-android-debug.zip",
+      "id": 629041747,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-dcbade9f9c0f43451049/C-green-890d8e7-android-debug.zip",
+      "size": 6585257
+    },
+    {
+      "name": "C-green-890d8e7-web-pwa.zip",
+      "id": 629041822,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-dcbade9f9c0f43451049/C-green-890d8e7-web-pwa.zip",
+      "size": 2513056
+    },
+    {
+      "name": "release-manifest-890d8e7.json",
+      "id": 629041846,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-dcbade9f9c0f43451049/release-manifest-890d8e7.json",
+      "size": 4474
     }
   ]
 }

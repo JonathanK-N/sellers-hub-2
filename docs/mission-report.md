@@ -9,7 +9,7 @@ Auteur : Jonathan Kakesa (JonathanK-N). 10 octobre 2026.
 5. **UI-UX conservée.** Structure des pages, typographie, animations, responsive, modales authentification/panier et navigation conservés sur base ui-ux. Les captures et tests ciblés prouvent certains parcours ; aucune prétention de couverture exhaustive.
 6. **Anomalies.** get_db absent au healthcheck, quantités de commande nulles acceptées, screenshot manifest absent, purge caches trop large, session effacée lors d’erreur réseau, contraste historique insuffisant et favori sans action. Tableau ci-dessous.
 7. **Corrections.** Import santé, validation Pydantic quantité positive/prix-stock non négatifs, cache green-v7 limité à AfriMarket, manifest corrigé, session conservée sauf 401/403, APK debug isolé avec ressources embarquées.
-8. **Tests.** CI 38087197065 SUCCESS sur b71f84ece757f00208df300e99bd9b418ae5fb40 ; neuf tests backend ; opérations synthétiques et sept contrôles admin. test-report.md distingue les sous-tests PASS des parcours complets BLOCKED.
+8. **Tests.** CI 38087694857 SUCCESS sur b71f84ece757f00208df300e99bd9b418ae5fb40 ; neuf tests backend ; opérations synthétiques et sept contrôles admin. test-report.md distingue les sous-tests PASS des parcours complets BLOCKED.
 9. **PWA.** Manifest/icônes et worker validés, worker réel actif, panier et recharge shell verte hors connexion PASS ; session sur coupure API PASS. Installation physique, iOS et upgrade d’une PWA déjà installée BLOCKED. Lighthouse sans score disponible à cette étape.
 10. **APK.** Build debug PASS en CI. ID cd.cognito.afrimarket.staging, versionCode 2, versionName 1.0.1-green.1-debug, API staging et Web embarqué. Pas de clé de signature production. Tests physiques BLOCKED.
 11. **Packages.** Sources A, B-tip, B-déployée et C ; builds Web A/B et Web/PWA C, APK C. Empreintes et chemins dans release-evidence/artifact-manifest.json, reference-web-artifacts.json et green-build-artifacts.json. Stockage local privé frère Afrimarket-private-backups/releases-20261010. Les builds A/B utilisent l’API staging et ne reproduisent pas la configuration de production.
@@ -30,6 +30,8 @@ Auteur : Jonathan Kakesa (JonathanK-N). 10 octobre 2026.
 | Contraste petit texte | P2 | Palette historique + blanc | Focus amélioré ; décision design restante | OPEN |
 | Favori sans action | P2 | Handler preventDefault uniquement | Fonction non inventée | NOT IMPLEMENTED |
 
-Preuves CI : https://github.com/JonathanK-N/sellers-hub-2/actions/runs/38087197065 ; références : https://github.com/JonathanK-N/sellers-hub-2/actions/runs/38085613413. La mission est partielle tant que les blocages ci-dessus subsistent.
+Preuves CI : https://github.com/JonathanK-N/sellers-hub-2/actions/runs/38087694857 ; références : https://github.com/JonathanK-N/sellers-hub-2/actions/runs/38085613413. La mission est partielle tant que les blocages ci-dessus subsistent.
 
 Release brouillon (propriétaire authentifié) : https://github.com/JonathanK-N/sellers-hub-2/releases/tag/untagged-9fd79eb60abda7d39e73 ; 12 assets, identifiants dans draft-release-assets.json. Matrice complète par fonctionnalité : feature-matrix.md.
+
+Contrôle final packaging : le Web CI initial b71f84e ciblait localhost ; il est conservé comme diagnostic, sans usage de déploiement. Candidate actuelle 890d8e76341c3bb08f3d7452e7ecf87e08d222dd, merge CI 837024d51699099f7805776f8f734cbe301a227c, run 38087694857 : Web/backend/Android PASS. Métadonnées embarquées et API staging vérifiées dans les ZIP. Rejet HTTP 401 et coupure API observée PASS. Commits supplémentaires : 67bc904 documentation, 890d8e7 packaging.
