@@ -153,7 +153,8 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
                 "payment_method": req.payment_method,
                 "checkout_currency": req.checkout_currency or "FC",
                 "status": "confirmed",
-                "escrow_status": "held",
+                "escrow_status": "held" if req.payment_method == "cash" else "awaiting_payment",
+                "payment_confirmed": False,
                 "confirmation_code": _gen_code(),
                 "qr_code": qr_token,
                 "country_code": user["country_code"],
@@ -172,7 +173,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
                 "amount": amount_due,
                 "currency": currency,
                 "payment_method": req.payment_method,
-                "payment_status": "captured_in_escrow",
+                "payment_status": "cash_pending" if req.payment_method == "cash" else "pending",
                 "escrow_released_at": None,
                 "created_at": now,
             })
@@ -198,6 +199,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
             "grand_total": grand_total,
             "currency": currency,
             "payment_method": req.payment_method,
+            "payment_status": "cash_pending" if req.payment_method == "cash" else "unpaid",
             "country_code": user["country_code"],
             "created_at": now,
         })

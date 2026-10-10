@@ -290,11 +290,13 @@ export default function OrderDetail() {
             <p className="font-semibold">
               {order.escrow_status === "released"
                 ? `${formatPrice(order.total_amount, order.currency)} libéré au vendeur`
+                : order.escrow_status === "awaiting_payment" ? "Paiement en attente"
                 : `${formatPrice(order.amount_due ?? order.total_amount, order.currency)} bloqué en escrow`}
             </p>
             <p className="opacity-80">
               {order.escrow_status === "released"
                 ? "Paiement effectué avec succès."
+                : order.escrow_status === "awaiting_payment" ? "Aucun paiement n’est encore confirmé."
                 : "Sera libéré dès confirmation de réception."}
             </p>
           </div>

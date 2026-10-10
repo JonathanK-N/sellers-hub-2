@@ -64,7 +64,7 @@ async def init_payment(req: InitRequest, user: dict = Depends(require_role("buye
     if not cinetpay_configured():
         if not is_sandbox():
             raise HTTPException(status_code=503, detail="Prestataire de paiement non configuré")
-        return {"simulated": True, "status": "captured_in_escrow", "order_group_id": req.order_group_id}
+        raise HTTPException(status_code=503, detail="Paiement Mobile Money de test indisponible")
 
     provider = get_provider(group.get("payment_method", ""))
     phone = user.get("phone", "")
@@ -132,7 +132,7 @@ async def cinetpay_webhook(request: Request):
     if verified.status == "SUCCESS":
         await db.order_groups.update_one({"id": transaction_id}, {"$set": {"payment_status": "paid", "paid_at": _now()}})
         await db.orders.update_many(
-            {"order_group_id": transaction_id, "escrow_status": "held", "status": {"$nin": ["cancelled", "delivered", "collected"]}},
+            {"order_group_id": transaction_id, "escrow_status": {"$in": ["awaiting_payment", "held"]}, "status": {"$nin": ["cancelled", "delivered", "collected"]}},
             {"$set": {"escrow_status": "held", "payment_confirmed": True}},
         )
         await db.transactions.update_many(
@@ -158,4 +158,4 @@ async def payment_status(order_group_id: str, user: dict = Depends(require_role(
     group = await db.order_groups.find_one({"id": order_group_id}, {"_id": 0})
     if not group or group["buyer_id"] != user["id"]:
         raise HTTPException(status_code=404, detail="Introuvable")
-    return {"order_group_id": order_group_id, "payment_status": group.get("payment_status", "captured_in_escrow")}
+    return {"order_group_id": order_group_id, "payment_status": group.get("payment_status", "unpaid")}

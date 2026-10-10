@@ -101,14 +101,14 @@ export default function OrderGroup() {
             <Lock size={18} />
           </div>
           <div className="text-xs text-afri-secondary">
-            <p className="font-semibold">Paiement réparti en escrow</p>
+            <p className="font-semibold">{group.payment_method === "cash" ? "Paiement en espèces à la remise" : group.payment_status === "paid" ? "Paiement confirmé" : "Paiement en attente"}</p>
             <p className="mt-0.5 leading-relaxed">
-              Le total de {formatPrice(group.grand_total, currency)} est bloqué. Chaque vendeur est payé séparément à la confirmation de sa propre livraison.
+              {group.payment_method === "cash" ? "Réglez votre commande lors de sa remise." : group.payment_status === "paid" ? `Le total de ${formatPrice(group.grand_total, currency)} est bloqué. Chaque vendeur est payé séparément à la confirmation de sa propre livraison.` : "Aucun paiement n’est confirmé pour cette commande."}
             </p>
           </div>
         </section>
 
-        {!["paid", "captured_in_escrow"].includes(group.payment_status) && (
+        {group.payment_method !== "cash" && !["paid", "captured_in_escrow"].includes(group.payment_status) && (
           <button
             onClick={handlePay}
             disabled={paying}

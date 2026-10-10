@@ -62,3 +62,12 @@ def test_repeated_cash_payment_does_not_reopen_released_escrow():
     assert result["status"] == "cash_on_delivery"
     db.orders.update_many.assert_not_called()
     db.transactions.update_many.assert_not_called()
+
+
+def test_missing_sandbox_integration_cannot_claim_captured_money():
+    db = Mock()
+    db.order_groups.find_one = AsyncMock(return_value={"id":"g","buyer_id":"buyer","payment_method":"mtn"})
+    with patch.object(payments_router,"get_db",return_value=db), patch.object(payments_router,"cinetpay_configured",return_value=False), patch.object(payments_router,"is_sandbox",return_value=True), pytest.raises(HTTPException) as error:
+        asyncio.run(payments_router.init_payment(payments_router.InitRequest(order_group_id="g"), {"id":"buyer"}))
+    assert error.value.status_code == 503
+    db.orders.update_many.assert_not_called()
