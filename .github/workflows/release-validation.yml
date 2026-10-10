@@ -51,7 +51,7 @@ jobs:
           python-version: '3.12'
       - run: pip install -r backend/requirements.txt
       - run: python -m compileall -q backend
-      - run: python -m pytest backend/tests/test_health_unit.py backend/tests/test_models_unit.py backend/tests/test_payment_security_unit.py backend/tests/test_stock_unit.py backend/tests/test_commerce_mongo.py -q
+      - run: python -m pytest backend/tests/test_health_unit.py backend/tests/test_models_unit.py backend/tests/test_payment_security_unit.py backend/tests/test_stock_unit.py backend/tests/test_commerce_mongo.py backend/tests/test_order_handoff_unit.py -q
         env:
           PYTHONPATH: backend
           TEST_MONGO_URL: mongodb://127.0.0.1:27017

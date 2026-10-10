@@ -366,16 +366,25 @@ async def confirm_delivery(order_id: str, req: ConfirmDeliveryRequest, user: dic
         raise HTTPException(status_code=404, detail="Commande introuvable")
     if o["delivery_mode"] != "delivery":
         raise HTTPException(status_code=400, detail="Mode incorrect")
+    if not (user["id"] == o["buyer_id"] or
+            (user.get("role") == "deliverer" and user["id"] == o.get("deliverer_id"))):
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    if o["status"] != "in_transit":
+        raise HTTPException(status_code=409, detail="Commande non disponible pour livraison")
+    if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
+        raise HTTPException(status_code=409, detail="Paiement non confirmé")
     if o["escrow_status"] != "held":
         raise HTTPException(status_code=400, detail="Escrow déjà libéré")
     if o["confirmation_code"] != req.code.strip():
         raise HTTPException(status_code=400, detail="Code incorrect")
 
     event = _timeline_event("delivered", "Livré et paiement libéré")
-    await db.orders.update_one(
-        {"id": order_id},
+    result = await db.orders.update_one(
+        {"id": order_id, "status": o["status"], "escrow_status": "held"},
         {"$set": {"status": "delivered", "escrow_status": "released"}, "$push": {"timeline": event}},
     )
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Commande déjà modifiée")
     await db.transactions.update_one(
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
@@ -399,6 +408,10 @@ async def confirm_collect(order_id: str, user: dict = Depends(require_role("sell
         raise HTTPException(status_code=403, detail="Accès refusé")
     if o["delivery_mode"] != "collect":
         raise HTTPException(status_code=400, detail="Cette commande n'est pas en retrait boutique")
+    if o.get("payment_method") != "cash":
+        raise HTTPException(status_code=409, detail="La remise cash exige une commande cash")
+    if o.get("escrow_status") != "held":
+        raise HTTPException(status_code=409, detail="Paiement non disponible pour remise")
     if o["status"] == "collected":
         raise HTTPException(status_code=400, detail="Commande déjà marquée comme retirée")
     allowed = {"ready_for_pickup", "confirmed", "preparing"}
@@ -409,8 +422,8 @@ async def confirm_collect(order_id: str, user: dict = Depends(require_role("sell
     event = {"status": "collected", "timestamp": now, "actor": "seller",
              "note": "Remise en main propre confirmée par le vendeur (paiement cash)"}
 
-    await db.orders.update_one(
-        {"id": order_id},
+    result = await db.orders.update_one(
+        {"id": order_id, "status": o["status"], "escrow_status": "held"},
         {"$set": {
             "status": "collected",
             "escrow_status": "released",
@@ -418,6 +431,8 @@ async def confirm_collect(order_id: str, user: dict = Depends(require_role("sell
         },
          "$push": {"timeline": event}},
     )
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Commande déjà modifiée")
     await db.transactions.update_many(
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "released_at": now}},
@@ -443,16 +458,22 @@ async def scan_qr(order_id: str, req: ScanQrRequest, user: dict = Depends(requir
         raise HTTPException(status_code=403, detail="Accès refusé")
     if o["delivery_mode"] != "collect":
         raise HTTPException(status_code=400, detail="Cette commande n'est pas en Click & Collect")
+    if o["status"] != "ready_for_pickup":
+        raise HTTPException(status_code=409, detail="Commande non disponible pour retrait")
+    if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
+        raise HTTPException(status_code=409, detail="Paiement non confirmé")
     if o["escrow_status"] != "held":
         raise HTTPException(status_code=400, detail="Escrow déjà libéré")
     if o.get("qr_code") != req.qr_token.strip():
         raise HTTPException(status_code=400, detail="QR code invalide")
 
     event = _timeline_event("collected", "Retiré et paiement libéré")
-    await db.orders.update_one(
-        {"id": order_id},
+    result = await db.orders.update_one(
+        {"id": order_id, "status": o["status"], "escrow_status": "held"},
         {"$set": {"status": "collected", "escrow_status": "released"}, "$push": {"timeline": event}},
     )
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Commande déjà modifiée")
     await db.transactions.update_one(
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
