@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, Field
 
 from db import get_db
+from financial_transactions import atomic_operation
 from auth import require_role, get_current_user_dep
 
 logger = logging.getLogger(__name__)
@@ -30,6 +31,7 @@ class ResolveRequest(BaseModel):
 
 
 @router.post("/disputes", status_code=201)
+@atomic_operation
 async def open_dispute(req: DisputeRequest, user: dict = Depends(require_role("buyer"))):
     db = get_db()
     order = await db.orders.find_one({"id": req.order_id}, {"_id": 0})
@@ -48,6 +50,8 @@ async def open_dispute(req: DisputeRequest, user: dict = Depends(require_role("b
     existing = await db.disputes.find_one({"order_id": req.order_id, "status": "open"})
     if existing:
         raise HTTPException(status_code=400, detail="Un litige est déjà ouvert pour cette commande")
+    if order.get("escrow_status") not in {"held", "awaiting_payment"}:
+        raise HTTPException(status_code=409, detail="Litige financier indisponible après libération ou remboursement")
 
     dispute = {
         "id": str(uuid.uuid4()),
@@ -103,6 +107,7 @@ async def admin_list(_: dict = Depends(require_role("admin"))):
 
 
 @router.post("/admin/disputes/{dispute_id}/resolve")
+@atomic_operation
 async def admin_resolve(dispute_id: str, req: ResolveRequest, _: dict = Depends(require_role("admin"))):
     if req.decision == "partial_refund":
         raise HTTPException(status_code=503, detail="Les remboursements partiels sont temporairement suspendus")
@@ -116,6 +121,13 @@ async def admin_resolve(dispute_id: str, req: ResolveRequest, _: dict = Depends(
     order = await db.orders.find_one({"id": dispute["order_id"]}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Commande introuvable")
+
+    if order.get("escrow_status") != "frozen":
+        raise HTTPException(status_code=409, detail="Escrow non gelé")
+    if req.decision == "release_seller" and not order.get("payment_confirmed"):
+        raise HTTPException(status_code=409, detail="Paiement non confirmé")
+    if req.decision == "refund_buyer" and order.get("payment_method") != "cash":
+        raise HTTPException(status_code=503, detail="Remboursement fournisseur indisponible ; résolution suspendue")
 
     if req.decision == "refund_buyer":
         new_escrow = "refunded"

@@ -77,42 +77,7 @@ async def subscribe(req: SubscribeRequest, user: dict = Depends(require_role("se
     """Start a Premium subscription. With CinetPay configured, returns a payment_url;
     in sandbox, activates immediately for one month.
     """
-    db = get_db()
-    seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
-    if not seller:
-        raise HTTPException(status_code=400, detail="Boutique manquante")
-    currency = user["currency"]
-    plan = PLANS.get(currency, {"price": 5000, "label": "Premium mensuel"})
-    sub_id = str(uuid.uuid4())
-
-    sub = {
-        "id": sub_id,
-        "seller_id": seller["id"],
-        "user_id": user["id"],
-        "amount": plan["price"],
-        "currency": currency,
-        "status": "pending",
-        "created_at": _now(),
-    }
-    await db.premium_subscriptions.insert_one(sub)
-
-    if cinetpay_configured():
-        provider = get_provider(req.payment_method or "")
-        result = await provider.collect(
-            phone=user.get("phone", ""),
-            amount=plan["price"],
-            currency=currency,
-            external_ref=f"premium_{sub_id}",
-            description="Abonnement AfriMarket Premium",
-        )
-        if not result.ok:
-            raise HTTPException(status_code=502, detail=f"Échec paiement: {result.error}")
-        await db.premium_subscriptions.update_one({"id": sub_id}, {"$set": {"payment_ref": result.reference}})
-        return {"simulated": False, "payment_url": result.payment_url, "subscription_id": sub_id}
-
-    # Sandbox: activate immediately
-    await _activate_premium(db, seller["id"], user["id"], sub_id)
-    return {"simulated": True, "active": True, "subscription_id": sub_id}
+    raise HTTPException(status_code=503, detail="Abonnement payant suspendu jusqu’à certification du fournisseur et de sa comptabilité")
 
 
 async def _activate_premium(db, seller_id: str, user_id: str, sub_id: str):

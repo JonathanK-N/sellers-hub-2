@@ -20,6 +20,7 @@ async def scenario():
     name = "afrimarket_wallet_test_" + uuid.uuid4().hex
     db = client[name]
     try:
+        await db.create_collection("financial_ledger")
         await db.sellers.insert_one({"id":"seller","user_id":"seller-user"})
         await db.orders.insert_one({"seller_id":"seller","total_amount":100,"commission_amount":0,"escrow_status":"released"})
         await db.withdrawals.create_index("id", unique=True)

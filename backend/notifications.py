@@ -49,6 +49,16 @@ async def create_notification(user_id: str, ntype: str, title: str, body: str, d
     }
     await db.notifications.insert_one(notif)
 
+    # Financial callbacks may be retried. Persist the notification atomically;
+    # external push is left pending for delivery after the commit.
+    from financial_transactions import active_database
+    if active_database.get() is not None:
+        await db.notification_outbox.insert_one({
+            "id": notif["id"], "status": "pending", "notification": notif,
+        })
+        notif.pop("_id", None)
+        return notif
+
     # Push via FCM if configured
     try:
         prefs = await db.notification_prefs.find_one({"user_id": user_id}, {"_id": 0}) or {}

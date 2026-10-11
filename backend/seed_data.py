@@ -65,6 +65,18 @@ async def seed_admin():
 
 async def create_indexes():
     db = get_db()
+    # Avoid concurrent implicit namespace creation during the first checkout.
+    from pymongo.errors import CollectionInvalid
+    for name in ("orders", "transactions", "order_groups", "checkout_requests", "financial_ledger", "payment_intents", "payment_events", "notification_outbox", "fraud_outbox", "deliverer_wallets", "deliverer_wallet_transactions", "disputes", "withdrawals"):
+        try:
+            await db.create_collection(name)
+        except CollectionInvalid:
+            pass
+    await db.order_groups.create_index("id", unique=True)
+    await db.transactions.create_index("order_id", unique=True, partialFilterExpression={"order_id": {"$type": "string"}})
+    await db.disputes.create_index("order_id", unique=True, partialFilterExpression={"status": "open"})
+    await db.deliverer_wallets.create_index("user_id", unique=True)
+    await db.withdrawals.create_index("id", unique=True)
     await db.users.create_index("phone", unique=True)
     await db.users.create_index("id", unique=True)
     await db.sellers.create_index("user_id", unique=True)

@@ -6,7 +6,9 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 
+from money import record_release
 from db import get_db
+from financial_transactions import atomic_operation
 from auth import require_role, get_current_user_dep
 from notifications import create_notification
 
@@ -178,6 +180,7 @@ async def mark_en_route(order_id: str, user: dict = Depends(require_role("delive
 
 
 @router.post("/deliverer/orders/{order_id}/confirm")
+@atomic_operation
 async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict = Depends(require_role("deliverer"))):
     """Deliverer enters the buyer's 6-digit code -> escrow released."""
     db = get_db()
@@ -193,9 +196,6 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
     if o.get("confirmation_code") != req.code.strip():
         raise HTTPException(status_code=400, detail="Code incorrect")
 
-    LIVREUR_PART = 11_500.0
-    PLATFORM_PART = 4_500.0
-
     event = _timeline_event("delivered", "Livré et paiement libéré")
     result = await db.orders.update_one(
         {"id": order_id, "deliverer_id": user["id"], "status": "out_for_delivery", "escrow_status": "held"},
@@ -209,26 +209,6 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
     )
 
-    # Crediter le wallet du livreur si delivery_fee AfriMarket
-    delivery_fee = o.get("delivery_fee", 0)
-    if delivery_fee == LIVREUR_PART + PLATFORM_PART:
-        await db.deliverer_wallets.update_one(
-            {"user_id": user["id"]},
-            {"$inc": {"balance": LIVREUR_PART}, "$set": {"currency": o.get("currency", "CDF"), "user_id": user["id"]}},
-            upsert=True,
-        )
-        await db.deliverer_wallet_transactions.insert_one({
-            "id": str(uuid.uuid4()),
-            "user_id": user["id"],
-            "order_id": order_id,
-            "type": "delivery_fee",
-            "amount": LIVREUR_PART,
-            "platform_fee": PLATFORM_PART,
-            "currency": o.get("currency", "CDF"),
-            "created_at": _now(),
-        })
-        logger.info(f"[WALLET] livreur {user['id']} credite {LIVREUR_PART} CDF pour commande {order_id}")
-
     try:
         await create_notification(
             o["buyer_id"], "order_delivered", "Commande livrée",
@@ -236,6 +216,7 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
         )
     except Exception:
         pass
+    await record_release(db, o, user["id"])
     return {"ok": True, "status": "delivered", "escrow_status": "released"}
 
 

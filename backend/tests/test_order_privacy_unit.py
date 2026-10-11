@@ -53,7 +53,7 @@ def test_competing_delivery_confirmation_cannot_credit_wallet_twice():
     db.orders.find_one = AsyncMock(return_value={"delivery_mode":"delivery","status":"out_for_delivery","payment_method":"cash","escrow_status":"held","confirmation_code":"123456","delivery_fee":16000})
     db.orders.update_one = AsyncMock(return_value=SimpleNamespace(modified_count=0))
     with patch.object(delivery_router,"get_db",return_value=db), pytest.raises(HTTPException) as error:
-        asyncio.run(delivery_router.deliverer_confirm("order", delivery_router.ConfirmCodeRequest(code="123456"), {"id":"courier","role":"deliverer"}))
+        asyncio.run(delivery_router.deliverer_confirm.__wrapped__("order", delivery_router.ConfirmCodeRequest(code="123456"), {"id":"courier","role":"deliverer"}))
     assert error.value.status_code == 409
     db.transactions.update_one.assert_not_called()
     db.deliverer_wallets.update_one.assert_not_called()

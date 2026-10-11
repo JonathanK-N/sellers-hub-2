@@ -111,7 +111,17 @@ export default function Checkout() {
         payment_method: "cash",
         checkout_currency: checkoutCurrency,
       };
-      const { data } = await api.post("/orders", payload);
+      // Keep the same request key after a timeout or reload. A changed payload
+      // gets a new key; the server rejects reuse for a different request.
+      const requestIdentity = JSON.stringify({ buyer: user.id, payload });
+      let attempt;
+      try { attempt = JSON.parse(sessionStorage.getItem("afrimarket-checkout-attempt")); } catch { attempt = null; }
+      if (!attempt || attempt.identity !== requestIdentity) {
+        attempt = { identity: requestIdentity, key: crypto.randomUUID() };
+        sessionStorage.setItem("afrimarket-checkout-attempt", JSON.stringify(attempt));
+      }
+      const { data } = await api.post("/orders", payload, { headers: { "Idempotency-Key": attempt.key } });
+      sessionStorage.removeItem("afrimarket-checkout-attempt");
       const groupId = data.order_group_id;
       const n = data.seller_count || (data.orders ? data.orders.length : 1);
       clear();

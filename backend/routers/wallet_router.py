@@ -9,6 +9,7 @@ from pymongo.errors import OperationFailure
 
 from db import get_db
 from auth import require_role
+from money import minor_units
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/seller/wallet", tags=["wallet"])
@@ -43,7 +44,7 @@ async def _compute_balance(db, seller_id: str, session=None) -> dict:
     # Count in-progress/processing/completed against the balance so a seller can't
     # double-withdraw funds that are mid-flight.
     withdrawn = 0
-    async for w in db.withdrawals.find({"seller_id": seller_id, "status": {"$in": ["in_progress", "processing", "completed"]}}, session=session):
+    async for w in db.withdrawals.find({"seller_id": seller_id, "status": {"$in": ["in_progress", "processing", "provider_pending", "manual_review", "reconciliation_required", "completed"]}}, session=session):
         withdrawn += w["amount"]
 
     return {
@@ -106,6 +107,7 @@ async def list_transactions(user: dict = Depends(require_role("seller"))):
 
 @router.post("/withdraw", status_code=201)
 async def withdraw(req: WithdrawRequest, user: dict = Depends(require_role("seller"))):
+    amount_minor = minor_units(req.amount)
     db = get_db()
     seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
     if not seller:
@@ -140,6 +142,11 @@ async def withdraw(req: WithdrawRequest, user: dict = Depends(require_role("sell
                 if req.amount > fresh_balance["available"]:
                     raise HTTPException(status_code=409, detail="Solde insuffisant")
                 await db.withdrawals.insert_one(withdrawal, session=active_session)
+                await db.financial_ledger.insert_one({
+                    "_id": "withdrawal:" + withdrawal["id"], "currency": user["currency"],
+                    "lines": [{"account": "seller:" + seller["id"], "minor": -amount_minor},
+                              {"account": "withdrawal_reserved:" + withdrawal["id"], "minor": amount_minor}],
+                }, session=active_session)
             await session.with_transaction(reserve_withdrawal)
     except OperationFailure as error:
         if error.code in {20, 303}:

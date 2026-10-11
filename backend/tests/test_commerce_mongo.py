@@ -10,6 +10,8 @@ from fastapi import HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
 from models import OrderCreateRequest
 from routers import orders_router, products_router
+import db as database_module
+import financial_transactions
 
 
 def test_product_search_treats_regex_characters_as_literal_text():
@@ -35,7 +37,7 @@ def test_product_search_treats_regex_characters_as_literal_text():
     asyncio.run(run())
 
 async def scenario(fail_persistence=False):
-    uri = os.environ.get("TEST_MONGO_URL")
+    uri = os.environ.get("TEST_MONGO_TRANSACTION_URL")
     if not uri:
         pytest.skip("BLOCKED: explicit isolated TEST_MONGO_URL required")
     if urlparse(uri).hostname not in {"localhost","127.0.0.1"}:
@@ -44,24 +46,29 @@ async def scenario(fail_persistence=False):
     name = "afrimarket_test_" + uuid.uuid4().hex
     db = client[name]
     try:
+        for collection in ["orders", "transactions", "order_groups", "checkout_requests", "fraud_outbox"]:
+            await db.create_collection(collection)
         await db.products.create_index("id",unique=True)
         await db.products.insert_one({"id":"p","seller_id":"s","name":"TEST product","price":100,"stock":3,"currency":"FC","photos":[],"delivery_modes":["collect"],"is_active":True})
         await db.sellers.insert_one({"id":"s","user_id":"seller","shop_name":"TEST shop","commission_rate":0.07})
-        proxy = SimpleNamespace(**{key:db[key] for key in ["products","sellers","orders","transactions","order_groups"]})
+        proxy = db
         req = OrderCreateRequest(items=[{"product_id":"p","quantity":1}],delivery_mode="collect",payment_method="cash")
         buyer = {"id":"buyer","role":"buyer","currency":"FC","country_code":"CD"}
-        with patch.object(orders_router,"get_db",return_value=proxy),patch.object(orders_router,"create_notification",new=AsyncMock()),patch("fraud.evaluate_and_log",new=AsyncMock()):
+        with patch.object(database_module,"_db", db),patch.object(orders_router,"create_notification",new=AsyncMock()):
             if fail_persistence:
-                with patch.object(proxy.transactions,"insert_one",new=AsyncMock(side_effect=RuntimeError("test write failure"))):
+                async def fail(collection, operation):
+                    if collection == "transactions":
+                        raise RuntimeError("test write failure")
+                with patch.object(financial_transactions,"after_write",fail):
                     with pytest.raises(RuntimeError):
-                        await orders_router.create_order(req,buyer)
+                        await orders_router.create_order(req,buyer,"TEST-key-"+uuid.uuid4().hex)
                 assert (await db.products.find_one({"id":"p"}))["stock"] == 3
                 assert await db.orders.count_documents({}) == 0
                 assert await db.order_groups.count_documents({}) == 0
             else:
                 async def place():
                     try:
-                        await orders_router.create_order(req,buyer)
+                        await orders_router.create_order(req,buyer,"TEST-key-"+uuid.uuid4().hex)
                         return "created"
                     except HTTPException as error:
                         assert error.status_code in {400,409}
