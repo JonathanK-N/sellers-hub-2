@@ -6,6 +6,55 @@ on:
 permissions:
   contents: read
 jobs:
+  mongodb-staging-topology:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and validate authenticated persistent staging topology
+        run: |
+          set -euo pipefail
+          umask 077
+          docker build -f Dockerfile.mongodb-staging -t afrimarket-staging-mongo-test .
+          export MONGO_INITDB_ROOT_USERNAME=staging_root
+          export MONGO_INITDB_ROOT_PASSWORD="$(openssl rand -hex 32)"
+          export MONGO_APP_PASSWORD="$(openssl rand -hex 32)"
+          docker volume create phase3-staging-data
+          docker run -d --name phase3-staging-mongo --hostname phase3-staging-mongo -e MONGO_INITDB_ROOT_USERNAME -e MONGO_INITDB_ROOT_PASSWORD -e MONGO_APP_PASSWORD -e RAILWAY_PRIVATE_DOMAIN=phase3-staging-mongo -v phase3-staging-data:/data/db afrimarket-staging-mongo-test
+          for attempt in $(seq 1 120); do
+            if docker logs phase3-staging-mongo 2>&1 | grep -q 'Authenticated staging replica set ready'; then break; fi
+            sleep 1
+          done
+          docker exec phase3-staging-mongo mongosh --quiet --file /usr/local/bin/afrimarket-mongo-init.js
+          docker exec phase3-staging-mongo mongosh --quiet --eval '
+            const app=db.getSiblingDB("afrimarket_staging_synthetic");
+            try { app.proof.findOne(); quit(1); } catch(e) { if(e.code!==13) quit(1); }
+            if(!app.auth("afrimarket_staging",process.env.MONGO_APP_PASSWORD)) quit(1);
+            app.createCollection("proof");
+            const session=db.getMongo().startSession(); session.startTransaction({writeConcern:{w:"majority"}});
+            session.getDatabase("afrimarket_staging_synthetic").proof.insertOne({_id:"transaction",amount:100}); session.commitTransaction(); session.endSession();
+            try { db.getSiblingDB("unrelated_database").proof.insertOne({x:1}); quit(1); } catch(e) { if(e.code!==13) quit(1); }
+          '
+          docker restart phase3-staging-mongo
+          for attempt in $(seq 1 90); do
+            if docker exec phase3-staging-mongo mongosh --quiet --eval 'const app=db.getSiblingDB("afrimarket_staging_synthetic"); if(!app.auth("afrimarket_staging",process.env.MONGO_APP_PASSWORD)||app.proof.findOne({_id:"transaction"})?.amount!==100) quit(1);' >/dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          docker exec phase3-staging-mongo mongosh --quiet --file /usr/local/bin/afrimarket-mongo-init.js
+          docker exec phase3-staging-mongo mongosh --quiet --eval 'const app=db.getSiblingDB("afrimarket_staging_synthetic"); if(!app.auth("afrimarket_staging",process.env.MONGO_APP_PASSWORD)||app.proof.findOne({_id:"transaction"})?.amount!==100) quit(1);'
+          mkdir topology-evidence
+          printf '%s\n' '{"status":"PASS","scope":"isolated Docker synthetic data","checks":["authenticated PRIMARY","anonymous access denied","application access restricted to synthetic database","majority transaction committed","data and keyfile persist after restart"],"railwayDeployment":"BLOCKED pending approval control and sealed variables"}' > topology-evidence/staging-topology.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mongodb-staging-topology-${{ github.sha }}
+          path: topology-evidence
+      - name: Inspect and remove isolated topology
+        if: always()
+        run: |
+          docker logs phase3-staging-mongo
+          docker rm -f phase3-staging-mongo || true
+          docker volume rm phase3-staging-data || true
   security-secrets:
     runs-on: ubuntu-latest
     timeout-minutes: 10
