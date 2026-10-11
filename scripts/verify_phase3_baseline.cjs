@@ -21,15 +21,28 @@ const crypto = require('crypto');
   for(const [id,date] of [[409214759,'20261010'],[409717666,'20261011']]) {
     const r=await get('releases/'+id);
     const dir=path.join(privateRoot,'releases-'+date);
-    const assets=r.assets.map(a=>{
+    const assets=[];
+    for(const a of r.assets) {
       const file=path.join(dir,a.name);
       const local=fs.existsSync(file)?fs.readFileSync(file):null;
       const hash=local?crypto.createHash('sha256').update(local).digest('hex'):null;
-      return {name:a.name,size:a.size,digest:a.digest,local_sha256:hash,status:local?(a.digest==='sha256:'+hash&&a.size===local.length?'PASS':'FAIL'):'BLOCKED_LOCAL_NAME'};
-    });
+      const initialStatus=local?(a.digest==='sha256:'+hash&&a.size===local.length?'PASS':'FAIL'):'BLOCKED_LOCAL_NAME';
+      const record={name:a.name,size:a.size,digest:a.digest,local_sha256:hash,status:initialStatus};
+      if(initialStatus!=='PASS') {
+        const response=await fetch('https://api.github.com/repos/JonathanK-N/sellers-hub-2/releases/assets/'+a.id,{headers:{Authorization:'Bearer '+token,Accept:'application/octet-stream'},signal:AbortSignal.timeout(30000)});
+        if(!response.ok) throw Error('Asset download HTTP '+response.status);
+        const bytes=Buffer.from(await response.arrayBuffer());
+        const remoteHash=crypto.createHash('sha256').update(bytes).digest('hex');
+        if(a.digest!=='sha256:'+remoteHash||a.size!==bytes.length)throw Error('Remote digest mismatch: '+a.name);
+        const recovered=path.join(privateRoot,'phase3-baseline-recovered');
+        fs.mkdirSync(recovered,{recursive:true});fs.writeFileSync(path.join(recovered,a.name),bytes);
+        Object.assign(record,{initial_local_status:initialStatus,verified_remote_sha256:remoteHash,status:'PASS_REMOTE_RECOVERED'});
+      }
+      assets.push(record);
+    }
     result.releases.push({id,draft:r.draft,tag:r.tag_name,assets});
   }
   fs.mkdirSync('release-evidence/phase3',{recursive:true});
   fs.writeFileSync('release-evidence/phase3/baseline-github.json',JSON.stringify(result,null,2)+'\n');
-  console.log(JSON.stringify(result));
+  console.log(JSON.stringify({pull_requests:result.pull_requests,releases:result.releases.map(r=>({id:r.id,assets:r.assets.length,statuses:r.assets.map(a=>({name:a.name,status:a.status}))}))}));
 })().catch(e=>{console.error(e.message);process.exitCode=1;});

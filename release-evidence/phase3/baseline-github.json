@@ -1,6 +1,6 @@
 {
   "author": "Jonathan Kakesa (JonathanK-N)",
-  "checked_at": "2026-10-11T16:48:06.285Z",
+  "checked_at": "2026-10-11T17:20:59.468Z",
   "pull_requests": [
     {
       "number": 1,
@@ -60,7 +60,9 @@
           "size": 2974,
           "digest": "sha256:7012280f47a38beb040b460d03b2ddd8cf080e6f485fadc87a71e0f5756de14b",
           "local_sha256": "883fb79104064d6317a7d4b2bf1253af02e9bfe4057bcfc7b5e918e52b34fe08",
-          "status": "FAIL"
+          "status": "PASS_REMOTE_RECOVERED",
+          "initial_local_status": "FAIL",
+          "verified_remote_sha256": "7012280f47a38beb040b460d03b2ddd8cf080e6f485fadc87a71e0f5756de14b"
         },
         {
           "name": "B-uiux-deployed-0e24300a3fa0-source.zip",
@@ -123,21 +125,27 @@
           "size": 1048,
           "digest": "sha256:6a2be343fc1ba411ef0d74144c7d45f9555acf0d772cc66b9089729f41b7daa6",
           "local_sha256": null,
-          "status": "BLOCKED_LOCAL_NAME"
+          "status": "PASS_REMOTE_RECOVERED",
+          "initial_local_status": "BLOCKED_LOCAL_NAME",
+          "verified_remote_sha256": "6a2be343fc1ba411ef0d74144c7d45f9555acf0d772cc66b9089729f41b7daa6"
         },
         {
           "name": "lighthouse.json",
           "size": 601010,
           "digest": "sha256:945d33e91786e4ca65d4c8c47fec874639fd09609710d02ac405be39da796958",
           "local_sha256": null,
-          "status": "BLOCKED_LOCAL_NAME"
+          "status": "PASS_REMOTE_RECOVERED",
+          "initial_local_status": "BLOCKED_LOCAL_NAME",
+          "verified_remote_sha256": "945d33e91786e4ca65d4c8c47fec874639fd09609710d02ac405be39da796958"
         },
         {
           "name": "reference-web-artifacts.json",
           "size": 589,
           "digest": "sha256:e82e44112e19ef7f7925d09075c5915c9baecbccfa795a14e0cae57589a4bb6a",
           "local_sha256": null,
-          "status": "BLOCKED_LOCAL_NAME"
+          "status": "PASS_REMOTE_RECOVERED",
+          "initial_local_status": "BLOCKED_LOCAL_NAME",
+          "verified_remote_sha256": "e82e44112e19ef7f7925d09075c5915c9baecbccfa795a14e0cae57589a4bb6a"
         },
         {
           "name": "release-manifest-890d8e7.json",

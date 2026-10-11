@@ -103,9 +103,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install pip-audit ruff
+      - run: pip install pip-audit ruff bandit
       - name: Undefined names
         run: ruff check backend --select F821
+      - name: Security static analysis
+        if: always()
+        run: bandit -r backend --exclude backend/tests -f json -o backend-sast.json
       - name: Dependency vulnerability report
         if: always()
         run: pip-audit -r backend/requirements.txt --format json --output backend-audit.json
@@ -113,7 +116,9 @@ jobs:
         if: always()
         with:
           name: backend-security-${{ github.sha }}
-          path: backend-audit.json
+          path: |
+            backend-audit.json
+            backend-sast.json
   security-web:
     runs-on: ubuntu-latest
     steps:

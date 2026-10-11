@@ -108,6 +108,8 @@ async def apply_verified_payment(tx, transaction_id, verified):
 async def cinetpay_webhook(request: Request):
     if not cinetpay_configured():
         raise HTTPException(503, "Webhook du prestataire indisponible")
+    if is_sandbox():
+        raise HTTPException(503, "Webhook Checkout v2 désactivé dans le staging sandbox")
     try:
         form = dict(await request.form())
     except Exception:

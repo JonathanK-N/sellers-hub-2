@@ -138,7 +138,12 @@ def test_abrupt_backend_process_exit_rolls_back_and_restart_recovers():
     async def scenario(db):
         worker = Path(__file__).with_name("financial_crash_worker.py")
         child = await asyncio.create_subprocess_exec(sys.executable, str(worker), os.environ["TEST_MONGO_TRANSACTION_URL"], db.name, "transactions", stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
-        stdout, stderr = await asyncio.wait_for(child.communicate(), timeout=45)
+        try:
+            stdout, stderr = await asyncio.wait_for(child.communicate(), timeout=45)
+        except TimeoutError:
+            child.kill()
+            await child.wait()
+            raise
         assert child.returncode == 73, stderr.decode(errors="replace")
         assert await db.orders.count_documents({}) == 0
         assert await db.transactions.count_documents({}) == 0
