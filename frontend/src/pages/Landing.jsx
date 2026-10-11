@@ -128,6 +128,8 @@ export default function Landing() {
       {/* HERO */}
       <section className={`${WRAP} mt-4 md:mt-6`}>
         <div className="rounded-2xl overflow-hidden bg-afri-secondary text-white relative min-h-[300px] md:min-h-[420px] flex items-center p-6 md:p-14">
+          <picture>
+          <source type="image/avif" srcSet="/images/market-hero-400.avif 400w, /images/market-hero-800.avif 800w, /images/market-hero-1280.avif 1280w" sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) calc(100vw - 64px), 1216px" />
           <img
             src="/images/market-hero-800.webp"
             srcSet="/images/market-hero-400.webp 400w, /images/market-hero-800.webp 800w, /images/market-hero-1280.webp 1280w"
@@ -138,6 +140,7 @@ export default function Landing() {
             alt="Marché africain"
             className="absolute inset-0 w-full h-full object-cover opacity-30"
           />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/85 via-black/50 to-black/10" />
           <div className="relative max-w-xl">
             <h1 className="font-display font-black text-2xl md:text-4xl lg:text-5xl leading-tight tracking-tight">
