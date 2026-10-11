@@ -67,7 +67,7 @@ async def create_indexes():
     db = get_db()
     # Avoid concurrent implicit namespace creation during the first checkout.
     from pymongo.errors import CollectionInvalid
-    for name in ("orders", "transactions", "order_groups", "checkout_requests", "financial_ledger", "payment_intents", "payment_events", "notification_outbox", "fraud_outbox", "deliverer_wallets", "deliverer_wallet_transactions", "disputes", "withdrawals"):
+    for name in ("orders", "transactions", "order_groups", "checkout_requests", "withdrawal_requests", "financial_ledger", "payment_intents", "payment_events", "notification_outbox", "fraud_outbox", "deliverer_wallets", "deliverer_wallet_transactions", "disputes", "withdrawals"):
         try:
             await db.create_collection(name)
         except CollectionInvalid:

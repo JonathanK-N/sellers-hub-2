@@ -13,7 +13,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import db as database_module
 import financial_transactions as financial
 from models import OrderCreateRequest, ConfirmDeliveryRequest
-from routers import orders_router, delivery_router, disputes_router
+from routers import orders_router, delivery_router, disputes_router, wallet_router
 
 
 async def isolated(operation, standalone=False):
@@ -25,7 +25,7 @@ async def isolated(operation, standalone=False):
     client = AsyncIOMotorClient(uri, serverSelectionTimeoutMS=2000)
     db = client["afrimarket_finance_test_" + uuid.uuid4().hex]
     try:
-        for collection in ["products", "sellers", "orders", "transactions", "order_groups", "checkout_requests", "notifications", "notification_outbox", "fraud_outbox", "financial_ledger", "disputes", "deliverer_wallets", "deliverer_wallet_transactions"]:
+        for collection in ["products", "sellers", "orders", "transactions", "order_groups", "checkout_requests", "withdrawal_requests", "withdrawals", "notifications", "notification_outbox", "fraud_outbox", "financial_ledger", "disputes", "deliverer_wallets", "deliverer_wallet_transactions"]:
             await db.create_collection(collection)
         await db.products.insert_one({"id":"p", "seller_id":"s", "name":"TEST", "price":100, "stock":3, "currency":"FC", "photos":[], "delivery_modes":["collect"], "is_active":True})
         await db.sellers.insert_one({"id":"s", "user_id":"seller", "shop_name":"TEST", "commission_rate":0.07})
@@ -178,4 +178,26 @@ def test_dispute_release_and_balanced_journal_commit_together(boundary):
         with pytest.raises(HTTPException):
             await disputes_router.admin_resolve("d", req, {"role":"admin"})
         assert await db.financial_ledger.count_documents({}) == 1
+    asyncio.run(isolated(scenario))
+
+
+@pytest.mark.parametrize("boundary", ["sellers", "withdrawals", "financial_ledger", "withdrawal_requests"])
+def test_withdrawal_interruption_and_replay_cannot_debit_twice(boundary):
+    async def scenario(db):
+        await db.orders.insert_one({"seller_id":"s", "total_amount":100, "commission_amount":7, "escrow_status":"released", "currency":"CDF"})
+        user = {"id":"seller", "role":"seller", "currency":"CDF"}
+        req = wallet_router.WithdrawRequest(amount=93, mobile_money_number="TEST", operator="TEST")
+        async def fault(collection, operation):
+            if collection == boundary:
+                raise asyncio.CancelledError("Interrupted withdrawal")
+        with patch.object(financial, "after_write", fault), pytest.raises(asyncio.CancelledError):
+            await wallet_router.withdraw(req, user, "TEST-withdrawal-key")
+        for name in ["withdrawals", "financial_ledger", "withdrawal_requests"]:
+            assert await db[name].count_documents({}) == 0
+        assert (await wallet_router._compute_balance(db, "s"))["available"] == 93
+        first = await wallet_router.withdraw(req, user, "TEST-withdrawal-key")
+        assert first == await wallet_router.withdraw(req, user, "TEST-withdrawal-key")
+        assert await db.withdrawals.count_documents({}) == 1
+        assert await db.financial_ledger.count_documents({}) == 1
+        assert (await wallet_router._compute_balance(db, "s"))["available"] == 0
     asyncio.run(isolated(scenario))

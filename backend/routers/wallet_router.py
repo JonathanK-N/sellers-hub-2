@@ -1,11 +1,13 @@
 """Seller wallet & Mobile Money withdrawal (simulated)."""
 import uuid
+import hashlib
+import json
 import logging
 from datetime import datetime, timezone, timedelta
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Header
 from pydantic import BaseModel, Field
-from pymongo.errors import OperationFailure
+from financial_transactions import atomic_operation
 
 from db import get_db
 from auth import require_role
@@ -27,32 +29,29 @@ class WithdrawRequest(BaseModel):
 
 async def _compute_balance(db, seller_id: str, session=None) -> dict:
     """Available = sum(released order net) - sum(completed/in_progress withdrawals)."""
-    pipeline = [
-        {"$match": {"seller_id": seller_id, "escrow_status": {"$in": ["released", "partial_refund"]}}},
-        {"$group": {"_id": None, "gross": {"$sum": "$total_amount"}, "commission": {"$sum": "$commission_amount"}}},
-    ]
-    rows = await db.orders.aggregate(pipeline, session=session).to_list(1)
-    if rows:
-        gross = rows[0]["gross"]
-        commission = rows[0]["commission"]
-    else:
-        gross = 0
-        commission = 0
-    net_earnings = gross - commission
-
-    # Withdrawals are finalized by the background scheduler (cron), not on read.
-    # Count in-progress/processing/completed against the balance so a seller can't
-    # double-withdraw funds that are mid-flight.
-    withdrawn = 0
+    gross_minor = commission_minor = withdrawn_minor = 0
+    currencies = set()
+    async for order in db.orders.find({"seller_id": seller_id, "escrow_status": "released"}, session=session):
+        if not order.get("currency"):
+            raise HTTPException(409, "Devise historique manquante ; rapprochement requis")
+        currencies.add("CDF" if order["currency"] == "FC" else order["currency"])
+        gross_minor += minor_units(order["total_amount"])
+        commission_minor += minor_units(order["commission_amount"])
     async for w in db.withdrawals.find({"seller_id": seller_id, "status": {"$in": ["in_progress", "processing", "provider_pending", "manual_review", "reconciliation_required", "completed"]}}, session=session):
-        withdrawn += w["amount"]
+        currencies.add("CDF" if w["currency"] == "FC" else w["currency"])
+        withdrawn_minor += minor_units(w["amount"])
+    if len(currencies) > 1:
+        raise HTTPException(409, "Solde multi-devises ; rapprochement requis")
+    gross, commission, withdrawn = gross_minor / 100, commission_minor / 100, withdrawn_minor / 100
+    net_earnings = (gross_minor - commission_minor) / 100
 
     return {
         "gross_sales": gross,
         "commission_paid": commission,
         "net_earnings": net_earnings,
         "withdrawn": withdrawn,
-        "available": net_earnings - withdrawn,
+        "available": (gross_minor - commission_minor - withdrawn_minor) / 100,
+        "account_currency": next(iter(currencies), None),
     }
 
 
@@ -106,12 +105,22 @@ async def list_transactions(user: dict = Depends(require_role("seller"))):
 
 
 @router.post("/withdraw", status_code=201)
-async def withdraw(req: WithdrawRequest, user: dict = Depends(require_role("seller"))):
+@atomic_operation
+async def withdraw(req: WithdrawRequest, user: dict = Depends(require_role("seller")), idempotency_key: str = Header(alias="Idempotency-Key", min_length=8, max_length=128)):
+    if not isinstance(idempotency_key, str) or not 8 <= len(idempotency_key) <= 128:
+        raise HTTPException(422, "Clé de retrait requise")
     amount_minor = minor_units(req.amount)
     db = get_db()
     seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
     if not seller:
         raise HTTPException(status_code=400, detail="Boutique manquante")
+    request_id = user["id"] + ":" + idempotency_key
+    fingerprint = hashlib.sha256(json.dumps(req.model_dump(), sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    replay = await db.withdrawal_requests.find_one({"_id": request_id})
+    if replay:
+        if replay["fingerprint"] != fingerprint:
+            raise HTTPException(409, "Clé déjà utilisée pour un retrait différent")
+        return replay["response"]
     if req.amount <= 0:
         raise HTTPException(status_code=400, detail="Montant invalide")
     if not req.mobile_money_number.strip():
@@ -132,27 +141,22 @@ async def withdraw(req: WithdrawRequest, user: dict = Depends(require_role("sell
         "created_at": _now(),
         "completed_at": None,
     }
-    # Contend on one seller document so two snapshot transactions cannot both
-    # spend the same computed balance by inserting different withdrawal rows.
-    try:
-        async with await db.client.start_session() as session:
-            async def reserve_withdrawal(active_session):
-                await db.sellers.update_one({"id": seller["id"]}, {"$inc": {"wallet_revision": 1}}, session=active_session)
-                fresh_balance = await _compute_balance(db, seller["id"], session=active_session)
-                if req.amount > fresh_balance["available"]:
-                    raise HTTPException(status_code=409, detail="Solde insuffisant")
-                await db.withdrawals.insert_one(withdrawal, session=active_session)
-                await db.financial_ledger.insert_one({
-                    "_id": "withdrawal:" + withdrawal["id"], "currency": user["currency"],
-                    "lines": [{"account": "seller:" + seller["id"], "minor": -amount_minor},
-                              {"account": "withdrawal_reserved:" + withdrawal["id"], "minor": amount_minor}],
-                }, session=active_session)
-            await session.with_transaction(reserve_withdrawal)
-    except OperationFailure as error:
-        if error.code in {20, 303}:
-            raise HTTPException(status_code=503, detail="Retraits temporairement indisponibles")
-        raise
+    # The seller document serializes competing reservations in this transaction.
+    await db.sellers.update_one({"id": seller["id"]}, {"$inc": {"wallet_revision": 1}})
+    fresh_balance = await _compute_balance(db, seller["id"])
+    currency = "CDF" if user["currency"] == "FC" else user["currency"]
+    if fresh_balance["account_currency"] not in {None, currency}:
+        raise HTTPException(409, "Devise du solde incompatible")
+    if amount_minor > minor_units(fresh_balance["available"]):
+        raise HTTPException(409, "Solde insuffisant")
+    await db.withdrawals.insert_one(withdrawal)
+    await db.financial_ledger.insert_one({
+        "_id": "withdrawal:" + withdrawal["id"], "currency": user["currency"],
+        "lines": [{"account": "seller:" + seller["id"], "minor": -amount_minor},
+                  {"account": "withdrawal_reserved:" + withdrawal["id"], "minor": amount_minor}],
+    })
     withdrawal.pop("_id", None)
+    await db.withdrawal_requests.insert_one({"_id": request_id, "fingerprint": fingerprint, "response": withdrawal})
     return withdrawal
 
 # ============================================================

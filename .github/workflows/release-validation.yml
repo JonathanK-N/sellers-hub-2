@@ -38,7 +38,7 @@ jobs:
           mkdir -p "$RECOVERY_PRIVATE"
           cat > /tmp/recovery-mongod <<'SH'
           #!/bin/sh
-          exec docker run --rm --name recovery-target --network host -v "$RECOVERY_PRIVATE:$RECOVERY_PRIVATE" mongo:8.0 mongod "$@"
+          exec docker run --rm --user "$(id -u):$(id -g)" --name recovery-target --network host -v "$RECOVERY_PRIVATE:$RECOVERY_PRIVATE" mongo:8.0 mongod "$@"
           SH
           chmod +x /tmp/recovery-mongod
           mkdir -p recovery-evidence

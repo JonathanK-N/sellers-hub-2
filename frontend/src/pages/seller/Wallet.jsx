@@ -13,9 +13,11 @@ export default function SellerWallet() {
   const [balance, setBalance] = useState(null);
   const [txs, setTxs] = useState([]);
   const [showWithdraw, setShowWithdraw] = useState(false);
-  const [amount, setAmount] = useState("");
-  const [number, setNumber] = useState("");
-  const [operator, setOperator] = useState("MTN MoMo");
+  const storageKey = "afrimarket.withdrawal." + user?.id;
+  const [pending] = useState(() => { try { return JSON.parse(sessionStorage.getItem(storageKey) || "null"); } catch { return null; } });
+  const [amount, setAmount] = useState(pending?.payload.amount?.toString() || "");
+  const [number, setNumber] = useState(pending?.payload.mobile_money_number || "");
+  const [operator, setOperator] = useState(pending?.payload.operator || "MTN MoMo");
   const [operators, setOperators] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +36,7 @@ export default function SellerWallet() {
       const c = data.find((x) => x.code === user?.country_code);
       if (c) {
         setOperators(c.mobile_money_operators);
-        setOperator(c.mobile_money_operators[0]);
+        if (!pending) setOperator(c.mobile_money_operators[0]);
       }
     });
     const t = setInterval(load, 10000);
@@ -44,12 +46,14 @@ export default function SellerWallet() {
   const submit = async () => {
     setLoading(true);
     try {
-      await api.post("/seller/wallet/withdraw", {
-        amount: Number(amount),
-        mobile_money_number: number,
-        operator,
-      });
-      toast.success("Retrait initié — Effectué dans 2 minutes");
+      const payload = { amount: Number(amount), mobile_money_number: number, operator };
+      let previous = null;
+      try { previous = JSON.parse(sessionStorage.getItem(storageKey) || "null"); } catch { /* Start a fresh request when no valid pending record exists. */ }
+      const key = previous && JSON.stringify(previous.payload) === JSON.stringify(payload) ? previous.key : crypto.randomUUID();
+      sessionStorage.setItem(storageKey, JSON.stringify({ key, payload }));
+      await api.post("/seller/wallet/withdraw", payload, { headers: { "Idempotency-Key": key } });
+      sessionStorage.removeItem(storageKey);
+      toast.success("Retrait réservé — confirmation du fournisseur en attente");
       setShowWithdraw(false);
       setAmount("");
       setNumber("");
@@ -108,7 +112,7 @@ export default function SellerWallet() {
                       {t.type === "sale" ? "Vente" : "Retrait Mobile Money"}
                     </div>
                     <div className="text-[10px] text-gray-500 flex items-center gap-1.5">
-                      {t.type === "withdrawal" && (t.status === "in_progress" ? <><Clock size={10} /> En traitement</> : <><CheckCircle2 size={10} /> Effectué</>)}
+                      {t.type === "withdrawal" && (t.status === "completed" ? <><CheckCircle2 size={10} /> Effectué</> : <><Clock size={10} /> {(["manual_review", "reconciliation_required"].includes(t.status)) ? "Vérification requise" : "En attente de confirmation"}</>)}
                       <span>· {timeAgo(t.created_at)}</span>
                     </div>
                   </div>
