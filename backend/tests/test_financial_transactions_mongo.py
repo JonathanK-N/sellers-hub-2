@@ -99,6 +99,37 @@ async def seed_delivery(db):
     await db.transactions.insert_one({"order_id":"o", "payment_status":"cash_pending"})
 
 
+@pytest.mark.parametrize("wallet_currency", ["USD", None])
+def test_courier_credit_rejects_mixed_or_unknown_wallet_currency_atomically(wallet_currency):
+    async def scenario(db):
+        await seed_delivery(db)
+        wallet = {"user_id": "courier", "balance": 50}
+        if wallet_currency:
+            wallet["currency"] = wallet_currency
+        await db.deliverer_wallets.insert_one(wallet)
+        with pytest.raises(HTTPException) as error:
+            await delivery_router.deliverer_confirm("o", delivery_router.ConfirmCodeRequest(code="123456"), {"id": "courier", "role": "deliverer"})
+        assert error.value.status_code == 409
+        assert (await db.orders.find_one({"id": "o"}))["escrow_status"] == "held"
+        assert (await db.deliverer_wallets.find_one({"user_id": "courier"}))["balance"] == 50
+        assert await db.financial_ledger.count_documents({}) == 0
+        assert await db.deliverer_wallet_transactions.count_documents({}) == 0
+    asyncio.run(isolated(scenario))
+
+
+def test_courier_fixed_schedule_rejects_non_cdf_order_atomically():
+    async def scenario(db):
+        await seed_delivery(db)
+        await db.orders.update_one({"id": "o"}, {"$set": {"currency": "USD"}})
+        with pytest.raises(HTTPException) as error:
+            await delivery_router.deliverer_confirm("o", delivery_router.ConfirmCodeRequest(code="123456"), {"id": "courier", "role": "deliverer"})
+        assert error.value.status_code == 409
+        assert (await db.orders.find_one({"id": "o"}))["escrow_status"] == "held"
+        assert await db.deliverer_wallets.count_documents({}) == 0
+        assert await db.financial_ledger.count_documents({}) == 0
+    asyncio.run(isolated(scenario))
+
+
 @pytest.mark.parametrize("boundary", ["orders", "transactions", "deliverer_wallets", "deliverer_wallet_transactions", "financial_ledger"])
 def test_interruption_during_release_never_leaves_credit_or_released_escrow(boundary):
     async def scenario(db):

@@ -40,9 +40,21 @@ async def record_release(db, order, courier_id=None):
         {"account": "seller:" + order["seller_id"], "minor": total - cut},
         {"account": "platform:commission", "minor": cut},
     ]
+    currency = str(order.get("currency", "")).upper()
+    currency = "CDF" if currency == "FC" else currency
+    if not currency:
+        raise HTTPException(409, "Devise de commande absente")
     if courier_id and fee == 1600000:
+        if currency != "CDF":
+            raise HTTPException(409, "Barème de livraison disponible uniquement en CDF")
+        wallet = await db.deliverer_wallets.find_one({"user_id": courier_id})
+        if wallet:
+            wallet_currency = str(wallet.get("currency", "")).upper()
+            wallet_currency = "CDF" if wallet_currency == "FC" else wallet_currency
+            if wallet_currency != currency:
+                raise HTTPException(409, "Devise du portefeuille livreur à réconcilier")
         await db.deliverer_wallets.update_one(
-            {"user_id": courier_id}, {"$inc": {"balance": 11500}, "$set": {"currency": order["currency"], "user_id": courier_id}}, upsert=True,
+            {"user_id": courier_id}, {"$inc": {"balance": 11500}, "$set": {"currency": currency, "user_id": courier_id}}, upsert=True,
         )
         await db.deliverer_wallet_transactions.insert_one({
             "_id": "delivery:" + order["id"], "id": "delivery:" + order["id"], "user_id": courier_id,
