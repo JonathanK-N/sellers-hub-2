@@ -1,0 +1,21 @@
+[
+  {
+    "test": "duplicate lines cannot exceed stock 1",
+    "status": "FAIL",
+    "http": 201,
+    "productId": "a858f297-4695-467d-a238-22b634fa2a1d",
+    "groupId": "a8b9fe7f-5170-4396-823c-b62e4f4ecd8f"
+  },
+  {
+    "test": "unconfigured external webhook must not authenticate payment",
+    "status": "PASS",
+    "http": 400,
+    "paymentStatus": "captured_in_escrow"
+  },
+  {
+    "test": "unconfigured provider webhook cannot mark payment paid (form request)",
+    "status": "FAIL",
+    "http": 200,
+    "paymentStatus": "paid"
+  }
+]

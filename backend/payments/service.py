@@ -69,7 +69,7 @@ class CinetPayProvider(BaseProvider):
     collect() creates a hosted checkout and returns a payment_url (the buyer pays on
     CinetPay's gateway). Confirmation arrives via the notify_url webhook; status can
     also be polled with check(). disburse() uses the Transfer API for seller payouts.
-    Falls back to SandboxProvider when keys are not configured.
+      Rejects operations when the required provider keys are not configured.
     """
     name = "cinetpay"
     CHECKOUT_URL = "https://api-checkout.cinetpay.com/v2/payment"
@@ -88,7 +88,7 @@ class CinetPayProvider(BaseProvider):
 
     async def collect(self, phone: str, amount: float, currency: str, external_ref: str, description: str = "") -> PaymentResult:
         if not self.configured():
-            return await SandboxProvider().collect(phone, amount, currency, external_ref, description)
+            return PaymentResult(ok=False, reference="", status="FAILED", error="CinetPay non configuré")
         payload = {
             "apikey": self.api_key,
             "site_id": self.site_id,
@@ -125,7 +125,7 @@ class CinetPayProvider(BaseProvider):
     async def check(self, transaction_id: str) -> PaymentResult:
         """Poll CinetPay for the final status of a transaction."""
         if not self.configured():
-            return PaymentResult(ok=True, reference=transaction_id, status="SUCCESS", raw={"sandbox": True})
+            return PaymentResult(ok=False, reference=transaction_id, status="PENDING", error="CinetPay non configuré")
         payload = {"apikey": self.api_key, "site_id": self.site_id, "transaction_id": transaction_id}
         try:
             async with httpx.AsyncClient(timeout=20) as c:
@@ -146,7 +146,7 @@ class CinetPayProvider(BaseProvider):
 
     async def disburse(self, phone: str, amount: float, currency: str, external_ref: str, description: str = "") -> PaymentResult:
         if not self.configured() or not self.transfer_token:
-            return await SandboxProvider().disburse(phone, amount, currency, external_ref, description)
+            return PaymentResult(ok=False, reference="", status="FAILED", error="Transfert CinetPay non configuré")
         # CinetPay Transfer API: requires a separate transfer token + contact pre-registration.
         # Kept as a guarded real call; falls back gracefully on any error.
         ref = f"CP-DIS-{uuid.uuid4().hex[:12].upper()}"
@@ -283,11 +283,11 @@ class OrangeProvider(BaseProvider):
 
 
 def get_payment_mode() -> str:
-    return (os.environ.get("PAYMENT_MODE") or "sandbox").lower()
+    return (os.environ.get("PAYMENT_MODE") or "live").lower()
 
 
 def is_sandbox() -> bool:
-    return get_payment_mode() != "production"
+    return get_payment_mode() == "sandbox"
 
 
 _PROVIDERS = {
@@ -306,12 +306,24 @@ def cinetpay_configured() -> bool:
     return bool(os.environ.get("CINETPAY_API_KEY") and os.environ.get("CINETPAY_SITE_ID"))
 
 
+class UnavailableProvider(BaseProvider):
+    name = "unavailable"
+
+    async def collect(self, phone, amount, currency, external_ref, description=""):
+        return PaymentResult(ok=False, reference="", status="FAILED", error="Prestataire de paiement non configuré")
+
+    async def disburse(self, phone, amount, currency, external_ref, description=""):
+        return PaymentResult(ok=False, reference="", status="FAILED", error="Prestataire de transfert non configuré")
+
+
 def get_provider(name: str) -> BaseProvider:
     # CinetPay is an aggregator: when configured it handles every operator
     # (MTN, Orange, Moov, Wave, Airtel, cards) across all countries via one key.
     if cinetpay_configured():
         return CinetPayProvider()
-    # Otherwise, fall back to per-operator providers (or sandbox if no keys set).
+    # Legacy operator adapters are incomplete: never use them for live money.
+    if not is_sandbox():
+        return UnavailableProvider()
     if is_sandbox() and not any([os.environ.get(k) for k in ["MTN_SUBSCRIPTION_KEY", "WAVE_API_KEY", "ORANGE_API_KEY"]]):
         return SandboxProvider()
     cls = _PROVIDERS.get((name or "").lower())

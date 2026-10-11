@@ -7,7 +7,7 @@ import api, { formatApiError, API_BASE } from "../../lib/api";
 const STATUS_LABEL = {
   none: { label: "Non vérifié", color: "bg-gray-100 text-gray-700" },
   pending_review: { label: "En attente de vérification", color: "bg-amber-50 text-amber-700" },
-  verified: { label: "Profil vérifié", color: "var(--afri-success-bg) text-afri-primary" },
+  verified: { label: "Profil vérifié", color: "bg-afri-soft text-afri-primary" },
   rejected: { label: "Rejeté", color: "bg-red-50 text-red-700" },
 };
 
@@ -72,7 +72,7 @@ export default function BuyerKycVerification() {
       </header>
 
       <div className="px-4 mt-4 space-y-4">
-        <section className="rounded-xl border-2 border-afri-primary/30 var(--afri-success-bg) p-4 flex items-center gap-3">
+        <section className="rounded-xl border-2 border-afri-primary/30 bg-afri-soft p-4 flex items-center gap-3">
           <div className="w-12 h-12 rounded-lg bg-afri-primary text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={22} />
           </div>
@@ -97,7 +97,7 @@ export default function BuyerKycVerification() {
             return (
               <div key={s.key} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4" data-testid={`buyer-kyc-step-${s.key}`}>
                 <div className="flex items-start gap-3">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? "var(--afri-success-bg) text-afri-primary" : "bg-gray-100 text-gray-400"}`}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? "bg-afri-soft text-afri-primary" : "bg-gray-100 text-gray-400"}`}>
                     {uploaded ? <CheckCircle2 size={18} /> : <Upload size={18} />}
                   </div>
                   <div className="flex-1">
@@ -146,7 +146,7 @@ export default function BuyerKycVerification() {
         )}
 
         {status.buyer_kyc_status === "verified" && (
-          <div className="rounded-xl var(--afri-success-bg) border border-afri-primary/30 p-4 flex items-start gap-3" data-testid="buyer-kyc-verified-banner">
+          <div className="rounded-xl bg-afri-soft border border-afri-primary/30 p-4 flex items-start gap-3" data-testid="buyer-kyc-verified-banner">
             <ShieldCheck size={18} className="text-green-600 shrink-0 mt-0.5" />
             <div className="text-xs text-afri-secondary">
               <p className="font-semibold">Profil vérifié</p>

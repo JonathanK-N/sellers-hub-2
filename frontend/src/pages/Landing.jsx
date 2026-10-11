@@ -90,7 +90,7 @@ export default function Landing() {
               type="button"
               onClick={() => openAuth("register")}
               data-testid="guest-register-btn"
-              className="text-xs md:text-sm font-semibold bg-afri-primary hover:bg-afri-primary-hover transition-colors rounded-full px-3 md:px-4 py-1.5 md:py-2"
+              className="text-xs md:text-sm font-semibold bg-afri-primary-hover hover:bg-afri-secondary transition-colors rounded-full px-3 md:px-4 py-1.5 md:py-2"
             >
               S'inscrire
             </button>
@@ -106,11 +106,12 @@ export default function Landing() {
               return (
                 <button
                   key={c.value}
+                  aria-pressed={active}
                   data-testid={`guest-category-${c.value}`}
                   onClick={() => setCat(c.value)}
                   className={`flex items-center gap-1.5 whitespace-nowrap text-xs md:text-sm font-medium pb-1.5 border-b-2 transition-colors ${
                     active
-                      ? "text-afri-primary border-afri-primary"
+                      ? "text-afri-soft border-afri-primary"
                       : "text-gray-300 border-transparent hover:text-white"
                   }`}
                 >
@@ -123,14 +124,23 @@ export default function Landing() {
         </div>
       </header>
 
+      <main id="main-content">
       {/* HERO */}
       <section className={`${WRAP} mt-4 md:mt-6`}>
         <div className="rounded-2xl overflow-hidden bg-afri-secondary text-white relative min-h-[300px] md:min-h-[420px] flex items-center p-6 md:p-14">
+          <picture>
+          <source type="image/avif" srcSet="/images/market-hero-400.avif 400w, /images/market-hero-800.avif 800w, /images/market-hero-1280.avif 1280w" sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) calc(100vw - 64px), 1216px" />
           <img
-            src="https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?crop=entropy&cs=srgb&fm=jpg&w=1600&q=70"
+            src="/images/market-hero-800.webp"
+            srcSet="/images/market-hero-400.webp 400w, /images/market-hero-800.webp 800w, /images/market-hero-1280.webp 1280w"
+            sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) calc(100vw - 64px), 1216px"
+            width="1280"
+            height="420"
+            fetchPriority="high"
             alt="Marché africain"
             className="absolute inset-0 w-full h-full object-cover opacity-30"
           />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/85 via-black/50 to-black/10" />
           <div className="relative max-w-xl">
             <h1 className="font-display font-black text-2xl md:text-4xl lg:text-5xl leading-tight tracking-tight">
@@ -288,6 +298,7 @@ export default function Landing() {
         </div>
       </section>
 
+      </main>
       {/* FOOTER */}
       <footer className="mt-10 md:mt-16 bg-afri-secondary text-gray-300">
         <div className={`${WRAP} pt-10 pb-8 md:pt-14 md:pb-10`}>
@@ -299,20 +310,20 @@ export default function Landing() {
                 </div>
                 <span className="font-display font-black text-white">AfriMarket</span>
               </div>
-              <p className="text-xs text-gray-400 mt-3 leading-relaxed max-w-xs">
+              <p className="text-xs text-gray-300 mt-3 leading-relaxed max-w-xs">
                 Le marché de l'Afrique francophone. Achetez et vendez en toute confiance.
               </p>
             </div>
             <div>
               <div className="text-white font-semibold mb-2 text-sm">AfriMarket</div>
-              <ul className="space-y-1.5 text-xs md:text-sm text-gray-400">
+              <ul className="space-y-1.5 text-xs md:text-sm text-gray-300">
                 <li><Link to="/auth/register" className="hover:text-afri-primary">Devenir vendeur</Link></li>
                 <li><Link to="/buyer/search" className="hover:text-afri-primary">Toutes les boutiques</Link></li>
               </ul>
             </div>
             <div>
               <div className="text-white font-semibold mb-2 text-sm">Aide</div>
-              <ul className="space-y-1.5 text-xs md:text-sm text-gray-400">
+              <ul className="space-y-1.5 text-xs md:text-sm text-gray-300">
                 <li><button type="button" onClick={() => openAuth("login")} className="hover:text-afri-primary">Se connecter</button></li>
                 <li><button type="button" onClick={() => openAuth("register")} className="hover:text-afri-primary">Créer un compte</button></li>
               </ul>
@@ -327,7 +338,7 @@ export default function Landing() {
             </div>
           </div>
 
-          <p className="text-[10px] md:text-xs text-gray-500 mt-8 pt-6 border-t border-white/10">
+          <p className="text-[10px] md:text-xs text-gray-300 mt-8 pt-6 border-t border-white/10">
             © {new Date().getFullYear()} AfriMarket. Tous droits réservés.
           </p>
         </div>

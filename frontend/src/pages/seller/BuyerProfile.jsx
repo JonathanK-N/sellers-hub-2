@@ -34,7 +34,7 @@ export default function BuyerProfile() {
       <div className="px-4 mt-5">
         {/* Avatar + nom */}
         <div className="flex flex-col items-center text-center py-5">
-          <div className="w-20 h-20 rounded-full var(--afri-success-bg) flex items-center justify-center mb-3">
+          <div className="w-20 h-20 rounded-full bg-afri-soft flex items-center justify-center mb-3">
             <User size={36} className="text-afri-secondary" />
           </div>
           <h2 className="font-display font-black text-xl text-gray-900">{buyer.name}</h2>

@@ -1,0 +1,92 @@
+[
+  {
+    "file": "baseline-1.json",
+    "performance": 63,
+    "accessibility": 94,
+    "best": 96,
+    "seo": 92,
+    "lcp": 7177.396849999998,
+    "tbt": 241,
+    "cls": 0.00593693956630002
+  },
+  {
+    "file": "baseline-2.json",
+    "performance": 68,
+    "accessibility": 94,
+    "best": 96,
+    "seo": 92,
+    "lcp": 7123.738699999999,
+    "tbt": 28,
+    "cls": 0.002525008289180631
+  },
+  {
+    "file": "baseline-3.json",
+    "performance": 68,
+    "accessibility": 94,
+    "best": 96,
+    "seo": 92,
+    "lcp": 7098.82085,
+    "tbt": 27,
+    "cls": 0.004749184784657502
+  },
+  {
+    "file": "candidate-1.json",
+    "performance": 98,
+    "accessibility": 100,
+    "best": 96,
+    "seo": 100,
+    "lcp": 2318.09235,
+    "tbt": 2,
+    "cls": 0.003672031005009726
+  },
+  {
+    "file": "candidate-2.json",
+    "performance": 98,
+    "accessibility": 100,
+    "best": 96,
+    "seo": 100,
+    "lcp": 2480.65775,
+    "tbt": 2,
+    "cls": 0.00002038117864363487
+  },
+  {
+    "file": "candidate-3.json",
+    "performance": 98,
+    "accessibility": 100,
+    "best": 96,
+    "seo": 100,
+    "lcp": 2483.9680000000003,
+    "tbt": 4,
+    "cls": 0.00002038117864363487
+  },
+  {
+    "file": "staging-1.json",
+    "performance": 90,
+    "accessibility": 100,
+    "best": 100,
+    "seo": 100,
+    "lcp": 3169.2709999999997,
+    "tbt": 7,
+    "cls": 0.00006174891747477495
+  },
+  {
+    "file": "staging-2.json",
+    "performance": 99,
+    "accessibility": 100,
+    "best": 100,
+    "seo": 100,
+    "lcp": 2074.255,
+    "tbt": 0.5,
+    "cls": 0.0016320613853355772
+  },
+  {
+    "file": "staging-3.json",
+    "performance": 90,
+    "accessibility": 100,
+    "best": 100,
+    "seo": 100,
+    "lcp": 3167.96,
+    "tbt": 8,
+    "cls": 0.00006174891747477495
+  }
+]

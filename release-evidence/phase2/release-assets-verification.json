@@ -1,0 +1,52 @@
+{
+  "releaseId": 409717666,
+  "draft": true,
+  "tag": "v1.0.1-green-rc.2",
+  "checks": [
+    {
+      "name": "phase2-9176e82-android.zip",
+      "status": "PASS"
+    },
+    {
+      "name": "phase2-9176e82-backend-security.zip",
+      "status": "PASS"
+    },
+    {
+      "name": "phase2-9176e82-emulator.zip",
+      "status": "PASS"
+    },
+    {
+      "name": "phase2-9176e82-performance.zip",
+      "status": "PASS"
+    },
+    {
+      "name": "phase2-9176e82-report-evidence.zip",
+      "status": "PASS"
+    },
+    {
+      "name": "phase2-9176e82-source.zip",
+      "status": "PASS"
+    },
+    {
+      "name": "phase2-9176e82-web-security.zip",
+      "status": "PASS"
+    },
+    {
+      "name": "phase2-9176e82-web.zip",
+      "status": "PASS"
+    },
+    {
+      "name": "AfriMarket-1.0.1-green-rc.2-staging-debug-9176e82.apk",
+      "status": "PASS"
+    },
+    {
+      "name": "phase2-9176e82-full-validation-evidence.zip",
+      "status": "PASS"
+    },
+    {
+      "name": "phase2-9176e82-artifact-manifest.json",
+      "status": "PASS"
+    }
+  ],
+  "phase1AssetCount": 17
+}

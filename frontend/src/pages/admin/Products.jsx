@@ -89,7 +89,7 @@ export default function AdminProducts() {
                       <td className="px-4 py-3 text-gray-600">{p.stock}</td>
                       <td className="px-4 py-3">
                         <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                          p.is_active ? "var(--afri-success-bg) text-afri-primary" : "bg-red-50 text-red-600"}`}>
+                          p.is_active ? "bg-afri-soft text-afri-primary" : "bg-red-50 text-red-600"}`}>
                           {p.is_active ? "Actif" : "Désactivé"}
                         </span>
                       </td>
@@ -144,7 +144,7 @@ export default function AdminProducts() {
               )}
               <button onClick={() => { toggle(selected); }}
                 className={`w-full py-2.5 rounded-lg font-semibold text-sm transition-colors ${
-                  selected.is_active ? "bg-red-50 text-red-600 hover:bg-red-100" : "var(--afri-success-bg) text-afri-primary hover:bg-[#c8ede1]"}`}>
+                  selected.is_active ? "bg-red-50 text-red-600 hover:bg-red-100" : "bg-afri-soft text-afri-primary hover:bg-[#c8ede1]"}`}>
                 {selected.is_active ? "Désactiver ce produit" : "Réactiver ce produit"}
               </button>
             </div>

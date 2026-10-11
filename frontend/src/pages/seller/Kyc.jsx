@@ -8,7 +8,7 @@ const STATUS_LABEL = {
   level1: { label: "Niveau 1 - Téléphone vérifié", color: "bg-gray-100 text-gray-700" },
   pending_review: { label: "En attente de vérification", color: "bg-amber-50 text-amber-700" },
   level2: { label: "Niveau 2 - Pièce vérifiée", color: "bg-blue-50 text-blue-700" },
-  level3: { label: "Niveau 3 - Vendeur Vérifié", color: "var(--afri-success-bg) text-afri-primary" },
+  level3: { label: "Niveau 3 - Vendeur Vérifié", color: "bg-afri-soft text-afri-primary" },
   rejected: { label: "Rejeté", color: "bg-red-50 text-red-700" },
 };
 
@@ -73,7 +73,7 @@ export default function SellerKyc() {
       </header>
 
       <div className="px-4 mt-4 space-y-4">
-        <section className="rounded-xl border-2 border-afri-primary/30 var(--afri-success-bg) p-4 flex items-center gap-3">
+        <section className="rounded-xl border-2 border-afri-primary/30 bg-afri-soft p-4 flex items-center gap-3">
           <div className="w-12 h-12 rounded-lg bg-afri-primary text-white flex items-center justify-center">
             <ShieldCheck size={22} />
           </div>
@@ -103,7 +103,7 @@ export default function SellerKyc() {
             return (
               <div key={s.key} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4" data-testid={`kyc-step-${s.key}`}>
                 <div className="flex items-start gap-3">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? "var(--afri-success-bg) text-afri-primary" : "bg-gray-100 text-gray-400"}`}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? "bg-afri-soft text-afri-primary" : "bg-gray-100 text-gray-400"}`}>
                     {uploaded ? <CheckCircle2 size={18} /> : <Upload size={18} />}
                   </div>
                   <div className="flex-1">

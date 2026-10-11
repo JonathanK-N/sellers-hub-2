@@ -1,103 +1,41 @@
-/* Composant issu de React Bits (https://reactbits.dev) — licence MIT + Commons Clause.
-   Import de 'motion/react' adapte vers 'framer-motion', deja present dans le projet. */
-import { useInView, useMotionValue, useSpring } from 'framer-motion';
-import { useCallback, useEffect, useRef } from 'react';
+/* Adaptation du composant React Bits (https://reactbits.dev), licence MIT + Commons Clause. */
+import { useEffect, useRef } from 'react';
 
-export default function CountUp({
-  to,
-  from = 0,
-  direction = 'up',
-  delay = 0,
-  duration = 2,
-  className = '',
-  startWhen = true,
-  separator = '',
-  onStart,
-  onEnd
-}) {
+export default function CountUp({ to, from = 0, direction = 'up', delay = 0, duration = 2, className = '', startWhen = true, separator = '', onStart, onEnd }) {
   const ref = useRef(null);
-  const motionValue = useMotionValue(direction === 'down' ? to : from);
-
-  const damping = 20 + 40 * (1 / duration);
-  const stiffness = 100 * (1 / duration);
-
-  const springValue = useSpring(motionValue, {
-    damping,
-    stiffness
-  });
-
-  const isInView = useInView(ref, { once: true, margin: '0px' });
-
-  const getDecimalPlaces = num => {
-    const str = num.toString();
-
-    if (str.includes('.')) {
-      const decimals = str.split('.')[1];
-
-      if (parseInt(decimals) !== 0) {
-        return decimals.length;
-      }
-    }
-
-    return 0;
-  };
-
-  const maxDecimals = Math.max(getDecimalPlaces(from), getDecimalPlaces(to));
-
-  const formatValue = useCallback(
-    latest => {
-      const hasDecimals = maxDecimals > 0;
-
-      const options = {
-        useGrouping: !!separator,
-        minimumFractionDigits: hasDecimals ? maxDecimals : 0,
-        maximumFractionDigits: hasDecimals ? maxDecimals : 0
-      };
-
-      const formattedNumber = Intl.NumberFormat('en-US', options).format(latest);
-
-      return separator ? formattedNumber.replace(/,/g, separator) : formattedNumber;
-    },
-    [maxDecimals, separator]
-  );
-
   useEffect(() => {
-    if (ref.current) {
-      ref.current.textContent = formatValue(direction === 'down' ? to : from);
-    }
-  }, [from, to, direction, formatValue]);
-
-  useEffect(() => {
-    if (isInView && startWhen) {
-      if (typeof onStart === 'function') onStart();
-
-      const timeoutId = setTimeout(() => {
-        motionValue.set(direction === 'down' ? from : to);
+    const el = ref.current;
+    if (!el || !startWhen) return;
+    const initial = direction === 'down' ? to : from;
+    const final = direction === 'down' ? from : to;
+    const decimals = Math.max(String(from).split('.')[1]?.length || 0, String(to).split('.')[1]?.length || 0);
+    const formatter = new Intl.NumberFormat('en-US', { useGrouping: !!separator, minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+    const paint = value => { el.textContent = formatter.format(value).replace(/,/g, separator); };
+    paint(initial);
+    let frame, timeout, observer;
+    let cancelled = false;
+    const begin = () => {
+      observer?.disconnect();
+      onStart?.();
+      timeout = setTimeout(() => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || duration <= 0) { paint(final); onEnd?.(); return; }
+        let started;
+        const tick = now => {
+          if (cancelled) return;
+          started ??= now;
+          const progress = Math.min(1, (now - started) / (duration * 1000));
+          paint(initial + (final - initial) * (1 - Math.pow(1 - progress, 3)));
+          if (progress < 1) frame = requestAnimationFrame(tick);
+          else onEnd?.();
+        };
+        frame = requestAnimationFrame(tick);
       }, delay * 1000);
-
-      const durationTimeoutId = setTimeout(
-        () => {
-          if (typeof onEnd === 'function') onEnd();
-        },
-        delay * 1000 + duration * 1000
-      );
-
-      return () => {
-        clearTimeout(timeoutId);
-        clearTimeout(durationTimeoutId);
-      };
-    }
-  }, [isInView, startWhen, motionValue, direction, from, to, delay, onStart, onEnd, duration]);
-
-  useEffect(() => {
-    const unsubscribe = springValue.on('change', latest => {
-      if (ref.current) {
-        ref.current.textContent = formatValue(latest);
-      }
-    });
-
-    return () => unsubscribe();
-  }, [springValue, formatValue]);
-
-  return <span className={className} ref={ref} />;
+    };
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver(entries => { if (entries.some(e => e.isIntersecting)) begin(); });
+      observer.observe(el);
+    } else begin();
+    return () => { cancelled = true; observer?.disconnect(); clearTimeout(timeout); cancelAnimationFrame(frame); };
+  }, [to, from, direction, delay, duration, startWhen, separator, onStart, onEnd]);
+  return <span className={className} ref={ref}>{direction === 'down' ? to : from}</span>;
 }

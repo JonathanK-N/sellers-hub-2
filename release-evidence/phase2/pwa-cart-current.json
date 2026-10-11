@@ -1,0 +1,37 @@
+{
+  "rows": [
+    {
+      "test": "authenticated add product opens populated cart drawer",
+      "status": "PASS",
+      "items": 1
+    },
+    {
+      "test": "cart quantity increase updates total",
+      "status": "PASS"
+    },
+    {
+      "test": "cart quantity decrease restores total",
+      "status": "PASS"
+    },
+    {
+      "test": "cart drawer checkout route",
+      "status": "PASS"
+    },
+    {
+      "test": "real browser service worker active",
+      "status": "PASS",
+      "worker": {
+        "scope": "https://afrimarket-web-staging-staging.up.railway.app/",
+        "active": "https://afrimarket-web-staging-staging.up.railway.app/service-worker.js",
+        "keys": [
+          "afrimarket-green-rc2-v8"
+        ]
+      }
+    },
+    {
+      "test": "offline cached shell renders green header after reload",
+      "status": "PASS",
+      "color": "rgb(8, 80, 65)"
+    }
+  ]
+}

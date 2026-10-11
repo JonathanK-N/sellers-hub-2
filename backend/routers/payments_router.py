@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 from db import get_db
 from auth import require_role
-from payments.service import get_provider, cinetpay_configured, CinetPayProvider
+from payments.service import get_provider, cinetpay_configured, CinetPayProvider, is_sandbox
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/payments", tags=["payments"])
@@ -35,6 +35,9 @@ async def init_payment(req: InitRequest, user: dict = Depends(require_role("buye
         raise HTTPException(status_code=404, detail="Groupe de commandes introuvable")
     if group["buyer_id"] != user["id"]:
         raise HTTPException(status_code=403, detail="Accès refusé")
+    if group.get("payment_status") in {"paid", "cash_on_delivery"}:
+        return {"simulated": False, "cash": group.get("payment_method") == "cash",
+                "status": group["payment_status"], "order_group_id": req.order_group_id}
 
     # ── Cash on delivery: pas de prestataire externe ──────────────────────────
     if group.get("payment_method") == "cash":
@@ -43,11 +46,11 @@ async def init_payment(req: InitRequest, user: dict = Depends(require_role("buye
             {"$set": {"payment_status": "cash_on_delivery"}},
         )
         await db.orders.update_many(
-            {"order_group_id": req.order_group_id},
+            {"order_group_id": req.order_group_id, "escrow_status": "held"},
             {"$set": {"escrow_status": "held", "payment_confirmed": True}},
         )
         await db.transactions.update_many(
-            {"order_group_id": req.order_group_id},
+            {"order_group_id": req.order_group_id, "payment_status": {"$nin": ["released", "refunded", "partial_refund"]}},
             {"$set": {"payment_status": "cash_pending"}},
         )
         return {
@@ -59,7 +62,9 @@ async def init_payment(req: InitRequest, user: dict = Depends(require_role("buye
 
     # ── Mobile Money via CinetPay ─────────────────────────────────────────────
     if not cinetpay_configured():
-        return {"simulated": True, "status": "captured_in_escrow", "order_group_id": req.order_group_id}
+        if not is_sandbox():
+            raise HTTPException(status_code=503, detail="Prestataire de paiement non configuré")
+        raise HTTPException(status_code=503, detail="Paiement Mobile Money de test indisponible")
 
     provider = get_provider(group.get("payment_method", ""))
     phone = user.get("phone", "")
@@ -85,6 +90,8 @@ async def cinetpay_webhook(request: Request):
     """CinetPay notify_url callback. Verifies the transaction status server-side
     (never trusts the POST body alone), then releases or fails the order group.
     """
+    if not cinetpay_configured():
+        raise HTTPException(status_code=503, detail="Webhook du prestataire indisponible")
     db = get_db()
     form = {}
     try:
@@ -119,15 +126,17 @@ async def cinetpay_webhook(request: Request):
     if not group:
         logger.warning(f"[CINETPAY] webhook for unknown group {transaction_id}")
         return {"ok": True}
+    if group.get("payment_status") == "paid":
+        return {"ok": True}
 
     if verified.status == "SUCCESS":
         await db.order_groups.update_one({"id": transaction_id}, {"$set": {"payment_status": "paid", "paid_at": _now()}})
         await db.orders.update_many(
-            {"order_group_id": transaction_id},
+            {"order_group_id": transaction_id, "escrow_status": {"$in": ["awaiting_payment", "held"]}, "status": {"$nin": ["cancelled", "delivered", "collected"]}},
             {"$set": {"escrow_status": "held", "payment_confirmed": True}},
         )
         await db.transactions.update_many(
-            {"order_group_id": transaction_id},
+            {"order_group_id": transaction_id, "payment_status": {"$nin": ["released", "refunded", "partial_refund"]}},
             {"$set": {"payment_status": "captured_in_escrow", "confirmed_at": _now()}},
         )
         logger.info(f"[CINETPAY] group {transaction_id} paid -> escrow held")
@@ -149,4 +158,4 @@ async def payment_status(order_group_id: str, user: dict = Depends(require_role(
     group = await db.order_groups.find_one({"id": order_group_id}, {"_id": 0})
     if not group or group["buyer_id"] != user["id"]:
         raise HTTPException(status_code=404, detail="Introuvable")
-    return {"order_group_id": order_group_id, "payment_status": group.get("payment_status", "captured_in_escrow")}
+    return {"order_group_id": order_group_id, "payment_status": group.get("payment_status", "unpaid")}

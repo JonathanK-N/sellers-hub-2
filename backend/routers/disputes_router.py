@@ -4,7 +4,7 @@ import logging
 from datetime import datetime, timezone, timedelta
 
 from fastapi import APIRouter, HTTPException, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from db import get_db
 from auth import require_role, get_current_user_dep
@@ -25,7 +25,7 @@ class DisputeRequest(BaseModel):
 
 class ResolveRequest(BaseModel):
     decision: str  # refund_buyer | release_seller | partial_refund
-    partial_buyer_amount: float | None = None
+    partial_buyer_amount: float | None = Field(default=None, gt=0, allow_inf_nan=False)
     note: str = ""
 
 
@@ -104,6 +104,8 @@ async def admin_list(_: dict = Depends(require_role("admin"))):
 
 @router.post("/admin/disputes/{dispute_id}/resolve")
 async def admin_resolve(dispute_id: str, req: ResolveRequest, _: dict = Depends(require_role("admin"))):
+    if req.decision == "partial_refund":
+        raise HTTPException(status_code=503, detail="Les remboursements partiels sont temporairement suspendus")
     db = get_db()
     dispute = await db.disputes.find_one({"id": dispute_id}, {"_id": 0})
     if not dispute:
@@ -122,18 +124,22 @@ async def admin_resolve(dispute_id: str, req: ResolveRequest, _: dict = Depends(
         new_escrow = "released"
         timeline_label = "Litige résolu — libéré vendeur"
     elif req.decision == "partial_refund":
+        if req.partial_buyer_amount is None or req.partial_buyer_amount >= order.get("amount_due", order["total_amount"]):
+            raise HTTPException(status_code=400, detail="Montant du remboursement partiel invalide")
         new_escrow = "partial_refund"
         timeline_label = "Litige résolu — remboursement partiel"
     else:
         raise HTTPException(status_code=400, detail="Décision invalide")
 
-    await db.disputes.update_one(
-        {"id": dispute_id},
+    result = await db.disputes.update_one(
+        {"id": dispute_id, "status": "open"},
         {"$set": {"status": "resolved", "admin_decision": req.decision, "admin_note": req.note, "partial_buyer_amount": req.partial_buyer_amount, "resolved_at": _now()}},
     )
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Litige déjà modifié")
     await db.orders.update_one(
         {"id": order["id"]},
-        {"$set": {"escrow_status": new_escrow}, "$push": {"timeline": {"status": "dispute_resolved", "label": timeline_label, "timestamp": _now()}}},
+        {"$set": {"escrow_status": new_escrow, "partial_buyer_amount": req.partial_buyer_amount if new_escrow == "partial_refund" else None}, "$push": {"timeline": {"status": "dispute_resolved", "label": timeline_label, "timestamp": _now()}}},
     )
     await db.transactions.update_one(
         {"order_id": order["id"]},

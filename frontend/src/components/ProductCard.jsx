@@ -21,6 +21,9 @@ export default function ProductCard({ product, guest = false, className = "" }) 
             alt={product.name}
             className="w-full h-full object-cover"
             loading="lazy"
+            decoding="async"
+            width="320"
+            height="320"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-300 text-4xl font-black font-display">
@@ -29,14 +32,15 @@ export default function ProductCard({ product, guest = false, className = "" }) 
         )}
         <button
           type="button"
-          aria-label="Ajouter aux favoris"
-          onClick={(e) => e.preventDefault()}
-          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gray-500 hover:text-afri-primary shadow-sm transition-colors"
+          aria-label="Favoris temporairement indisponibles"
+          title="Favoris temporairement indisponibles"
+          disabled
+          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gray-500 shadow-sm cursor-not-allowed"
         >
           <Heart size={14} />
         </button>
         {product.seller_premium && (
-          <span className="absolute top-2 left-2 flex items-center gap-1 bg-afri-accent text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm">
+          <span className="absolute top-2 left-2 flex items-center gap-1 bg-afri-accent text-gray-900 px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm">
             <Crown size={11} /> Premium
           </span>
         )}

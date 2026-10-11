@@ -77,7 +77,7 @@ export default function AdminSellers() {
                 </div>
                 <div className="p-4">
                   <div className="flex items-start gap-3 -mt-8 mb-3">
-                    <div className="w-14 h-14 rounded-xl border-2 border-white shadow-sm var(--afri-success-bg) text-afri-primary flex items-center justify-center font-display font-black text-xl overflow-hidden">
+                    <div className="w-14 h-14 rounded-xl border-2 border-white shadow-sm bg-afri-soft text-afri-primary flex items-center justify-center font-display font-black text-xl overflow-hidden">
                       {s.logo_url ? <img src={s.logo_url} alt="" className="w-full h-full object-cover" /> : s.shop_name?.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 pt-8 min-w-0">
@@ -102,7 +102,7 @@ export default function AdminSellers() {
                   </div>
                   <div className="flex items-center justify-between mt-3">
                     <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${
-                      s.kyc_status === "level3" ? "var(--afri-success-bg) text-afri-primary" :
+                      s.kyc_status === "level3" ? "bg-afri-soft text-afri-primary" :
                       s.kyc_status === "level2" ? "bg-blue-50 text-blue-700" :
                       "bg-amber-50 text-amber-700"
                     }`}>
@@ -129,7 +129,7 @@ export default function AdminSellers() {
             </div>
             <div className="px-6 pb-6">
               <div className="flex items-end gap-4 -mt-8 mb-4">
-                <div className="w-20 h-20 rounded-xl border-3 border-white shadow-md var(--afri-success-bg) text-afri-primary flex items-center justify-center font-display font-black text-2xl overflow-hidden">
+                <div className="w-20 h-20 rounded-xl border-3 border-white shadow-md bg-afri-soft text-afri-primary flex items-center justify-center font-display font-black text-2xl overflow-hidden">
                   {selected.logo_url ? <img src={selected.logo_url} alt="" className="w-full h-full object-cover" /> : selected.shop_name?.charAt(0)}
                 </div>
                 <div className="pb-2">

@@ -103,7 +103,7 @@ export default function ShopProfile({ guest = false }) {
         <button
           data-testid="contact-seller-btn"
           onClick={handleContact}
-          className="w-full mt-4 bg-white border border-afri-primary text-afri-primary hover:var(--afri-success-bg) rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm transition-colors"
+          className="w-full mt-4 bg-white border border-afri-primary text-afri-primary hover:bg-afri-soft rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm transition-colors"
         >
           <MessageSquare size={16} /> {isGuestView ? "Se connecter pour contacter ce vendeur" : "Contacter le vendeur"}
         </button>
@@ -182,7 +182,7 @@ export default function ShopProfile({ guest = false }) {
 
         {/* CTA bas de page (guest only) */}
         {isGuestView && (
-          <div className="mt-6 var(--afri-success-bg) rounded-xl p-4 text-center">
+          <div className="mt-6 bg-afri-soft rounded-xl p-4 text-center">
             <p className="text-sm text-afri-secondary font-medium mb-3">
               Connectez-vous pour commander chez {seller.shop_name}
             </p>

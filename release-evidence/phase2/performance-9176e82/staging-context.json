@@ -1,0 +1,8 @@
+{
+  "url": "https://afrimarket-web-staging-staging.up.railway.app",
+  "sourceSha": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+  "expectedMain": "/static/js/main.825d07fe.js",
+  "observedMain": "/static/js/main.825d07fe.js",
+  "artifactMatchesStaging": true,
+  "observedAt": "2026-10-11T14:21:55.394Z"
+}

@@ -33,7 +33,7 @@ export default function ConversationsList() {
           <div className="space-y-3">{[1,2,3].map((i) => <div key={i} className="h-16 rounded-xl bg-gray-100 animate-pulse" />)}</div>
         ) : items.length === 0 ? (
           <div className="text-center py-12">
-            <div className="w-16 h-16 rounded-full var(--afri-success-bg) text-afri-primary flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center mx-auto">
               <MessageSquare size={28} />
             </div>
             <p className="text-sm text-gray-500 mt-3">Aucune conversation pour l'instant.</p>

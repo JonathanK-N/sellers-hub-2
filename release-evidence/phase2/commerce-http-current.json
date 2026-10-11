@@ -1,0 +1,113 @@
+{
+  "synthetic": true,
+  "base": "https://afrimarket-api-staging-staging.up.railway.app/api",
+  "date": "2026-10-11T13:50:32.424Z",
+  "rows": [
+    {
+      "test": "admin synthetic login",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller configured shop readable",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller publishes product",
+      "status": "PASS",
+      "http": 201
+    },
+    {
+      "test": "seller edits product price and stock",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer reads edited product",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "public search finds synthetic product",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer cannot edit seller product",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "buyer creates synthetic cash delivery order",
+      "status": "PASS",
+      "http": 201
+    },
+    {
+      "test": "server computes price and commission",
+      "status": "PASS",
+      "total": 125,
+      "commission": 8.75
+    },
+    {
+      "test": "seller assigns verified synthetic courier",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "courier list includes assignment without handoff secrets",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "premature courier confirmation rejected",
+      "status": "PASS",
+      "http": 409
+    },
+    {
+      "test": "courier picked-up",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "courier en-route",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "invalid buyer code rejected",
+      "status": "PASS",
+      "http": 400
+    },
+    {
+      "test": "courier confirms synthetic delivery",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "duplicate courier confirmation rejected",
+      "status": "PASS",
+      "http": 409
+    },
+    {
+      "test": "buyer sees final delivered and released states",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer receives in-app delivery notification",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "admin users permission",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer denied admin permission",
+      "status": "PASS",
+      "http": 403
+    }
+  ]
+}

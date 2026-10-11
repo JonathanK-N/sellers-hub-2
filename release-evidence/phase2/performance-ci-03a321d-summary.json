@@ -1,0 +1,23 @@
+[
+  {
+    "file": "candidate-1.json",
+    "performance": 96,
+    "lcp": 2404.6081,
+    "tbt": 142.19595000000027,
+    "cls": 0.003672031005009726
+  },
+  {
+    "file": "candidate-2.json",
+    "performance": 94,
+    "lcp": 3051.4736,
+    "tbt": 39,
+    "cls": 0.003672031005009726
+  },
+  {
+    "file": "candidate-3.json",
+    "performance": 93,
+    "lcp": 3196.6856,
+    "tbt": 42,
+    "cls": 0.003672031005009726
+  }
+]

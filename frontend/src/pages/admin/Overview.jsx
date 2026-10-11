@@ -57,7 +57,7 @@ export default function AdminOverview() {
             <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center"><TrendingUp size={20} /></div>
+                  <div className="w-10 h-10 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center"><TrendingUp size={20} /></div>
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wide text-gray-500">Commission totale</div>
                     <div className="font-display font-black text-3xl text-afri-secondary mt-1">{formatPrice(data.total_commission, "FC")}</div>
@@ -146,7 +146,7 @@ export default function AdminOverview() {
 function Stat({ icon: Icon, label, value, highlight }) {
   return (
     <div className={`bg-white rounded-xl border shadow-sm p-4 ${highlight ? "border-afri-accent" : "border-gray-200"}`}>
-      <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${highlight ? "bg-amber-50 text-afri-accent" : "var(--afri-success-bg) text-afri-primary"}`}>
+      <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${highlight ? "bg-amber-50 text-afri-accent" : "bg-afri-soft text-afri-primary"}`}>
         <Icon size={18} />
       </div>
       <div className="font-display font-black text-2xl text-afri-secondary mt-2">{value ?? "—"}</div>

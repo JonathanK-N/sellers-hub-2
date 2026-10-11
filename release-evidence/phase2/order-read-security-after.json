@@ -1,0 +1,15 @@
+{
+  "source": "4f9d2983e925b85126eb5fcdd7c3527ec6e554e5",
+  "rows": [
+    {
+      "test": "Unassigned deliverer denied /orders/36f31108-8931-473c-a097-d8e79f087019",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "Unassigned deliverer denied /order-groups/bf3159b2-263e-4928-a5d1-2a2f3d2ffd61",
+      "status": "PASS",
+      "http": 403
+    }
+  ]
+}

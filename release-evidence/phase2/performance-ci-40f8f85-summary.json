@@ -1,0 +1,74 @@
+[
+  {
+    "name": "baseline",
+    "run": 1,
+    "performance": 73,
+    "accessibility": 94,
+    "best": 96,
+    "seo": 92,
+    "LCP": 7289.874000000001,
+    "TBT": 198,
+    "CLS": 0.0019004281659626286,
+    "benchmark": 2410.5
+  },
+  {
+    "name": "baseline",
+    "run": 2,
+    "performance": 66,
+    "accessibility": 94,
+    "best": 96,
+    "seo": 92,
+    "LCP": 7083.34665,
+    "TBT": 133,
+    "CLS": 0.0021535479767923944,
+    "benchmark": 2439
+  },
+  {
+    "name": "baseline",
+    "run": 3,
+    "performance": 74,
+    "accessibility": 94,
+    "best": 96,
+    "seo": 92,
+    "LCP": 7086.362050000002,
+    "TBT": 141,
+    "CLS": 0.002441336575410779,
+    "benchmark": 2324.5
+  },
+  {
+    "name": "candidate",
+    "run": 1,
+    "performance": 86,
+    "accessibility": 100,
+    "best": 96,
+    "seo": 100,
+    "LCP": 4092.314,
+    "TBT": 34,
+    "CLS": 0.0038958462505285785,
+    "benchmark": 2449
+  },
+  {
+    "name": "candidate",
+    "run": 2,
+    "performance": 87,
+    "accessibility": 100,
+    "best": 96,
+    "seo": 100,
+    "LCP": 4065.3310000000006,
+    "TBT": 46,
+    "CLS": 0.0038958462505285785,
+    "benchmark": 2474
+  },
+  {
+    "name": "candidate",
+    "run": 3,
+    "performance": 86,
+    "accessibility": 100,
+    "best": 96,
+    "seo": 100,
+    "LCP": 4215.940645794005,
+    "TBT": 42,
+    "CLS": 0.0038958462505285785,
+    "benchmark": 2390.5
+  }
+]

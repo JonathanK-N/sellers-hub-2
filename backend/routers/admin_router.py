@@ -1,3 +1,4 @@
+from uploads import read_upload
 """Admin panel endpoints."""
 import io
 import csv
@@ -39,10 +40,10 @@ async def admin_upload(file: UploadFile = File(...), _: dict = Depends(require_r
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
     path = f"{APP_NAME}/admin/{_uuid.uuid4()}.{ext}"
-    raw_data = await file.read()
+    raw_data = await read_upload(file)
     # Redimensionner à max 1400px pour les bannières admin (légèrement plus grand que les produits)
     try:
-        from sellers_router import _resize_image
+        from routers.sellers_router import _resize_image
         data, content_type = _resize_image(raw_data, max_px=1400)
     except Exception:
         data, content_type = raw_data, file.content_type or "image/jpeg"

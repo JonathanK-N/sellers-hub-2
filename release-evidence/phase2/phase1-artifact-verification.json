@@ -1,0 +1,14 @@
+[
+  {
+    "file": "C-green-890d8e7-android-debug.zip",
+    "expected": "a83f5562d60e1c54720936e946a609f17841f1b6a660c50955bb368b3fa84703",
+    "actual": "a83f5562d60e1c54720936e946a609f17841f1b6a660c50955bb368b3fa84703",
+    "status": "PASS"
+  },
+  {
+    "file": "C-green-890d8e7-web-pwa.zip",
+    "expected": "34535b381009ba357679ec4e76738069c52661615176e4d383c6703254e2136d",
+    "actual": "34535b381009ba357679ec4e76738069c52661615176e4d383c6703254e2136d",
+    "status": "PASS"
+  }
+]

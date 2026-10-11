@@ -1,0 +1,6 @@
+{
+  "baselineSha": "dd6d186a15abc88dfdc93702dbe0e91854639a4a",
+  "sourceSha": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+  "runner": "Linux",
+  "profile": "Lighthouse 13.5 default mobile; same runner; sequential; 3 pairs; local static hosts; staging API"
+}

@@ -269,3 +269,12 @@ code {
 
 /* Keyboard focus uses the historical dark green for a visible boundary. */
 :focus-visible { outline: 2px solid var(--afri-secondary); outline-offset: 3px; }
+
+/* Historical palette: accessible uses for small labels and interactive controls. */
+button.bg-afri-primary.text-white, a.bg-afri-primary.text-white { background-color: var(--afri-primary-hover); }
+.text-afri-primary { color: var(--afri-primary-hover); }
+.bg-afri-soft.text-afri-primary, .bg-afri-soft .text-afri-primary { color: var(--afri-secondary); }
+.bg-afri-secondary .text-afri-primary { color: var(--afri-soft); }
+.bg-afri-accent.text-white { color: #111827; }
+:focus-visible { outline: 2px solid var(--afri-secondary); outline-offset: 3px; }
+.bg-afri-secondary :focus-visible { outline-color: var(--afri-soft); }

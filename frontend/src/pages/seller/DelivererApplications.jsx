@@ -95,7 +95,7 @@ export default function SellerDelivererApplications() {
                   className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-4 hover:border-afri-primary transition-colors"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-11 h-11 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center shrink-0">
                       <Truck size={20} />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -114,7 +114,7 @@ export default function SellerDelivererApplications() {
         ) : (
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl var(--afri-success-bg) text-afri-primary flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-afri-soft text-afri-primary flex items-center justify-center">
                 <Truck size={22} />
               </div>
               <div>

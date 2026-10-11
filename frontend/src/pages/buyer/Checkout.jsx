@@ -189,7 +189,7 @@ export default function Checkout() {
         {/* Paiement : cash + devise */}
         <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Mode de paiement</h3>
-          <div className="flex items-center gap-3 p-3 rounded-lg border-2 border-afri-primary var(--afri-success-bg)">
+          <div className="flex items-center gap-3 p-3 rounded-lg border-2 border-afri-primary bg-afri-soft">
             <div className="w-10 h-10 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
               <Banknote size={20} />
             </div>
@@ -208,7 +208,7 @@ export default function Checkout() {
         </section>
 
         {/* Sécurité */}
-        <section className="var(--afri-success-bg) border border-afri-primary/30 rounded-xl p-4 flex items-start gap-3">
+        <section className="bg-afri-soft border border-afri-primary/30 rounded-xl p-4 flex items-start gap-3">
           <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={18} />
           </div>

@@ -157,7 +157,7 @@ export default function AdminBanners() {
         <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg var(--afri-success-bg) text-afri-primary flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center">
                 <Sparkles size={16} />
               </div>
               <div>
@@ -264,7 +264,7 @@ export default function AdminBanners() {
                       <span className="text-[10px] font-bold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
                         {TARGET_ROLES.find((r) => r.value === b.target_role)?.label || b.target_role}
                       </span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${b.is_active ? "var(--afri-success-bg) text-afri-primary" : "bg-gray-100 text-gray-500"}`}>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${b.is_active ? "bg-afri-soft text-afri-primary" : "bg-gray-100 text-gray-500"}`}>
                         {b.is_active ? "Visible" : "Masquée"}
                       </span>
                     </div>

@@ -1,6 +1,8 @@
+from uploads import read_upload
 """Auth routes: register, OTP verification, password login, admin login."""
 import os
 import uuid
+
 import logging
 from datetime import datetime, timezone, timedelta
 
@@ -14,6 +16,8 @@ from models import (
 )
 from auth import (
     generate_otp,
+    otp_sandbox_enabled,
+    require_otp_delivery,
     normalize_phone,
     create_access_token,
     get_current_user_dep,
@@ -37,6 +41,7 @@ def _strip_user(user: dict) -> dict:
 @router.post("/register")
 @limiter.limit(LIMIT_REGISTER)
 async def register(request: Request, req: RegisterRequest):
+    require_otp_delivery()
     db = get_db()
     phone = normalize_phone(req.phone)
     if req.role not in ("buyer", "seller", "deliverer"):
@@ -78,7 +83,7 @@ async def register(request: Request, req: RegisterRequest):
     )
     await send_otp_sms(phone, code)
     resp = {"message": "Compte créé. Vérifiez votre numéro avec le code envoyé.", "phone": phone}
-    if not is_sms_configured():
+    if not is_sms_configured() and otp_sandbox_enabled():
         resp["otp_dev"] = code  # visible only in simulation mode
     return resp
 
@@ -86,6 +91,7 @@ async def register(request: Request, req: RegisterRequest):
 @router.post("/send-otp")
 @limiter.limit(LIMIT_OTP_SEND)
 async def send_otp(request: Request, req: SendOtpRequest):
+    require_otp_delivery()
     db = get_db()
     phone = normalize_phone(req.phone)
     user = await db.users.find_one({"phone": phone})
@@ -101,7 +107,7 @@ async def send_otp(request: Request, req: SendOtpRequest):
     )
     await send_otp_sms(phone, code)
     resp = {"message": "Code envoyé.", "phone": phone}
-    if not is_sms_configured():
+    if not is_sms_configured() and otp_sandbox_enabled():
         resp["otp_dev"] = code  # visible only in simulation mode
     return resp
 
@@ -239,7 +245,7 @@ async def upload_profile_photo(file: UploadFile = File(...), user: dict = Depend
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
     path = f"{APP_NAME}/avatars/{user['id']}/{uuid.uuid4()}.{ext}"
-    data = await file.read()
+    data = await read_upload(file)
     try:
         result = upload_public(path, data, file.content_type or "image/jpeg")
     except Exception as e:
