@@ -2,6 +2,7 @@
 import uuid
 import math
 import logging
+import re
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -43,7 +44,7 @@ def _is_premium_active(seller: dict) -> bool:
 
 @router.get("/products")
 async def list_products(
-    q: Optional[str] = None,
+    q: Optional[str] = Query(default=None, max_length=100),
     category: Optional[str] = None,
     country_code: Optional[str] = None,
     lat: Optional[float] = None,
@@ -61,8 +62,8 @@ async def list_products(
         query["category"] = category
     if q:
         query["$or"] = [
-            {"name": {"$regex": q, "$options": "i"}},
-            {"description": {"$regex": q, "$options": "i"}},
+            {"name": {"$regex": re.escape(q), "$options": "i"}},
+            {"description": {"$regex": re.escape(q), "$options": "i"}},
         ]
 
     products = await db.products.find(query, {"_id": 0}).to_list(500)

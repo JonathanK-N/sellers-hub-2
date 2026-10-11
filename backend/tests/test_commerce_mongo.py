@@ -9,7 +9,29 @@ import pytest
 from fastapi import HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
 from models import OrderCreateRequest
-from routers import orders_router
+from routers import orders_router, products_router
+
+
+def test_product_search_treats_regex_characters_as_literal_text():
+    async def run():
+        uri = os.environ.get("TEST_MONGO_URL")
+        if not uri:
+            pytest.skip("TEST_MONGO_URL required")
+        if urlparse(uri).hostname not in {"localhost", "127.0.0.1"}:
+            raise RuntimeError("Test writes require loopback MongoDB")
+        client = AsyncIOMotorClient(uri)
+        db = client["afrimarket_test_" + uuid.uuid4().hex]
+        try:
+            await db.products.insert_one({"id": "literal", "seller_id": "s", "name": "TEST [ bracket", "description": "TEST", "is_active": True, "country_code": "CD", "price": 1, "currency": "FC"})
+            with patch.object(products_router, "get_db", return_value=db):
+                async def search(q):
+                    return await products_router.list_products(q=q, category=None, country_code="CD", lat=None, lng=None, radius_km=50, verified_only=False, sort="newest", limit=60)
+                assert [p["id"] for p in await search("[")] == ["literal"]
+                assert await search(".*") == []
+        finally:
+            await client.drop_database(db.name)
+            client.close()
+    asyncio.run(run())
 
 async def scenario(fail_persistence=False):
     uri = os.environ.get("TEST_MONGO_URL")
