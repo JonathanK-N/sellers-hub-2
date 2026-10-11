@@ -1,0 +1,25 @@
+{
+  "synthetic": true,
+  "rows": [
+    {
+      "test": "seller registration",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "seller sandbox OTP verification",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "seller password login",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "seller configures shop",
+      "http": 200,
+      "status": "PASS"
+    }
+  ]
+}

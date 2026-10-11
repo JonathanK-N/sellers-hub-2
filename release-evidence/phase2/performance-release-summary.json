@@ -1,0 +1,132 @@
+{
+  "source": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+  "context": {
+    "url": "https://afrimarket-web-staging-staging.up.railway.app",
+    "sourceSha": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+    "expectedMain": "/static/js/main.825d07fe.js",
+    "observedMain": "/static/js/main.825d07fe.js",
+    "artifactMatchesStaging": true,
+    "observedAt": "2026-10-11T14:21:55.394Z"
+  },
+  "medians": {
+    "baseline": {
+      "performance": 68,
+      "accessibility": 94,
+      "best": 96,
+      "seo": 92,
+      "lcp": 7154.591700000001,
+      "tbt": 55,
+      "cls": 0.00433274661686186
+    },
+    "candidate": {
+      "performance": 98,
+      "accessibility": 100,
+      "best": 96,
+      "seo": 100,
+      "lcp": 2488.10775,
+      "tbt": 20,
+      "cls": 0.000027630135504268787
+    },
+    "staging": {
+      "performance": 90,
+      "accessibility": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 3162.9715,
+      "tbt": 20,
+      "cls": 0.00006174891747477495
+    }
+  },
+  "rows": [
+    {
+      "file": "baseline-1.json",
+      "performance": 59,
+      "accessibility": 94,
+      "best": 96,
+      "seo": 92,
+      "lcp": 7187.277650000001,
+      "tbt": 369,
+      "cls": 0.00593693956630002
+    },
+    {
+      "file": "baseline-2.json",
+      "performance": 68,
+      "accessibility": 94,
+      "best": 96,
+      "seo": 92,
+      "lcp": 7126.829500000002,
+      "tbt": 55,
+      "cls": 0.002194715097599886
+    },
+    {
+      "file": "baseline-3.json",
+      "performance": 68,
+      "accessibility": 94,
+      "best": 96,
+      "seo": 92,
+      "lcp": 7154.591700000001,
+      "tbt": 55,
+      "cls": 0.00433274661686186
+    },
+    {
+      "file": "candidate-1.json",
+      "performance": 97,
+      "accessibility": 100,
+      "best": 96,
+      "seo": 100,
+      "lcp": 2571.5864,
+      "tbt": 79.5,
+      "cls": 0.00002038117864363487
+    },
+    {
+      "file": "candidate-2.json",
+      "performance": 98,
+      "accessibility": 100,
+      "best": 96,
+      "seo": 100,
+      "lcp": 2483.8019999999997,
+      "tbt": 9,
+      "cls": 0.000027630135504268787
+    },
+    {
+      "file": "candidate-3.json",
+      "performance": 98,
+      "accessibility": 100,
+      "best": 96,
+      "seo": 100,
+      "lcp": 2488.10775,
+      "tbt": 20,
+      "cls": 0.0009047166252129098
+    },
+    {
+      "file": "staging-1.json",
+      "performance": 99,
+      "accessibility": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 2085.3154999999997,
+      "tbt": 30,
+      "cls": 0.0036936229467411015
+    },
+    {
+      "file": "staging-2.json",
+      "performance": 90,
+      "accessibility": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 3178.741,
+      "tbt": 20,
+      "cls": 0.00006174891747477495
+    },
+    {
+      "file": "staging-3.json",
+      "performance": 90,
+      "accessibility": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 3162.9715,
+      "tbt": 12,
+      "cls": 0.00006174891747477495
+    }
+  ]
+}

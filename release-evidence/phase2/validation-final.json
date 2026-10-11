@@ -1,0 +1,152 @@
+{
+  "sourceSha": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+  "buildSha": "7f01a60aaf64df622fb3732a16195e25e7068650",
+  "tag": "v1.0.1-green-rc.2",
+  "runId": 38146644352,
+  "tests": 53,
+  "decision": "NO-GO",
+  "jobs": [
+    {
+      "id": 114491294408,
+      "name": "android",
+      "result": "PASS"
+    },
+    {
+      "id": 114491294522,
+      "name": "security-web",
+      "result": "FAIL"
+    },
+    {
+      "id": 114491294583,
+      "name": "backend",
+      "result": "PASS"
+    },
+    {
+      "id": 114491294596,
+      "name": "web",
+      "result": "PASS"
+    },
+    {
+      "id": 114491294625,
+      "name": "security-backend",
+      "result": "PASS"
+    },
+    {
+      "id": 114491496101,
+      "name": "performance-comparison",
+      "result": "PASS"
+    },
+    {
+      "id": 114491856978,
+      "name": "android-emulator",
+      "result": "PASS"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 11705287265,
+      "name": "afrimarket-android-debug-7f01a60aaf64df622fb3732a16195e25e7068650",
+      "bytes": 7674688,
+      "sha256": "b1c35f2ffd374cf9d742704abdfefe611d80d6fd245499cb388f220a0d714b0b"
+    },
+    {
+      "id": 11705282026,
+      "name": "web-security-7f01a60aaf64df622fb3732a16195e25e7068650",
+      "bytes": 364426,
+      "sha256": "4a683bc6a52208329ec73d0fb05afaa5df8449eeeb3714a2ea4411005e5f2c27"
+    },
+    {
+      "id": 11705037376,
+      "name": "backend-security-7f01a60aaf64df622fb3732a16195e25e7068650",
+      "bytes": 808,
+      "sha256": "8e4ba769b9147a7a0fc9f5a204f2a31548cb381a83e319711a40b9500db94e3b"
+    },
+    {
+      "id": 11704923233,
+      "name": "android-emulator-7f01a60aaf64df622fb3732a16195e25e7068650",
+      "bytes": 371790,
+      "sha256": "8f98b0115da12fc04c38913979de0c48c2ffe889dc1eee5d978610bda426166e"
+    },
+    {
+      "id": 11704732576,
+      "name": "afrimarket-web-7f01a60aaf64df622fb3732a16195e25e7068650",
+      "bytes": 3622699,
+      "sha256": "356dd3a8680a259f37c2b9f58f30b00489154948b81f808cad73979e33268013"
+    },
+    {
+      "id": 11704304033,
+      "name": "performance-comparison-7f01a60aaf64df622fb3732a16195e25e7068650",
+      "bytes": 2025617,
+      "sha256": "c75a4c3c0c8a5383348a3ceb4bc56d284622b6c2d38e11476b9a6845c799bc2d"
+    }
+  ],
+  "productionInventory": [
+    {
+      "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+      "status": "SUCCESS",
+      "sha": "6722492d85e0f8646ebe03c9b841c4a0e3611449",
+      "id": "63d6636f-035b-4596-83bc-5268ad33fd70"
+    },
+    {
+      "serviceId": "69e4d050-47d4-4e24-8d0d-d47807f4b99a",
+      "status": "SUCCESS",
+      "sha": "6722492d85e0f8646ebe03c9b841c4a0e3611449",
+      "id": "8ebcb33c-8c54-4fc4-afb0-8a5c717f3b4b"
+    },
+    {
+      "serviceId": "8807024a-a89f-4c55-8b4b-fb49641c58c3",
+      "status": "SUCCESS",
+      "id": "03f6edbf-03a2-436f-846d-13421e778531"
+    },
+    {
+      "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+      "status": "REMOVED",
+      "sha": "0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84",
+      "id": "8e2af06c-8a30-4000-b690-f002c5a0cfef"
+    },
+    {
+      "serviceId": "69e4d050-47d4-4e24-8d0d-d47807f4b99a",
+      "status": "REMOVED",
+      "sha": "6722492d85e0f8646ebe03c9b841c4a0e3611449",
+      "id": "edc47148-a47d-42df-9342-cdb2f2d2327e"
+    },
+    {
+      "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+      "status": "FAILED",
+      "sha": "83be26533e8bca3aa4ca1b1fa84c93f686aabec0",
+      "id": "2d52af99-7634-4605-81e7-fc796e285d63"
+    },
+    {
+      "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+      "status": "FAILED",
+      "sha": "246fbfc65af897d8eca93abca71d70464906f9f9",
+      "id": "7f64efc8-f2b2-4092-b11b-d25eae4c1e51"
+    },
+    {
+      "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+      "status": "REMOVED",
+      "sha": "0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84",
+      "id": "717398b7-ecb2-4459-8a50-89ee1ceb33bc"
+    }
+  ],
+  "staging": [
+    {
+      "id": "695594f5-d69f-4fd0-976f-38eda68d26ad",
+      "service": "3a11fecf-70e7-4ba3-8744-d0156b9f7e6c",
+      "status": "SUCCESS",
+      "sha": "2c8f7213d5e7dcac490d25429c69824c25dbad05"
+    },
+    {
+      "id": "8d9221a8-ac3b-464c-bf99-3d6cc40a387c",
+      "service": "5a36eb00-531d-4aae-be1a-f8c63f241da3",
+      "status": "SUCCESS",
+      "sha": "2c8f7213d5e7dcac490d25429c69824c25dbad05"
+    },
+    {
+      "id": "074ace89-2cfd-469f-871d-553dae50e396",
+      "service": "5a36eb00-531d-4aae-be1a-f8c63f241da3",
+      "status": "REMOVED",
+      "sha": "5daa80fe6987f087fa59b539d45cda5464b1106d"
+    }
+  ]
+}

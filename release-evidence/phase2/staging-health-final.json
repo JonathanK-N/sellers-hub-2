@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-11T14:19:08.417Z",
+  "http": 200,
+  "result": "PASS",
+  "health": {
+    "status": "ok",
+    "checks": {
+      "mongodb": "ok",
+      "fx_rate": "no_data"
+    },
+    "response_ms": 6,
+    "version": "1.0.0"
+  }
+}

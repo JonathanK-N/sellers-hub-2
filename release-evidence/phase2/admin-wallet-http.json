@@ -1,0 +1,76 @@
+{
+  "synthetic": true,
+  "scope": "Read-only dashboard and permissions; no KYC approval, fraud adjudication or external payout certified",
+  "rows": [
+    {
+      "test": "admin reads /admin/overview",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "buyer denied /admin/overview",
+      "http": 403,
+      "status": "PASS"
+    },
+    {
+      "test": "admin reads /admin/sellers",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "buyer denied /admin/sellers",
+      "http": 403,
+      "status": "PASS"
+    },
+    {
+      "test": "admin reads /admin/orders",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "buyer denied /admin/orders",
+      "http": 403,
+      "status": "PASS"
+    },
+    {
+      "test": "admin reads /admin/kyc/pending",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "buyer denied /admin/kyc/pending",
+      "http": 403,
+      "status": "PASS"
+    },
+    {
+      "test": "admin reads /admin/fraud/alerts",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "buyer denied /admin/fraud/alerts",
+      "http": 403,
+      "status": "PASS"
+    },
+    {
+      "test": "admin reads /admin/fraud/stats",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "buyer denied /admin/fraud/stats",
+      "http": 403,
+      "status": "PASS"
+    },
+    {
+      "test": "seller reads /seller/wallet",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "seller reads /seller/wallet/transactions",
+      "http": 200,
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "source": "5daa80fe6987f087fa59b539d45cda5464b1106d",
+  "beforeMalformedSearchHttp": 500,
+  "rows": [
+    {
+      "test": "literal search [",
+      "http": 200,
+      "status": "PASS",
+      "matches": 0
+    },
+    {
+      "test": "literal search .*",
+      "http": 200,
+      "status": "PASS",
+      "matches": 0
+    },
+    {
+      "test": "search too long rejected",
+      "http": 422,
+      "status": "PASS"
+    }
+  ]
+}

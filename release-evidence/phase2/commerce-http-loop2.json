@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-10T23:21:08.208Z",
+  "synthetic": true,
+  "rows": [
+    {
+      "test": "quantity 0",
+      "http": 422,
+      "status": "PASS"
+    },
+    {
+      "test": "quantity -1",
+      "http": 422,
+      "status": "PASS"
+    },
+    {
+      "test": "quantity 4",
+      "http": 400,
+      "status": "PASS"
+    },
+    {
+      "test": "aggregate duplicate lines over stock",
+      "http": 400,
+      "status": "PASS"
+    },
+    {
+      "test": "server ignores injected totals",
+      "status": "PASS",
+      "total": 100,
+      "commission": 7
+    },
+    {
+      "test": "cash init 1",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "cash init 2",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "seller advance 1",
+      "http": 200,
+      "orderStatus": "preparing",
+      "status": "PASS"
+    },
+    {
+      "test": "seller advance 2",
+      "http": 200,
+      "orderStatus": "ready_for_pickup",
+      "status": "PASS"
+    },
+    {
+      "test": "cash handoff",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "repeat handoff rejected",
+      "http": 409,
+      "status": "PASS"
+    },
+    {
+      "test": "repeat init preserves released escrow",
+      "status": "PASS",
+      "escrow": "released"
+    },
+    {
+      "test": "unpaid mobile cannot use cash handoff",
+      "http": 409,
+      "status": "PASS"
+    },
+    {
+      "test": "valid QR cannot replace payment",
+      "http": 409,
+      "status": "PASS"
+    },
+    {
+      "test": "seller cannot confirm buyer delivery even with code",
+      "http": 403,
+      "status": "PASS"
+    },
+    {
+      "test": "premature buyer delivery rejected",
+      "http": 409,
+      "status": "PASS"
+    },
+    {
+      "test": "buyer cash delivery confirmation",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "duplicate buyer delivery rejected",
+      "http": 409,
+      "status": "PASS"
+    }
+  ]
+}
