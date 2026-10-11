@@ -1,6 +1,7 @@
 """Atomic MongoDB financial operations. Author: Jonathan Kakesa (JonathanK-N)."""
 from contextvars import ContextVar
 from functools import wraps
+from time import monotonic
 
 from fastapi import HTTPException
 from pymongo.errors import PyMongoError
@@ -79,11 +80,34 @@ async def run_transaction(database, operation):
                     return await operation(bound)
                 finally:
                     active_database.reset(token)
-            return await session.with_transaction(
-                callback, read_concern=ReadConcern("snapshot"),
-                write_concern=WriteConcern("majority"),
-                read_preference=ReadPreference.PRIMARY, max_commit_time_ms=10000,
-            )
+            deadline = monotonic() + 120
+            while True:
+                # Explicit lifecycle: Motor's context manager commits before its
+                # with_transaction unknown-result retry loop in the installed version.
+                session.start_transaction(
+                    read_concern=ReadConcern("snapshot"),
+                    write_concern=WriteConcern("majority"),
+                    read_preference=ReadPreference.PRIMARY, max_commit_time_ms=10000,
+                )
+                try:
+                    result = await callback(session)
+                except BaseException as error:
+                    if session.in_transaction:
+                        await session.abort_transaction()
+                    if isinstance(error, PyMongoError) and error.has_error_label("TransientTransactionError") and monotonic() < deadline:
+                        continue
+                    raise
+                while True:
+                    try:
+                        await session.commit_transaction()
+                        return result
+                    except PyMongoError as error:
+                        if error.has_error_label("UnknownTransactionCommitResult") and monotonic() < deadline and getattr(error, "code", None) != 50:
+                            # Retrying only commit preserves this transaction's identity.
+                            continue
+                        if error.has_error_label("TransientTransactionError") and monotonic() < deadline:
+                            break
+                        raise
     except PyMongoError as error:
         # Do not expose connection strings or claim that an ambiguous commit failed.
         raise HTTPException(503, "Résultat financier indisponible ; vérifiez son état avant toute nouvelle tentative") from error
