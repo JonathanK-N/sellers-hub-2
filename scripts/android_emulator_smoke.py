@@ -54,6 +54,13 @@ try:
     check("bundled landing renders with Wi-Fi and mobile data disabled", (out/"offline.xml").exists() and "AfriMarket" in (out/"offline.xml").read_text())
     adb("shell", "svc", "wifi", "enable")
     adb("shell", "svc", "data", "enable")
+    adb("shell", "input", "keyevent", "4")
+    time.sleep(2)
+    resumed = [line for line in adb("shell", "dumpsys", "activity", "activities").splitlines() if "mResumedActivity:" in line or "topResumedActivity=" in line]
+    (out/"back-activity.txt").write_text("\n".join(resumed))
+    check("hardware Back from root returns outside app", bool(resumed) and all(package not in line for line in resumed))
+    adb("shell", "am", "start", "-W", "-n", package+"/cd.cognito.afrimarket.MainActivity")
+    time.sleep(3)
     adb("shell","run-as",package,"mkdir","-p","files")
     adb("shell","run-as",package,"touch","files/phase2-marker")
     check("debug APK update", "Success" in adb("install","-r",str(apk)))
@@ -62,7 +69,7 @@ try:
     check("reinstall", "Success" in adb("install",str(apk)))
     marker = subprocess.run(["adb","shell","run-as",package,"cat","files/phase2-marker"],capture_output=True)
     check("old app files removed after uninstall", marker.returncode != 0)
-    rows.append({"test":"physical device, iOS, authenticated sessions and hardware Back","status":"BLOCKED","detail":"Not covered by this installed-APK smoke test; offline coverage is limited to bundled landing"})
+    rows.append({"test":"physical device, iOS, authenticated sessions and modal/history Back behavior","status":"BLOCKED","detail":"Not covered by this installed-APK smoke test; offline coverage is limited to bundled landing and Back is tested from root only"})
 finally:
     (out/"results.json").write_text(json.dumps({"package":package,"rows":rows},indent=2))
     (out/"logcat.txt").write_text(adb("logcat","-d","-t","300"))
