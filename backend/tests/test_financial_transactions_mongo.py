@@ -22,7 +22,7 @@ async def isolated(operation, standalone=False):
         pytest.skip("Explicit loopback MongoDB test URI required")
     if urlparse(uri).hostname not in {"localhost", "127.0.0.1"}:
         raise RuntimeError("Synthetic financial tests require loopback MongoDB")
-    client = AsyncIOMotorClient(uri, serverSelectionTimeoutMS=2000)
+    client = AsyncIOMotorClient(uri, serverSelectionTimeoutMS=2000, appname="phase3-finance-test")
     db = client["afrimarket_finance_test_" + uuid.uuid4().hex]
     try:
         for collection in ["products", "sellers", "orders", "transactions", "order_groups", "checkout_requests", "withdrawal_requests", "withdrawals", "notifications", "notification_outbox", "fraud_outbox", "financial_ledger", "disputes", "deliverer_wallets", "deliverer_wallet_transactions"]:
@@ -200,4 +200,23 @@ def test_withdrawal_interruption_and_replay_cannot_debit_twice(boundary):
         assert await db.withdrawals.count_documents({}) == 1
         assert await db.financial_ledger.count_documents({}) == 1
         assert (await wallet_router._compute_balance(db, "s"))["available"] == 0
+    asyncio.run(isolated(scenario))
+
+
+@pytest.mark.parametrize("command,code,label", [("update",112,"TransientTransactionError"), ("commitTransaction",91,"UnknownTransactionCommitResult")])
+def test_real_mongodb_error_retries_without_duplicate_checkout(command, code, label):
+    if os.environ.get("TEST_MONGO_FAILPOINTS") != "1":
+        pytest.skip("Explicit isolated failpoint-enabled MongoDB required")
+    async def scenario(db):
+        configured = await db.client.admin.command({"configureFailPoint":"failCommand", "mode":{"times":1}, "data":{"failCommands":[command], "errorCode":code, "errorLabels":[label], "appName":"phase3-finance-test"}})
+        try:
+            first = await checkout("TEST-real-mongo-error")
+            assert first == await checkout("TEST-real-mongo-error")
+            assert await db.orders.count_documents({}) == 1
+            assert await db.transactions.count_documents({}) == 1
+            assert (await db.products.find_one({"id":"p"}))["stock"] == 2
+            disabled = await db.client.admin.command({"configureFailPoint":"failCommand", "mode":"off"})
+            assert disabled["count"] > configured["count"]
+        finally:
+            await db.client.admin.command({"configureFailPoint":"failCommand", "mode":"off"})
     asyncio.run(isolated(scenario))

@@ -17,7 +17,7 @@ jobs:
       - run: pip install pymongo==4.18.2 cryptography==50.0.2
       - name: Prepare isolated synthetic replica set and official tools
         run: |
-          docker run -d --name recovery-source -p 127.0.0.1:27018:27017 mongo:8.0 mongod --replSet test-rs --bind_ip_all
+          docker run -d --name recovery-source -p 127.0.0.1:27018:27017 mongo:8.0.32 mongod --replSet test-rs --bind_ip_all --wiredTigerCacheSizeGB 0.25
           for attempt in $(seq 1 30); do docker exec recovery-source mongosh --quiet --eval 'db.adminCommand({ping:1})' && break; sleep 1; done
           docker exec recovery-source mongosh --quiet --eval 'rs.initiate({_id:"test-rs",members:[{_id:0,host:"127.0.0.1:27017"}]})'
           for attempt in $(seq 1 30); do docker exec recovery-source mongosh --quiet --eval 'if (!db.hello().isWritablePrimary) quit(1)' && break; sleep 1; done
@@ -38,7 +38,7 @@ jobs:
           mkdir -p "$RECOVERY_PRIVATE"
           cat > /tmp/recovery-mongod <<'SH'
           #!/bin/sh
-          exec docker run --rm --user "$(id -u):$(id -g)" --name recovery-target --network host -v "$RECOVERY_PRIVATE:$RECOVERY_PRIVATE" mongo:8.0 mongod "$@"
+          exec docker run --rm --user "$(id -u):$(id -g)" --name recovery-target --network host -v "$RECOVERY_PRIVATE:$RECOVERY_PRIVATE" mongo:8.0.32 mongod "$@"
           SH
           chmod +x /tmp/recovery-mongod
           mkdir -p recovery-evidence
@@ -48,6 +48,9 @@ jobs:
         with:
           name: mongodb-recovery-${{ github.sha }}
           path: recovery-evidence
+      - name: Inspect isolated recovery server
+        if: always()
+        run: docker logs recovery-source
       - name: Remove isolated containers
         if: always()
         run: docker rm -f recovery-source recovery-target || true
@@ -219,7 +222,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mongodb:
-        image: mongo:8.0
+        image: mongo:8.0.32
         ports: [27017:27017]
         options: >-
           --health-cmd "mongosh --quiet --eval \"db.adminCommand('ping').ok\""
@@ -232,16 +235,22 @@ jobs:
       - run: pip install -r backend/requirements.txt
       - name: Start isolated MongoDB replica set for financial transactions
         run: |
-          docker run -d --name wallet-mongo -p 27018:27017 mongo:8.0 mongod --replSet test-rs --bind_ip_all
+          docker run -d --name wallet-mongo -p 27018:27017 mongo:8.0.32 mongod --replSet test-rs --bind_ip_all
           for attempt in $(seq 1 30); do docker exec wallet-mongo mongosh --quiet --eval 'db.adminCommand("ping").ok' && break; sleep 1; done
           docker exec wallet-mongo mongosh --quiet --eval 'rs.initiate({_id:"test-rs",members:[{_id:0,host:"localhost:27017"}]})'
           for attempt in $(seq 1 30); do docker exec wallet-mongo mongosh --quiet --eval 'if(!db.hello().isWritablePrimary) quit(1)' && break; sleep 1; done
       - run: python -m compileall -q backend
-      - run: python -m pytest backend/tests/test_health_unit.py backend/tests/test_models_unit.py backend/tests/test_payment_security_unit.py backend/tests/test_stock_unit.py backend/tests/test_commerce_mongo.py backend/tests/test_order_handoff_unit.py backend/tests/test_financial_inputs_unit.py backend/tests/test_uploads_unit.py backend/tests/test_withdrawal_mongo.py backend/tests/test_auth_security_unit.py backend/tests/test_order_privacy_unit.py backend/tests/test_financial_transactions_mongo.py backend/tests/test_phase3_payment_security.py -q
+      - run: python -m pytest backend/tests/test_health_unit.py backend/tests/test_models_unit.py backend/tests/test_payment_security_unit.py backend/tests/test_stock_unit.py backend/tests/test_commerce_mongo.py backend/tests/test_order_handoff_unit.py backend/tests/test_financial_inputs_unit.py backend/tests/test_uploads_unit.py backend/tests/test_withdrawal_mongo.py backend/tests/test_auth_security_unit.py backend/tests/test_order_privacy_unit.py backend/tests/test_financial_transactions_mongo.py backend/tests/test_phase3_payment_security.py --junitxml=backend-test-results.xml -q
         env:
           PYTHONPATH: backend
           TEST_MONGO_URL: mongodb://127.0.0.1:27017
           TEST_MONGO_TRANSACTION_URL: mongodb://127.0.0.1:27018/?directConnection=true
+          TEST_MONGO_FAILPOINTS: "1"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-tests-${{ github.sha }}
+          path: backend-test-results.xml
   android:
     runs-on: ubuntu-latest
     steps:
