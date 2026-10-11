@@ -1,9 +1,9 @@
 {
   "name": "frontend",
-  "version": "1.0.1-green-rc.2",
+  "version": "1.0.1-green-rc.3",
   "private": true,
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.19.0"
   },
   "dependencies": {
     "@capacitor/android": "6.2.2",
@@ -62,7 +62,6 @@
     "react-hook-form": "7.56.2",
     "react-resizable-panels": "3.0.1",
     "react-router-dom": "7.18.4",
-    "react-scripts": "5.0.1",
     "recharts": "3.6.0",
     "serve": "14.2.6",
     "sonner": "2.0.3",
@@ -73,10 +72,10 @@
     "zod": "3.24.4"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "vite",
+    "build": "vite build",
     "serve": "serve -s build -l $PORT",
-    "test": "craco test",
+    "test": "node ../scripts/test_service_worker.cjs",
     "postinstall": "node scripts/patch-capacitor-tar.cjs"
   },
   "browserslist": {
@@ -92,20 +91,20 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "7.21.11",
-    "@craco/craco": "7.1.0",
-    "@eslint/js": "9.23.0",
+    "@eslint/js": "9.39.5",
     "@types/lodash": "4.17.24",
-    "autoprefixer": "10.4.20",
+    "autoprefixer": "10.6.1",
     "dotenv": "16.4.5",
-    "eslint": "9.23.0",
+    "eslint": "9.39.5",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.4",
     "eslint-plugin-react-hooks": "5.2.0",
     "globals": "15.15.0",
-    "postcss": "8.4.49",
-    "tailwindcss": "3.4.17"
+    "postcss": "8.5.29",
+    "tailwindcss": "3.4.17",
+    "vite": "8.3.4",
+    "@vitejs/plugin-react": "6.1.2"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "resolutions": {

@@ -90,3 +90,6 @@ credentials.json
 *.key
 .credentials
 frontend/node_modules/.cache/default-development/7.pack
+
+# Temporary dependency cache from local verification
+/Afrimarket-private-backups/

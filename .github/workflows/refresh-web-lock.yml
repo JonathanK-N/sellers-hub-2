@@ -1,0 +1,23 @@
+name: Refresh pinned Web dependency lock
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  dependency-lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: corepack enable
+      - name: Resolve lock for reviewed package changes
+        run: yarn install --registry https://registry.npmjs.org
+        working-directory: frontend
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-web-lock-${{ github.sha }}
+          path: |
+            frontend/yarn.lock
+            frontend/package.json

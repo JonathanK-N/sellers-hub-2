@@ -6,7 +6,7 @@ const deleted = [];
 let networkCalls = 0;
 const sandbox = {
   self: { addEventListener: (name, handler) => handlers[name] = handler, skipWaiting() {}, clients: { claim() {} }, location: { origin: 'https://staging.example' } },
-  caches: { keys: async () => ['afrimarket-v6', 'afrimarket-green-v7', 'afrimarket-green-rc2-v8', 'another-app'], delete: async key => deleted.push(key), open: async () => ({ addAll: async () => {}, put: async () => {} }), match: async () => undefined },
+  caches: { keys: async () => ['afrimarket-v6', 'afrimarket-green-v7', 'afrimarket-green-rc3-v9', 'another-app'], delete: async key => deleted.push(key), open: async () => ({ addAll: async () => {}, put: async () => {} }), match: async () => undefined },
   fetch: async () => { networkCalls++; return new Response('{}', {status: 200}); },
   URL, Request, Response, Promise, setTimeout,
 };

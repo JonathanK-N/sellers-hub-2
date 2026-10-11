@@ -47,10 +47,10 @@ const {chromium} = require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary
     let names=[];
     for (let attempt=0;attempt<80;attempt++) {
       names=await page.evaluate(() => caches.keys());
-      if(names.includes('afrimarket-green-rc2-v8')&&!names.includes('afrimarket-green-v7')&&!names.includes('afrimarket-orange-v6')) break;
+      if(names.includes('afrimarket-green-rc3-v9')&&!names.includes('afrimarket-green-v7')&&!names.includes('afrimarket-orange-v6')) break;
       await page.waitForTimeout(250);
     }
-    const migrated=names.includes('afrimarket-green-rc2-v8')&&!names.includes('afrimarket-green-v7')&&!names.includes('afrimarket-orange-v6')&&names.includes('unrelated-application-v1');
+    const migrated=names.includes('afrimarket-green-rc3-v9')&&!names.includes('afrimarket-green-v7')&&!names.includes('afrimarket-orange-v6')&&names.includes('unrelated-application-v1');
     rows.push({test:'Old caches purged and unrelated cache preserved',status:migrated?'PASS':'FAIL',cacheNames:names});
     if(!migrated) throw Error('Worker activation did not migrate caches');
     await page.reload({waitUntil:'networkidle'});
