@@ -506,4 +506,6 @@ async def get_order_by_qr(qr_token: str, user: dict = Depends(require_role("sell
     my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
     if not my_seller or my_seller["id"] != o["seller_id"]:
         raise HTTPException(status_code=403, detail="Cette commande n'appartient pas à votre boutique")
+    o.pop("confirmation_code", None)
+    o.pop("qr_code", None)
     return o

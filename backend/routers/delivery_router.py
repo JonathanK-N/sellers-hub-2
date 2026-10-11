@@ -112,7 +112,7 @@ async def my_deliveries(user: dict = Depends(require_role("deliverer"))):
     """Deliveries assigned to the current deliverer."""
     db = get_db()
     orders = await db.orders.find(
-        {"deliverer_id": user["id"]}, {"_id": 0, "confirmation_code": 0}
+        {"deliverer_id": user["id"]}, {"_id": 0, "confirmation_code": 0, "qr_code": 0}
     ).sort("created_at", -1).to_list(200)
     seller_ids = list({o["seller_id"] for o in orders})
     sellers = {s["id"]: s async for s in db.sellers.find({"id": {"$in": seller_ids}}, {"_id": 0})}

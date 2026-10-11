@@ -6,6 +6,17 @@ from fastapi import HTTPException
 from routers import orders_router, delivery_router
 
 
+def test_seller_qr_lookup_does_not_reveal_buyer_confirmation_code():
+    db = Mock()
+    db.orders.find_one = AsyncMock(return_value={"id": "order", "seller_id": "seller", "confirmation_code": "123456", "qr_code": "buyer-qr"})
+    db.sellers.find_one = AsyncMock(return_value={"id": "seller"})
+    with patch.object(orders_router, "get_db", return_value=db):
+        result = asyncio.run(orders_router.get_order_by_qr("buyer-qr", {"id": "seller-user", "role": "seller"}))
+    assert result["id"] == "order"
+    assert "confirmation_code" not in result
+    assert "qr_code" not in result
+
+
 def test_unassigned_deliverer_cannot_read_another_order():
     db = Mock()
     db.orders.find_one = AsyncMock(return_value={"seller_id":"seller","buyer_id":"buyer","deliverer_id":"assigned","confirmation_code":"secret"})
