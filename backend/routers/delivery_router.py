@@ -175,7 +175,7 @@ async def mark_en_route(order_id: str, user: dict = Depends(require_role("delive
             "Le livreur est en route vers vous.", {"order_id": order_id},
         )
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
     return {"ok": True, "status": "out_for_delivery"}
 
 
@@ -215,7 +215,7 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
             "Votre commande a été livrée. Merci !", {"order_id": order_id},
         )
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
     await record_release(db, o, user["id"])
     return {"ok": True, "status": "delivered", "escrow_status": "released"}
 

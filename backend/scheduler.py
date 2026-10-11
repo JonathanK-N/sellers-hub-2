@@ -49,7 +49,7 @@ async def expire_premium_subscriptions():
                 {"seller_id": s["id"]},
             )
         except Exception:
-            pass
+            logger.warning("Best-effort operation failed", exc_info=True)
         logger.info(f"[CRON] Premium expired for seller {s['id']}")
 
 

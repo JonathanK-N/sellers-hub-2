@@ -339,9 +339,9 @@ def get_provider(name: str) -> BaseProvider:
 
 async def simulate_webhook(db, transaction_id: str, delay_seconds: float = 1.5, success_rate: float = 1.0):
     """In sandbox mode, simulate provider webhook arriving after a small delay."""
-    import random
+    import secrets
     await asyncio.sleep(delay_seconds)
-    success = random.random() < success_rate
+    success = secrets.randbelow(1000000) / 1000000 < success_rate
     new_status = "SUCCESS" if success else "FAILED"
     await db.transactions.update_one(
         {"id": transaction_id},

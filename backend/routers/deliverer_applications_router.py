@@ -332,7 +332,7 @@ async def _activate_deliverer(db, application: dict, reviewer_id: str):
             {"application_id": application["id"]},
         )
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
 
     applicant = await db.users.find_one({"id": user_id}, {"_id": 0, "email": 1})
     applicant_email = application.get("email") or (applicant or {}).get("email")
@@ -376,7 +376,7 @@ async def admin_reject_application(application_id: str, req: DelivererApplicatio
             {"application_id": application_id},
         )
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
 
     applicant = await db.users.find_one({"id": app_doc["user_id"]}, {"_id": 0, "email": 1})
     applicant_email = app_doc.get("email") or (applicant or {}).get("email")
@@ -462,7 +462,7 @@ async def seller_reject_application(application_id: str, req: DelivererApplicati
             {"application_id": application_id},
         )
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
 
     applicant = await db.users.find_one({"id": app_doc["user_id"]}, {"_id": 0, "email": 1})
     applicant_email = app_doc.get("email") or (applicant or {}).get("email")

@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 from db import get_db
 from financial_transactions import atomic_operation
+from money import record_release
 from auth import require_role, get_current_user_dep
 
 logger = logging.getLogger(__name__)
@@ -157,4 +158,6 @@ async def admin_resolve(dispute_id: str, req: ResolveRequest, _: dict = Depends(
         {"order_id": order["id"]},
         {"$set": {"payment_status": new_escrow, "escrow_released_at": _now() if new_escrow != "frozen" else None}},
     )
+    if new_escrow == "released":
+        await record_release(db, order)
     return {"ok": True, "decision": req.decision, "escrow_status": new_escrow}

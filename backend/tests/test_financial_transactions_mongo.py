@@ -154,3 +154,28 @@ def test_abrupt_backend_process_exit_rolls_back_and_restart_recovers():
         assert await db.orders.count_documents({}) == 1
         assert (await db.products.find_one({"id":"p"}))["stock"] == 2
     asyncio.run(isolated(scenario))
+
+
+@pytest.mark.parametrize("boundary", ["disputes", "orders", "transactions", "financial_ledger"])
+def test_dispute_release_and_balanced_journal_commit_together(boundary):
+    async def scenario(db):
+        await db.orders.insert_one({"id":"disputed", "seller_id":"s", "order_group_id":"g", "escrow_status":"frozen", "payment_confirmed":True, "payment_method":"mobile_money", "total_amount":100, "commission_amount":7, "delivery_fee":0, "amount_due":100, "currency":"FC", "timeline":[]})
+        await db.transactions.insert_one({"order_id":"disputed", "payment_status":"held"})
+        await db.disputes.insert_one({"id":"d", "order_id":"disputed", "status":"open"})
+        async def fault(collection, operation):
+            if collection == boundary:
+                raise asyncio.CancelledError("Interrupted dispute resolution")
+        req = disputes_router.ResolveRequest(decision="release_seller")
+        with patch.object(financial, "after_write", fault), pytest.raises(asyncio.CancelledError):
+            await disputes_router.admin_resolve("d", req, {"role":"admin"})
+        assert (await db.disputes.find_one({"id":"d"}))["status"] == "open"
+        assert (await db.orders.find_one({"id":"disputed"}))["escrow_status"] == "frozen"
+        assert (await db.transactions.find_one({"order_id":"disputed"}))["payment_status"] == "held"
+        assert await db.financial_ledger.count_documents({}) == 0
+        await disputes_router.admin_resolve("d", req, {"role":"admin"})
+        journal = await db.financial_ledger.find_one({"_id":"release:disputed"})
+        assert sum(line["minor"] for line in journal["lines"]) == 0
+        with pytest.raises(HTTPException):
+            await disputes_router.admin_resolve("d", req, {"role":"admin"})
+        assert await db.financial_ledger.count_documents({}) == 1
+    asyncio.run(isolated(scenario))

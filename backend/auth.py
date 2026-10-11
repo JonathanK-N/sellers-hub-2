@@ -89,7 +89,7 @@ async def get_current_user_dep(request: Request):
         raise HTTPException(status_code=401, detail="Token invalide")
 
     db = get_db()
-    user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0, "password_hash": 0})
+    user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0, "password_hash": 0})  # nosec B105: Mongo projection excludes credentials; integers are inclusion flags.
     if not user:
         raise HTTPException(status_code=401, detail="Utilisateur introuvable")
     # Bloquer les comptes suspendus/bannis — même avec un token encore valide
@@ -127,7 +127,7 @@ async def get_current_user_optional(request: Request):
         return None
 
     db = get_db()
-    user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0, "password_hash": 0})
+    user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0, "password_hash": 0})  # nosec B105: Mongo projection excludes credentials; integers are inclusion flags.
     if user and (user.get("banned") or user.get("suspended")):
         return None
     return user

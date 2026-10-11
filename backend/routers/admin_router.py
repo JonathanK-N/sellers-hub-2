@@ -225,7 +225,7 @@ async def buyer_kyc_approve(user_id: str, _: dict = Depends(require_role("admin"
         from notifications import create_notification
         await create_notification(user_id, "kyc_approved", "Profil vérifié", "Votre identité a été vérifiée. Le badge Vérifié est maintenant actif sur votre profil.", {})
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
     return {"ok": True}
 
 
@@ -242,7 +242,7 @@ async def buyer_kyc_reject(user_id: str, req: KycRejectRequest, _: dict = Depend
         from notifications import create_notification
         await create_notification(user_id, "kyc_rejected", "Vérification refusée", f"Motif : {req.reason or 'non précisé'}", {})
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
     return {"ok": True}
 
 
@@ -308,6 +308,7 @@ async def geo_growth(_: dict = Depends(require_role("admin"))):
         try:
             ts = datetime.fromisoformat(u["created_at"].replace("Z", "+00:00"))
         except Exception:
+            logger.warning("Invalid record skipped", exc_info=True)
             continue
         for b in buckets:
             if ts.year == b["year"] and ts.month == b["month"]:
@@ -345,7 +346,7 @@ async def geo_alerts(_: dict = Depends(require_role("admin"))):
             if (now - t).days > 5:
                 urgent_count += 1
         except Exception:
-            pass
+            logger.warning("Best-effort operation failed", exc_info=True)
     if urgent_count > 0:
         alerts.append({
             "level": "danger",
@@ -493,7 +494,7 @@ async def fraud_action(user_id: str, req: FraudActionRequest, _: dict = Depends(
             from notifications import create_notification
             await create_notification(user_id, "fraud_alert", "Avertissement", "Votre activité a été signalée. Merci de respecter les règles de la plateforme.", {})
         except Exception:
-            pass
+            logger.warning("Best-effort operation failed", exc_info=True)
     elif req.action in ("suspend", "ban"):
         await db.users.update_one(
             {"id": user_id},

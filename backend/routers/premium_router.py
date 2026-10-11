@@ -91,7 +91,7 @@ async def _activate_premium(db, seller_id: str, user_id: str, sub_id: str):
             if existing > base:
                 base = existing
         except Exception:
-            pass
+            logger.warning("Best-effort operation failed", exc_info=True)
     new_exp = (base + timedelta(days=30)).isoformat()
     await db.sellers.update_one(
         {"id": seller_id},
@@ -107,7 +107,7 @@ async def _activate_premium(db, seller_id: str, user_id: str, sub_id: str):
             "Votre boutique est maintenant Premium pour 30 jours.", {"subscription_id": sub_id},
         )
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
 
 
 @router.post("/cancel")

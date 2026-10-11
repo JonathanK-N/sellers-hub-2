@@ -65,7 +65,7 @@ async def create_notification(user_id: str, ntype: str, title: str, body: str, d
         if prefs.get(ntype) is False:
             return notif
         tokens = []
-        async for d in db.device_tokens.find({"user_id": user_id, "is_active": True}, {"_id": 0, "token": 1}):
+        async for d in db.device_tokens.find({"user_id": user_id, "is_active": True}, {"_id": 0, "token": 1}):  # nosec B105: Mongo projection selects stored device tokens, not a literal secret.
             tokens.append(d["token"])
         if tokens:
             await _send_fcm(tokens, title, body, data or {})

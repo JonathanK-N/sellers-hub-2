@@ -6,6 +6,51 @@ on:
 permissions:
   contents: read
 jobs:
+  mongodb-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pymongo==4.18.2 cryptography==50.0.2
+      - name: Prepare isolated synthetic replica set and official tools
+        run: |
+          docker run -d --name recovery-source -p 127.0.0.1:27018:27017 mongo:8.0 mongod --replSet test-rs --bind_ip_all
+          for attempt in $(seq 1 30); do docker exec recovery-source mongosh --quiet --eval 'db.adminCommand({ping:1})' && break; sleep 1; done
+          docker exec recovery-source mongosh --quiet --eval 'rs.initiate({_id:"test-rs",members:[{_id:0,host:"127.0.0.1:27017"}]})'
+          for attempt in $(seq 1 30); do docker exec recovery-source mongosh --quiet --eval 'if (!db.hello().isWritablePrimary) quit(1)' && break; sleep 1; done
+          python - <<'PY'
+          import hashlib, json, pathlib, urllib.request, tarfile
+          metadata=json.load(urllib.request.urlopen('https://downloads.mongodb.org/tools/db/release.json'))
+          version=next(v for v in metadata['versions'] if v['version']=='100.19.1')
+          tool=next(d for d in version['downloads'] if d['name']=='ubuntu2404' and d['arch']=='x86_64')['archive']
+          data=urllib.request.urlopen(tool['url']).read()
+          assert hashlib.sha256(data).hexdigest()==tool['sha256']
+          pathlib.Path('/tmp/mongo-tools.tgz').write_bytes(data)
+          with tarfile.open('/tmp/mongo-tools.tgz') as archive:
+              archive.extractall('/tmp/mongo-tools',filter='data')
+          PY
+      - name: Encrypted full dump and isolated restoration
+        run: |
+          export RECOVERY_PRIVATE="$RUNNER_TEMP/afrimarket-recovery-private"
+          mkdir -p "$RECOVERY_PRIVATE"
+          cat > /tmp/recovery-mongod <<'SH'
+          #!/bin/sh
+          exec docker run --rm --name recovery-target --network host -v "$RECOVERY_PRIVATE:$RECOVERY_PRIVATE" mongo:8.0 mongod "$@"
+          SH
+          chmod +x /tmp/recovery-mongod
+          mkdir -p recovery-evidence
+          python scripts/validate_mongodb_recovery.py --mongod /tmp/recovery-mongod --mongodump "$(find /tmp/mongo-tools -name mongodump -type f)" --mongorestore "$(find /tmp/mongo-tools -name mongorestore -type f)" --private-output "$RECOVERY_PRIVATE" --evidence recovery-evidence/synthetic-recovery.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mongodb-recovery-${{ github.sha }}
+          path: recovery-evidence
+      - name: Remove isolated containers
+        if: always()
+        run: docker rm -f recovery-source recovery-target || true
   performance-comparison:
     needs: web
     runs-on: ubuntu-latest

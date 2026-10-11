@@ -18,6 +18,7 @@ import json
 import logging
 import urllib.request
 import urllib.error
+from urllib.parse import urlsplit
 
 sys.path.insert(0, os.path.dirname(__file__))
 from s3_service import upload_public, s3_configured  # noqa: E402
@@ -44,8 +45,11 @@ S3_PREFIX = "afrimarket/demo-products"
 
 
 def _download(url: str) -> bytes:
+    parsed = urlsplit(url)
+    if parsed.scheme != "https" or parsed.hostname != "raw.githubusercontent.com":
+        raise ValueError("Only the configured HTTPS asset host is permitted")
     req = urllib.request.Request(url, headers={"User-Agent": "afrimarket-migration/1.0"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
+    with urllib.request.urlopen(req, timeout=30) as resp:  # nosec B310: HTTPS and host checked above; fixed public asset URLs.
         return resp.read()
 
 
