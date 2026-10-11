@@ -1,0 +1,131 @@
+{
+  "sourceSha": "058b6a51bf00c4525155b20e1e1a96e939fdfad5",
+  "runId": 38166788235,
+  "baselineSha": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+  "rows": {
+    "baseline": [
+      {
+        "performance": 85,
+        "LCP_ms": 2448.02515,
+        "TBT_ms": 496.5000000000002,
+        "CLS": 0.003672031005009726,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "SEO": 100
+      },
+      {
+        "performance": 98,
+        "LCP_ms": 2493.84125,
+        "TBT_ms": 10,
+        "CLS": 0.00002038117864363487,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "SEO": 100
+      },
+      {
+        "performance": 98,
+        "LCP_ms": 2486.7690000000002,
+        "TBT_ms": 16,
+        "CLS": 0.003672031005009726,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "SEO": 100
+      }
+    ],
+    "candidate": [
+      {
+        "performance": 98,
+        "LCP_ms": 2268.1883,
+        "TBT_ms": 0,
+        "CLS": 0.003651649826366091,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "SEO": 100
+      },
+      {
+        "performance": 97,
+        "LCP_ms": 2420.9652,
+        "TBT_ms": 0,
+        "CLS": 0.003672031005009726,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "SEO": 100
+      },
+      {
+        "performance": 97,
+        "LCP_ms": 2418.8463,
+        "TBT_ms": 0,
+        "CLS": 0.003672031005009726,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "SEO": 100
+      }
+    ],
+    "staging": [
+      {
+        "performance": 99,
+        "LCP_ms": 2026.981,
+        "TBT_ms": 4.5,
+        "CLS": 0.004041384520195668,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "SEO": 100
+      },
+      {
+        "performance": 99,
+        "LCP_ms": 2022.6915,
+        "TBT_ms": 3,
+        "CLS": 0.003693017565197231,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "SEO": 100
+      },
+      {
+        "performance": 99,
+        "LCP_ms": 2026.711,
+        "TBT_ms": 5.5,
+        "CLS": 0.004041182726347711,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "SEO": 100
+      }
+    ]
+  },
+  "stagingContext": {
+    "url": "https://afrimarket-web-staging-staging.up.railway.app",
+    "sourceSha": "058b6a51bf00c4525155b20e1e1a96e939fdfad5",
+    "expectedMain": "/assets/index-CRu5KGA-.js",
+    "observedMain": "/static/js/main.825d07fe.js",
+    "artifactMatchesStaging": false,
+    "observedAt": "2026-10-11T19:12:02.505Z"
+  },
+  "medians": {
+    "baseline": {
+      "performance": 98,
+      "LCP_ms": 2486.7690000000002,
+      "TBT_ms": 16,
+      "CLS": 0.003672031005009726,
+      "accessibility": 100,
+      "bestPractices": 96,
+      "SEO": 100
+    },
+    "candidate": {
+      "performance": 97,
+      "LCP_ms": 2418.8463,
+      "TBT_ms": 0,
+      "CLS": 0.003672031005009726,
+      "accessibility": 100,
+      "bestPractices": 96,
+      "SEO": 100
+    },
+    "staging": {
+      "performance": 99,
+      "LCP_ms": 2026.711,
+      "TBT_ms": 4.5,
+      "CLS": 0.004041182726347711,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "SEO": 100
+    }
+  }
+}

@@ -1,0 +1,17 @@
+# CinetPay : inventaire historique et intégration
+
+Auteur : Jonathan Kakesa (JonathanK-N). Statut fournisseur réel : BLOCKED.
+
+Le projet historique AFRIMARKET a été inventorié via le connecteur Railway autorisé : un environnement production et trois services. Backend original sellers-hub-2, service 69e4d050-47d4-4e24-8d0d-d47807f4b99a. Aucun autre environnement ou backend historique n'apparaît dans ce projet. Les variables CinetPay exposées par nom sont CINETPAY_NOTIFY_URL et CINETPAY_RETURN_URL. CINETPAY_API_KEY, CINETPAY_SITE_ID, CINETPAY_SECRET_KEY et CINETPAY_TRANSFER_TOKEN ne figurent pas dans l'inventaire. Le connecteur OAuth retourne valuesRedacted=true ; aucune valeur n'a été exportée, copiée ou enregistrée. Les URL de callback historiques ne sont donc pas vérifiables. Aucune variable historique n'a été modifiée et aucun redéploiement historique déclenché.
+
+Le staging ne contient aucun nom CINETPAY. Ses noms PAYMENT_MODE et AUTH_MODE existent ; il est configuré comme environnement de test isolé selon la phase 2. Une valeur sandbox ne suffit pas à prouver que les clés ou endpoints d'un prestataire sont de test.
+
+Le code hérité implémente Checkout v2 (api-checkout.cinetpay.com/v2/payment et /check) et Transfer historique. La [documentation Checkout v2](https://docs.cinetpay.com/api/1.0-fr/checkout/initialisation) indique que les clés API et site peuvent servir pour test et production ; cette page mentionne aussi une indisponibilité temporaire des sandbox. La [documentation du SDK v1 officiel](https://github.com/cinetpay/cinetpay-python) distingue désormais sk_test/api.cinetpay.net et sk_live/api.cinetpay.co, avec api_password par pays. Ces deux contrats ne sont pas interchangeables : remplacer uniquement une URL dans l'adapter v2 ne serait pas une intégration correcte.
+
+Corrections : aucun collect/disburse legacy ne peut appeler l'endpoint réel sous PAYMENT_MODE=sandbox ; aucun simulateur local n'est choisi comme prestataire de transfert ; webhook v2 désactivé en staging sandbox ; signature HMAC/site obligatoire pour le contrat v2 hors sandbox, puis vérification serveur de montant, devise et référence avant écriture atomique. Timeout de check reste PENDING, pas FAILED. Le montant n'est pas tronqué silencieusement ; conversion FC→CDF explicite et contraintes v2 contrôlées. Le débit externe, Premium et remboursement fournisseur non certifiés restent fermés.
+
+Accès nécessaires : identifier un autre projet/service contenant les configurations annoncées, ou configurer des secrets scellés de staging correspondant à un compte sandbox effectivement confirmé. Pour v1 : noms de clés API et API_PASSWORD par pays selon le compte, URL sandbox officielle, devise/autorisations, callbacks exclusivement staging, token de notification propre à chaque intention. Pour v2 : API_KEY, SITE_ID, SECRET_KEY, NOTIFY_URL et RETURN_URL ; cette seule configuration ne confirme pas un sandbox. Ne jamais envoyer leurs valeurs dans le chat, les commandes visibles ou Git. Le connecteur actuel ne permet pas de lire/transférer les valeurs OAuth.
+
+Avant tout test fournisseur : preuve non financière du compte/environnement, validation des devises autorisées et callbacks isolés, accès aux scénarios de test documentés. Aucun paiement réel effectué et aucun prestataire inventé. Les tests de contrat synthétiques sont distincts de la certification.
+
+Preuves : release-evidence/phase3/railway-baseline.json et mongo-config-baseline.json ; CI des tests backend ; matrice dans phase3-cinetpay-test-results.md.

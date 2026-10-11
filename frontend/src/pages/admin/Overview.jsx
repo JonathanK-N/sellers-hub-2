@@ -55,7 +55,7 @@ export default function AdminOverview() {
 
             {/* Revenus */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center"><TrendingUp size={20} /></div>
                   <div>
@@ -64,7 +64,7 @@ export default function AdminOverview() {
                   </div>
                 </div>
               </div>
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-[#FAEEDA] text-[#BA7517] flex items-center justify-center"><Crown size={20} /></div>
                   <div>
@@ -78,7 +78,7 @@ export default function AdminOverview() {
 
             {/* Alertes */}
             {alerts.length > 0 && (
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+              <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
                 <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3 flex items-center gap-1.5">
                   <AlertTriangle size={14} className="text-amber-500" /> Alertes ({alerts.length})
                 </h3>
@@ -98,7 +98,7 @@ export default function AdminOverview() {
 
             {/* Commandes récentes */}
             {orders.length > 0 && (
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+              <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
                 <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Dernières commandes</h3>
                 <div className="space-y-2">
                   {orders.map((o) => (
@@ -118,7 +118,7 @@ export default function AdminOverview() {
             )}
 
             {/* Performance par pays */}
-            <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+            <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
               <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Performance par pays</h3>
               <div className="space-y-3">
                 {Object.keys(COUNTRY_NAMES).map((code) => {
@@ -145,7 +145,7 @@ export default function AdminOverview() {
 
 function Stat({ icon: Icon, label, value, highlight }) {
   return (
-    <div className={`bg-white rounded-xl border shadow-sm p-4 ${highlight ? "border-afri-accent" : "border-gray-200"}`}>
+    <div className={`bg-white rounded-xl border shadow-xs p-4 ${highlight ? "border-afri-accent" : "border-gray-200"}`}>
       <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${highlight ? "bg-amber-50 text-afri-accent" : "bg-afri-soft text-afri-primary"}`}>
         <Icon size={18} />
       </div>

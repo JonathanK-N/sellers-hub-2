@@ -69,7 +69,7 @@ export default function SearchPage({ guest = false }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Rechercher…"
-            className="w-full pl-10 pr-3 py-2.5 rounded-full bg-white text-gray-900 text-sm outline-none"
+            className="w-full pl-10 pr-3 py-2.5 rounded-full bg-white text-gray-900 text-sm outline-hidden"
           />
         </div>
       </header>
@@ -78,7 +78,7 @@ export default function SearchPage({ guest = false }) {
       <BannerCarousel position="search_top" role={user?.role || "buyer"} className="mx-4 mt-3" />
 
       <section className="px-4 md:px-8 mt-4 space-y-3">
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
               <MapPin size={16} className="text-afri-primary" />
@@ -119,7 +119,7 @@ export default function SearchPage({ guest = false }) {
           )}
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 space-y-3">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 space-y-3">
           <Toggle
             label="Vendeurs vérifiés uniquement"
             icon={<ShieldCheck size={16} className="text-green-600" />}

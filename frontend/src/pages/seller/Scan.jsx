@@ -219,7 +219,7 @@ export default function SellerScan() {
               onChange={(e) => setManualToken(e.target.value)}
               placeholder="Collez le token ou l'URL complète ici…"
               rows={3}
-              className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary resize-none"
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary resize-none"
             />
             <button
               data-testid="manual-scan-submit"

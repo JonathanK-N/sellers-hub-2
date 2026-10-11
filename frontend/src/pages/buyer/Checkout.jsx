@@ -111,7 +111,17 @@ export default function Checkout() {
         payment_method: "cash",
         checkout_currency: checkoutCurrency,
       };
-      const { data } = await api.post("/orders", payload);
+      // Keep the same request key after a timeout or reload. A changed payload
+      // gets a new key; the server rejects reuse for a different request.
+      const requestIdentity = JSON.stringify({ buyer: user.id, payload });
+      let attempt;
+      try { attempt = JSON.parse(sessionStorage.getItem("afrimarket-checkout-attempt")); } catch { attempt = null; }
+      if (!attempt || attempt.identity !== requestIdentity) {
+        attempt = { identity: requestIdentity, key: crypto.randomUUID() };
+        sessionStorage.setItem("afrimarket-checkout-attempt", JSON.stringify(attempt));
+      }
+      const { data } = await api.post("/orders", payload, { headers: { "Idempotency-Key": attempt.key } });
+      sessionStorage.removeItem("afrimarket-checkout-attempt");
       const groupId = data.order_group_id;
       const n = data.seller_count || (data.orders ? data.orders.length : 1);
       clear();
@@ -144,7 +154,7 @@ export default function Checkout() {
 
       <div className="px-4 mt-4 space-y-3 pb-28">
         {/* Mode livraison */}
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Mode</h3>
           <div className="grid grid-cols-2 gap-2">
             <ModeBtn icon={Truck} label="Livraison" active={mode === "delivery"} disabled={!deliveryAvailable} onClick={() => deliveryAvailable && setMode("delivery")} testid="mode-delivery" />
@@ -164,7 +174,7 @@ export default function Checkout() {
 
         {/* Adresse */}
         {mode === "delivery" && (
-          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 space-y-3">
+          <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500">Adresse de livraison</h3>
             <Input label="Quartier" value={neighborhood} onChange={setNeighborhood} placeholder="Ex: Gombe, Bonapriso…" testid="checkout-neighborhood-input" />
             <Input label="Repère" value={landmark} onChange={setLandmark} placeholder="Près de l'église, en face de…" testid="checkout-landmark-input" />
@@ -174,10 +184,10 @@ export default function Checkout() {
 
         {/* Créneau retrait */}
         {mode === "collect" && (
-          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+          <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
             <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Créneau de retrait</h3>
             <select data-testid="pickup-slot-select" value={pickupSlot} onChange={(e) => setPickupSlot(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary outline-none">
+              className="w-full border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary outline-hidden">
               <option>Aujourd'hui 14:00-16:00</option>
               <option>Aujourd'hui 16:00-18:00</option>
               <option>Demain 09:00-11:00</option>
@@ -187,7 +197,7 @@ export default function Checkout() {
         )}
 
         {/* Paiement : cash + devise */}
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Mode de paiement</h3>
           <div className="flex items-center gap-3 p-3 rounded-lg border-2 border-afri-primary bg-afri-soft">
             <div className="w-10 h-10 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
@@ -221,7 +231,7 @@ export default function Checkout() {
         </section>
 
         {/* Récapitulatif */}
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 space-y-1.5 text-sm">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 space-y-1.5 text-sm">
           <Row label="Sous-total" value={formatPrice(subtotalDisplay, checkoutCurrency)} />
           {mode === "delivery" && deliveryFeeFC > 0 && (
             <Row label="Frais de livraison" value={formatPrice(deliveryFeeDisplay, checkoutCurrency)} muted />
@@ -280,7 +290,7 @@ function Input({ label, value, onChange, placeholder, testid }) {
       <label className="text-xs font-medium text-gray-700">{label}</label>
       <input data-testid={testid} value={value} onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full mt-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none" />
+        className="w-full mt-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden" />
     </div>
   );
 }

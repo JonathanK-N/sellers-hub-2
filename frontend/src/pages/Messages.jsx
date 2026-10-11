@@ -45,7 +45,7 @@ export default function ConversationsList() {
                 key={c.conversation_id}
                 data-testid={`conversation-${c.conversation_id}`}
                 onClick={() => nav(`/messages/${c.conversation_id}`, { state: { other_name: c.other_name, buyer_id: c.buyer_id, seller_id: c.seller_id } })}
-                className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-3 flex items-center gap-3 hover:border-afri-primary transition-colors"
+                className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-xs p-3 flex items-center gap-3 hover:border-afri-primary transition-colors"
               >
                 <div className="w-11 h-11 rounded-full bg-afri-primary text-white flex items-center justify-center font-display font-black">
                   {c.other_name?.charAt(0).toUpperCase() || "?"}

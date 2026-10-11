@@ -8,7 +8,7 @@ const {chromium} = require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary
 (async () => {
   const build = path.resolve(process.argv[2]);
   const output = process.argv[3] || 'release-evidence/phase2/pwa-upgrade.json';
-  const oldWorker = cp.execFileSync('git', ['show', 'release/afrimarket-phase1-final-20261010:frontend/public/service-worker.js']);
+  const oldWorker = cp.execFileSync('git', ['show', 'v1.0.1-green-rc.2:frontend/public/service-worker.js']);
   let upgraded = false;
   const server = http.createServer((req, res) => {
     const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -41,16 +41,16 @@ const {chromium} = require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary
       await legacy.put('/legacy-orange', new Response('old'));
     });
     const oldCaches = await page.evaluate(() => caches.keys());
-    rows.push({test:'Phase 1 worker controls browser',status:oldCaches.includes('afrimarket-green-v7')?'PASS':'FAIL',cacheNames:oldCaches});
+    rows.push({test:'Phase 2 worker controls browser',status:oldCaches.includes('afrimarket-green-rc2-v8')?'PASS':'FAIL',cacheNames:oldCaches});
     upgraded = true;
     await page.evaluate(async () => {const registration=await navigator.serviceWorker.getRegistration(); await registration.update();});
     let names=[];
     for (let attempt=0;attempt<80;attempt++) {
       names=await page.evaluate(() => caches.keys());
-      if(names.includes('afrimarket-green-rc2-v8')&&!names.includes('afrimarket-green-v7')&&!names.includes('afrimarket-orange-v6')) break;
+      if(names.includes('afrimarket-green-rc3-v9')&&!names.includes('afrimarket-green-rc2-v8')&&!names.includes('afrimarket-orange-v6')) break;
       await page.waitForTimeout(250);
     }
-    const migrated=names.includes('afrimarket-green-rc2-v8')&&!names.includes('afrimarket-green-v7')&&!names.includes('afrimarket-orange-v6')&&names.includes('unrelated-application-v1');
+    const migrated=names.includes('afrimarket-green-rc3-v9')&&!names.includes('afrimarket-green-rc2-v8')&&!names.includes('afrimarket-orange-v6')&&names.includes('unrelated-application-v1');
     rows.push({test:'Old caches purged and unrelated cache preserved',status:migrated?'PASS':'FAIL',cacheNames:names});
     if(!migrated) throw Error('Worker activation did not migrate caches');
     await page.reload({waitUntil:'networkidle'});

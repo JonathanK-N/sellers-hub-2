@@ -106,7 +106,7 @@ export default function SellerOrders() {
             {orders.map((o) => {
               const status = ORDER_STATUS_LABELS[o.status] || { label: o.status, color: "bg-gray-100 text-gray-700" };
               return (
-                <div key={o.id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-testid={`seller-order-${o.id}`}>
+                <div key={o.id} className="bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden" data-testid={`seller-order-${o.id}`}>
                   <Link to={`/buyer/orders/${o.id}`} className="block p-4 hover:bg-gray-50 transition-colors">
                     <div className="flex items-center justify-between">
                       <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full ${status.color}`}>

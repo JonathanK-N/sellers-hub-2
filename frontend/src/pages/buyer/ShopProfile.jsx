@@ -45,7 +45,7 @@ export default function ShopProfile({ guest = false }) {
     <div className="mobile-shell pb-12">
       {/* BANNIÈRE */}
       <div className="relative">
-        <div className="w-full h-36 overflow-hidden bg-gradient-to-r from-afri-secondary to-afri-primary">
+        <div className="w-full h-36 overflow-hidden bg-linear-to-r from-afri-secondary to-afri-primary">
           {seller.shop_banner_url && <img src={photoUrl(seller.shop_banner_url)} alt="bannière" className="w-full h-full object-cover" />}
         </div>
         {/* Logo flottant */}
@@ -166,7 +166,7 @@ export default function ShopProfile({ guest = false }) {
             </h3>
             <div className="space-y-3">
               {reviews.slice(0, 5).map(r => (
-                <div key={r.id} className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
+                <div key={r.id} className="bg-white border border-gray-100 rounded-xl p-3 shadow-xs">
                   <div className="flex items-center gap-2 mb-1.5">
                     <div className="flex">
                       {[1,2,3,4,5].map(i => <Star key={i} size={12} fill={i <= r.rating ? "var(--afri-accent)" : "transparent"} className={i <= r.rating ? "text-afri-accent" : "text-gray-300"} />)}

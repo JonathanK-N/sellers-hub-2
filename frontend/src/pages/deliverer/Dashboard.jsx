@@ -195,7 +195,7 @@ export default function DelivererDashboard() {
             {active.map((d) => {
               const flow = STATUS_FLOW[d.status] || {};
               return (
-                <div key={d.id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-testid={`delivery-${d.id}`}>
+                <div key={d.id} className="bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden" data-testid={`delivery-${d.id}`}>
                   <div className="flex items-center justify-between px-4 py-2 bg-[#F1EFE8] border-b border-gray-100">
                     <span className="text-sm font-semibold text-gray-900">#{d.id.slice(0, 8)}</span>
                     <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${flow.color}`}>{flow.label}</span>
@@ -235,7 +235,7 @@ export default function DelivererDashboard() {
                           maxLength={6}
                           placeholder="Code à 6 chiffres du client"
                           data-testid={`confirm-code-${d.id}`}
-                          className="w-full border border-gray-300 rounded-lg p-3 text-center text-lg tracking-widest font-mono focus:ring-2 focus:ring-afri-primary outline-none"
+                          className="w-full border border-gray-300 rounded-lg p-3 text-center text-lg tracking-widest font-mono focus:ring-2 focus:ring-afri-primary outline-hidden"
                         />
                         <div className="grid grid-cols-2 gap-2">
                           <button onClick={() => { setCodeFor(null); setCode(""); }} className="py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 font-semibold">
@@ -296,7 +296,7 @@ export default function DelivererDashboard() {
 
 function StatMini({ icon: Icon, label, value, small }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center">
+    <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-3 text-center">
       <Icon size={16} className="text-afri-primary mx-auto" />
       <div className={`font-display font-black text-afri-secondary mt-1 ${small ? "text-sm" : "text-xl"}`}>{value}</div>
       <div className="text-[10px] text-gray-500">{label}</div>

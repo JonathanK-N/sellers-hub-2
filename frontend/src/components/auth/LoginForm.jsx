@@ -64,7 +64,7 @@ export default function LoginForm({ onSuccess, onSwitch }) {
             data-testid="login-dial-select"
             value={dial}
             onChange={(e) => setDial(e.target.value)}
-            className="px-3 py-3 rounded-lg bg-gray-100 text-sm font-semibold text-gray-700 min-w-[100px] outline-none"
+            className="px-3 py-3 rounded-lg bg-gray-100 text-sm font-semibold text-gray-700 min-w-[100px] outline-hidden"
           >
             {countries.map((c) => (
               <option key={c.code} value={c.dial_code}>{c.flag} {c.dial_code}</option>
@@ -78,7 +78,7 @@ export default function LoginForm({ onSuccess, onSwitch }) {
               onChange={(e) => setPhone(e.target.value)}
               placeholder="812345678"
               inputMode="tel"
-              className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
+              className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden"
             />
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function LoginForm({ onSuccess, onSwitch }) {
             onChange={(e) => setPassword(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && phone && password && submit()}
             placeholder="••••••••"
-            className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
+            className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden"
           />
           <button
             type="button"

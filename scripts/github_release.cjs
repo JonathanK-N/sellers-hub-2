@@ -7,7 +7,7 @@ const fs = require('fs');
   if (!entries.password) throw Error('GitHub credentials unavailable');
   const task = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
   const response = await fetch('https://api.github.com/repos/JonathanK-N/sellers-hub-2/'+task.endpoint, {method: task.method || 'POST',headers: {Authorization: 'Bearer '+entries.password, Accept:'application/vnd.github+json','Content-Type':'application/json'},body: task.body ? JSON.stringify(task.body) : undefined, signal: AbortSignal.timeout(30000)});
-  const data = await response.json();
+  const data = response.status === 204 ? {} : await response.json();
   console.log(JSON.stringify({status:response.status,url:data.html_url,id:data.id,number:data.number,message:data.message,upload_url:data.upload_url},null,2));
   if (!response.ok) process.exitCode=1;
 })().catch(e=>{console.error(e.message);process.exitCode=1;});

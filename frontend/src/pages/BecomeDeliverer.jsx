@@ -260,7 +260,7 @@ export default function BecomeDeliverer() {
 
       <div className="mobile-shell !pb-10">
         {/* HEADER */}
-        <header className="sticky top-0 z-40 bg-gradient-to-br from-afri-secondary to-afri-primary text-white px-4 pt-4 pb-6 shadow-lg">
+        <header className="sticky top-0 z-40 bg-linear-to-br from-afri-secondary to-afri-primary text-white px-4 pt-4 pb-6 shadow-lg">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-md bg-white/15 flex items-center justify-center font-black">A</div>
@@ -297,7 +297,7 @@ export default function BecomeDeliverer() {
                 {BENEFITS.map((b, i) => (
                   <div
                     key={b.title}
-                    className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-start gap-3"
+                    className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex items-start gap-3"
                     style={{ animation: `fadeSlideIn 0.4s ease-out ${i * 0.08}s both` }}
                   >
                     <div className="w-10 h-10 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center shrink-0">
@@ -376,7 +376,7 @@ export default function BecomeDeliverer() {
                     value={form.seller_id || ""}
                     onChange={(e) => setForm((f) => ({ ...f, seller_id: e.target.value }))}
                     placeholder="Demandez l'ID à votre boutique partenaire"
-                    className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
+                    className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary"
                   />
                   <p className="text-[11px] text-gray-400 mt-1.5">Le vendeur peut vous communiquer cet identifiant depuis son tableau de bord.</p>
                 </div>
@@ -473,7 +473,7 @@ export default function BecomeDeliverer() {
                     onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                     placeholder="6 chiffres"
                     maxLength={6}
-                    className="w-full mt-1.5 border border-gray-300 rounded-lg p-3.5 text-center text-2xl font-bold tracking-[0.4em] outline-none focus:ring-2 focus:ring-afri-primary"
+                    className="w-full mt-1.5 border border-gray-300 rounded-lg p-3.5 text-center text-2xl font-bold tracking-[0.4em] outline-hidden focus:ring-2 focus:ring-afri-primary"
                   />
                   {otpDev && <p className="text-[11px] text-amber-600 text-center mt-1.5">Mode démo — code : {otpDev}</p>}
                   <button
@@ -712,7 +712,7 @@ function Field({ icon: Icon, label, value, onChange, placeholder, type = "text",
           disabled={disabled}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`w-full ${Icon ? "pl-10" : "pl-3"} pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm outline-none focus:ring-2 focus:ring-afri-primary disabled:bg-gray-50 disabled:text-gray-400`}
+          className={`w-full ${Icon ? "pl-10" : "pl-3"} pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm outline-hidden focus:ring-2 focus:ring-afri-primary disabled:bg-gray-50 disabled:text-gray-400`}
         />
       </div>
     </div>

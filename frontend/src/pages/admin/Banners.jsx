@@ -154,7 +154,7 @@ export default function AdminBanners() {
       <main className="p-4 lg:p-8 max-w-7xl space-y-6">
 
         {/* ── Section bloc promo fixe ─────────────────────────────────────── */}
-        <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <section className="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center">
@@ -179,7 +179,7 @@ export default function AdminBanners() {
 
           <div className="px-5 py-4">
             {/* Preview du bloc promo */}
-            <div className={`rounded-xl bg-gradient-to-r from-afri-secondary to-afri-primary text-white p-4 flex items-center gap-3 mb-4 ${!promo.visible ? "opacity-40" : ""}`}>
+            <div className={`rounded-xl bg-linear-to-r from-afri-secondary to-afri-primary text-white p-4 flex items-center gap-3 mb-4 ${!promo.visible ? "opacity-40" : ""}`}>
               <div className="w-10 h-10 rounded-lg bg-white/15 flex items-center justify-center shrink-0"><Sparkles size={18} /></div>
               <div>
                 <p className="font-display font-bold text-sm">{promo.title || "—"}</p>
@@ -192,12 +192,12 @@ export default function AdminBanners() {
                 <div>
                   <label className="text-xs font-medium text-gray-700 block mb-1">Titre</label>
                   <input value={promoDraft.title} onChange={(e) => setPromoDraft({ ...promoDraft, title: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
                 </div>
                 <div>
                   <label className="text-xs font-medium text-gray-700 block mb-1">Sous-titre</label>
                   <input value={promoDraft.subtitle} onChange={(e) => setPromoDraft({ ...promoDraft, subtitle: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+                    className="w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
                 </div>
                 <div className="flex gap-2">
                   <button onClick={savePromo} disabled={promoSaving}
@@ -237,7 +237,7 @@ export default function AdminBanners() {
           ) : (
             <div className="space-y-3">
               {banners.map((b) => (
-                <div key={b.id} className={`bg-white rounded-xl border shadow-sm overflow-hidden flex ${b.is_active ? "border-gray-200" : "border-gray-100 opacity-60"}`}>
+                <div key={b.id} className={`bg-white rounded-xl border shadow-xs overflow-hidden flex ${b.is_active ? "border-gray-200" : "border-gray-100 opacity-60"}`}>
                   <div className="w-28 h-20 bg-gray-100 shrink-0 overflow-hidden">
                     {b.image_url ? <img src={imgSrc(b.image_url)} alt="" className="w-full h-full object-cover" /> :
                       <div className="w-full h-full flex items-center justify-center text-gray-300"><Image size={20} /></div>}
@@ -322,7 +322,7 @@ export default function AdminBanners() {
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-1.5">Position</label>
                 <select value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-none focus:ring-2 focus:ring-afri-primary">
+                  className="w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-hidden focus:ring-2 focus:ring-afri-primary">
                   {POSITIONS.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
                 </select>
               </div>
@@ -330,7 +330,7 @@ export default function AdminBanners() {
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-1.5">Visible pour</label>
                 <select value={form.target_role} onChange={(e) => setForm({ ...form, target_role: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-none focus:ring-2 focus:ring-afri-primary">
+                  className="w-full border border-gray-300 rounded-lg p-3 text-sm bg-white outline-hidden focus:ring-2 focus:ring-afri-primary">
                   {TARGET_ROLES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
                 </select>
               </div>
@@ -352,7 +352,7 @@ function Field({ label, value, onChange, placeholder }) {
     <div>
       <label className="text-sm font-medium text-gray-700 block mb-1.5">{label}</label>
       <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
-        className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+        className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
     </div>
   );
 }

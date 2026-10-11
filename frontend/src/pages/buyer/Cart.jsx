@@ -47,7 +47,7 @@ export default function Cart() {
 
           <div className="px-4 mt-4 space-y-4 pb-44">
             {sellerGroups.map((group) => (
-              <div key={group.seller_id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-testid={`cart-seller-${group.seller_id}`}>
+              <div key={group.seller_id} className="bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden" data-testid={`cart-seller-${group.seller_id}`}>
                 <div className="flex items-center gap-2 px-3 py-2 bg-[#F1EFE8] border-b border-gray-100">
                   <div className="w-6 h-6 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center">
                     <Store size={13} />

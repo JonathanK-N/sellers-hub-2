@@ -118,7 +118,7 @@ export default function ProductDetail({ guest = false }) {
       </div>
 
       <div className="px-4 mt-1">
-        <Link to={shopLink} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors block">
+        <Link to={shopLink} className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors block">
           <div className="w-12 h-12 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center overflow-hidden shrink-0">
             {p.seller_logo ? <img src={p.seller_logo} alt="" className="w-full h-full object-cover" /> : <Store size={20} />}
           </div>
@@ -151,7 +151,7 @@ export default function ProductDetail({ guest = false }) {
       </div>
 
       <div className="px-4 mt-3 space-y-2">
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Livraison</h3>
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <Truck size={16} className="text-afri-primary" /> Livraison à domicile disponible
@@ -172,7 +172,7 @@ export default function ProductDetail({ guest = false }) {
         )}
 
         {reviews.length > 0 && (
-          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+          <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
             <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Avis ({reviews.length})</h3>
             <div className="space-y-3">
               {reviews.slice(0, 5).map((r) => (

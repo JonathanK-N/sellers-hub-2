@@ -57,7 +57,7 @@ export default function AdminSellers() {
         <div className="relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Boutique, propriétaire, téléphone…"
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
         </div>
 
         {loading ? (
@@ -65,9 +65,9 @@ export default function AdminSellers() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((s) => (
-              <div key={s.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden" data-testid={`seller-card-${s.id}`}>
+              <div key={s.id} className="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden" data-testid={`seller-card-${s.id}`}>
                 {/* Banner */}
-                <div className="h-20 bg-gradient-to-r from-afri-secondary to-afri-primary relative">
+                <div className="h-20 bg-linear-to-r from-afri-secondary to-afri-primary relative">
                   {s.banner_url && <img src={s.banner_url} alt="" className="w-full h-full object-cover" />}
                   {s.premium && (
                     <span className="absolute top-2 right-2 flex items-center gap-1 bg-afri-accent text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
@@ -77,7 +77,7 @@ export default function AdminSellers() {
                 </div>
                 <div className="p-4">
                   <div className="flex items-start gap-3 -mt-8 mb-3">
-                    <div className="w-14 h-14 rounded-xl border-2 border-white shadow-sm bg-afri-soft text-afri-primary flex items-center justify-center font-display font-black text-xl overflow-hidden">
+                    <div className="w-14 h-14 rounded-xl border-2 border-white shadow-xs bg-afri-soft text-afri-primary flex items-center justify-center font-display font-black text-xl overflow-hidden">
                       {s.logo_url ? <img src={s.logo_url} alt="" className="w-full h-full object-cover" /> : s.shop_name?.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 pt-8 min-w-0">
@@ -123,7 +123,7 @@ export default function AdminSellers() {
       {selected && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <div className="h-32 bg-gradient-to-r from-afri-secondary to-afri-primary relative rounded-t-2xl overflow-hidden">
+            <div className="h-32 bg-linear-to-r from-afri-secondary to-afri-primary relative rounded-t-2xl overflow-hidden">
               {selected.banner_url && <img src={selected.banner_url} alt="" className="w-full h-full object-cover" />}
               <button onClick={() => setSelected(null)} className="absolute top-3 right-3 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center hover:bg-afri-primary-hover/60">✕</button>
             </div>

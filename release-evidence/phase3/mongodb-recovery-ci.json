@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "scope": "synthetic loopback full replica-set dump and isolated restore; production BLOCKED",
+  "mongo_version": "8.0.32",
+  "dump_seconds": 0.02277543999999665,
+  "restore_seconds": 0.06851935600000303,
+  "plaintext_sha256": "e79817efcdd3efdb5fb26d8eaed164f112f8524a40c1d4824cbdcc9b74024b14",
+  "encrypted_sha256": "c19a0976a2bf59a75bdc255082b7f229c1636acc9caf0748a1f6ee1bb1408f47",
+  "encrypted_bytes": 1083,
+  "encryption": "AES-256-GCM; key private with restricted ACL",
+  "collections": {
+    "financial_ledger": {
+      "documents": 1,
+      "sha256": "d281b5a6988c69764ddcca7c5968b4b7911d1627fcef05c71dc5a17b7f0ac51d",
+      "indexes": [
+        "_id_"
+      ]
+    },
+    "orders": {
+      "documents": 1,
+      "sha256": "8357914afa9daccbec47314f33f7c36e453be03e2504030677629b5c99fbf663",
+      "indexes": [
+        "_id_",
+        "id_1"
+      ]
+    },
+    "products": {
+      "documents": 1,
+      "sha256": "03b4b27bd9095aaff1038caec8932cf60ec3406e0760c2a8f34e48c97d649ceb",
+      "indexes": [
+        "_id_",
+        "id_1"
+      ]
+    }
+  },
+  "production_RPO": "NOT MEASURED",
+  "production_RTO": "NOT MEASURED"
+}

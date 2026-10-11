@@ -1,0 +1,6 @@
+# Author: Jonathan Kakesa (JonathanK-N).
+FROM mongo:8.0.32
+COPY scripts/mongodb_staging_start.sh /usr/local/bin/afrimarket-mongo-start
+COPY scripts/mongodb_staging_init.js /usr/local/bin/afrimarket-mongo-init.js
+RUN chmod 755 /usr/local/bin/afrimarket-mongo-start
+ENTRYPOINT ["/usr/local/bin/afrimarket-mongo-start"]

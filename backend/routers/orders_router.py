@@ -1,12 +1,16 @@
 """Orders + escrow + delivery confirmation."""
 import uuid
 import logging
+import hashlib
+import json
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Header
 from pydantic import BaseModel
 
 from db import get_db
+from financial_transactions import atomic_operation
+from money import money_product, commission, minor_units, record_release
 from stock import aggregate_items, reserve_stock, release_stock
 from models import OrderCreateRequest, ConfirmDeliveryRequest
 from auth import get_current_user_dep, require_role, generate_otp
@@ -24,11 +28,8 @@ def _timeline_event(status: str, label: str) -> dict:
     return {"status": status, "label": label, "timestamp": _now()}
 
 
-import random
-
-
 def _gen_code() -> str:
-    return f"{random.randint(0, 999999):06d}"
+    return generate_otp()
 
 
 SELF_DELIVERY_FEE_TIERS = {7500, 10000, 15000, 20000}
@@ -47,7 +48,8 @@ def _resolve_item_mode(requested_mode: str, product_modes: list) -> str:
 
 
 @router.post("/orders", status_code=201)
-async def create_order(req: OrderCreateRequest, user: dict = Depends(require_role("buyer"))):
+@atomic_operation
+async def create_order(req: OrderCreateRequest, user: dict = Depends(require_role("buyer")), idempotency_key: str | None = Header(default=None, max_length=128)):
     """Create an order from the cart. Carts spanning multiple sellers are split into
     one sub-order per seller, grouped under a single order_group_id. Within a single
     seller, items are further split by delivery mode (delivery vs collect) when the
@@ -57,6 +59,15 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     split into per-order escrows.
     """
     db = get_db()
+    if not isinstance(idempotency_key, str) or not 8 <= len(idempotency_key) <= 128:
+        raise HTTPException(422, detail="Idempotency-Key requis (8 à 128 caractères)")
+    request_id = user["id"] + ":" + idempotency_key
+    request_hash = hashlib.sha256(json.dumps(req.model_dump(), sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    previous = await db.checkout_requests.find_one({"_id": request_id})
+    if previous:
+        if previous["request_hash"] != request_hash:
+            raise HTTPException(409, detail="Clé d'idempotence réutilisée pour un panier différent")
+        return previous["response"]
     if not req.items:
         raise HTTPException(status_code=400, detail="Panier vide")
     if req.delivery_mode not in ("delivery", "collect"):
@@ -69,6 +80,9 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     products = {p["id"]: p async for p in db.products.find({"id": {"$in": product_ids}}, {"_id": 0})}
     if len(products) != len(set(product_ids)):
         raise HTTPException(status_code=400, detail="Produit introuvable dans le panier")
+
+    if len({p["currency"] for p in products.values()}) != 1:
+        raise HTTPException(422, detail="Les paniers multi-devises nécessitent une conversion validée")
 
     # Group requested items by (seller_id, effective_delivery_mode).
     # A seller with mixed delivery/collect-only products yields two groups → two sub-orders.
@@ -103,8 +117,8 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
             items_full = []
             sub_total = 0.0
             for it, p in entries:
-                subtotal = p["price"] * it.quantity
-                sub_total += subtotal
+                subtotal = money_product(p["price"], it.quantity)
+                sub_total = (minor_units(sub_total) + minor_units(subtotal)) / 100
                 currency = p["currency"]
                 items_full.append({
                     "product_id": p["id"],
@@ -116,7 +130,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
                 })
 
             commission_rate = seller.get("commission_rate", 0.07)
-            commission_amount = round(sub_total * commission_rate, 2)
+            commission_amount = commission(sub_total, commission_rate)
 
             # Frais de livraison: definis par le vendeur (palier self_delivery_fee)
             # si livraison propre, ou fixes 16 000 FC si reseau AfriMarket. Aucun frais
@@ -131,7 +145,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
                 delivery_fee = 0.0
             amount_due = sub_total + delivery_fee
             qr_token = str(uuid.uuid4()) if item_mode == "collect" else None
-            grand_total += amount_due
+            grand_total = (minor_units(grand_total) + minor_units(amount_due)) / 100
 
             order = {
                 "id": str(uuid.uuid4()),
@@ -214,20 +228,18 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
             logger.exception("Order compensation failed for group %s", group_id)
         raise
 
-    # Trigger fraud evaluation for the buyer (non-blocking best-effort)
-    try:
-        from fraud import evaluate_and_log
-        await evaluate_and_log(user["id"])
-    except Exception as e:
-        logger.warning(f"fraud eval failed: {e}")
+    # Schedule evaluation after commit; transaction retries must not send alerts.
+    await db.fraud_outbox.insert_one({"id": group_id, "user_id": user["id"], "status": "pending"})
 
-    return {
+    response = {
         "order_group_id": group_id,
         "seller_count": len(created_orders),
         "grand_total": grand_total,
         "currency": currency,
         "orders": created_orders,
     }
+    await db.checkout_requests.insert_one({"_id": request_id, "request_hash": request_hash, "response": response})
+    return response
 
 
 @router.get("/orders/my")
@@ -343,6 +355,9 @@ async def advance_order(order_id: str, user: dict = Depends(require_role("seller
     if not my_seller or my_seller["id"] != o["seller_id"]:
         raise HTTPException(status_code=403, detail="Accès refusé")
 
+    if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
+        raise HTTPException(409, detail="Paiement non confirmé")
+
     transitions = {
         "confirmed": ("preparing", "Vendeur prépare la commande"),
         "preparing": (
@@ -373,6 +388,7 @@ async def advance_order(order_id: str, user: dict = Depends(require_role("seller
 
 
 @router.post("/orders/{order_id}/confirm-delivery")
+@atomic_operation
 async def confirm_delivery(order_id: str, req: ConfirmDeliveryRequest, user: dict = Depends(get_current_user_dep)):
     """Buyer/livreur enters 6-digit code -> escrow released."""
     db = get_db()
@@ -404,6 +420,7 @@ async def confirm_delivery(order_id: str, req: ConfirmDeliveryRequest, user: dic
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
     )
+    await record_release(db, o)
     return {"ok": True, "status": "delivered", "escrow_status": "released"}
 
 
@@ -412,6 +429,7 @@ class ScanQrRequest(BaseModel):
 
 
 @router.post("/orders/{order_id}/confirm-collect")
+@atomic_operation
 async def confirm_collect(order_id: str, user: dict = Depends(require_role("seller"))):
     """Seller confirms cash handoff for Click & Collect — no QR needed for cash payment."""
     db = get_db()
@@ -458,10 +476,12 @@ async def confirm_collect(order_id: str, user: dict = Depends(require_role("sell
         f"Votre commande #{order_id[:8].upper()} a été remise. Merci pour votre achat !",
         {"order_id": order_id},
     )
+    await record_release(db, o)
     return {"ok": True, "status": "collected", "order_id": order_id}
 
 
 @router.post("/orders/{order_id}/scan-qr")
+@atomic_operation
 async def scan_qr(order_id: str, req: ScanQrRequest, user: dict = Depends(require_role("seller"))):
     """Seller scans buyer's QR code -> escrow released for Click & Collect."""
     db = get_db()
@@ -493,6 +513,7 @@ async def scan_qr(order_id: str, req: ScanQrRequest, user: dict = Depends(requir
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
     )
+    await record_release(db, o)
     return {"ok": True, "status": "collected", "escrow_status": "released"}
 
 

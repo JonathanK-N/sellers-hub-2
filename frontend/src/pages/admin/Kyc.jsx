@@ -50,7 +50,7 @@ export default function AdminKyc() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {pending.map((s) => (
-              <div key={s.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5" data-testid={`kyc-card-${s.id}`}>
+              <div key={s.id} className="bg-white rounded-xl border border-gray-200 shadow-xs p-5" data-testid={`kyc-card-${s.id}`}>
                 <div className="flex items-start gap-3">
                   <div className="w-12 h-12 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center">
                     <ShieldCheck size={20} />

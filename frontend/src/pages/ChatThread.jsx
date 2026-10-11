@@ -83,7 +83,7 @@ export default function ChatThread() {
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
           placeholder="Votre message…"
-          className="flex-1 border border-gray-300 rounded-full px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
+          className="flex-1 border border-gray-300 rounded-full px-4 py-2.5 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary"
         />
         <button
           data-testid="chat-send-btn"

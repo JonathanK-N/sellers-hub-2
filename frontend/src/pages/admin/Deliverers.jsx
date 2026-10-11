@@ -39,7 +39,7 @@ export default function AdminDeliverers() {
         ) : (
           <div className="space-y-3">
             {rows.map((d) => (
-              <div key={d.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-4" data-testid={`deliverer-${d.id}`}>
+              <div key={d.id} className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex items-center gap-4" data-testid={`deliverer-${d.id}`}>
                 <div className="w-11 h-11 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center shrink-0">
                   <Bike size={20} />
                 </div>

@@ -99,17 +99,17 @@ export default function SellerSetup() {
               <input ref={logoRef} type="file" accept="image/*" className="hidden" onChange={uploadLogo} />
             </div>
             <div><label className="text-sm font-medium text-gray-700">Nom de la boutique *</label>
-              <input data-testid="setup-shop-name" value={form.shop_name} onChange={e => set("shop_name", e.target.value)} placeholder="ex: ÉlectroKin, Boutique Wax..." className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+              <input data-testid="setup-shop-name" value={form.shop_name} onChange={e => set("shop_name", e.target.value)} placeholder="ex: ÉlectroKin, Boutique Wax..." className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
             </div>
             <div><label className="text-sm font-medium text-gray-700">Catégorie principale</label>
-              <select value={form.category} onChange={e => set("category", e.target.value)} className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-none bg-white focus:ring-2 focus:ring-afri-primary">
+              <select value={form.category} onChange={e => set("category", e.target.value)} className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-hidden bg-white focus:ring-2 focus:ring-afri-primary">
                 {CATEGORIES.map(c => <option key={c}>{c}</option>)}
               </select>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-700">Produits vendus (tags)</label>
               <div className="mt-1.5 flex gap-2">
-                <input value={specialty} onChange={e => setSpecialty(e.target.value)} onKeyDown={e => e.key === "Enter" && addSpecialty()} placeholder="ex: Téléphones, Pagnes..." className="flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+                <input value={specialty} onChange={e => setSpecialty(e.target.value)} onKeyDown={e => e.key === "Enter" && addSpecialty()} placeholder="ex: Téléphones, Pagnes..." className="flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
                 <button onClick={addSpecialty} className="w-10 h-10 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center"><Plus size={18} /></button>
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
@@ -128,16 +128,16 @@ export default function SellerSetup() {
           <div className="space-y-4">
             <p className="text-sm text-gray-500">Décrivez votre boutique pour rassurer vos futurs clients.</p>
             <div><label className="text-sm font-medium text-gray-700">Description courte * <span className="text-gray-400 font-normal">(accroche)</span></label>
-              <textarea value={form.description} onChange={e => set("description", e.target.value)} rows={2} placeholder="ex: Spécialiste en téléphones reconditionnés à Kinshasa, livraison disponible." className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none resize-none focus:ring-2 focus:ring-afri-primary" />
+              <textarea value={form.description} onChange={e => set("description", e.target.value)} rows={2} placeholder="ex: Spécialiste en téléphones reconditionnés à Kinshasa, livraison disponible." className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-hidden resize-none focus:ring-2 focus:ring-afri-primary" />
               <p className="text-xs text-gray-400 mt-1">{form.description.length}/150 caractères</p>
             </div>
             <div><label className="text-sm font-medium text-gray-700">Présentation complète <span className="text-gray-400 font-normal">(optionnel)</span></label>
               <p className="text-xs text-gray-500 mb-1.5">Parlez de votre histoire, de vos valeurs, de votre expertise. Les acheteurs aiment connaître le vendeur.</p>
-              <textarea value={form.long_description} onChange={e => set("long_description", e.target.value)} rows={6} placeholder="Nous sommes une boutique familiale fondée en 2018 à Gombe. Notre mission est de vous proposer des produits électroniques de qualité à des prix accessibles. Toutes nos marchandises sont garanties 3 mois et vérifiées avant expédition…" className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none resize-none focus:ring-2 focus:ring-afri-primary" />
+              <textarea value={form.long_description} onChange={e => set("long_description", e.target.value)} rows={6} placeholder="Nous sommes une boutique familiale fondée en 2018 à Gombe. Notre mission est de vous proposer des produits électroniques de qualité à des prix accessibles. Toutes nos marchandises sont garanties 3 mois et vérifiées avant expédition…" className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-hidden resize-none focus:ring-2 focus:ring-afri-primary" />
             </div>
             <div><label className="text-sm font-medium text-gray-700">Horaires d'ouverture</label>
               <div className="relative mt-1.5"><Clock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input value={form.opening_hours} onChange={e => set("opening_hours", e.target.value)} placeholder="08:00-18:00" className="w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+                <input value={form.opening_hours} onChange={e => set("opening_hours", e.target.value)} placeholder="08:00-18:00" className="w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
               </div>
             </div>
           </div>
@@ -149,18 +149,18 @@ export default function SellerSetup() {
             <p className="text-sm text-gray-500">Indiquez où se trouve votre boutique pour être trouvé par les clients proches.</p>
             <div><label className="text-sm font-medium text-gray-700">Quartier *</label>
               <div className="relative mt-1.5"><MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input data-testid="setup-neighborhood" value={form.neighborhood} onChange={e => set("neighborhood", e.target.value)} placeholder="ex: Gombe, Lingwala, Akwa…" className="w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+                <input data-testid="setup-neighborhood" value={form.neighborhood} onChange={e => set("neighborhood", e.target.value)} placeholder="ex: Gombe, Lingwala, Akwa…" className="w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
               </div>
             </div>
             <div><label className="text-sm font-medium text-gray-700">Adresse complète</label>
-              <input value={form.address} onChange={e => set("address", e.target.value)} placeholder="ex: Av. du Marché, n°12" className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+              <input value={form.address} onChange={e => set("address", e.target.value)} placeholder="ex: Av. du Marché, n°12" className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div><label className="text-xs font-medium text-gray-700">Latitude (GPS)</label>
-                <input type="number" step="any" value={form.latitude || ""} onChange={e => set("latitude", parseFloat(e.target.value)||0)} placeholder="-4.32" className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+                <input type="number" step="any" value={form.latitude || ""} onChange={e => set("latitude", parseFloat(e.target.value)||0)} placeholder="-4.32" className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
               </div>
               <div><label className="text-xs font-medium text-gray-700">Longitude (GPS)</label>
-                <input type="number" step="any" value={form.longitude || ""} onChange={e => set("longitude", parseFloat(e.target.value)||0)} placeholder="15.31" className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+                <input type="number" step="any" value={form.longitude || ""} onChange={e => set("longitude", parseFloat(e.target.value)||0)} placeholder="15.31" className="mt-1.5 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
               </div>
             </div>
             <div className="bg-afri-soft rounded-lg p-3">
@@ -184,7 +184,7 @@ export default function SellerSetup() {
                   <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">{icon}</div>
                   <div className="flex-1">
                     <label className="text-xs font-medium text-gray-600">{label}</label>
-                    <input value={form.social_links[key]} onChange={e => setSocial(key, e.target.value)} placeholder={placeholder} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-afri-primary mt-0.5" />
+                    <input value={form.social_links[key]} onChange={e => setSocial(key, e.target.value)} placeholder={placeholder} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary mt-0.5" />
                   </div>
                 </div>
               ))}

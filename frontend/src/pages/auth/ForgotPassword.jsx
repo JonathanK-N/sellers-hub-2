@@ -68,12 +68,12 @@ export default function ForgotPassword() {
           <>
             <p className="text-sm text-gray-600">Entrez votre numéro pour recevoir un code de réinitialisation.</p>
             <div className="flex gap-2">
-              <select value={dial} onChange={(e) => setDial(e.target.value)} className="px-3 py-3 rounded-lg bg-gray-100 text-sm font-semibold text-gray-700 min-w-[100px] outline-none">
+              <select value={dial} onChange={(e) => setDial(e.target.value)} className="px-3 py-3 rounded-lg bg-gray-100 text-sm font-semibold text-gray-700 min-w-[100px] outline-hidden">
                 {countries.map((c) => <option key={c.code} value={c.dial_code}>{c.flag} {c.dial_code}</option>)}
               </select>
               <div className="relative flex-1">
                 <Phone size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input data-testid="forgot-phone-input" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="812345678" inputMode="tel" className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-afri-primary outline-none" />
+                <input data-testid="forgot-phone-input" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="812345678" inputMode="tel" className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-afri-primary outline-hidden" />
               </div>
             </div>
             <button disabled={loading || !phone} onClick={requestCode} className="w-full bg-afri-primary var(--afri-primary-hover) text-white rounded-lg py-3 font-semibold disabled:opacity-50">
@@ -85,11 +85,11 @@ export default function ForgotPassword() {
             <p className="text-sm text-gray-600">Entrez le code reçu et votre nouveau mot de passe.</p>
             <div className="relative">
               <KeyRound size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input data-testid="forgot-code-input" value={code} onChange={(e) => setCode(e.target.value)} placeholder="Code à 6 chiffres" inputMode="numeric" maxLength={6} className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm tracking-widest focus:ring-2 focus:ring-afri-primary outline-none" />
+              <input data-testid="forgot-code-input" value={code} onChange={(e) => setCode(e.target.value)} placeholder="Code à 6 chiffres" inputMode="numeric" maxLength={6} className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm tracking-widest focus:ring-2 focus:ring-afri-primary outline-hidden" />
             </div>
             <div className="relative">
               <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input data-testid="forgot-newpass-input" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Nouveau mot de passe (6+ caractères)" className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-afri-primary outline-none" />
+              <input data-testid="forgot-newpass-input" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Nouveau mot de passe (6+ caractères)" className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-afri-primary outline-hidden" />
             </div>
             <button disabled={loading || code.length !== 6 || newPassword.length < 6} onClick={doReset} className="w-full bg-afri-primary var(--afri-primary-hover) text-white rounded-lg py-3 font-semibold disabled:opacity-50">
               {loading ? "…" : "Réinitialiser"}

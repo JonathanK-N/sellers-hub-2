@@ -44,7 +44,7 @@ export default function Profile() {
       <TopBar title="Mon profil" showCart={false} />
 
       <div className="px-4 mt-4 space-y-3">
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex items-center gap-3">
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
@@ -82,7 +82,7 @@ export default function Profile() {
           <button
             data-testid="goto-buyer-kyc"
             onClick={() => nav("/buyer/kyc")}
-            className="w-full bg-white border border-afri-primary rounded-xl shadow-sm p-4 flex items-center gap-3 hover:bg-afri-soft transition-colors"
+            className="w-full bg-white border border-afri-primary rounded-xl shadow-xs p-4 flex items-center gap-3 hover:bg-afri-soft transition-colors"
           >
             <div className="w-9 h-9 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center shrink-0">
               <ShieldCheck size={18} />
@@ -99,7 +99,7 @@ export default function Profile() {
           <button
             data-testid="goto-become-deliverer"
             onClick={() => nav("/become-deliverer")}
-            className="w-full bg-gradient-to-r from-afri-secondary to-afri-primary rounded-xl shadow-sm p-4 flex items-center gap-3 text-white hover:opacity-95 transition-opacity"
+            className="w-full bg-linear-to-r from-afri-secondary to-afri-primary rounded-xl shadow-xs p-4 flex items-center gap-3 text-white hover:opacity-95 transition-opacity"
           >
             <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center shrink-0">
               <Truck size={18} />
@@ -112,7 +112,7 @@ export default function Profile() {
           </button>
         )}
 
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm divide-y divide-gray-100">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs divide-y divide-gray-100">
           <Row icon={MapPin} label="Pays" value={user.country_code} />
           <Row icon={Phone} label="Téléphone" value={user.phone} />
           <Row icon={User} label="Niveau KYC" value={`Niveau ${user.kyc_level}`} />

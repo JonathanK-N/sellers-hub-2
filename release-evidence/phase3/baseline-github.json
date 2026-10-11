@@ -1,0 +1,251 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "checked_at": "2026-10-11T17:20:59.468Z",
+  "pull_requests": [
+    {
+      "number": 1,
+      "base": "ui-ux",
+      "base_sha": "83be26533e8bca3aa4ca1b1fa84c93f686aabec0",
+      "head": "fix/restore-original-green-theme",
+      "head_sha": "dd6d186a15abc88dfdc93702dbe0e91854639a4a",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 2,
+      "base": "fix/restore-original-green-theme",
+      "base_sha": "dd6d186a15abc88dfdc93702dbe0e91854639a4a",
+      "head": "stabilization/afrimarket-phase-2",
+      "head_sha": "cd08cc50a8378db4c15d5d42c74c386982d58cc9",
+      "draft": true,
+      "merged": false
+    }
+  ],
+  "releases": [
+    {
+      "id": 409214759,
+      "draft": true,
+      "tag": "release/afrimarket-green-0.1.1-candidate-20261010",
+      "assets": [
+        {
+          "name": "A-original-6722492d85e0-source.zip",
+          "size": 2440442,
+          "digest": "sha256:3f9ebc1885c20ec21bb4eb9fbc86c27499825dade18f76f78aac7f63ec1dfbd3",
+          "local_sha256": "3f9ebc1885c20ec21bb4eb9fbc86c27499825dade18f76f78aac7f63ec1dfbd3",
+          "status": "PASS"
+        },
+        {
+          "name": "afrimarket-A-original-6722492d85e0f8646ebe03c9b841c4a0e3611449.zip",
+          "size": 2162995,
+          "digest": "sha256:b00eab9d1f17fba7727cd63972b026e144a9db81bbffaab351813345329efb63",
+          "local_sha256": "b00eab9d1f17fba7727cd63972b026e144a9db81bbffaab351813345329efb63",
+          "status": "PASS"
+        },
+        {
+          "name": "afrimarket-B-uiux-deployed-0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84.zip",
+          "size": 2181887,
+          "digest": "sha256:ec89fcce5e16eb52b87719414236e61ecb12e12dc5538df994afa69289a62ed1",
+          "local_sha256": "ec89fcce5e16eb52b87719414236e61ecb12e12dc5538df994afa69289a62ed1",
+          "status": "PASS"
+        },
+        {
+          "name": "afrimarket-B-uiux-tip-83be26533e8bca3aa4ca1b1fa84c93f686aabec0.zip",
+          "size": 2511767,
+          "digest": "sha256:9141d8df6f0612b5554134ff662329deb3883098b466ddf2f9acd7913ea2ef71",
+          "local_sha256": "9141d8df6f0612b5554134ff662329deb3883098b466ddf2f9acd7913ea2ef71",
+          "status": "PASS"
+        },
+        {
+          "name": "artifact-manifest.json",
+          "size": 2974,
+          "digest": "sha256:7012280f47a38beb040b460d03b2ddd8cf080e6f485fadc87a71e0f5756de14b",
+          "local_sha256": "883fb79104064d6317a7d4b2bf1253af02e9bfe4057bcfc7b5e918e52b34fe08",
+          "status": "PASS_REMOTE_RECOVERED",
+          "initial_local_status": "FAIL",
+          "verified_remote_sha256": "7012280f47a38beb040b460d03b2ddd8cf080e6f485fadc87a71e0f5756de14b"
+        },
+        {
+          "name": "B-uiux-deployed-0e24300a3fa0-source.zip",
+          "size": 2450443,
+          "digest": "sha256:2c54433560c85a37b2d8e2fb7873d7c0e86b0bd2f4399fb0114060b76d6c43d4",
+          "local_sha256": "2c54433560c85a37b2d8e2fb7873d7c0e86b0bd2f4399fb0114060b76d6c43d4",
+          "status": "PASS"
+        },
+        {
+          "name": "B-uiux-tip-83be26533e8b-source.zip",
+          "size": 2456033,
+          "digest": "sha256:fdb1c13d0ec281b061029150ac38e3a897757658a85f5036409476b03405c739",
+          "local_sha256": "fdb1c13d0ec281b061029150ac38e3a897757658a85f5036409476b03405c739",
+          "status": "PASS"
+        },
+        {
+          "name": "C-green-890d8e7-android-debug.zip",
+          "size": 6585257,
+          "digest": "sha256:a83f5562d60e1c54720936e946a609f17841f1b6a660c50955bb368b3fa84703",
+          "local_sha256": "a83f5562d60e1c54720936e946a609f17841f1b6a660c50955bb368b3fa84703",
+          "status": "PASS"
+        },
+        {
+          "name": "C-green-890d8e7-web-pwa.zip",
+          "size": 2513056,
+          "digest": "sha256:34535b381009ba357679ec4e76738069c52661615176e4d383c6703254e2136d",
+          "local_sha256": "34535b381009ba357679ec4e76738069c52661615176e4d383c6703254e2136d",
+          "status": "PASS"
+        },
+        {
+          "name": "C-green-890d8e76341c-source.zip",
+          "size": 3915990,
+          "digest": "sha256:386ef60a7f433bf563176f38e7c82e20a0cde0e5e8988327d1b016a3b30cd94a",
+          "local_sha256": "386ef60a7f433bf563176f38e7c82e20a0cde0e5e8988327d1b016a3b30cd94a",
+          "status": "PASS"
+        },
+        {
+          "name": "C-green-b71f84e-android-debug.zip",
+          "size": 6584385,
+          "digest": "sha256:cf98421667e6695dd29501799711a9778e9302f5206c946d4a081a3077fc51de",
+          "local_sha256": "cf98421667e6695dd29501799711a9778e9302f5206c946d4a081a3077fc51de",
+          "status": "PASS"
+        },
+        {
+          "name": "C-green-b71f84e-web-pwa.zip",
+          "size": 2512667,
+          "digest": "sha256:b777fc8ded581760632d5a0157a99fad930573808c07baf59273e03dc8e59940",
+          "local_sha256": "b777fc8ded581760632d5a0157a99fad930573808c07baf59273e03dc8e59940",
+          "status": "PASS"
+        },
+        {
+          "name": "C-green-b71f84ece757-source.zip",
+          "size": 2503898,
+          "digest": "sha256:aeff1bd06e2d07109f077e1c6e4dd865f01aef32393e9977b975f6f69f670802",
+          "local_sha256": "aeff1bd06e2d07109f077e1c6e4dd865f01aef32393e9977b975f6f69f670802",
+          "status": "PASS"
+        },
+        {
+          "name": "green-build-artifacts.json",
+          "size": 1048,
+          "digest": "sha256:6a2be343fc1ba411ef0d74144c7d45f9555acf0d772cc66b9089729f41b7daa6",
+          "local_sha256": null,
+          "status": "PASS_REMOTE_RECOVERED",
+          "initial_local_status": "BLOCKED_LOCAL_NAME",
+          "verified_remote_sha256": "6a2be343fc1ba411ef0d74144c7d45f9555acf0d772cc66b9089729f41b7daa6"
+        },
+        {
+          "name": "lighthouse.json",
+          "size": 601010,
+          "digest": "sha256:945d33e91786e4ca65d4c8c47fec874639fd09609710d02ac405be39da796958",
+          "local_sha256": null,
+          "status": "PASS_REMOTE_RECOVERED",
+          "initial_local_status": "BLOCKED_LOCAL_NAME",
+          "verified_remote_sha256": "945d33e91786e4ca65d4c8c47fec874639fd09609710d02ac405be39da796958"
+        },
+        {
+          "name": "reference-web-artifacts.json",
+          "size": 589,
+          "digest": "sha256:e82e44112e19ef7f7925d09075c5915c9baecbccfa795a14e0cae57589a4bb6a",
+          "local_sha256": null,
+          "status": "PASS_REMOTE_RECOVERED",
+          "initial_local_status": "BLOCKED_LOCAL_NAME",
+          "verified_remote_sha256": "e82e44112e19ef7f7925d09075c5915c9baecbccfa795a14e0cae57589a4bb6a"
+        },
+        {
+          "name": "release-manifest-890d8e7.json",
+          "size": 4474,
+          "digest": "sha256:eb9f72667698f24eb7397e65bdb5b6225cf81be4c28203d2baf4e025436b11e0",
+          "local_sha256": "eb9f72667698f24eb7397e65bdb5b6225cf81be4c28203d2baf4e025436b11e0",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": 409717666,
+      "draft": true,
+      "tag": "v1.0.1-green-rc.2",
+      "assets": [
+        {
+          "name": "AfriMarket-1.0.1-green-rc.2-staging-debug-9176e82.apk",
+          "size": 8159834,
+          "digest": "sha256:3449a4d8db6b3beb51a269c99f2cc46f9b322dcbc4f147c9fcade52b480c7a9d",
+          "local_sha256": "3449a4d8db6b3beb51a269c99f2cc46f9b322dcbc4f147c9fcade52b480c7a9d",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-android.zip",
+          "size": 7674688,
+          "digest": "sha256:b1c35f2ffd374cf9d742704abdfefe611d80d6fd245499cb388f220a0d714b0b",
+          "local_sha256": "b1c35f2ffd374cf9d742704abdfefe611d80d6fd245499cb388f220a0d714b0b",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-artifact-manifest-complete.json",
+          "size": 3150,
+          "digest": "sha256:15bb6b35942e1ac9df48f119f21c3bdbd30d00e5cf1bb88ed596eca1100be705",
+          "local_sha256": "15bb6b35942e1ac9df48f119f21c3bdbd30d00e5cf1bb88ed596eca1100be705",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-artifact-manifest.json",
+          "size": 2719,
+          "digest": "sha256:4a97d429e0fab3c619301b49da3d97f5fa8b8f78260e9a424e7bb14ea6f44e09",
+          "local_sha256": "4a97d429e0fab3c619301b49da3d97f5fa8b8f78260e9a424e7bb14ea6f44e09",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-backend-security.zip",
+          "size": 808,
+          "digest": "sha256:8e4ba769b9147a7a0fc9f5a204f2a31548cb381a83e319711a40b9500db94e3b",
+          "local_sha256": "8e4ba769b9147a7a0fc9f5a204f2a31548cb381a83e319711a40b9500db94e3b",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-emulator.zip",
+          "size": 371790,
+          "digest": "sha256:8f98b0115da12fc04c38913979de0c48c2ffe889dc1eee5d978610bda426166e",
+          "local_sha256": "8f98b0115da12fc04c38913979de0c48c2ffe889dc1eee5d978610bda426166e",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-full-validation-evidence.zip",
+          "size": 13690385,
+          "digest": "sha256:b12e2109f8d3efd394d742d91a71c22f302e1fd52ad333669121875f157625f3",
+          "local_sha256": "b12e2109f8d3efd394d742d91a71c22f302e1fd52ad333669121875f157625f3",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-performance.zip",
+          "size": 2025617,
+          "digest": "sha256:c75a4c3c0c8a5383348a3ceb4bc56d284622b6c2d38e11476b9a6845c799bc2d",
+          "local_sha256": "c75a4c3c0c8a5383348a3ceb4bc56d284622b6c2d38e11476b9a6845c799bc2d",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-report-evidence.zip",
+          "size": 4172886,
+          "digest": "sha256:74caa34ee81566ee8abdc460d268e4f8dae85653759af211e87c664ceddb9905",
+          "local_sha256": "74caa34ee81566ee8abdc460d268e4f8dae85653759af211e87c664ceddb9905",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-source.zip",
+          "size": 4817095,
+          "digest": "sha256:56d0fc61bc82b3aa489594614f40879c2f36a8b8e781c799c3f976d2968a4fd0",
+          "local_sha256": "56d0fc61bc82b3aa489594614f40879c2f36a8b8e781c799c3f976d2968a4fd0",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-web-security.zip",
+          "size": 364426,
+          "digest": "sha256:4a683bc6a52208329ec73d0fb05afaa5df8449eeeb3714a2ea4411005e5f2c27",
+          "local_sha256": "4a683bc6a52208329ec73d0fb05afaa5df8449eeeb3714a2ea4411005e5f2c27",
+          "status": "PASS"
+        },
+        {
+          "name": "phase2-9176e82-web.zip",
+          "size": 3622699,
+          "digest": "sha256:356dd3a8680a259f37c2b9f58f30b00489154948b81f808cad73979e33268013",
+          "local_sha256": "356dd3a8680a259f37c2b9f58f30b00489154948b81f808cad73979e33268013",
+          "status": "PASS"
+        }
+      ]
+    }
+  ]
+}

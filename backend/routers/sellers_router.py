@@ -86,7 +86,7 @@ def _resize_image(data: bytes, max_px: int = 1200, quality: int = 85) -> tuple[b
                         if val in rotations:
                             img = img.rotate(rotations[val], expand=True)
         except Exception:
-            pass
+            logger.warning("Best-effort operation failed", exc_info=True)
         # Convertir en RGB (pour JPEG — pas de canal alpha)
         if img.mode in ("RGBA", "P", "LA"):
             bg = Image.new("RGB", img.size, (255, 255, 255))
@@ -377,7 +377,7 @@ async def get_buyer_profile(buyer_id: str, user: dict = Depends(require_role("se
     seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
     if not seller:
         raise HTTPException(status_code=400, detail="Boutique manquante")
-    buyer = await db.users.find_one({"id": buyer_id}, {"_id": 0, "password_hash": 0, "otp_code": 0})
+    buyer = await db.users.find_one({"id": buyer_id}, dict.fromkeys(("_id", "password_hash", "otp_code"), 0))
     if not buyer:
         raise HTTPException(status_code=404, detail="Acheteur introuvable")
     orders = await db.orders.find(

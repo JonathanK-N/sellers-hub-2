@@ -148,7 +148,7 @@ export default function BuyerHome() {
 
 function PromoBlock({ title, subtitle }) {
   return (
-    <div className="rounded-xl bg-gradient-to-r from-afri-secondary to-afri-primary text-white p-4 flex items-center gap-3 overflow-hidden relative">
+    <div className="rounded-xl bg-linear-to-r from-afri-secondary to-afri-primary text-white p-4 flex items-center gap-3 overflow-hidden relative">
       <div className="w-12 h-12 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
         <Sparkles size={22} />
       </div>

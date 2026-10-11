@@ -132,7 +132,7 @@ export default function EditProfile() {
 
       {/* BANNIÈRE + LOGO */}
       <div className="relative">
-        <div onClick={() => bannerRef.current?.click()} className="w-full h-32 bg-gradient-to-r from-afri-secondary to-afri-primary flex items-center justify-center cursor-pointer overflow-hidden relative group">
+        <div onClick={() => bannerRef.current?.click()} className="w-full h-32 bg-linear-to-r from-afri-secondary to-afri-primary flex items-center justify-center cursor-pointer overflow-hidden relative group">
           {form.shop_banner_url ? <img src={photoUrl(form.shop_banner_url)} alt="bannière" className="w-full h-full object-cover" /> : null}
           <div className={`${form.shop_banner_url ? "absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100" : ""} flex items-center justify-center flex-col gap-1`}>
             <Camera size={20} className="text-white" />
@@ -334,10 +334,10 @@ export default function EditProfile() {
   );
 }
 
-const inp = "w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary";
+const inp = "w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary";
 function Section({ title, children }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+    <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
       <h3 className="text-sm font-bold text-afri-secondary mb-3 pb-2 border-b border-gray-100">{title}</h3>
       <div className="space-y-3">{children}</div>
     </div>

@@ -101,7 +101,7 @@ export default function AdminFraud() {
         )}
 
         {stats?.trend && (
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+          <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-5">
             <h3 className="text-sm font-semibold text-gray-900 mb-4">Alertes sur 7 jours</h3>
             <div style={{ width: "100%", height: 140 }}>
               <ResponsiveContainer>
@@ -130,7 +130,7 @@ export default function AdminFraud() {
                 <div
                   key={a.user_id}
                   data-testid={`fraud-alert-${a.user_id}`}
-                  className={`bg-white rounded-xl border-l-4 shadow-sm p-5 ${LEVEL_STYLES[a.level] || LEVEL_STYLES.info}`}
+                  className={`bg-white rounded-xl border-l-4 shadow-xs p-5 ${LEVEL_STYLES[a.level] || LEVEL_STYLES.info}`}
                 >
                   <div className="flex items-start gap-4">
                     <div className="relative shrink-0">
@@ -201,7 +201,7 @@ export default function AdminFraud() {
 
 function StatCard({ label, value, accent }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+    <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
       <div className="text-xs text-gray-500">{label}</div>
       <div className="text-2xl font-display font-black mt-1" style={{ color: accent || "var(--afri-secondary)" }}>
         {value}

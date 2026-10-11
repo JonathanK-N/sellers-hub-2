@@ -95,7 +95,7 @@ export default function OpenDispute() {
             onChange={(e) => setDetails(e.target.value)}
             placeholder="Décrivez le problème en détail…"
             rows={4}
-            className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary resize-none"
+            className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary resize-none"
           />
         </div>
 

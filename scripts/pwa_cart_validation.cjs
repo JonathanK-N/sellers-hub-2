@@ -28,7 +28,7 @@ const {chromium}=require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary-r
   await page.goto('https://afrimarket-web-staging-staging.up.railway.app/buyer/home',{waitUntil:'networkidle'});
   await page.getByTestId('top-header').waitFor();
   const sw=await page.evaluate(async()=>{const r=await Promise.race([navigator.serviceWorker.ready,new Promise((_,reject)=>setTimeout(()=>reject(new Error('Service worker did not become ready within 15 seconds')),15000))]);return {scope:r.scope,active:r.active?.scriptURL,keys:await caches.keys()};});
-  rows.push({test:'real browser service worker active',status:sw.active?.endsWith('/service-worker.js')&&sw.keys.includes('afrimarket-green-rc2-v8')?'PASS':'FAIL',worker:sw});
+  rows.push({test:'real browser service worker active',status:sw.active?.endsWith('/service-worker.js')&&sw.keys.includes('afrimarket-green-rc3-v9')?'PASS':'FAIL',worker:sw});
   await context.setOffline(true);
   await page.reload({waitUntil:'domcontentloaded'});
   await page.getByTestId('top-header').waitFor();

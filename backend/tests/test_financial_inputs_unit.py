@@ -1,3 +1,4 @@
+"""Business rule unit tests; real transaction boundaries tested separately on MongoDB."""
 import asyncio
 from unittest.mock import AsyncMock, Mock, patch
 import pytest
@@ -20,6 +21,6 @@ def test_partial_refund_is_suspended_without_financial_mutations(amount):
     db.disputes.find_one = AsyncMock(return_value={"status":"open","order_id":"order"})
     db.orders.find_one = AsyncMock(return_value={"id":"order","total_amount":100,"amount_due":100})
     with patch.object(disputes_router,"get_db",return_value=db), pytest.raises(HTTPException) as error:
-        asyncio.run(disputes_router.admin_resolve("d", ResolveRequest(decision="partial_refund",partial_buyer_amount=amount), {"role":"admin"}))
+        asyncio.run(disputes_router.admin_resolve.__wrapped__("d", ResolveRequest(decision="partial_refund",partial_buyer_amount=amount), {"role":"admin"}))
     assert error.value.status_code == 503
     db.disputes.update_one.assert_not_called()

@@ -8,6 +8,7 @@ import pytest
 from fastapi import HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
 from routers import wallet_router
+import db as database_module
 
 
 async def scenario():
@@ -20,19 +21,21 @@ async def scenario():
     name = "afrimarket_wallet_test_" + uuid.uuid4().hex
     db = client[name]
     try:
+        await db.create_collection("financial_ledger")
+        await db.create_collection("withdrawal_requests")
         await db.sellers.insert_one({"id":"seller","user_id":"seller-user"})
-        await db.orders.insert_one({"seller_id":"seller","total_amount":100,"commission_amount":0,"escrow_status":"released"})
+        await db.orders.insert_one({"seller_id":"seller","total_amount":100,"commission_amount":0,"escrow_status":"released", "currency":"CDF"})
         await db.withdrawals.create_index("id", unique=True)
         request = wallet_router.WithdrawRequest(amount=10, mobile_money_number="TEST", operator="sandbox")
-        with patch.object(wallet_router,"get_db",return_value=db):
-            async def withdraw():
+        with patch.object(database_module,"_db",db):
+            async def withdraw(i):
                 try:
-                    await wallet_router.withdraw(request, {"id":"seller-user","role":"seller","currency":"CDF"})
+                    await wallet_router.withdraw(request, {"id":"seller-user","role":"seller","currency":"CDF"}, "TEST-withdraw-" + str(i))
                     return "reserved"
                 except HTTPException as error:
                     assert error.status_code in {400,409}
                     return "rejected"
-            results = await asyncio.gather(*(withdraw() for _ in range(20)))
+            results = await asyncio.gather(*(withdraw(i) for i in range(20)))
         assert results.count("reserved") == 10
         assert results.count("rejected") == 10
         assert await db.withdrawals.count_documents({}) == 10

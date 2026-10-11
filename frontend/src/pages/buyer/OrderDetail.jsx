@@ -125,7 +125,7 @@ function TrackingMap({ tracking }) {
   }, [tracking?.deliverer_location?.lat, tracking?.deliverer_location?.lng]);
 
   return (
-    <div className="relative rounded-xl overflow-hidden border border-gray-100 shadow-sm">
+    <div className="relative rounded-xl overflow-hidden border border-gray-100 shadow-xs">
       <div ref={mapRef} style={{ height: 220, width: "100%", background: "#f3f4f6" }} />
       {!mapReady && !mapError && (
         <div className="absolute inset-0 flex items-center justify-center bg-afri-soft text-xs text-afri-secondary">
@@ -305,7 +305,7 @@ export default function OrderDetail() {
 
         {/* Carte GPS tracking */}
         {showTracking && (
-          <section className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          <section className="bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden">
             <div className="px-4 pt-3 pb-2 flex items-center gap-2">
               <div className="w-7 h-7 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center">
                 <MapPin size={14} />
@@ -326,7 +326,7 @@ export default function OrderDetail() {
         )}
 
         {/* Timeline */}
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Suivi</h3>
           <ol className="space-y-4">
             {steps.map((s, i) => {
@@ -353,7 +353,7 @@ export default function OrderDetail() {
         </section>
 
         {/* Items */}
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Articles</h3>
           <div className="space-y-3">
             {order.items.map((it, i) => (
@@ -401,7 +401,7 @@ export default function OrderDetail() {
 
         {/* Vendeur — bouton confirmer remise cash */}
         {isSeller && order.delivery_mode === "collect" && ["ready_for_pickup","confirmed","preparing"].includes(order.status) && !collectConfirmed && (
-          <section className="bg-white rounded-xl border-2 border-afri-primary shadow-sm p-4" data-testid="confirm-collect-section">
+          <section className="bg-white rounded-xl border-2 border-afri-primary shadow-xs p-4" data-testid="confirm-collect-section">
             <h3 className="text-sm font-bold text-afri-secondary mb-1">Remise en boutique</h3>
             <p className="text-xs text-gray-500 mb-4">
               Appuyez après avoir remis la commande à l'acheteur et reçu le paiement en espèces.
@@ -433,7 +433,7 @@ export default function OrderDetail() {
         {/* Vendeur — écran succès animé */}
         {isSeller && order.delivery_mode === "collect" && (collectConfirmed || order.status === "collected") && (
           <section
-            className="bg-white rounded-xl border-2 border-afri-primary shadow-sm p-6 flex flex-col items-center text-center gap-3"
+            className="bg-white rounded-xl border-2 border-afri-primary shadow-xs p-6 flex flex-col items-center text-center gap-3"
             style={{ animation: "fadeInScale 0.4s cubic-bezier(0.34,1.56,0.64,1) both" }}
             data-testid="collect-confirmed-banner"
           >
@@ -464,7 +464,7 @@ export default function OrderDetail() {
 
         {/* Buyer: confirmation code */}
         {isBuyer && order.delivery_mode === "delivery" && order.escrow_status === "held" && (
-          <section className="bg-white rounded-xl border-2 border-afri-accent shadow-sm p-4">
+          <section className="bg-white rounded-xl border-2 border-afri-accent shadow-xs p-4">
             <h3 className="text-xs font-bold uppercase tracking-wide text-afri-accent mb-2">
               Code de confirmation
             </h3>
@@ -483,7 +483,7 @@ export default function OrderDetail() {
                   onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                   placeholder="6 chiffres"
                   maxLength={6}
-                  className="flex-1 border border-gray-300 rounded-lg p-2.5 text-center font-bold tracking-widest outline-none focus:ring-2 focus:ring-afri-primary"
+                  className="flex-1 border border-gray-300 rounded-lg p-2.5 text-center font-bold tracking-widest outline-hidden focus:ring-2 focus:ring-afri-primary"
                 />
                 <button
                   data-testid="confirm-delivery-btn"
@@ -500,7 +500,7 @@ export default function OrderDetail() {
 
         {/* Seller: assign deliverer (home delivery only) */}
         {isSeller && order.delivery_mode === "delivery" && ["confirmed", "preparing"].includes(order.status) && (
-          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+          <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
             <div className="flex items-center gap-2 mb-1">
               <Bike size={18} className="text-afri-primary" />
               <h3 className="text-sm font-semibold text-gray-900">Livreur</h3>
@@ -563,7 +563,7 @@ export default function OrderDetail() {
 
         {/* Delivery info */}
         {order.delivery_mode === "delivery" && order.delivery_neighborhood && (
-          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-sm">
+          <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 text-sm">
             <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Adresse</h3>
             <p className="text-gray-900 font-medium">{order.delivery_neighborhood}</p>
             {order.delivery_landmark && <p className="text-gray-600">{order.delivery_landmark}</p>}
@@ -572,7 +572,7 @@ export default function OrderDetail() {
         )}
 
         {/* Payment */}
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex items-center gap-3">
           {order.payment_method === "cash" ? (
             <Banknote size={18} className="text-afri-primary" />
           ) : (

@@ -43,11 +43,11 @@ export default function BuyerProfile() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 gap-3 mb-5">
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center">
+          <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 text-center">
             <div className="text-2xl font-black text-afri-secondary">{total_orders}</div>
             <div className="text-xs text-gray-500 mt-0.5">commande{total_orders > 1 ? "s" : ""} avec vous</div>
           </div>
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center">
+          <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 text-center">
             <div className="text-2xl font-black text-afri-secondary">{formatPrice(total_spent, "FC")}</div>
             <div className="text-xs text-gray-500 mt-0.5">total dépensé</div>
           </div>
@@ -62,7 +62,7 @@ export default function BuyerProfile() {
           : (
             <div className="space-y-3">
               {orders.map(o => (
-                <Link key={o.id} to={`/seller/orders/${o.id}`} className="block bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                <Link key={o.id} to={`/seller/orders/${o.id}`} className="block bg-white rounded-xl border border-gray-100 shadow-xs p-4">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className="text-sm font-semibold text-gray-900">
