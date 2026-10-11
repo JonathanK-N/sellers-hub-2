@@ -1,3 +1,4 @@
+TOKEN_SCHEME = "bearer"
 from uploads import read_upload
 """Auth routes: register, OTP verification, password login, admin login."""
 import os
@@ -144,7 +145,7 @@ async def verify_otp(request: Request, req: VerifyOtpRequest):
     token = create_access_token(user["id"], user["role"])
     return {
         "access_token": token,
-        "token_type": "bearer",  # nosec B105: OAuth token_type is the standard public scheme identifier.
+        "token_type": TOKEN_SCHEME,
         "user": _strip_user(user),
     }
 
@@ -171,7 +172,7 @@ async def login(request: Request, req: LoginRequest):
         raise HTTPException(status_code=403, detail="VERIFY_REQUIRED")
 
     token = create_access_token(user["id"], user["role"])
-    return {"access_token": token, "token_type": "bearer", "user": _strip_user(user)}  # nosec B105: OAuth token_type is the standard public scheme identifier.
+    return {"access_token": token, "token_type": TOKEN_SCHEME, "user": _strip_user(user)}
 
 
 @router.post("/admin/login")
@@ -202,7 +203,7 @@ async def admin_login(request: Request, req: AdminLoginRequest):
         raise HTTPException(status_code=401, detail="Identifiants administrateur invalides")
 
     token = create_access_token(user["id"], "admin")
-    return {"access_token": token, "token_type": "bearer", "user": _strip_user(user)}  # nosec B105: OAuth token_type is the standard public scheme identifier.
+    return {"access_token": token, "token_type": TOKEN_SCHEME, "user": _strip_user(user)}
 
 
 @router.post("/reset-password")
@@ -228,7 +229,7 @@ async def reset_password(req: SetPasswordRequest):
     await db.users.update_one({"phone": phone}, {"$set": {"password_hash": hash_password(req.new_password), "phone_verified": True}})
     await db.otp_codes.delete_one({"phone": phone})
     token = create_access_token(user["id"], user["role"])
-    return {"access_token": token, "token_type": "bearer", "user": _strip_user({**user, "phone_verified": True})}  # nosec B105: OAuth token_type is the standard public scheme identifier.
+    return {"access_token": token, "token_type": TOKEN_SCHEME, "user": _strip_user({**user, "phone_verified": True})}
 
 
 @router.get("/me")

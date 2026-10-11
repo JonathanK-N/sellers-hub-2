@@ -66,7 +66,7 @@ def migrate():
         src_url = f"{GITHUB_ASSETS_BASE}/{filename}"
         try:
             data = _download(src_url)
-        except (urllib.error.URLError, urllib.error.HTTPError) as e:
+        except httpx.HTTPError as e:
             logger.warning(f"  ✗ download failed: {filename} ({e})")
             failed.append(filename)
             continue
