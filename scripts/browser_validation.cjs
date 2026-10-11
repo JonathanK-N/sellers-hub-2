@@ -1,4 +1,7 @@
 const fs=require('fs');
+const path=require('path');
+const out=process.argv[2]||'release-evidence';
+fs.mkdirSync(out,{recursive:true});
 const {chromium}=require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 (async()=>{
  const browser=await chromium.launch({headless:true, channel: 'msedge'});
@@ -13,7 +16,7 @@ const {chromium}=require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary-r
   const color=await header.evaluate(el=>getComputedStyle(el).backgroundColor);
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
   rows.push({test:'viewport '+width,status:color==='rgb(8, 80, 65)'&&!overflow?'PASS':'FAIL',color,overflow});
-  await page.screenshot({path:'release-evidence/staging-'+width+'.png',fullPage:true});
+  await page.screenshot({path:path.join(out,'staging-'+width+'.png'),fullPage:true});
   await page.getByTestId('guest-login-btn').click();
   await page.getByTestId('auth-modal').waitFor();
   await page.keyboard.press('Escape');
@@ -21,6 +24,6 @@ const {chromium}=require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary-r
   rows.push({test:'auth modal open/escape '+width,status:'PASS'});
  }
  rows.push({test:'browser JS errors',status:errors.length?'FAIL':'PASS',errors});
- fs.writeFileSync('release-evidence/browser-validation.json',JSON.stringify({rows},null,2));
+ fs.writeFileSync(path.join(out,'browser-validation.json'),JSON.stringify({rows},null,2));
  console.log(JSON.stringify(rows,null,2));await browser.close();
 })().catch(e=>{console.error(e.message);process.exitCode=1;});

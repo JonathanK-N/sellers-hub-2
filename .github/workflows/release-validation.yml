@@ -41,6 +41,10 @@ jobs:
             /tmp/perf-tools/node_modules/.bin/lighthouse http://127.0.0.1:8081 --chrome-flags='--headless --no-sandbox' --output=json --output-path=performance-evidence/baseline-$attempt.json --quiet
             /tmp/perf-tools/node_modules/.bin/lighthouse http://127.0.0.1:8082 --chrome-flags='--headless --no-sandbox' --output=json --output-path=performance-evidence/candidate-$attempt.json --quiet
           done
+          node -e "(async()=>{const fs=require('fs');const url='https://afrimarket-web-staging-staging.up.railway.app';const r=await fetch(url);const html=await r.text();const main=s=>s.match(/src=\"([^\"]*static\/js\/main\.[^\"]+)\"/)?.[1];const expected=main(fs.readFileSync('perf-candidate/index.html','utf8'));const observed=main(html);fs.writeFileSync('performance-evidence/staging-context.json',JSON.stringify({url,sourceSha:process.env.SOURCE_SHA,expectedMain:expected,observedMain:observed,artifactMatchesStaging:!!expected&&expected===observed,observedAt:new Date().toISOString()},null,2));})().catch(e=>{console.error(e.message);process.exitCode=1;});"
+          for attempt in 1 2 3; do
+            /tmp/perf-tools/node_modules/.bin/lighthouse https://afrimarket-web-staging-staging.up.railway.app --chrome-flags='--headless --no-sandbox' --output=json --output-path=performance-evidence/staging-$attempt.json --quiet
+          done
           node -e "require('fs').writeFileSync('performance-evidence/context.json',JSON.stringify({baselineSha:'dd6d186a15abc88dfdc93702dbe0e91854639a4a',sourceSha:process.env.SOURCE_SHA,runner:process.env.RUNNER_OS,profile:'Lighthouse 13.5 default mobile; same runner; sequential; 3 pairs; local static hosts; staging API'},null,2));"
         env:
           SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
