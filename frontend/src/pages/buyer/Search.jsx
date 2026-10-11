@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Search as SearchIcon, MapPin, ShieldCheck, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Slider } from "../../components/ui/slider";
 import { Switch } from "../../components/ui/switch";
 import api from "../../lib/api";
@@ -11,28 +11,30 @@ import BannerCarousel from "../../components/BannerCarousel";
 
 const PRESETS = [1, 5, 10, 25, 50];
 
-export default function SearchPage() {
+export default function SearchPage({ guest = false }) {
   const { user } = useAuth();
-  const [q, setQ] = useState("");
+  const [searchParams] = useSearchParams();
+  const [q, setQ] = useState(() => searchParams.get("q") || "");
   const [radius, setRadius] = useState(25);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [sort, setSort] = useState("nearest");
   const [pos, setPos] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(
       (p) => setPos({ lat: p.coords.latitude, lng: p.coords.longitude }),
-      () => setPos({ lat: 0, lng: 0 }),
+      () => setPos(null),
       { timeout: 5000 }
     );
   }, []);
 
   useEffect(() => {
     const params = {
-      country_code: user?.country_code,
+      country_code: user?.country_code || (guest ? "CD" : undefined),
       radius_km: radius,
       verified_only: verifiedOnly,
       sort,
@@ -43,19 +45,21 @@ export default function SearchPage() {
       params.lng = pos.lng;
     }
     setLoading(true);
+    setError("");
     const t = setTimeout(() => {
       api
         .get("/products", { params })
         .then(({ data }) => setProducts(data))
+        .catch(() => { setProducts([]); setError("La recherche est momentanément indisponible. Réessayez lorsque la connexion est rétablie."); })
         .finally(() => setLoading(false));
     }, 250);
     return () => clearTimeout(t);
-  }, [q, radius, verifiedOnly, sort, pos, user?.country_code]);
+  }, [q, radius, verifiedOnly, sort, pos, user?.country_code, guest]);
 
   return (
     <div className="mobile-shell shell-wide">
       <header className="sticky top-0 z-40 bg-afri-secondary text-white px-4 md:px-8 py-3 flex items-center gap-3 shadow-md">
-        <Link to="/buyer/home" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
+        <Link to={guest ? "/" : "/buyer/home"} className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
         <div className="relative flex-1">
@@ -161,6 +165,8 @@ export default function SearchPage() {
               <div key={i} className="afri-skeleton rounded-xl aspect-[3/4]" />
             ))}
           </div>
+        ) : error ? (
+          <p role="alert" className="text-center py-12 text-sm text-afri-secondary">{error}</p>
         ) : products.length === 0 ? (
           <div className="text-center py-12 text-sm text-gray-500">
             Aucun produit trouvé dans ce rayon.
@@ -168,13 +174,13 @@ export default function SearchPage() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 afri-stagger">
             {products.map((p) => (
-              <ProductCard key={p.id} product={p} className="afri-fade-up" />
+              <ProductCard key={p.id} product={p} guest={guest} className="afri-fade-up" />
             ))}
           </div>
         )}
       </section>
 
-      <BottomNav role={user?.role === "seller" ? "seller" : "buyer"} />
+      {!guest && <BottomNav role={user?.role === "seller" ? "seller" : "buyer"} />}
     </div>
   );
 }

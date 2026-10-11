@@ -23,6 +23,12 @@ const {chromium}=require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary-r
   await page.getByTestId('auth-modal').waitFor({state:'hidden'});
   rows.push({test:'auth modal open/escape '+width,status:'PASS'});
  }
+ await page.goto('https://afrimarket-web-staging-staging.up.railway.app/explore/search?q=TEST-phase2-delivery',{waitUntil:'networkidle',timeout:30000});
+ const query=await page.getByTestId('search-input').inputValue();
+ const cards=page.locator('[data-testid^="product-card-"]');
+ await cards.first().waitFor();
+ const href=await cards.first().getAttribute('href');
+ rows.push({test:'guest search preserves query and public product links',status:query==='TEST-phase2-delivery'&&href.startsWith('/explore/product/')?'PASS':'FAIL'});
  rows.push({test:'browser JS errors',status:errors.length?'FAIL':'PASS',errors});
  fs.writeFileSync(path.join(out,'browser-validation.json'),JSON.stringify({rows},null,2));
  console.log(JSON.stringify(rows,null,2));await browser.close();

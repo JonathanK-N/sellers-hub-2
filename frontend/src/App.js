@@ -144,6 +144,7 @@ function App() {
             <Route path="/admin/login" element={<AdminLogin />} />
 
             {/* ---- Visiteur (sans compte) : exploration publique ---- */}
+            <Route path="/explore/search" element={<SearchPage guest />} />
             <Route path="/explore/product/:id" element={<ProductDetail guest />} />
             <Route path="/explore/shop/:sellerId" element={<ShopProfile guest />} />
 
