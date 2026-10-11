@@ -75,9 +75,12 @@ jobs:
         run: |
           test -e /dev/kvm
           sudo chmod 666 /dev/kvm
-          echo no | avdmanager create avd -n afrimarket-ci -k 'system-images;android-34;google_apis;x86_64' --force
+          export ANDROID_AVD_HOME="$RUNNER_TEMP/afrimarket-avds"
+          mkdir -p "$ANDROID_AVD_HOME"
+          echo no | avdmanager create avd -n afrimarket-ci -p "$ANDROID_AVD_HOME/afrimarket-ci.avd" -k 'system-images;android-34;google_apis;x86_64' --force
+          "$ANDROID_HOME/emulator/emulator" -list-avds | grep -Fx afrimarket-ci
           "$ANDROID_HOME/emulator/emulator" -avd afrimarket-ci -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect > emulator.log 2>&1 &
-          adb wait-for-device
+          timeout 180 adb wait-for-device
           for attempt in $(seq 1 90); do test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 && break; sleep 2; done
           test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1
           adb shell input keyevent 82
