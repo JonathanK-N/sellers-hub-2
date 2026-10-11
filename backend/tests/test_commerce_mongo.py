@@ -22,6 +22,7 @@ def test_product_search_treats_regex_characters_as_literal_text():
         client = AsyncIOMotorClient(uri)
         db = client["afrimarket_test_" + uuid.uuid4().hex]
         try:
+            await db.sellers.insert_one({"id": "s", "shop_name": "TEST shop"})
             await db.products.insert_one({"id": "literal", "seller_id": "s", "name": "TEST [ bracket", "description": "TEST", "is_active": True, "country_code": "CD", "price": 1, "currency": "FC"})
             with patch.object(products_router, "get_db", return_value=db):
                 async def search(q):
