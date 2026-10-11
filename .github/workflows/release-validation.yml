@@ -82,7 +82,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
-          ref: release/afrimarket-phase1-final-20261010
+          ref: v1.0.1-green-rc.2
           path: perf-baseline
       - uses: actions/setup-node@v4
         with:
@@ -113,7 +113,7 @@ jobs:
           for attempt in 1 2 3; do
             /tmp/perf-tools/node_modules/.bin/lighthouse https://afrimarket-web-staging-staging.up.railway.app --chrome-flags='--headless --no-sandbox' --output=json --output-path=performance-evidence/staging-$attempt.json --quiet
           done
-          node -e "require('fs').writeFileSync('performance-evidence/context.json',JSON.stringify({baselineSha:'dd6d186a15abc88dfdc93702dbe0e91854639a4a',sourceSha:process.env.SOURCE_SHA,runner:process.env.RUNNER_OS,profile:'Lighthouse 13.5 default mobile; same runner; sequential; 3 pairs; local static hosts; staging API'},null,2));"
+          node -e "require('fs').writeFileSync('performance-evidence/context.json',JSON.stringify({baselineSha:'9176e82debf2b35f7262d64416fa9cb5e983726b',sourceSha:process.env.SOURCE_SHA,runner:process.env.RUNNER_OS,profile:'Lighthouse 13.5 default mobile; same runner; sequential; 3 pairs; local static hosts; staging API'},null,2));"
         env:
           SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/upload-artifact@v4
