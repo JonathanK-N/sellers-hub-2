@@ -129,8 +129,8 @@ export default function Landing() {
       <section className={`${WRAP} mt-4 md:mt-6`}>
         <div className="rounded-2xl overflow-hidden bg-afri-secondary text-white relative min-h-[300px] md:min-h-[420px] flex items-center p-6 md:p-14">
           <img
-            src="https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?auto=format&w=800&q=65"
-            srcSet="https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?auto=format&w=400&q=65 400w, https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?auto=format&w=800&q=65 800w, https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?auto=format&w=1280&q=65 1280w"
+            src="https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?auto=format&w=800&q=45"
+            srcSet="https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?auto=format&w=400&q=45 400w, https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?auto=format&w=800&q=45 800w, https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?auto=format&w=1280&q=45 1280w"
             sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) calc(100vw - 64px), 1216px"
             width="1280"
             height="420"

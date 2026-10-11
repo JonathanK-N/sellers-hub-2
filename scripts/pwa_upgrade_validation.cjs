@@ -44,10 +44,18 @@ const {chromium} = require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary
     rows.push({test:'Phase 1 worker controls browser',status:oldCaches.includes('afrimarket-green-v7')?'PASS':'FAIL',cacheNames:oldCaches});
     upgraded = true;
     await page.evaluate(async () => {const registration=await navigator.serviceWorker.getRegistration(); await registration.update();});
-    await page.waitForFunction(async () => {const names=await caches.keys();return names.includes('afrimarket-green-rc2-v8')&&!names.includes('afrimarket-green-v7')&&!names.includes('afrimarket-orange-v6');}, {timeout:20000});
-    const names=await page.evaluate(() => caches.keys());
-    rows.push({test:'Old caches purged and unrelated cache preserved',status:names.includes('unrelated-application-v1')?'PASS':'FAIL',cacheNames:names});
+    let names=[];
+    for (let attempt=0;attempt<80;attempt++) {
+      names=await page.evaluate(() => caches.keys());
+      if(names.includes('afrimarket-green-rc2-v8')&&!names.includes('afrimarket-green-v7')&&!names.includes('afrimarket-orange-v6')) break;
+      await page.waitForTimeout(250);
+    }
+    const migrated=names.includes('afrimarket-green-rc2-v8')&&!names.includes('afrimarket-green-v7')&&!names.includes('afrimarket-orange-v6')&&names.includes('unrelated-application-v1');
+    rows.push({test:'Old caches purged and unrelated cache preserved',status:migrated?'PASS':'FAIL',cacheNames:names});
+    if(!migrated) throw Error('Worker activation did not migrate caches');
     await page.reload({waitUntil:'networkidle'});
+    await page.getByTestId('guest-top-header').waitFor();
+    await page.waitForTimeout(1000);
     await context.setOffline(true);
     await page.reload({waitUntil:'domcontentloaded'});
     await page.getByTestId('guest-top-header').waitFor();
