@@ -1,4 +1,6 @@
-TOKEN_SCHEME = "bearer"
+from fastapi.security import HTTPBearer
+
+TOKEN_SCHEME = HTTPBearer().model.scheme
 from uploads import read_upload
 """Auth routes: register, OTP verification, password login, admin login."""
 import os
