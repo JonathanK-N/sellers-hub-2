@@ -39,6 +39,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AfriMarket API")
+APP_VERSION = "1.0.1-green-rc.3"
 
 # Rate limiting — protège contre le spam et le brute-force
 app.state.limiter = limiter
@@ -48,7 +49,7 @@ api_router = APIRouter(prefix="/api")
 
 @api_router.get("/")
 async def root():
-    return {"message": "AfriMarket API", "version": "0.1.0"}
+    return {"message": "AfriMarket API", "version": APP_VERSION}
 
 
 @api_router.get("/health")
@@ -67,8 +68,8 @@ async def health():
         db = get_db()
         await db.command("ping")
         checks["mongodb"] = "ok"
-    except Exception as e:
-        checks["mongodb"] = f"error: {str(e)[:80]}"
+    except Exception:
+        checks["mongodb"] = "error: unavailable"
         overall = "degraded"
 
     # Check FX rate fraîcheur (si plus vieux que 7h → warning)
@@ -91,7 +92,8 @@ async def health():
         "status": overall,
         "checks": checks,
         "response_ms": elapsed_ms,
-        "version": "1.0.0",
+        "version": APP_VERSION,
+        "source_sha": os.environ.get("RAILWAY_GIT_COMMIT_SHA", "") if len(os.environ.get("RAILWAY_GIT_COMMIT_SHA", "")) == 40 else None,
     }
 
 

@@ -17,9 +17,9 @@ def test_health_checks_database_and_fx():
 
 def test_health_reports_database_failure():
     db = AsyncMock()
-    db.command.side_effect = RuntimeError('database unavailable')
+    db.command.side_effect = RuntimeError('mongodb://private:credential@example.invalid unavailable')
     db.fx_rates.find_one.return_value = None
     with patch.object(server, 'get_db', return_value=db):
         result = asyncio.run(server.health())
     assert result['status'] == 'degraded'
-    assert result['checks']['mongodb'].startswith('error:')
+    assert result['checks']['mongodb'] == 'error: unavailable'
