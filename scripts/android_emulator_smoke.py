@@ -25,11 +25,17 @@ try:
     apk = next(Path("android-apk").glob("*.apk"))
     check("fresh APK install", "Success" in adb("install", str(apk)))
     adb("shell","am","start","-W","-n",package+"/cd.cognito.afrimarket.MainActivity")
-    time.sleep(8)
-    adb("shell","uiautomator","dump","/sdcard/afrimarket.xml")
-    adb("pull","/sdcard/afrimarket.xml",str(out/"launch.xml"))
-    xml = (out/"launch.xml").read_text()
-    check("installed WebView renders AfriMarket", "AfriMarket" in xml)
+    for attempt in range(10):
+        time.sleep(3)
+        (out/"launch.png").write_bytes(subprocess.check_output(["adb", "exec-out", "screencap", "-p"], timeout=30))
+        dump = adb("shell", "uiautomator", "dump", "/sdcard/afrimarket.xml")
+        (out/"launch-dump.log").write_text(dump)
+        if "UI hierchary dumped" not in dump and "UI hierarchy dumped" not in dump:
+            continue
+        adb("pull", "/sdcard/afrimarket.xml", str(out/"launch.xml"))
+        if "AfriMarket" in (out/"launch.xml").read_text():
+            break
+    check("installed WebView renders AfriMarket", (out/"launch.xml").exists() and "AfriMarket" in (out/"launch.xml").read_text())
     (out/"launch.png").write_bytes(subprocess.check_output(["adb","exec-out","screencap","-p"]))
     with Image.open(out/"launch.png") as screenshot:
         pixels = screenshot.convert("RGB").crop((0,0,screenshot.width,int(screenshot.height*.4)))
