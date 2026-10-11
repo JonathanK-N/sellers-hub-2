@@ -1,0 +1,21 @@
+# Topologie Railway vérifiée et proposition transactionnelle
+
+Auteur : Jonathan Kakesa (JonathanK-N). Inventaire du 11 octobre 2026.
+
+Production : projet AFRIMARKET `7cf04965-3d75-4965-9e76-cd33c3b716c5`, environnement production `7382f536-2e97-4ac4-ba22-ff7dd1e06ecf`. API sellers-hub-2 `69e4d050-47d4-4e24-8d0d-d47807f4b99a`, Web practical-blessing `708bc9c5-90ae-47e7-a2ab-8c718c44b2ed`, MongoDB `8807024a-a89f-4c55-8b4b-fb49641c58c3` avec volume 5 GB à /data/db. API/Web suivent main et le SHA `6722492d85e0f8646ebe03c9b841c4a0e3611449`. Les déploiements du 11 octobre, attribués par Railway à Jonathan Kakesa, sont `8ebcb33c-8c54-4fc4-afb0-8a5c717f3b4b` et `63d6636f-035b-4596-83bc-5268ad33fd70`. Le Web précédemment ui-ux/0e24300 a été remplacé ; ces métadonnées établissent le fait et l'attribution enregistrée, pas l'intention du changement. Aucun changement de production réalisé pendant cette phase.
+
+La commande MongoDB historique ne contient pas --replSet. Elle lance mongo:8.0 avec bind IPv4/IPv6 ; aucune configuration de replica set n'est attestée. La topologie active nécessite encore un hello authentifié, inaccessible via le connecteur OAuth. Ne pas assimiler un volume persistant à une garantie transactionnelle ou une sauvegarde validée.
+
+Staging : projet AFRIMARKET-STAGING-20261010 `bc40e22f-b963-46fa-a64e-240f3aa954cd`, environnement staging `0fea37a0-e334-4963-952e-d99ca7523ffd`. API `3a11fecf-70e7-4ba3-8744-d0156b9f7e6c`, Web `5a36eb00-531d-4aae-be1a-f8c63f241da3`, Mongo `80a726a8-1cd5-4387-9e5d-8cd6c9671d9e`. À l'entrée, les deux applications suivent stabilization/afrimarket-phase-2 et cd08cc5. Mongo:8.0 sans startCommand personnalisé, variables, volume, domaine public ou proxy TCP : standalone éphémère synthétique. Le nom de base prévu est afrimarket_staging_synthetic, distinct de la production.
+
+Le staging séparé a permis les corrections et les commandes synthétiques sans déployer les branches candidates ou les comptes de test en production. Il n'est pas redondant fonctionnellement ; deux ensembles d'applications et deux Mongo impliquent néanmoins un coût permanent. Aucun service ne sera supprimé, renommé, fusionné ou déplacé sans approbation. Les coûts réels ne sont pas déductibles du nombre de services seul : il faut les métriques et la facturation.
+
+Proposition staging à approuver : réutiliser le Mongo existant, ajouter un volume de 1 GB à /data/db, un replica set à un membre nommé afrimarket-staging-rs, authentification et keyfile stockés via variables scellées, aucun port public. Initialisation contrôlée dans le conteneur ; URI privée de l'API avec replicaSet et authentification. Conserver uniquement les données synthétiques. Une sauvegarde synthétique préalable ou une régénération explicitement approuvée est nécessaire avant de redémarrer le Mongo éphémère. Un membre permet transactions et journaling mais ne fournit pas la haute disponibilité ; il n'est pas une architecture finale de production.
+
+Ordre d'exécution proposé : sauvegarde synthétique → volume/configuration → démarrage et initialisation du replica set → hello / PRIMARY → configuration privée API → smoke → tests d'interruption et concurrence → restauration isolée. Ne jamais initier le replica set depuis une route publique. Le backend refuse les écritures financières si hello ne confirme pas un replica set ou mongos.
+
+Coût indicatif sur 30 jours, à partir des [tarifs Railway consultés](https://railway.com/pricing) : 1 GB volume environ 0,16 USD/mois ; 1 GB RAM utilisé en continu environ 10 USD/mois ; 0,1 vCPU moyen environ 2 USD/mois. Exemple de budget Mongo autour de 12,16 USD/mois hors réseau, abonnement et autres services. Ce n'est pas un devis ni une mesure de consommation. Le surcoût réel du replica set dépend de la mémoire et de l'oplog ; il n'ajoute pas un nouveau service. Prévoir une limite de dépenses avant exécution.
+
+Production ultérieure : évaluer un replica set géré à trois membres ou cluster adapté, backups chiffrés et restauration certifiée. Préparer le coût réel, la migration et le rollback avant approbation ; ne pas exécuter cette migration dans la phase 3.
+
+Preuves : release-evidence/phase3/railway-baseline.json. Les noms de variables historiques sont conservés sans valeurs. Les noms CinetPay ne prouvent pas un compte sandbox valide.
