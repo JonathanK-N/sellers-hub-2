@@ -12,7 +12,7 @@ rows = []
 
 
 def adb(*args):
-    return subprocess.check_output(["adb", *args], stderr=subprocess.STDOUT).decode(errors="replace")
+    return subprocess.check_output(["adb", *args], stderr=subprocess.STDOUT, timeout=30).decode(errors="replace")
 
 
 def check(name, success, detail=""):
@@ -42,12 +42,16 @@ try:
     adb("shell", "am", "start", "-W", "-n", package+"/cd.cognito.afrimarket.MainActivity")
     for attempt in range(10):
         time.sleep(3)
-        adb("shell", "uiautomator", "dump", "/sdcard/afrimarket-offline.xml")
+        (out/"offline.png").write_bytes(subprocess.check_output(["adb", "exec-out", "screencap", "-p"], timeout=30))
+        dump = adb("shell", "uiautomator", "dump", "/sdcard/afrimarket-offline.xml")
+        (out/"offline-dump.log").write_text(dump)
+        if "UI hierchary dumped" not in dump and "UI hierarchy dumped" not in dump:
+            continue
         adb("pull", "/sdcard/afrimarket-offline.xml", str(out/"offline.xml"))
         if "AfriMarket" in (out/"offline.xml").read_text():
             break
     (out/"offline.png").write_bytes(subprocess.check_output(["adb", "exec-out", "screencap", "-p"]))
-    check("bundled landing renders with Wi-Fi and mobile data disabled", "AfriMarket" in (out/"offline.xml").read_text())
+    check("bundled landing renders with Wi-Fi and mobile data disabled", (out/"offline.xml").exists() and "AfriMarket" in (out/"offline.xml").read_text())
     adb("shell", "svc", "wifi", "enable")
     adb("shell", "svc", "data", "enable")
     adb("shell","run-as",package,"mkdir","-p","files")
