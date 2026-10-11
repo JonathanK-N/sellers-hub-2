@@ -12,7 +12,7 @@ export default function ProductCard({ product, guest = false, className = "" }) 
     <Link
       to={href}
       data-testid={`product-card-${product.id}`}
-      className={`afri-card group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col ${className}`}
+      className={`afri-card group bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden flex flex-col ${className}`}
     >
       <div className="afri-card-media aspect-square bg-gray-100 relative">
         {photo ? (
@@ -35,12 +35,12 @@ export default function ProductCard({ product, guest = false, className = "" }) 
           aria-label="Favoris temporairement indisponibles"
           title="Favoris temporairement indisponibles"
           disabled
-          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gray-500 shadow-sm cursor-not-allowed"
+          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gray-500 shadow-xs cursor-not-allowed"
         >
           <Heart size={14} />
         </button>
         {product.seller_premium && (
-          <span className="absolute top-2 left-2 flex items-center gap-1 bg-afri-accent text-gray-900 px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm">
+          <span className="absolute top-2 left-2 flex items-center gap-1 bg-afri-accent text-gray-900 px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs">
             <Crown size={11} /> Premium
           </span>
         )}
@@ -50,7 +50,7 @@ export default function ProductCard({ product, guest = false, className = "" }) 
           </span>
         )}
         {distance && (
-          <span className="absolute bottom-2 right-2 flex items-center gap-1 bg-white/95 backdrop-blur text-gray-700 px-2 py-0.5 rounded-full text-[11px] font-medium shadow-sm">
+          <span className="absolute bottom-2 right-2 flex items-center gap-1 bg-white/95 backdrop-blur text-gray-700 px-2 py-0.5 rounded-full text-[11px] font-medium shadow-xs">
             <MapPin size={11} /> {distance}
           </span>
         )}

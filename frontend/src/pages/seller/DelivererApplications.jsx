@@ -92,7 +92,7 @@ export default function SellerDelivererApplications() {
                   key={a.id}
                   onClick={() => openDetail(a.id)}
                   data-testid={`application-card-${a.id}`}
-                  className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-4 hover:border-afri-primary transition-colors"
+                  className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-xs p-4 hover:border-afri-primary transition-colors"
                 >
                   <div className="flex items-start gap-3">
                     <div className="w-11 h-11 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center shrink-0">
@@ -112,7 +112,7 @@ export default function SellerDelivererApplications() {
         ) : detailLoading || !detail ? (
           <div className="flex items-center gap-2 text-gray-500 py-8 justify-center"><Loader2 size={18} className="animate-spin" /> Chargement…</div>
         ) : (
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+          <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-xl bg-afri-soft text-afri-primary flex items-center justify-center">
                 <Truck size={22} />

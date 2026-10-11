@@ -72,7 +72,7 @@ function RateSellerModal({ order, onClose, onRated }) {
           onChange={(e) => setComment(e.target.value)}
           placeholder="Votre commentaire (optionnel)"
           rows={3}
-          className="w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary resize-none mb-3"
+          className="w-full border border-gray-200 rounded-lg p-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary resize-none mb-3"
         />
         <button
           data-testid="submit-seller-rating-btn"
@@ -117,7 +117,7 @@ export default function BuyerOrders() {
             {orders.map((o) => {
               const status = STATUS_LABELS[o.status] || { label: o.status, color: "bg-gray-100 text-gray-700" };
               return (
-                <div key={o.id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-testid={`order-row-${o.id}`}>
+                <div key={o.id} className="bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden" data-testid={`order-row-${o.id}`}>
                   <Link to={`/buyer/orders/${o.id}`} className="block p-4 hover:bg-gray-50 transition-colors">
                     <div className="flex items-center justify-between">
                       <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full ${status.color}`}>

@@ -68,7 +68,7 @@ export default function SellerWallet() {
       <TopBar title="Portefeuille" showCart={false} />
 
       <div className="px-4 mt-4 space-y-3">
-        <section className="rounded-2xl bg-gradient-to-br from-afri-secondary to-afri-primary text-white p-5 shadow">
+        <section className="rounded-2xl bg-linear-to-br from-afri-secondary to-afri-primary text-white p-5 shadow">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-emerald-100 text-xs uppercase tracking-wider font-bold">
               <WalletIcon size={14} /> Solde disponible
@@ -92,7 +92,7 @@ export default function SellerWallet() {
           <MiniStat icon={CheckCircle2} label="Commissions" value={formatPrice(balance.commission_paid, balance.currency)} negative />
         </div>
 
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Historique</h3>
           {txs.length === 0 ? (
             <p className="text-sm text-gray-500 py-4 text-center">Aucune transaction pour l'instant.</p>
@@ -134,7 +134,7 @@ export default function SellerWallet() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder={`Max ${balance.available.toFixed(0)}`}
-                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
+                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary"
               />
             </div>
             <div>
@@ -144,7 +144,7 @@ export default function SellerWallet() {
                 value={number}
                 onChange={(e) => setNumber(e.target.value)}
                 placeholder="Ex: +243812345678"
-                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
+                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary"
               />
             </div>
             <div>
@@ -153,7 +153,7 @@ export default function SellerWallet() {
                 data-testid="withdraw-operator-select"
                 value={operator}
                 onChange={(e) => setOperator(e.target.value)}
-                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
+                className="w-full mt-1 border border-gray-300 rounded-lg p-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary"
               >
                 {operators.map((op) => <option key={op}>{op}</option>)}
               </select>
@@ -178,7 +178,7 @@ export default function SellerWallet() {
 
 function MiniStat({ icon: Icon, label, value, negative }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-3">
+    <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-3">
       <div className="flex items-center gap-2 text-[10px] uppercase font-bold text-gray-500">
         <Icon size={12} /> {label}
       </div>

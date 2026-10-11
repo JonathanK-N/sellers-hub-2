@@ -46,10 +46,10 @@ export default function SellerDashboard() {
 
         {/* Profile quick actions */}
         <div className="flex gap-2">
-          <Link to="/seller/edit-profile" className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-sm">
+          <Link to="/seller/edit-profile" className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-xs">
             <Pencil size={15} /> Modifier le profil
           </Link>
-          <Link to={`/shop/${data.shop?.id}`} className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-sm">
+          <Link to={`/shop/${data.shop?.id}`} className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-xs">
             <Eye size={15} /> Voir ma boutique
           </Link>
         </div>
@@ -57,7 +57,7 @@ export default function SellerDashboard() {
         <Link
           to="/seller/deliverer-applications"
           data-testid="goto-deliverer-applications"
-          className="flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-sm"
+          className="flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-xs"
         >
           <Truck size={15} /> Candidatures livreurs
         </Link>
@@ -108,7 +108,7 @@ export default function SellerDashboard() {
           <QuickAction icon={ShieldCheck} label="KYC" onClick={() => nav("/seller/kyc")} testid="quick-kyc" />
         </div>
 
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Commandes récentes</h3>
           {data.recent_orders.length === 0 ? (
             <p className="text-sm text-gray-500 py-4 text-center">Aucune commande pour l'instant.</p>
@@ -132,7 +132,7 @@ export default function SellerDashboard() {
           )}
         </section>
 
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex items-center gap-3">
           <div className={`w-10 h-10 rounded-full ${data.shop.badge_verified ? "bg-afri-primary" : "bg-gray-200"} text-white flex items-center justify-center`}>
             <ShieldCheck size={18} />
           </div>
@@ -154,7 +154,7 @@ export default function SellerDashboard() {
 
 function Stat({ icon: Icon, label, value, sub }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+    <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
       <div className="w-9 h-9 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center">
         <Icon size={18} />
       </div>
@@ -170,7 +170,7 @@ function QuickAction({ icon: Icon, label, onClick, testid }) {
     <button
       onClick={onClick}
       data-testid={testid}
-      className="bg-white rounded-xl border border-gray-100 shadow-sm py-3 flex flex-col items-center gap-1.5 text-xs font-semibold text-gray-700 hover:border-afri-primary hover:text-afri-primary transition-colors"
+      className="bg-white rounded-xl border border-gray-100 shadow-xs py-3 flex flex-col items-center gap-1.5 text-xs font-semibold text-gray-700 hover:border-afri-primary hover:text-afri-primary transition-colors"
     >
       <Icon size={20} className="text-afri-primary" />
       {label}

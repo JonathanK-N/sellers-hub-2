@@ -84,7 +84,7 @@ export default function VerifyOtp() {
           maxLength={6}
           inputMode="numeric"
           placeholder="000000"
-          className="w-full text-center text-3xl tracking-[1rem] font-display font-bold py-4 rounded-lg border-2 border-gray-200 focus:border-afri-primary focus:ring-2 focus:ring-afri-primary/20 outline-none"
+          className="w-full text-center text-3xl tracking-[1rem] font-display font-bold py-4 rounded-lg border-2 border-gray-200 focus:border-afri-primary focus:ring-2 focus:ring-afri-primary/20 outline-hidden"
         />
 
         <button

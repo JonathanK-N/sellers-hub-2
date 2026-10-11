@@ -74,7 +74,7 @@ export default function SellerPremium() {
           )}
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 mt-4">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-5 mt-4">
           <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2 mb-3">
             <Sparkles size={16} className="text-afri-accent" /> Vos avantages Premium
           </h3>
@@ -92,9 +92,9 @@ export default function SellerPremium() {
 
         {/* Bloc paiement désactivé — CinetPay Mobile Money en cours d'intégration */}
         {!plan.active && (
-          <div className="mt-5 rounded-2xl overflow-hidden border border-afri-accent/30 shadow-sm">
+          <div className="mt-5 rounded-2xl overflow-hidden border border-afri-accent/30 shadow-xs">
             {/* Image d'ambiance */}
-            <div className="relative h-36 bg-gradient-to-br from-afri-accent/20 to-[#BA7517]/10 flex items-center justify-center">
+            <div className="relative h-36 bg-linear-to-br from-afri-accent/20 to-[#BA7517]/10 flex items-center justify-center">
               <div className="absolute inset-0 flex items-center justify-center opacity-10">
                 <Crown size={100} className="text-afri-accent" />
               </div>

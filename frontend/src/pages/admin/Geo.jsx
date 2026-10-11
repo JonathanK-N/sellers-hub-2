@@ -92,7 +92,7 @@ export default function AdminGeo() {
         {/* Country grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {overview.map((c) => (
-            <div key={c.code} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5" data-testid={`geo-country-${c.code}`}>
+            <div key={c.code} className="bg-white rounded-xl border border-gray-200 shadow-xs p-5" data-testid={`geo-country-${c.code}`}>
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-3xl">{c.flag}</span>
@@ -140,7 +140,7 @@ export default function AdminGeo() {
         </section>
 
         {/* Growth chart */}
-        <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Inscriptions sur 6 mois (par pays)</h3>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">

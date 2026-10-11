@@ -161,10 +161,10 @@ export default function AdminUsers() {
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Nom, téléphone…"
-              className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-afri-primary" />
+              className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-hidden focus:ring-2 focus:ring-afri-primary" />
           </div>
           <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}
-            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary bg-white">
+            className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary bg-white">
             <option value="all">Tous les rôles</option>
             <option value="buyer">Acheteurs</option>
             <option value="seller">Vendeurs</option>
@@ -173,7 +173,7 @@ export default function AdminUsers() {
         </div>
 
         {/* Tableau */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs uppercase text-gray-500 border-b border-gray-200">
@@ -365,7 +365,7 @@ export default function AdminUsers() {
                         : "Ex: Violation grave des conditions d'utilisation…"
                     }
                     rows={3}
-                    className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-afri-primary resize-none"
+                    className="w-full border border-gray-300 rounded-lg p-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary resize-none"
                   />
                 </div>
               )}

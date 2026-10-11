@@ -72,7 +72,7 @@ export default function Landing() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Rechercher un produit ou une boutique…"
-                className="w-full bg-white/10 focus:bg-white text-white focus:text-gray-900 placeholder:text-gray-400 rounded-full py-2.5 pl-10 pr-4 text-sm outline-none transition-colors"
+                className="w-full bg-white/10 focus:bg-white text-white focus:text-gray-900 placeholder:text-gray-400 rounded-full py-2.5 pl-10 pr-4 text-sm outline-hidden transition-colors"
               />
             </div>
           </form>
@@ -141,7 +141,7 @@ export default function Landing() {
             className="absolute inset-0 w-full h-full object-cover opacity-30"
           />
           </picture>
-          <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/85 via-black/50 to-black/10" />
+          <div className="absolute inset-0 bg-linear-to-t md:bg-linear-to-r from-black/85 via-black/50 to-black/10" />
           <div className="relative max-w-xl">
             <h1 className="font-display font-black text-2xl md:text-4xl lg:text-5xl leading-tight tracking-tight">
               Le marché de l'Afrique francophone, près de chez vous.
@@ -197,7 +197,7 @@ export default function Landing() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Rechercher un produit ou une boutique…"
-            className="w-full bg-white border border-gray-200 rounded-full py-3 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-afri-primary"
+            className="w-full bg-white border border-gray-200 rounded-full py-3 pl-10 pr-4 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary"
           />
         </div>
       </form>
@@ -251,7 +251,7 @@ export default function Landing() {
       {/* CTA FINAL */}
       <AnimatedContent distance={50} duration={0.7} threshold={0.15}>
       <section className={`${WRAP} mt-8 md:mt-14`}>
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-10 text-center md:max-w-2xl md:mx-auto">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-xs p-6 md:p-10 text-center md:max-w-2xl md:mx-auto">
           <h3 className="font-display font-bold text-lg md:text-2xl text-gray-900">
             Prêt à commander ou vendre ?
           </h3>
@@ -349,7 +349,7 @@ export default function Landing() {
 
 function TrustItem({ icon: Icon, label }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 md:p-4 flex flex-col items-center gap-1.5 text-center">
+    <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-3 md:p-4 flex flex-col items-center gap-1.5 text-center">
       <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-afri-secondary text-afri-primary flex items-center justify-center">
         <Icon size={16} />
       </div>

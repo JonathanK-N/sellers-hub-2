@@ -20,7 +20,7 @@ export default function ReviewPrompt({ orderId, sellerName, onSubmitted }) {
 
   if (existing) {
     return (
-      <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4" data-testid="review-already">
+      <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4" data-testid="review-already">
         <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Votre avis</h3>
         <div className="flex gap-0.5">
           {[1,2,3,4,5].map((n) => (
@@ -54,7 +54,7 @@ export default function ReviewPrompt({ orderId, sellerName, onSubmitted }) {
   };
 
   return (
-    <section className="bg-white rounded-xl border-2 border-afri-accent/40 shadow-sm p-4" data-testid="review-prompt">
+    <section className="bg-white rounded-xl border-2 border-afri-accent/40 shadow-xs p-4" data-testid="review-prompt">
       <h3 className="font-display font-bold text-base text-gray-900">Notez {sellerName}</h3>
       <p className="text-xs text-gray-500 mt-0.5">Votre avis aide les autres acheteurs.</p>
       <div className="flex gap-1 mt-3" onMouseLeave={() => setHover(0)}>
@@ -76,7 +76,7 @@ export default function ReviewPrompt({ orderId, sellerName, onSubmitted }) {
         onChange={(e) => setComment(e.target.value)}
         placeholder="Décrivez votre expérience (optionnel)…"
         rows={2}
-        className="w-full mt-3 border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-afri-primary resize-none"
+        className="w-full mt-3 border border-gray-300 rounded-lg p-2.5 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary resize-none"
       />
       <button
         data-testid="submit-review-btn"

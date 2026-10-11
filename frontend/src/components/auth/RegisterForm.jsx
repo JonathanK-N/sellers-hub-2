@@ -69,7 +69,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Ex: Jean Mbo"
-                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
+                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden"
               />
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   placeholder="ex: 812345678"
                   inputMode="tel"
-                  className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
+                  className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden"
                 />
               </div>
             </div>
@@ -104,7 +104,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="Au moins 6 caractères"
-                className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
+                className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden"
               />
               <button
                 type="button"

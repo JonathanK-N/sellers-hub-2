@@ -86,7 +86,7 @@ export default function OrderGroup() {
       </header>
 
       <div className="px-4 mt-4 space-y-3">
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <div className="flex items-center gap-2 text-gray-900">
             <Package size={18} className="text-afri-primary" />
             <span className="font-semibold text-sm">
@@ -129,7 +129,7 @@ export default function OrderGroup() {
               key={o.id}
               to={`/buyer/orders/${o.id}`}
               data-testid={`group-order-${o.id}`}
-              className="block bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:border-afri-primary/40 transition-colors"
+              className="block bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden hover:border-afri-primary/40 transition-colors"
             >
               <div className="flex items-center gap-2 px-3 py-2 bg-[#F1EFE8] border-b border-gray-100">
                 <div className="w-6 h-6 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center">
@@ -157,7 +157,7 @@ export default function OrderGroup() {
           ))}
         </div>
 
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex justify-between font-display font-black text-lg text-afri-secondary">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex justify-between font-display font-black text-lg text-afri-secondary">
           <span>Total payé</span>
           <span data-testid="group-total">{formatPrice(group.grand_total, currency)}</span>
         </section>

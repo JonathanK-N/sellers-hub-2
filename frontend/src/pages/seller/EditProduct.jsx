@@ -145,13 +145,13 @@ export default function SellerEditProduct() {
               value={form.price} type="number"
               onChange={(e) => setForm({ ...form, price: e.target.value })}
               placeholder={form.currency === "USD" ? "Ex: 25.00" : "Ex: 50000"}
-              className="flex-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
+              className="flex-1 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden"
             />
             <select
               data-testid="product-currency-select"
               value={form.currency}
               onChange={(e) => setForm({ ...form, currency: e.target.value })}
-              className="border border-gray-300 rounded-lg px-3 bg-white text-sm font-bold focus:ring-2 focus:ring-afri-primary outline-none text-afri-secondary min-w-[64px]"
+              className="border border-gray-300 rounded-lg px-3 bg-white text-sm font-bold focus:ring-2 focus:ring-afri-primary outline-hidden text-afri-secondary min-w-[64px]"
             >
               {CURRENCIES.map((c) => <option key={c.value} value={c.value}>{c.value}</option>)}
             </select>
@@ -170,7 +170,7 @@ export default function SellerEditProduct() {
               if (e.target.value === "__other__") { setIsCustomCategory(true); setCustomCategory(""); }
               else { setIsCustomCategory(false); setForm({ ...form, category: e.target.value }); }
             }}
-            className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary outline-none">
+            className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary outline-hidden">
             {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
             <option value="__other__">Autre…</option>
           </select>
@@ -178,7 +178,7 @@ export default function SellerEditProduct() {
             <input data-testid="product-custom-category-input" value={customCategory}
               onChange={(e) => { setCustomCategory(e.target.value); setForm({ ...form, category: e.target.value }); }}
               placeholder="Nom de la nouvelle catégorie"
-              className="w-full mt-2 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary outline-none" autoFocus />
+              className="w-full mt-2 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary outline-hidden" autoFocus />
           )}
         </div>
 
@@ -214,7 +214,7 @@ function Input({ label, value, onChange, placeholder, testid, type = "text" }) {
       <label className="text-sm font-medium text-gray-700">{label}</label>
       <input data-testid={testid} value={value} type={type} onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none" />
+        className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden" />
     </div>
   );
 }
@@ -225,7 +225,7 @@ function Textarea({ label, value, onChange, placeholder, testid }) {
       <label className="text-sm font-medium text-gray-700">{label}</label>
       <textarea data-testid={testid} value={value} onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder} rows={3}
-        className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none resize-none" />
+        className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden resize-none" />
     </div>
   );
 }

@@ -95,7 +95,7 @@ export default function BuyerKycVerification() {
           {STEPS.map((s) => {
             const uploaded = status.docs?.[s.key];
             return (
-              <div key={s.key} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4" data-testid={`buyer-kyc-step-${s.key}`}>
+              <div key={s.key} className="bg-white rounded-xl border border-gray-100 shadow-xs p-4" data-testid={`buyer-kyc-step-${s.key}`}>
                 <div className="flex items-start gap-3">
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${uploaded ? "bg-afri-soft text-afri-primary" : "bg-gray-100 text-gray-400"}`}>
                     {uploaded ? <CheckCircle2 size={18} /> : <Upload size={18} />}

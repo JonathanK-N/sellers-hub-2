@@ -50,7 +50,7 @@ export default function AdminLogin() {
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+243000000001"
                 inputMode="tel"
-                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
+                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden"
               />
             </div>
           </div>
@@ -65,7 +65,7 @@ export default function AdminLogin() {
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && phone && password && submit()}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-none"
+                className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-afri-primary focus:border-transparent outline-hidden"
               />
               <button
                 type="button"

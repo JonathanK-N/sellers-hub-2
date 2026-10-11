@@ -87,7 +87,7 @@ export default function AdminDelivererApplications() {
                   key={a.id}
                   onClick={() => openDetail(a.id)}
                   data-testid={`application-card-${a.id}`}
-                  className="text-left bg-white rounded-xl border border-gray-200 shadow-sm p-5 hover:border-afri-primary transition-colors"
+                  className="text-left bg-white rounded-xl border border-gray-200 shadow-xs p-5 hover:border-afri-primary transition-colors"
                 >
                   <div className="flex items-start gap-3">
                     <div className="w-12 h-12 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center shrink-0">
@@ -112,7 +112,7 @@ export default function AdminDelivererApplications() {
           <div className="flex items-center gap-2 text-gray-500"><Loader2 size={18} className="animate-spin" /> Chargement du dossier…</div>
         ) : (
           <div className="max-w-3xl">
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+            <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-14 h-14 rounded-xl bg-afri-soft text-afri-primary flex items-center justify-center">
                   <Truck size={24} />

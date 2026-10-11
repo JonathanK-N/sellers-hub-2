@@ -86,7 +86,7 @@ export default function Notifications() {
       </header>
 
       <div className="px-4 mt-4">
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`w-9 h-9 rounded-full flex items-center justify-center ${pushOn ? "bg-afri-soft text-afri-primary" : "bg-gray-100 text-gray-400"}`}>

@@ -41,7 +41,7 @@ export default function AdminDisputes() {
         ) : (
           <div className="space-y-4">
             {items.map((d) => (
-              <div key={d.id} className={`bg-white rounded-xl border-l-4 shadow-sm p-5 ${PRIORITY_STYLES[d.priority] || PRIORITY_STYLES.normal}`} data-testid={`dispute-card-${d.id}`}>
+              <div key={d.id} className={`bg-white rounded-xl border-l-4 shadow-xs p-5 ${PRIORITY_STYLES[d.priority] || PRIORITY_STYLES.normal}`} data-testid={`dispute-card-${d.id}`}>
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-lg bg-red-50 text-[#E24B4A] flex items-center justify-center shrink-0">
                     <AlertTriangle size={20} />
