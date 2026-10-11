@@ -38,12 +38,16 @@ try:
     adb("shell", "svc", "wifi", "disable")
     adb("shell", "svc", "data", "disable")
     adb("shell", "am", "force-stop", package)
+    adb("logcat", "-c")
     adb("shell", "am", "start", "-W", "-n", package+"/cd.cognito.afrimarket.MainActivity")
-    time.sleep(8)
-    adb("shell", "uiautomator", "dump", "/sdcard/afrimarket-offline.xml")
-    adb("pull", "/sdcard/afrimarket-offline.xml", str(out/"offline.xml"))
-    check("bundled landing renders with Wi-Fi and mobile data disabled", "AfriMarket" in (out/"offline.xml").read_text())
+    for attempt in range(10):
+        time.sleep(3)
+        adb("shell", "uiautomator", "dump", "/sdcard/afrimarket-offline.xml")
+        adb("pull", "/sdcard/afrimarket-offline.xml", str(out/"offline.xml"))
+        if "AfriMarket" in (out/"offline.xml").read_text():
+            break
     (out/"offline.png").write_bytes(subprocess.check_output(["adb", "exec-out", "screencap", "-p"]))
+    check("bundled landing renders with Wi-Fi and mobile data disabled", "AfriMarket" in (out/"offline.xml").read_text())
     adb("shell", "svc", "wifi", "enable")
     adb("shell", "svc", "data", "enable")
     adb("shell","run-as",package,"mkdir","-p","files")

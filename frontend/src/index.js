@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@/index.css";
 import App from "@/App";
+import { Capacitor } from "@capacitor/core";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +25,7 @@ root.render(
 
 // Register the PWA service worker (production only) so AfriMarket is installable
 // and works partially offline.
-if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+if ("serviceWorker" in navigator && process.env.NODE_ENV === "production" && !Capacitor.isNativePlatform()) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/service-worker.js").catch(() => {});
   });
