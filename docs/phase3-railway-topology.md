@@ -19,3 +19,11 @@ Coût indicatif sur 30 jours, à partir des [tarifs Railway consultés](https://
 Production ultérieure : évaluer un replica set géré à trois membres ou cluster adapté, backups chiffrés et restauration certifiée. Préparer le coût réel, la migration et le rollback avant approbation ; ne pas exécuter cette migration dans la phase 3.
 
 Preuves : release-evidence/phase3/railway-baseline.json. Les noms de variables historiques sont conservés sans valeurs. Les noms CinetPay ne prouvent pas un compte sandbox valide.
+
+## Autorisation et préparation de la conversion
+
+Le propriétaire a autorisé la conversion et la régénération synthétique le 11 octobre 2026. Le volume b0f66ec2-2328-4b12-aecb-47847c6d5733 de 1024 MB, le Dockerfile Mongo 8.0.32, le bootstrap authentifié et le nom utilisateur sont préparés dans le patch staging 6d13f9a6-4924-4c69-92e3-d351404d5136. Rien n’est provisionné avant application. La clé interne est générée dans le volume avec permissions 400, sans impression ni copie Git. Les mots de passe root et applicatif doivent être deux variables scellées distinctes ; privilégier 64 caractères hexadécimaux pour le mot de passe applicatif, afin que sa référence soit compatible avec une URI sans caractères réservés. La CI valide PRIMARY authentifié, refus anonyme, restrictions de base, commit majorité et persistance après redémarrage.
+
+L’API doit référencer le compte applicatif afrimarket_staging et la base afrimarket_staging_synthetic, authSource=afrimarket_staging_synthetic et replicaSet=afrimarket-staging-rs. Ne pas utiliser le compte root dans l’application. Ne pas appliquer le patch tant que les variables scellées et la référence API n’ont pas été vérifiées. Les modifications en attente sont globales à l’environnement : l’application déploie l’ensemble du patch, pas seulement le Web.
+
+Le déploiement Web a été explicitement autorisé, mais accept-deploy a renvoyé deux refus successifs « Cancelled — the user did not approve this action. No changes were made. ». Aucun contournement ni déploiement effectif n’a été réalisé. Le contrôle du connecteur reste BLOCKED ; l’autorisation métier est bien acquise.

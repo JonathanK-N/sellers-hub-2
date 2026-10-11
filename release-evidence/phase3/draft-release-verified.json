@@ -1,0 +1,64 @@
+{
+  "releaseId": 409870961,
+  "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/tag/untagged-850180e144b656acd310",
+  "draft": true,
+  "tag": "v1.0.1-green-rc.3",
+  "sourceSha": "058b6a51bf00c4525155b20e1e1a96e939fdfad5",
+  "checkedAt": "2026-10-11T19:22:52.674Z",
+  "assets": [
+    {
+      "name": "afrimarket-rc3-058b6a5-android-debug.zip",
+      "status": "PASS",
+      "sha256": "8c1ab22e1aff58620038bb8a1bec529445f3e07accc833444569f08a532bf723",
+      "size": 5057541
+    },
+    {
+      "name": "afrimarket-rc3-058b6a5-pwa.zip",
+      "status": "PASS",
+      "sha256": "92c46adb7f2401098b24ba057f562911d44dc0384ac4055b5726a72e4a465bb3",
+      "size": 1443552
+    },
+    {
+      "name": "afrimarket-rc3-058b6a5-reports-and-evidence.zip",
+      "status": "PASS",
+      "sha256": "345cb7571bd94c4724edd30d5d1b898eac766ac5b87d354c58e87daab89c2845",
+      "size": 4960950
+    },
+    {
+      "name": "afrimarket-rc3-058b6a5-source.zip",
+      "status": "PASS",
+      "sha256": "f2f8ef777fe8f546411808694ee556253cf99b4250c38c64808cf27e19ba3754",
+      "size": 6483789
+    },
+    {
+      "name": "AfriMarket-rc3-058b6a5-staging-debug.apk",
+      "status": "PASS",
+      "sha256": "5e7a0a9011db1300ea422a5318a8ad30c5a8f693a4f855039ce099af3a103053",
+      "size": 5523568
+    },
+    {
+      "name": "afrimarket-rc3-058b6a5-web.zip",
+      "status": "PASS",
+      "sha256": "92c46adb7f2401098b24ba057f562911d44dc0384ac4055b5726a72e4a465bb3",
+      "size": 1443552
+    },
+    {
+      "name": "artifact-manifest-final.json",
+      "status": "PASS",
+      "sha256": "874e189a8b58f1479c7466a04fb34cdd4c11f43d673efe95bff289a6dfb4df3d",
+      "size": 1727
+    },
+    {
+      "name": "phase3-report.md",
+      "status": "PASS",
+      "sha256": "1ebea59adf763fe26b4d0898efced56da8da3c77ea32a3af8333718e3a230543",
+      "size": 12922
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "status": "PASS",
+      "sha256": "3fbae79b449fe6d0e7f7db46103056cad9190360eb2611a6116b117b821954a7",
+      "size": 800
+    }
+  ]
+}

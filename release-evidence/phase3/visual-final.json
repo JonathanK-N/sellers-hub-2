@@ -1,0 +1,33 @@
+{
+  "sourceSha": "058b6a51bf00c4525155b20e1e1a96e939fdfad5",
+  "scope": "compiled candidate served locally; products API replaced by an empty synthetic list; no backend certification",
+  "rows": [
+    {
+      "width": 390,
+      "status": "PASS",
+      "color": "rgb(8, 80, 65)",
+      "font": "Poppins, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+      "overflow": 0,
+      "inlineStyle": true,
+      "modalKeyboard": "PASS"
+    },
+    {
+      "width": 768,
+      "status": "PASS",
+      "color": "rgb(8, 80, 65)",
+      "font": "Poppins, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+      "overflow": 0,
+      "inlineStyle": true,
+      "modalKeyboard": "PASS"
+    },
+    {
+      "width": 1440,
+      "status": "PASS",
+      "color": "rgb(8, 80, 65)",
+      "font": "Poppins, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+      "overflow": 0,
+      "inlineStyle": true,
+      "modalKeyboard": "PASS"
+    }
+  ]
+}

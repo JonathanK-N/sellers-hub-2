@@ -11,3 +11,7 @@ Résultat local : PASS sur cette petite base synthétique au repos. Dump 54,766 
 Pour la production : choisir backup replica-set/cluster cohérent ou snapshot/quiescence compatible avec standalone ; obtenir un compte backup avec droits nécessaires, une destination chiffrée approuvée, la clé gérée séparément, rétention et supervision ; restaurer vers un environnement privé autorisé sans exposer de données personnelles. Fournir l'accès opérationnel et l'approbation de toute quiescence/migration requise avant exécution. Réutiliser les conditions détaillées de docs/mongodb-backup-restore.md. Le bundle Git vérifié en phase 3 protège le code et ne constitue jamais une sauvegarde MongoDB.
 
 Référence : [mongodump et cohérence oplog](https://www.mongodb.com/docs/database-tools/mongodump/).
+
+## Validation CI finale
+
+Le run 38166788235 du candidat 058b6a5 valide le dump complet avec oplog, chiffrement AES-256-GCM et restauration isolée sur Mongo 8.0.32. Les trois collections synthétiques, leurs index, empreintes et équilibre du journal concordent. Les durées exactes sont dans release-evidence/phase3/mongodb-recovery-ci.json. La fixture est petite et quiescente : elle ne prouve ni comportement sous écritures de production concurrentes, ni RPO/RTO réel. Les dumps, clés et données restent privés ou éphémères ; seul le résultat expurgé est publié. Le propriétaire confirme qu’aucun accès de sauvegarde production n’est configuré : cette validation reste BLOCKED.
