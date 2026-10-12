@@ -1,0 +1,121 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "ddbbaabc01dda497d05ee3372f41a12503f4fddd",
+  "scope": "Actual HTTPS; dedicated TEST identities only; no WhatsApp or provider sends",
+  "rows": [
+    {
+      "test": "/admin/users excludes credential and verification fields",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/admin/sellers excludes credential and verification fields",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/auth/me excludes credential and verification fields",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/messages/conversations rejects anonymous access",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "/messages/unread-count rejects anonymous access",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "/seller/wallet rejects anonymous access",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "/auth/me rejects anonymous access",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "/orders/my rejects anonymous access",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "seller denied /admin/overview",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "buyer denied /seller/wallet",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "Courier cannot read private buyer/seller conversation",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "Oversized message rejected",
+      "status": "PASS",
+      "http": 422
+    },
+    {
+      "test": "Invalid history cursor rejected",
+      "status": "PASS",
+      "http": 422
+    },
+    {
+      "test": "CinetPay webhook disabled",
+      "status": "PASS",
+      "http": 503
+    },
+    {
+      "test": "Integrated withdrawal disabled",
+      "status": "PASS",
+      "http": 503
+    },
+    {
+      "test": "Checkout replay creates one order and reserves stock once",
+      "status": "PASS"
+    },
+    {
+      "test": "Direct payment init never asserts platform verification or held funds",
+      "status": "PASS"
+    },
+    {
+      "test": "Direct cancellation restores stock once without refund",
+      "status": "PASS"
+    },
+    {
+      "test": "Untrusted CORS origin rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Public seller excludes OTP and verification proof",
+      "status": "PASS"
+    },
+    {
+      "test": "WhatsApp opt-out hides contact and own TEST opt-in restores it",
+      "status": "PASS"
+    },
+    {
+      "test": "Unrelated TEST buyer cannot read conversation",
+      "status": "PASS",
+      "http": 404
+    },
+    {
+      "test": "Unrelated TEST buyer cannot read order",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "Public signup cannot assign administrator role",
+      "status": "PASS",
+      "http": 400
+    }
+  ]
+}

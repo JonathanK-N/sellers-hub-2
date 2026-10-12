@@ -1,0 +1,103 @@
+{
+  "sourceSha": "ddbbaabc01dda497d05ee3372f41a12503f4fddd",
+  "buildSha": "Railway deployed source",
+  "scope": "Real deployed Railway staging HTTPS, explicitly authorized SHA ddbbaabc01dda497d05ee3372f41a12503f4fddd. Only dedicated TEST fixtures; no production access and no Mongo direct integrity/ledger-count certification. Fixtures retained for review; no collection deletion. WhatsApp links inspected without sending.",
+  "rows": [
+    {
+      "test": "Synthetic buyer, seller and courier registered, OTP-verified and authenticated via real HTTP",
+      "status": "PASS"
+    },
+    {
+      "test": "Buyer and seller login through actual browser forms",
+      "status": "PASS"
+    },
+    {
+      "test": "Product WhatsApp link uses verified opted-in business phone",
+      "status": "PASS"
+    },
+    {
+      "test": "Browser product/cart/checkout creates persisted direct order with native amount",
+      "status": "PASS"
+    },
+    {
+      "test": "Order WhatsApp message has public reference and no buyer phone or handoff secret",
+      "status": "PASS"
+    },
+    {
+      "test": "Seller receipt requires explicit checkbox",
+      "status": "PASS"
+    },
+    {
+      "test": "Seller cannot prepare before declaring receipt",
+      "status": "PASS"
+    },
+    {
+      "test": "Seller browser preparation and handoff persist without verified funds",
+      "status": "PASS"
+    },
+    {
+      "test": "Message XSS renders as text without executing",
+      "status": "PASS"
+    },
+    {
+      "test": "Uncertain message draft survives reload",
+      "status": "PASS"
+    },
+    {
+      "test": "Seller sees persisted buyer messages after reconnect",
+      "status": "PASS"
+    },
+    {
+      "test": "HTTPS response-loss retry persists exactly one message",
+      "status": "PASS"
+    },
+    {
+      "test": "HTTPS direct checkout reserves stock once",
+      "status": "PASS"
+    },
+    {
+      "test": "Chat layout has no horizontal overflow at 390",
+      "status": "PASS"
+    },
+    {
+      "test": "Chat layout has no horizontal overflow at 768",
+      "status": "PASS"
+    },
+    {
+      "test": "Chat layout has no horizontal overflow at 1440",
+      "status": "PASS"
+    },
+    {
+      "test": "HTTPS history pages preserve distinct persisted messages",
+      "status": "PASS"
+    },
+    {
+      "test": "New order requires a fresh receipt consent",
+      "status": "PASS"
+    },
+    {
+      "test": "Courier dashboard login and assignment exclude buyer handoff codes",
+      "status": "PASS"
+    },
+    {
+      "test": "Courier browser pickup, route and confirmation deliver without financial credit",
+      "status": "PASS"
+    },
+    {
+      "test": "Admin direct dispute offers no refund or seller release buttons",
+      "status": "PASS"
+    },
+    {
+      "test": "Admin browser closes direct dispute without modifying received-payment declaration",
+      "status": "PASS"
+    },
+    {
+      "test": "Expired JWT stores no new message in HTTPS history",
+      "status": "PASS"
+    },
+    {
+      "test": "HTTPS two-order cycle preserves stock and no payable seller credit",
+      "status": "PASS"
+    }
+  ]
+}

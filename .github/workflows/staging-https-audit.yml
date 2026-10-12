@@ -12,11 +12,12 @@ permissions:
   contents: read
 jobs:
   staging-https-pages:
-    if: github.event_name == 'workflow_dispatch' || (github.event.label.name == 'staging-https-audit' && github.event.pull_request.head.repo.full_name == github.repository)
+    if: github.event_name == 'workflow_dispatch' || ((github.event.label.name == 'staging-https-audit' || github.event.label.name == 'staging-https-home-diagnostic') && github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       STAGING_QA_SOURCE_SHA: ${{ inputs.source_sha || vars.STAGING_QA_SOURCE_SHA }}
+      STAGING_QA_PAGE_FILTER: ${{ github.event.label.name == 'staging-https-home-diagnostic' && 'accueil' || '' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,7 +39,11 @@ jobs:
           export LIGHTHOUSE_PACKAGE="$RUNNER_TEMP/afrimarket-https-tools/node_modules/lighthouse/package.json"
           export PLAYWRIGHT_MODULE="$RUNNER_TEMP/afrimarket-https-tools/node_modules/playwright"
           mkdir -p "$QA_PRIVATE_ROOT" staging-https-evidence
-          node scripts/staging_ci_sessions.cjs "$QA_PRIVATE_ROOT/sessions"
+          if [ "$STAGING_QA_PAGE_FILTER" != "accueil" ]; then
+            node scripts/staging_ci_sessions.cjs "$QA_PRIVATE_ROOT/sessions"
+          else
+            mkdir -p "$QA_PRIVATE_ROOT/sessions"
+          fi
           node scripts/staging_https_lighthouse.cjs "$QA_PRIVATE_ROOT/sessions" "$QA_PRIVATE_ROOT/raw-reports" staging-https-evidence/summary.json
       - uses: actions/upload-artifact@v4
         if: always()

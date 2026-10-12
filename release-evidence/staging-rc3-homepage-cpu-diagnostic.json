@@ -1,0 +1,102 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Independent owned mobile browser CPU diagnostic; no Lighthouse score or gate substitution",
+  "sourceSha": "ddbbaabc01dda497d05ee3372f41a12503f4fddd",
+  "coarse": true,
+  "numberFormat": [
+    {
+      "locale": "en-US",
+      "durationMs": 119.20000000298023
+    },
+    {
+      "locale": "en-US",
+      "durationMs": 0.10000000894069672
+    }
+  ],
+  "hotFrames": [
+    {
+      "name": "(program)",
+      "url": "",
+      "line": -1,
+      "column": -1,
+      "selfMs": 815.481
+    },
+    {
+      "name": "(idle)",
+      "url": "",
+      "line": -1,
+      "column": -1,
+      "selfMs": 519.626
+    },
+    {
+      "name": "construct",
+      "url": "",
+      "line": 1,
+      "column": 123,
+      "selfMs": 78.25
+    },
+    {
+      "name": "pa",
+      "url": "/assets/index-CHyWaYwx.js",
+      "line": 12,
+      "column": 557,
+      "selfMs": 68.151
+    },
+    {
+      "name": "",
+      "url": "/assets/index-CHyWaYwx.js",
+      "line": 11,
+      "column": 66097,
+      "selfMs": 48.704
+    },
+    {
+      "name": "Ko",
+      "url": "/assets/index-CHyWaYwx.js",
+      "line": 8,
+      "column": 52120,
+      "selfMs": 19.961
+    },
+    {
+      "name": "",
+      "url": "/assets/index-CHyWaYwx.js",
+      "line": 0,
+      "column": 0,
+      "selfMs": 14.359
+    },
+    {
+      "name": "xl",
+      "url": "/assets/index-CHyWaYwx.js",
+      "line": 8,
+      "column": 103299,
+      "selfMs": 10.726
+    },
+    {
+      "name": "",
+      "url": "/assets/jsx-runtime-BEnyrngo.js",
+      "line": 0,
+      "column": 174,
+      "selfMs": 9.057
+    },
+    {
+      "name": "ge",
+      "url": "/assets/index-CHyWaYwx.js",
+      "line": 9,
+      "column": 38639,
+      "selfMs": 8.004
+    },
+    {
+      "name": "jc",
+      "url": "/assets/index-CHyWaYwx.js",
+      "line": 8,
+      "column": 85286,
+      "selfMs": 7.998
+    },
+    {
+      "name": "Su",
+      "url": "/assets/index-CHyWaYwx.js",
+      "line": 8,
+      "column": 115916,
+      "selfMs": 7.558
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "ddbbaabc01dda497d05ee3372f41a12503f4fddd",
+  "scope": "Actual HTTPS, fresh owned browser; old worker lifecycle separately tested on exact artifact",
+  "rows": [
+    {
+      "test": "HTTPS v12 active",
+      "status": "PASS"
+    },
+    {
+      "test": "Old v11 cache removed",
+      "status": "PASS"
+    },
+    {
+      "test": "Unrelated cache preserved",
+      "status": "PASS"
+    },
+    {
+      "test": "Private session valid online",
+      "status": "PASS"
+    },
+    {
+      "test": "Private API is never cached",
+      "status": "PASS"
+    },
+    {
+      "test": "Offline private API returns 503",
+      "status": "PASS"
+    },
+    {
+      "test": "Cleared session redirects to login",
+      "status": "PASS"
+    }
+  ]
+}
