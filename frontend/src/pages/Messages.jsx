@@ -12,13 +12,16 @@ export default function ConversationsList() {
   const nav = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [offset, setOffset] = useState(0);
+  const [more, setMore] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     const load = () =>
-      api.get("/messages/conversations").then(({ data }) => {
-        if (!cancelled) setItems(data);
-      }).finally(() => setLoading(false));
+      api.get("/messages/conversations", { params: { limit: 50 } }).then(({ data }) => {
+        if (!cancelled) { setItems(data); setError(""); setOffset(data.length); setMore(data.length === 50); }
+      }).catch(() => { if (!cancelled) setError("Connexion interrompue. Nouvelle tentative automatique."); }).finally(() => { if (!cancelled) setLoading(false); });
     load();
     const t = setInterval(load, 5000);
     return () => { cancelled = true; clearInterval(t); };
@@ -29,6 +32,8 @@ export default function ConversationsList() {
       <TopBar title="Messages" showCart={false} />
 
       <div className="px-4 mt-4">
+        {error && <p role="alert" className="mb-3 text-sm text-amber-800">{error}</p>}
+        {more && <button className="mb-3 text-afri-secondary underline" onClick={async () => { try { const { data } = await api.get("/messages/conversations", { params: { limit: 50, offset } }); setItems(previous => [...new Map([...previous, ...data].map(row => [row.conversation_id, row])).values()]); setOffset(offset + data.length); setMore(data.length === 50); } catch { setError("Impossible de charger les conversations précédentes."); } }}>Conversations précédentes</button>}
         {loading ? (
           <div className="space-y-3">{[1,2,3].map((i) => <div key={i} className="h-16 rounded-xl bg-gray-100 animate-pulse" />)}</div>
         ) : items.length === 0 ? (

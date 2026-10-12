@@ -15,3 +15,5 @@ Base vérifiée : b3f503b0ae91c82772f9795f39ed06a8af47040b, CI phase 3 verte. Br
 | L01 Production | P0 | BLOCKED | Backup restaurable, migration, staging et approbation concrète requis |
 
 Le paiement direct rend CinetPay non bloquant ; les gates de protection des données restent obligatoires.
+
+Cycle M01 : 9 tests Mongo réels PASS sur loopback, dont 15 envois concurrents de la même clé -> une ligne et une notification, IDOR/contextes étrangers refusés, 125 messages paginés sans doublons, compte suspendu, débit 30/minute, XSS conservé comme texte et limites de modèle. Preuve locale : release-evidence/production-launch-messages-loop2.xml. Interface mobile modifiée ; build et tests navigateur encore TESTING, pas PASS.

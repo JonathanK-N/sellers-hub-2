@@ -100,7 +100,11 @@ async def create_indexes():
     await db.banners.create_index("target_role")
     await db.notifications.create_index([("user_id", 1), ("read", 1)])
     await db.notifications.create_index("created_at")
-    await db.messages.create_index([("thread_id", 1), ("created_at", -1)])
+    await db.messages.create_index([("conversation_id", 1), ("created_at", -1), ("id", -1)])
+    await db.messages.create_index([("to_user_id", 1), ("read", 1)])
+    await db.messages.create_index([("buyer_id", 1), ("created_at", -1)])
+    await db.messages.create_index([("seller_id", 1), ("created_at", -1)])
+    await db.message_rate_limits.create_index("expires_at", expireAfterSeconds=0)
     await db.app_config.create_index("key", unique=True)
     await db.fx_rates.create_index("pair", unique=True)
     try:
