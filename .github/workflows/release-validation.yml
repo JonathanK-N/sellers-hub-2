@@ -314,6 +314,7 @@ jobs:
           python-version: '3.12'
       - run: python scripts/validate_release.py
       - run: node scripts/test_service_worker.cjs
+      - run: node scripts/test_count_up.cjs
       - name: Record Web build metadata
         run: |
           node -e "const fs=require('fs'); fs.writeFileSync('frontend/build/release-metadata.json',JSON.stringify({version:require('./frontend/package.json').version,sourceSha:process.env.SOURCE_SHA,buildSha:process.env.GITHUB_SHA,date:new Date().toISOString(),type:'Web/PWA staging',tools:{node:process.version},api:'https://afrimarket-api-staging-staging.up.railway.app'},null,2));"

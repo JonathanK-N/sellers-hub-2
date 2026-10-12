@@ -9,9 +9,15 @@ export default function CountUp({ to, from = 0, direction = 'up', delay = 0, dur
     const initial = direction === 'down' ? to : from;
     const final = direction === 'down' ? from : to;
     const decimals = Math.max(String(from).split('.')[1]?.length || 0, String(to).split('.')[1]?.length || 0);
+    const motionSuppressed = window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.matchMedia('(pointer: coarse)').matches;
+    // Les compteurs entiers statiques ne nécessitent pas l'initialisation du moteur de localisation.
+    if (motionSuppressed && decimals === 0 && !separator && Number.isSafeInteger(final) && !Object.is(final, -0)) {
+      el.textContent = String(final);
+      return;
+    }
     const formatter = new Intl.NumberFormat('en-US', { useGrouping: !!separator, minimumFractionDigits: decimals, maximumFractionDigits: decimals });
     const paint = value => { el.textContent = formatter.format(value).replace(/,/g, separator); };
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.matchMedia('(pointer: coarse)').matches) {
+    if (motionSuppressed) {
       paint(final);
       return;
     }

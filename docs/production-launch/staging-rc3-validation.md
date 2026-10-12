@@ -37,3 +37,10 @@ Le rapport constate 2603 ms d’évaluation JavaScript et un délai de rendu de 
 Les preuves versionnées sont dans release-evidence/staging-rc3-deployment-verification.json, staging-rc3-lighthouse-ci-cold-loop1.json, staging-https-rc3-business-loop1.json, staging-https-rc3-security-loop1.json, staging-rc3-pwa-https-loop2.json, staging-rc3-pwa-upgrade-ddbbaab.json et staging-rc3-pwa-tool-timeout.json. Les profils détaillés et sessions restent privés hors Git.
 
 La production ne sera préparée pour application qu’après un cycle complet conforme sur le candidat corrigé et une approbation distincte.
+
+
+## Cycle correctif rc.4 en préparation
+
+Le diagnostic public seul, avec échantillonnage CPU supplémentaire, échoue encore (LCP 3274 ms, TBT 704 ms). Ses métriques servent au diagnostic ; elles ne remplacent pas les sept mesures sans échantillonnage. Les piles sont dominées par l’initialisation du bundle React/Scheduler. Leur attribution native ne permet pas de déclarer une cause unique certaine.
+
+Le coût indépendant confirmé de 135 ms dans Intl.NumberFormat est corrigé uniquement pour les compteurs entiers statiques sur pointeur tactile ou mouvement réduit. Décimales, séparateurs, zéro signé, valeurs non sûres et callbacks desktop sont couverts par les tests de régression. Version rc.4, cache v13 et code Android 8 distinguent le nouveau candidat. Aucun gain Lighthouse HTTPS n’est revendiqué avant son déploiement approuvé et ses sept nouveaux audits.

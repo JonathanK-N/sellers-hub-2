@@ -1,0 +1,345 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "ddbbaabc01dda497d05ee3372f41a12503f4fddd",
+  "partialDiagnostic": true,
+  "scope": "Actual Railway staging HTTPS, Lighthouse 13.5 default mobile simulated throttling; fresh isolated browser per page, authentication initialized on robots.txt without warming application resources; raw authenticated reports private outside Git",
+  "rows": [
+    {
+      "page": "accueil",
+      "route": "/",
+      "finalPath": "/",
+      "pageVerified": true,
+      "seoPolicy": "public SEO >=95",
+      "status": "FAIL",
+      "metrics": {
+        "performance": 72,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100,
+        "lcpMs": 3273.5434999999998,
+        "tbtMs": 703.9999999999998,
+        "cls": 0
+      },
+      "failures": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.88
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.7
+        },
+        {
+          "id": "speed-index",
+          "title": "Speed Index",
+          "score": 0.8
+        },
+        {
+          "id": "total-blocking-time",
+          "title": "Total Blocking Time",
+          "score": 0.42
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.2
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.94
+        },
+        {
+          "id": "mainthread-work-breakdown",
+          "title": "Minimize main-thread work",
+          "score": 0
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0
+        }
+      ],
+      "diagnostics": {
+        "benchmarkIndex": 2670.5,
+        "mainThread": [
+          {
+            "group": "scriptEvaluation",
+            "durationMs": 1030.3119999999988
+          },
+          {
+            "group": "other",
+            "durationMs": 695.5519999999977
+          },
+          {
+            "group": "styleLayout",
+            "durationMs": 312.76800000000003
+          },
+          {
+            "group": "parseHTML",
+            "durationMs": 128.2
+          },
+          {
+            "group": "paintCompositeRender",
+            "durationMs": 60.172
+          },
+          {
+            "group": "scriptParseCompile",
+            "durationMs": 5.02
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "part": "timeToFirstByte",
+            "durationMs": 122.754
+          },
+          {
+            "part": "resourceLoadDelay",
+            "durationMs": 105.058
+          },
+          {
+            "part": "resourceLoadDuration",
+            "durationMs": 77.51
+          },
+          {
+            "part": "elementRenderDelay",
+            "durationMs": 2024.543
+          }
+        ],
+        "lcpElementTag": "img",
+        "staticResources": [
+          {
+            "path": "/fonts/poppins-400-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8022,
+            "startMs": 199.16800000003423,
+            "endMs": 279.19700000001467
+          },
+          {
+            "path": "/fonts/poppins-800-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7953,
+            "startMs": 199.44700000001467,
+            "endMs": 291.53900000001886
+          },
+          {
+            "path": "/assets/index-CHyWaYwx.js",
+            "type": "Script",
+            "transferBytes": 114537,
+            "startMs": 203.05200000002515,
+            "endMs": 292.28800000002957
+          },
+          {
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "type": "Script",
+            "transferBytes": 4610,
+            "startMs": 203.2160000000149,
+            "endMs": 285.15200000003097
+          },
+          {
+            "path": "/images/market-hero-800.avif",
+            "type": "Image",
+            "transferBytes": 47245,
+            "startMs": 223.762000000017,
+            "endMs": 300.75500000003376
+          },
+          {
+            "path": "/fonts/poppins-600-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8128,
+            "startMs": 499.89200000002165,
+            "endMs": 588.256000000023
+          },
+          {
+            "path": "/fonts/poppins-500-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7876,
+            "startMs": 500.2180000000226,
+            "endMs": 590.2690000000293
+          },
+          {
+            "path": "/fonts/poppins-700-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7944,
+            "startMs": 500.4220000000205,
+            "endMs": 580.0570000000298
+          }
+        ],
+        "cpuFrames": [
+          {
+            "function": "",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 0,
+            "column": 0,
+            "selfMs": 6.694,
+            "inclusiveMs": 4463.065
+          },
+          {
+            "function": "",
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "line": 0,
+            "column": 174,
+            "selfMs": 0.181,
+            "inclusiveMs": 4434.159
+          },
+          {
+            "function": "",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 9,
+            "column": 32763,
+            "selfMs": 0.167,
+            "inclusiveMs": 4433.978
+          },
+          {
+            "function": "",
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "line": 0,
+            "column": 174,
+            "selfMs": 0.517,
+            "inclusiveMs": 4433.811
+          },
+          {
+            "function": "",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 1,
+            "column": 7882,
+            "selfMs": 0.786,
+            "inclusiveMs": 4433.294
+          },
+          {
+            "function": "",
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "line": 0,
+            "column": 174,
+            "selfMs": 0.165,
+            "inclusiveMs": 4427.466
+          },
+          {
+            "function": "",
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "line": 0,
+            "column": 174,
+            "selfMs": 0.048,
+            "inclusiveMs": 4427.374
+          },
+          {
+            "function": "",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 1,
+            "column": 4377,
+            "selfMs": -0.14,
+            "inclusiveMs": 4427.326
+          },
+          {
+            "function": "",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 1,
+            "column": 762,
+            "selfMs": 4427.301,
+            "inclusiveMs": 4427.301
+          },
+          {
+            "function": "w",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 1,
+            "column": 2023,
+            "selfMs": 0.165,
+            "inclusiveMs": 167.434
+          },
+          {
+            "function": "",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 8,
+            "column": 116344,
+            "selfMs": 0,
+            "inclusiveMs": 87.116
+          },
+          {
+            "function": "wu",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 8,
+            "column": 116964,
+            "selfMs": 0.17,
+            "inclusiveMs": 87.116
+          },
+          {
+            "function": "Zc",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 8,
+            "column": 95887,
+            "selfMs": 0.168,
+            "inclusiveMs": 86.732
+          },
+          {
+            "function": "Xc",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 8,
+            "column": 95794,
+            "selfMs": 0,
+            "inclusiveMs": 86.564
+          },
+          {
+            "function": "Zc",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 8,
+            "column": 95887,
+            "selfMs": 0,
+            "inclusiveMs": 86.564
+          },
+          {
+            "function": "Xc",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 8,
+            "column": 95794,
+            "selfMs": 0,
+            "inclusiveMs": 86.564
+          },
+          {
+            "function": "Zc",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 8,
+            "column": 95887,
+            "selfMs": 0,
+            "inclusiveMs": 86.564
+          },
+          {
+            "function": "Xc",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 8,
+            "column": 95794,
+            "selfMs": 0,
+            "inclusiveMs": 86.564
+          },
+          {
+            "function": "Zc",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 8,
+            "column": 95887,
+            "selfMs": 0,
+            "inclusiveMs": 86.564
+          },
+          {
+            "function": "Xc",
+            "path": "/assets/index-CHyWaYwx.js",
+            "line": 8,
+            "column": 95794,
+            "selfMs": 0,
+            "inclusiveMs": 86.393
+          }
+        ]
+      }
+    }
+  ]
+}

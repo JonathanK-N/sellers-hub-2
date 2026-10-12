@@ -8,7 +8,7 @@ const crypto = require('node:crypto');
   const runId = Number(process.argv[2]);
   const output = path.resolve(process.argv[3]);
   const expectedBranch = process.argv[4] || 'stabilization/afrimarket-phase-3';
-  if (!['stabilization/afrimarket-phase-3', 'release/afrimarket-production-launch', 'codex/afrimarket-staging-validation', 'codex/afrimarket-rc2-lcp'].includes(expectedBranch)) throw Error('Unsupported evidence branch');
+  if (!['stabilization/afrimarket-phase-3', 'release/afrimarket-production-launch', 'codex/afrimarket-staging-validation', 'codex/afrimarket-rc2-lcp', 'codex/afrimarket-rc3-validation'].includes(expectedBranch)) throw Error('Unsupported evidence branch');
   if (!runId || !process.argv[3]) throw Error('Run ID and private output directory required');
   const credential = cp.execFileSync('git', ['credential', 'fill'], { input: 'protocol=https\nhost=github.com\n\n', encoding: 'utf8', timeout: 60000 });
   const entries = Object.fromEntries(credential.trim().split('\n').map(line => { const i = line.indexOf('='); return [line.slice(0, i), line.slice(i + 1)]; }));
