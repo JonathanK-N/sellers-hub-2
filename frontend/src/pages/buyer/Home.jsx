@@ -65,7 +65,7 @@ export default function BuyerHome() {
         <button
           onClick={() => nav("/buyer/search")}
           data-testid="home-search-btn"
-          className="w-full bg-gray-100 hover:bg-gray-200 transition-colors rounded-full py-3 pl-10 pr-4 text-sm text-left text-gray-500 relative"
+          className="w-full bg-gray-100 hover:bg-gray-200 transition-colors rounded-full py-3 pl-10 pr-4 text-sm text-left text-gray-600 relative"
         >
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2" />
           Rechercher un produit ou vendeur…

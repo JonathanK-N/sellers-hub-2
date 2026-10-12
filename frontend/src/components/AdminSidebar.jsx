@@ -37,7 +37,7 @@ function SidebarContent({ onClose }) {
           </div>
         </div>
         {onClose && (
-          <button onClick={onClose} className="lg:hidden p-1 hover:bg-white/10 rounded-lg">
+          <button onClick={onClose} aria-label="Fermer la navigation administrateur" className="lg:hidden p-1 hover:bg-white/10 rounded-lg">
             <X size={20} />
           </button>
         )}
@@ -78,7 +78,7 @@ export default function AdminSidebar() {
   return (
     <>
       {/* Mobile hamburger */}
-      <button onClick={() => setOpen(true)}
+      <button onClick={() => setOpen(true)} aria-label="Ouvrir la navigation administrateur"
         className="lg:hidden fixed top-3 left-3 z-50 w-10 h-10 bg-afri-secondary text-white rounded-lg flex items-center justify-center shadow-lg">
         <Menu size={20} />
       </button>

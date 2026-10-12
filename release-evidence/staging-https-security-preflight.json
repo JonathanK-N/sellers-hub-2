@@ -1,0 +1,36 @@
+{
+  "sourceSha": "779ec1244bb25077e639ffc4dbe64f17ce344024",
+  "scope": "Real staging HTTPS unauthenticated access and CORS",
+  "rows": [
+    {
+      "test": "Unauthenticated /api/messages/conversations",
+      "status": "PASS",
+      "httpStatus": 401
+    },
+    {
+      "test": "Unauthenticated /api/messages/unread-count",
+      "status": "PASS",
+      "httpStatus": 401
+    },
+    {
+      "test": "Unauthenticated /api/orders",
+      "status": "FAIL",
+      "httpStatus": 405
+    },
+    {
+      "test": "Unauthenticated /api/seller/wallet",
+      "status": "PASS",
+      "httpStatus": 401
+    },
+    {
+      "test": "Unauthenticated /api/auth/me",
+      "status": "PASS",
+      "httpStatus": 401
+    },
+    {
+      "test": "Untrusted web origin is not allowed by CORS",
+      "status": "PASS",
+      "httpStatus": 400
+    }
+  ]
+}

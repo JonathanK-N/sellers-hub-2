@@ -78,7 +78,7 @@ function RateSellerModal({ order, onClose, onRated }) {
           data-testid="submit-seller-rating-btn"
           disabled={busy}
           onClick={submit}
-          className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold disabled:opacity-50"
+          className="w-full bg-afri-primary-hover hover:bg-afri-secondary text-white rounded-lg py-3 font-semibold disabled:opacity-50"
         >
           {busy ? "Envoi…" : "Valider l'avis"}
         </button>
@@ -141,7 +141,7 @@ export default function BuyerOrders() {
                       {o.delivery_mode === "delivery" ? <Truck size={13} /> : <Store size={13} />}
                       <span>{DELIVERY_STATUS_LABELS[o.status] || o.status}</span>
                       {o.deliverer_name && (
-                        <span className="text-gray-400">· Livreur : {o.deliverer_name}</span>
+                        <span className="text-gray-600">· Livreur : {o.deliverer_name}</span>
                       )}
                     </div>
 

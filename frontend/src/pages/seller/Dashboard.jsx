@@ -160,7 +160,7 @@ function Stat({ icon: Icon, label, value, sub }) {
       </div>
       <div className="font-display font-black text-xl text-afri-secondary mt-2">{value}</div>
       <div className="text-xs text-gray-600">{label}</div>
-      {sub && <div className="text-[10px] text-gray-400 mt-0.5">{sub}</div>}
+      {sub && <div className="text-[10px] text-gray-600 mt-0.5">{sub}</div>}
     </div>
   );
 }

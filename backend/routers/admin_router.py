@@ -101,16 +101,16 @@ async def overview(_: dict = Depends(require_role("admin"))):
 @router.get("/users")
 async def list_users(_: dict = Depends(require_role("admin"))):
     db = get_db()
-    users = await db.users.find({}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0}).sort("created_at", -1).to_list(500)
+    users = await db.users.find({}, {"_id": 0, "password_hash": 0, "otp_code": 0, "otp_expires_at": 0}).sort("created_at", -1).to_list(500)
     return users
 
 
 @router.get("/sellers")
 async def list_sellers(_: dict = Depends(require_role("admin"))):
     db = get_db()
-    sellers = await db.sellers.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    sellers = await db.sellers.find({}, {"_id": 0, "whatsapp_verification": 0}).sort("created_at", -1).to_list(500)
     user_ids = list({s["user_id"] for s in sellers})
-    users = {u["id"]: u async for u in db.users.find({"id": {"$in": user_ids}}, {"_id": 0})}
+    users = {u["id"]: u async for u in db.users.find({"id": {"$in": user_ids}}, {"_id": 0, "id": 1, "name": 1, "phone": 1, "kyc_level": 1})}
     for s in sellers:
         u = users.get(s["user_id"])
         if u:

@@ -40,13 +40,13 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
         <MessagesIndicator />
         <Link
           to="/notifications"
-          aria-label="Notifications"
+          aria-label={notifCount > 0 ? `Notifications, ${notifCount} non lues` : "Notifications"}
           data-testid="notifications-btn"
           className="relative w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center"
         >
           <Bell size={20} />
           {notifCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-afri-accent text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white">
+            <span className="absolute -top-1 -right-1 bg-afri-accent text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-afri-secondary">
               {notifCount}
             </span>
           )}

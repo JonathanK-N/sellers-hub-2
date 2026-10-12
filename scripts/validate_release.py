@@ -23,7 +23,7 @@ for file in (root/'frontend/src').rglob('*.jsx'):
     assert not re.search(r'#(?:f97316|ea580c|0b0b0d|17171a)', file.read_text(encoding='utf-8'), re.I), file
     assert 'var(--afri-success-bg)' not in file.read_text(encoding='utf-8'), file
 sw = (root/'frontend/public/service-worker.js').read_text()
-assert 'afrimarket-green-direct-rc1-v10' in sw and 'startsWith("afrimarket-")' in sw
+assert 'afrimarket-green-direct-rc2-v11' in sw and 'startsWith("afrimarket-")' in sw
 config = json.loads((root/'frontend/capacitor.config.json').read_text())
 assert config['appId'] == 'cd.cognito.afrimarket'
 assert not config['server']['cleartext'] and not config['android']['allowMixedContent']

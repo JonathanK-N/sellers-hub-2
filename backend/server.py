@@ -41,7 +41,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AfriMarket API")
-APP_VERSION = "1.1.0-direct-rc.1"
+APP_VERSION = "1.1.0-direct-rc.2"
 
 # Rate limiting — protège contre le spam et le brute-force
 app.state.limiter = limiter

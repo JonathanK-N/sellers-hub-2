@@ -1,0 +1,36 @@
+{
+  "sourceSha": "779ec1244bb25077e639ffc4dbe64f17ce344024",
+  "scope": "Real HTTPS protection; prior loop used unsupported GET /api/orders (405), corrected to actual list route without changing application safeguards",
+  "rows": [
+    {
+      "test": "Unauthenticated /api/messages/conversations",
+      "status": "PASS",
+      "httpStatus": 401
+    },
+    {
+      "test": "Unauthenticated /api/messages/unread-count",
+      "status": "PASS",
+      "httpStatus": 401
+    },
+    {
+      "test": "Unauthenticated /api/seller/wallet",
+      "status": "PASS",
+      "httpStatus": 401
+    },
+    {
+      "test": "Unauthenticated /api/auth/me",
+      "status": "PASS",
+      "httpStatus": 401
+    },
+    {
+      "test": "Untrusted web origin is not allowed by CORS",
+      "status": "PASS",
+      "httpStatus": 400
+    },
+    {
+      "test": "Unauthenticated GET /api/orders/my",
+      "status": "PASS",
+      "httpStatus": 401
+    }
+  ]
+}

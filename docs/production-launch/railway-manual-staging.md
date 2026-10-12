@@ -150,3 +150,11 @@ En cas d’erreur : arrêter les étapes dépendantes, relever service/deploymen
 Une surveillance de cette conversation est active toutes les dix minutes. Elle relit uniquement le staging, reste silencieuse tant que rien ne change et ne réessaie pas accept_deploy. Après votre application, elle doit vérifier les nouveaux déploiements et reprendre les tests réels lorsque le candidat fonctionne ; elle signale une panne ou une intervention nécessaire. Cette surveillance dépend de la disponibilité de l’application locale et des connecteurs. Elle ne prouve pas à l’avance la réussite du déploiement et n’autorise aucune action production.
 
 L’étape de production reste distincte : aucun changement de production pendant cette procédure.
+
+## Observation après intervention — 12 octobre 2026
+
+La surveillance a constaté l’application du patch : aucun changement en attente, trois nouveaux déploiements SUCCESS et volume Mongo 1024 MB live. API HTTPS /api/health=ok, Mongo=ok, version 1.1.0-direct-rc.1 ; bootstrap Mongo authentifié prêt ; Web HTTPS 200 et flags CinetPay/retraits OFF.
+
+La configuration conserve le pin c492c701, mais les trois métadonnées de déploiement et le healthcheck API annoncent 779ec1244bb25077e639ffc4dbe64f17ce344024. Git ne montre aucune différence de fichiers runtime entre ces deux commits ; ceci ne résout pas la divergence de provenance. Staging non certifié, conservation des anciennes données non vérifiée, tests métier complets non repris à ce stade. Détails et IDs dans staging-observation.json. Ne pas pousser de nouveau commit ou déclencher un redéploiement pour corriger cette divergence sans opération explicitement validée.
+
+Pour les prochaines surveillances : comparer avec staging-observation.json. Si ces mêmes IDs/statuts/SHA restent inchangés, ne pas répéter la notification. Reprendre les validations lorsque la provenance exacte est établie ou qu’une décision explicite du propriétaire couvre le SHA effectivement déployé ; ne pas assimiler automatiquement le commit documentaire au tag candidat.

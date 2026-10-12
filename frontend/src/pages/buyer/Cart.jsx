@@ -16,7 +16,7 @@ export default function Cart() {
   return (
     <div className="mobile-shell">
       <header className="sticky top-0 z-40 bg-afri-secondary text-white px-4 py-3 flex items-center gap-3 shadow-md">
-        <Link to="/buyer/home" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
+        <Link to="/buyer/home" aria-label="Revenir aux produits" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
         <h1 className="font-display font-black text-xl">Mon panier</h1>

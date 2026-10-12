@@ -10,6 +10,23 @@ from test_launch_messages_mongo import isolated
 SELLER = {"id": "seller-user", "role": "seller", "phone": "+243812345678", "phone_verified": True}
 
 
+def test_administrative_lists_preserve_identity_without_credential_or_otp_proof():
+    from routers import admin_router
+    async def run(db):
+        await db.users.update_one({"id": "seller-user"}, {"$set": {"name": "TEST seller", "password_hash": "fixture.hash", "otp_code": "000000", "otp_expires_at": "TEST"}})
+        await db.sellers.update_one({"id": "shop"}, {"$set": {"whatsapp_verification": {"hash": "fixture.hash", "salt": "fixture.salt"}}})
+        with patch.object(admin_router, "get_db", return_value=db):
+            users = await admin_router.list_users({"role": "admin"})
+            shops = await admin_router.list_sellers({"role": "admin"})
+        seller_user = next(u for u in users if u["id"] == "seller-user")
+        assert seller_user["name"] == "TEST seller"
+        assert not {"password_hash", "otp_code", "otp_expires_at"}.intersection(seller_user)
+        shop = next(s for s in shops if s["id"] == "shop")
+        assert shop["owner_name"] == "TEST seller"
+        assert "whatsapp_verification" not in shop
+    asyncio.run(isolated(run))
+
+
 def test_verified_account_number_requires_consent_and_old_personal_field_is_not_public():
     async def run(db):
         await db.sellers.update_one({"id": "shop"}, {"$set": {"social_links": {"whatsapp_business": "+243899999999"}, "kyc_docs": {"private": "TEST"}}})

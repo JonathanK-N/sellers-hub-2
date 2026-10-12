@@ -315,7 +315,7 @@ jobs:
       - run: node scripts/test_service_worker.cjs
       - name: Record Web build metadata
         run: |
-          node -e "const fs=require('fs'); fs.writeFileSync('frontend/build/release-metadata.json',JSON.stringify({version:'1.1.0-direct-rc.1',sourceSha:process.env.SOURCE_SHA,buildSha:process.env.GITHUB_SHA,date:new Date().toISOString(),type:'Web/PWA staging',tools:{node:process.version},api:'https://afrimarket-api-staging-staging.up.railway.app'},null,2));"
+          node -e "const fs=require('fs'); fs.writeFileSync('frontend/build/release-metadata.json',JSON.stringify({version:require('./frontend/package.json').version,sourceSha:process.env.SOURCE_SHA,buildSha:process.env.GITHUB_SHA,date:new Date().toISOString(),type:'Web/PWA staging',tools:{node:process.version},api:'https://afrimarket-api-staging-staging.up.railway.app'},null,2));"
         env:
           SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Hash Web artifact contents
@@ -391,7 +391,7 @@ jobs:
         working-directory: frontend/android
       - name: Record Android build metadata
         run: |
-          node -e "const fs=require('fs'),cp=require('child_process'); fs.writeFileSync('frontend/android/app/build/outputs/apk/debug/release-metadata.json',JSON.stringify({version:'1.1.0-direct-rc.1-debug',sourceSha:process.env.SOURCE_SHA,buildSha:process.env.GITHUB_SHA,date:new Date().toISOString(),type:'Android debug staging',tools:{node:process.version,java:cp.execSync('java -version 2>&1').toString().trim(),androidSdk:34,gradlePlugin:'8.2.1'},api:'https://afrimarket-api-staging-staging.up.railway.app'},null,2));"
+          node -e "const fs=require('fs'),cp=require('child_process'); fs.writeFileSync('frontend/android/app/build/outputs/apk/debug/release-metadata.json',JSON.stringify({version:require('./frontend/package.json').version+'-debug',sourceSha:process.env.SOURCE_SHA,buildSha:process.env.GITHUB_SHA,date:new Date().toISOString(),type:'Android debug staging',tools:{node:process.version,java:cp.execSync('java -version 2>&1').toString().trim(),androidSdk:34,gradlePlugin:'8.2.1'},api:'https://afrimarket-api-staging-staging.up.railway.app'},null,2));"
         env:
           SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Hash Android artifact contents

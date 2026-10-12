@@ -1,0 +1,37 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "779ec1244bb25077e639ffc4dbe64f17ce344024",
+  "ownerAuthorizedObservedSha": true,
+  "realHttps": true,
+  "proofs": [
+    {
+      "file": "staging-https-business-loop1.json",
+      "total": 24,
+      "passed": 24
+    },
+    {
+      "file": "staging-https-security-preflight-loop2.json",
+      "total": 6,
+      "passed": 6
+    },
+    {
+      "file": "staging-https-security-auth-loop1.json",
+      "total": 7,
+      "passed": 7
+    },
+    {
+      "file": "staging-https-idor-checkout-loop1.json",
+      "total": 5,
+      "passed": 5
+    },
+    {
+      "file": "staging-https-contact-security-loop1.json",
+      "total": 4,
+      "passed": 4
+    }
+  ],
+  "mongoDirectTests": "BLOCKED missing SSH access",
+  "performance": "FAIL on local seven-page baseline; controlled CI measurement pending",
+  "stagingReady": false,
+  "productionTouched": false
+}

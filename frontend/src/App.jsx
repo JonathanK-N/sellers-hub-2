@@ -104,7 +104,8 @@ function ProtectedRoute({ children, roles }) {
   if (!user) return <Navigate to="/auth/login" replace />;
   if (roles && !roles.includes(user.role))
     return <Navigate to="/" replace />;
-  return children;
+  if (roles?.length === 1 && roles[0] === "admin") return children;
+  return <main id="main-content">{children}</main>;
 }
 
 function RoleRedirect() {

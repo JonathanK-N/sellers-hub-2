@@ -35,7 +35,7 @@ export default function AdminOverview() {
           <h1 className="font-display font-black text-xl lg:text-2xl text-afri-secondary">Vue d'ensemble</h1>
           <p className="text-xs text-gray-500 mt-0.5">AfriMarket · Administration</p>
         </div>
-        <button onClick={load} className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className={`text-gray-500 ${loading ? "animate-spin" : ""}`} /></button>
+        <button onClick={load} aria-label="Actualiser le tableau de bord" className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className={`text-gray-500 ${loading ? "animate-spin" : ""}`} /></button>
       </header>
 
       <main className="p-4 lg:p-8 max-w-7xl space-y-5">
@@ -79,9 +79,9 @@ export default function AdminOverview() {
             {/* Alertes */}
             {alerts.length > 0 && (
               <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
-                <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3 flex items-center gap-1.5">
+                <h2 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3 flex items-center gap-1.5">
                   <AlertTriangle size={14} className="text-amber-500" /> Alertes ({alerts.length})
-                </h3>
+                </h2>
                 <div className="space-y-2">
                   {alerts.map((a, i) => (
                     <div key={i} className={`flex items-center gap-3 p-3 rounded-lg text-sm ${
@@ -99,7 +99,7 @@ export default function AdminOverview() {
             {/* Commandes récentes */}
             {orders.length > 0 && (
               <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
-                <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Dernières commandes</h3>
+                <h2 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Dernières commandes</h2>
                 <div className="space-y-2">
                   {orders.map((o) => (
                     <div key={o.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
@@ -109,7 +109,7 @@ export default function AdminOverview() {
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="font-semibold text-afri-secondary text-sm">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</span>
-                        <span className="text-xs text-gray-400">{timeAgo(o.created_at)}</span>
+                        <span className="text-xs text-gray-600">{timeAgo(o.created_at)}</span>
                       </div>
                     </div>
                   ))}
@@ -119,7 +119,7 @@ export default function AdminOverview() {
 
             {/* Performance par pays */}
             <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
-              <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Performance par pays</h3>
+              <h2 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Performance par pays</h2>
               <div className="space-y-3">
                 {Object.keys(COUNTRY_NAMES).map((code) => {
                   const stats = data.by_country?.[code] || { commission: 0, orders: 0 };
