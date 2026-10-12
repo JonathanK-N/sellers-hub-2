@@ -1,0 +1,36 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "cd248cacb084e357c7affb6f530f6f168274cd1d",
+  "scope": "Actual HTTPS staging, dedicated browser profile, no service configuration changes",
+  "rows": [
+    {
+      "test": "Actual HTTPS cache v11 active",
+      "status": "PASS"
+    },
+    {
+      "test": "Old v10 cache removed",
+      "status": "PASS"
+    },
+    {
+      "test": "Unrelated cache retained",
+      "status": "PASS"
+    },
+    {
+      "test": "Authorized session works online",
+      "status": "PASS"
+    },
+    {
+      "test": "No API or authorized request in public cache",
+      "status": "PASS"
+    },
+    {
+      "test": "Offline private API returns 503",
+      "status": "PASS"
+    },
+    {
+      "test": "Cleared session cannot reload private orders",
+      "status": "PASS",
+      "path": "/auth/login"
+    }
+  ]
+}

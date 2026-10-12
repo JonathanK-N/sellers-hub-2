@@ -5,8 +5,10 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/Djibril/.cache
   const origin='https://afrimarket-web-staging-staging.up.railway.app';
   const fixtures=path.resolve(process.argv[2]),privateOutput=path.resolve(process.argv[3]),summaryOutput=path.resolve(process.argv[4]);
   const privateRoot=path.resolve(process.env.QA_PRIVATE_ROOT||'../Afrimarket-private-backups');
-  const expectedSha=process.env.STAGING_QA_SOURCE_SHA||'779ec1244bb25077e639ffc4dbe64f17ce344024';
+  const expectedSha=process.env.STAGING_QA_SOURCE_SHA;
   if(!/^[a-f0-9]{40}$/.test(expectedSha))throw Error('Expected SHA required');
+  const health=await(await fetch('https://afrimarket-api-staging-staging.up.railway.app/api/health')).json();
+  if(health.status!=='ok'||health.source_sha!==expectedSha)throw Error('Live staging source does not match expected SHA');
   if(!process.argv[4]||![fixtures,privateOutput].every(p=>p.startsWith(privateRoot+path.sep)))throw Error('Private staging paths required');
   fs.mkdirSync(privateOutput,{recursive:true});
   const dependency=createRequire(fs.realpathSync(process.env.LIGHTHOUSE_PACKAGE||path.join(privateRoot,'launch-lighthouse-13.5.0','node_modules','lighthouse','package.json')));
@@ -42,7 +44,19 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/Djibril/.cache
       const passed=pageVerified&&metrics.performance>=90&&metrics.accessibility>=95&&metrics.bestPractices>=95&&(target.role?lhr.audits['is-crawlable'].score===0:metrics.seo>=95)&&metrics.lcpMs<=2500&&metrics.tbtMs<200&&metrics.cls<0.1;
       const privateSeoRequired=Boolean(target.role);
       const failures=Object.entries(lhr.audits).filter(([,a])=>a.score!==null&&a.score<1&&a.scoreDisplayMode!=='informative').map(([id,a])=>({id,title:a.title,score:a.score}));
-      rows.push({page:target.name,route:target.route,finalPath,pageVerified,seoPolicy:privateSeoRequired?'private page must remain non-indexable':'public SEO >=95',status:passed?'PASS':'FAIL',metrics,failures});
+      const safeResource=item=>{
+        try { const url=new URL(item.url); if(url.origin!==origin||!/^\/(assets|fonts|images)\//.test(url.pathname))return null;
+          return {path:url.pathname,type:item.resourceType,transferBytes:item.transferSize,startMs:item.networkRequestTime,endMs:item.networkEndTime};
+        } catch {return null;}
+      };
+      const diagnostics={
+        benchmarkIndex:lhr.environment?.benchmarkIndex,
+        mainThread:(lhr.audits['mainthread-work-breakdown']?.details?.items||[]).map(x=>({group:x.group,durationMs:x.duration})),
+        lcpSubparts:(lhr.audits['lcp-breakdown-insight']?.details?.items||[]).filter(x=>x.type==='table').flatMap(x=>x.items.map(y=>({part:y.subpart,durationMs:y.duration}))),
+        lcpElementTag:(lhr.audits['lcp-breakdown-insight']?.details?.items||[]).find(x=>x.type==='node')?.snippet?.match(/^<([a-z0-9]+)/i)?.[1]||null,
+        staticResources:(lhr.audits['network-requests']?.details?.items||[]).map(safeResource).filter(Boolean),
+      };
+      rows.push({page:target.name,route:target.route,finalPath,pageVerified,seoPolicy:privateSeoRequired?'private page must remain non-indexable':'public SEO >=95',status:passed?'PASS':'FAIL',metrics,failures,diagnostics});
       console.log(JSON.stringify({page:target.name,status:passed?'PASS':'FAIL',metrics}));
     }catch{rows.push({page:target.name,route:target.route,status:'FAIL',diagnostic:'Measurement unavailable; protected details withheld'});process.exitCode=1;}
     finally{if(browser)await browser.close().catch(()=>{});if(chrome){try{await chrome.kill();}catch{}}}

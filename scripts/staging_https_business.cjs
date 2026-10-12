@@ -202,7 +202,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/Djibril/.cache
     for(const context of contexts)await context.close();
     if(browser)await browser.close();
     if(staticServer)await new Promise(resolve=>staticServer.close(resolve));
-    fs.writeFileSync(output,JSON.stringify({sourceSha:metadata.sourceSha,buildSha:metadata.buildSha,scope:'Real deployed Railway staging HTTPS, explicitly authorized SHA 779ec124. Only dedicated TEST fixtures; no production access and no Mongo direct integrity/ledger-count certification. Fixtures retained for review; no collection deletion. WhatsApp links inspected without sending.',rows},null,2));
+    fs.writeFileSync(output,JSON.stringify({sourceSha:metadata.sourceSha,buildSha:metadata.buildSha,scope:'Real deployed Railway staging HTTPS, explicitly authorized SHA '+metadata.sourceSha+'. Only dedicated TEST fixtures; no production access and no Mongo direct integrity/ledger-count certification. Fixtures retained for review; no collection deletion. WhatsApp links inspected without sending.',rows},null,2));
     console.log(JSON.stringify(rows,null,2));
   }
 })();

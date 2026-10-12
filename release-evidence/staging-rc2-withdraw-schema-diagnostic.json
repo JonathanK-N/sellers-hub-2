@@ -1,0 +1,10 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Harness correction, no withdrawal executed",
+  "status": "FAIL",
+  "http": 422,
+  "missingFields": [
+    "mobile_money_number",
+    "operator"
+  ]
+}
