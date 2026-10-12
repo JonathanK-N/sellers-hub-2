@@ -13,12 +13,16 @@ import subprocess
 import sys
 import threading
 import time
-from urllib.parse import urlparse, quote
+from urllib.parse import urlparse, quote, parse_qsl, urlencode, urlunparse
 from bson import BSON
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from pymongo import MongoClient
 
 AAD = b"AfriMarket standalone recovery v1"
+
+
+class BackupError(RuntimeError):
+    """A static, non-secret diagnostic safe to emit."""
 
 
 def protect(path):
@@ -130,7 +134,12 @@ def run(settings):
         target = MongoClient(target_uri, serverSelectionTimeoutMS=5000)
         if set(target.list_database_names()) - {"admin", "config", "local"}:
             raise RuntimeError("Restore target not empty")
-        dump_config = config("dump-credentials.json", settings["uri"])
+        # mongodump --db otherwise changes its implicit authentication database.
+        # Preserve the URI's authentication default independently of the exported DB.
+        query = dict(parse_qsl(parsed.query))
+        query.setdefault("authSource", parsed.path.lstrip("/") or "admin")
+        dump_uri = urlunparse(parsed._replace(path=parsed.path or "/", query=urlencode(query)))
+        dump_config = config("dump-credentials.json", dump_uri)
         restore_config = config("restore-credentials.json", target_uri)
         key = AESGCM.generate_key(bit_length=256)
         key_file = private / "backup-recovery.key"
@@ -150,7 +159,7 @@ def run(settings):
         start = time.monotonic()
         dump = subprocess.run([settings["mongodump"], "--config=" + dump_config, "--db=" + settings["database"], "--archive", "--gzip"], capture_output=True, timeout=120)
         if dump.returncode or expired.is_set():
-            raise RuntimeError("Coherent dump failed or write-pause deadline expired")
+            raise BackupError("Coherent dump failed (exit " + str(dump.returncode) + ") or write-pause deadline expired")
         dump_seconds = time.monotonic() - start
         unlock()
         timer.cancel()
@@ -197,5 +206,5 @@ if __name__ == "__main__":
     try:
         print(json.dumps(run(json.load(sys.stdin))))
     except Exception as error:
-        print(json.dumps({"status": "FAIL", "error_class": type(error).__name__}))
+        print(json.dumps({"status": "FAIL", "error_class": type(error).__name__, "diagnostic": str(error) if isinstance(error, BackupError) else "details withheld"}))
         sys.exit(1)

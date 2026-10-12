@@ -1,0 +1,153 @@
+{
+  "status": "PASS",
+  "scope": "production business database, coherent standalone dump and authenticated loopback restore",
+  "encryption": "AES-256-GCM; plaintext archive only in process memory",
+  "encrypted_sha256": "7a409f26c720e840509f9e7e66dc770f8e4f65086ae239f23732a8c3db24c9bb",
+  "encrypted_bytes": 34819,
+  "write_pause_seconds": 12.5,
+  "dump_seconds": 7.9689999999973224,
+  "restore_seconds": 3.0310000000026776,
+  "collections": {
+    "app_config": {
+      "documents": 1,
+      "sha256": "e4b4d8b25cbfab365cdd14c5e8c717f3b7ff0d86855284885ebd0308249421b5",
+      "indexes_sha256": "305cc8a269390214e0bb60a48c246de086bdba7c2fd45fe8d9a41aae75cf48d3",
+      "index_count": 2
+    },
+    "application_otp_codes": {
+      "documents": 1,
+      "sha256": "e0eef5df5d8fc5411554d304e7528eadf74b3331b5a08ad1cfc81f659911b069",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "banners": {
+      "documents": 1,
+      "sha256": "395f7130cc065cd3ddbe50a6b95510bbc60e931ee2b56386ba7f07e6b307e589",
+      "indexes_sha256": "ef4571efc8db211b1e0019f7857e940f0bcdc6dbc9b71d50a45717f162017736",
+      "index_count": 3
+    },
+    "buyer_reviews": {
+      "documents": 3,
+      "sha256": "5ffcb5042445558cba27f4cb749a7342a2dfee5940a54646e68018be4426c244",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "countries": {
+      "documents": 5,
+      "sha256": "0e398318002c3ce879036c217a58d3beda8f6a8d599cf602bd0f5ebab90bd6ec",
+      "indexes_sha256": "cd64cf6c3c754e3ea4d325972fb4e099447ad742e419fb7b7f7f954d3da3d269",
+      "index_count": 2
+    },
+    "deliverer_applications": {
+      "documents": 1,
+      "sha256": "f4998b5fb19694e86465ad95fc0430cdedc1025fb8bbd2d591d212ba86d08012",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "deliverers": {
+      "documents": 3,
+      "sha256": "565bd7fb4a36b27feb7b7a945e60c380db4e222157f11c68acd105cf1ab33627",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "device_tokens": {
+      "documents": 54,
+      "sha256": "f9d441fea1a7b534e2cc33a6e39914173962580633c87a18acab59ed52a97241",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "disputes": {
+      "documents": 2,
+      "sha256": "bf40b7afc527c771f64e80e4034c6df9e5ebffb78443b74d49c877428ac27ad8",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "files": {
+      "documents": 35,
+      "sha256": "4a0f781040ce14fabd74e574e0609441c0e3616d387328de1e244095c6564f35",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "fx_rates": {
+      "documents": 1,
+      "sha256": "4116d35198796698bd77f764668cd88dae20bd64025363c6b687e3bda4a0b89d",
+      "indexes_sha256": "86390c6d269432cc51252761c625378e8071376c9a52c3c8c3c4db5ffcbd5562",
+      "index_count": 2
+    },
+    "messages": {
+      "documents": 4,
+      "sha256": "d458ff6e6bdbc76d0808d840504d8a05d11074f54839add071dde1ea43f3d890",
+      "indexes_sha256": "a8f77bad3fc6b3ab4071019f5f8923bdd5a8fa706e552be008c00f31b30f5b4e",
+      "index_count": 2
+    },
+    "notifications": {
+      "documents": 29,
+      "sha256": "e55ba2acc670c78e2cb2c3c4996a1a14b2141670d5a3bb8d98b2853144a69917",
+      "indexes_sha256": "931f55311098a4c92ccb04ad66fcc419618a070ccf240b8ebfc83f6411251cb2",
+      "index_count": 3
+    },
+    "order_groups": {
+      "documents": 28,
+      "sha256": "973a4385efa46912189313caee72ebf0fdf4ab64da4aeb8688182d56cb34977e",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "orders": {
+      "documents": 28,
+      "sha256": "cfbb1a6efc2ec60f377ecaff33c96741a0f9e5b88eed17e95a69a00e1e7285b2",
+      "indexes_sha256": "d5ee91ec15f42990118d47f727998c09b40b7290f08df2a0bb0f305ac35ec634",
+      "index_count": 6
+    },
+    "otp_codes": {
+      "documents": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "indexes_sha256": "fd95b27d38d61f1b116e1727886aaab047723f6c8bc45e2f940b80f5a8c0c060",
+      "index_count": 2
+    },
+    "premium_subscriptions": {
+      "documents": 6,
+      "sha256": "1c401185933ce6773938e227ad7470939f1f7c6ba89ca3630db3ae58df9c7fbb",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "products": {
+      "documents": 23,
+      "sha256": "abaf509ca3f99b36374fd29881b290c79c1a74dbac53a04bb58eea8bcdbcf291",
+      "indexes_sha256": "224c77949a95b0acb6c6cfc30c5be756fadc201570b6bbe3b7cd8afced703813",
+      "index_count": 8
+    },
+    "reviews": {
+      "documents": 8,
+      "sha256": "6d4bd530110ddbd8a63166f053f87053c7029b2049e475ca7f58a87201e110f2",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "sellers": {
+      "documents": 6,
+      "sha256": "808020819da680c8efd8daa4c22e02999b83d3b848f46aefa80d271fabe77365",
+      "indexes_sha256": "48ddb4ec58018b3efbacbda2e9e715c75f20693ca3239c76a6619b9ed812d4fd",
+      "index_count": 4
+    },
+    "transactions": {
+      "documents": 28,
+      "sha256": "95d6f759727d1b064896f99f225170e6f7f8a45117702a5771492ddc18005092",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "users": {
+      "documents": 33,
+      "sha256": "2193cb81f335305c06937ac2c16aaeadfaf4dd09aca52cc9c8f6e794d5d47822",
+      "indexes_sha256": "be98d397cb65b4fba960742ebe4b15b4824bd170f20acf14da21eb98aeee35ee",
+      "index_count": 3
+    },
+    "withdrawals": {
+      "documents": 1,
+      "sha256": "8c0911337f8bbf7e07d28ac047dcf0a9008e97cd4ab6de11ca363e2d4c29f4f5",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    }
+  },
+  "source_unlock_confirmed": true,
+  "database_RPO": "snapshot at write pause",
+  "application_RTO": "not measured"
+}
