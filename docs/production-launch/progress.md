@@ -7,7 +7,7 @@ Base vérifiée : b3f503b0ae91c82772f9795f39ed06a8af47040b, CI phase 3 verte. Br
 | Tâche | Priorité | État | Constat / prochaine action |
 |---|---|---|---|
 | A01 Cartographie | P0 | IN_PROGRESS | GitHub et Railway inventoriés ; schéma Mongo réel inaccessible OAuth |
-| D01 Conservation Mongo | P0 | BLOCKED | Aucun accès de sauvegarde/restauration production ; volume seul insuffisant |
+| D01 Conservation Mongo | P0 | PASS | Backup cohérent chiffré et restauration authentifiée vérifiés ; 23 collections, documents/IDs/indexes identiques |
 | M01 Messagerie | P0 | TESTING | API Mongo, permissions, pagination et idempotence PASS ; E2E navigateur métier à vérifier |
 | W01 WhatsApp | P0 | TESTING | Numéro professionnel vérifié et consentement implémentés ; 6 tests API PASS ; navigateur à vérifier |
 | P01 Paiement direct | P0 | TESTING | 16 tests Mongo PASS sans fonds fictifs ; tests HTTP supplémentaires et E2E en cours |
@@ -45,3 +45,5 @@ Procédure cohérente standalone préparée dans scripts/production_mongo_backup
 Sauvegarde production autorisée et exécutée : première tentative arrêtée sur authentification de mongodump, source déverrouillée et ping vérifié. Diagnostic en lecture seule : `--db` changeait la base d’authentification implicite ; `authSource` fixé selon le contrat URI et chemin `/` explicite avant query. Export de diagnostic jeté, jamais déclaré cohérent. Deuxième tentative PASS : pause 12,5 secondes, archive AES-256-GCM 34 819 octets, SHA-256 7a409f26c720e840509f9e7e66dc770f8e4f65086ae239f23732a8c3db24c9bb, restauration authentifiée 3,03 secondes ; 23 collections, documents/IDs/indexes identiques. Preuve production-backup-proof.json. Source déverrouillée et ping vérifié indépendamment, Mongo 8.0.32. Archive/clé/copie restaurée restent hors Git, ACL privée. L’API existante 1.0.0 annonce degraded au healthcheck ; diagnostic en cours, ne pas transformer cette réponse en PASS métier.
 
 Le propriétaire ne peut pas configurer les deux secrets staging actuellement. La CLI 5.64.2 ne propose aucune option de création scellée dans `variable set --help` ; ne pas remplacer cette exigence par des secrets lisibles. Conversion staging toujours BLOCKED. Aucun déploiement, migration ou conversion production exécuté.
+
+Migrations additives répétées sur la copie restaurée protégée : PASS, 23 collections existantes et tous leurs documents/IDs inchangés ; dix collections ajoutées vides, nouveaux index uniques/messagerie/TTL présents. Aucune migration de production ni seed. Preuve migration-copy-proof.json. Healthcheck production degraded identifié comme défaut préexistant du SHA 6722492 : import get_db absent dans server.py ; lecture publique produits HTTP 200 et Mongo ping OK. Le candidat corrige déjà cet import et ses tests health passent.
