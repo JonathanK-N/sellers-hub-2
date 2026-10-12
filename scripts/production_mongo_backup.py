@@ -114,7 +114,7 @@ def run(settings):
         data = private / "isolated-data"
         data.mkdir()
         flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
-        process = subprocess.Popen([settings["mongod"], "--auth", "--bind_ip=127.0.0.1", "--port=" + str(port), "--dbpath=" + str(data), "--logpath=" + str(private / "restore-mongod.log"), "--wiredTigerCacheSizeGB=0.25"], creationflags=flags, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        process = subprocess.Popen([settings["mongod"], "--bind_ip=127.0.0.1", "--port=" + str(port), "--dbpath=" + str(data), "--logpath=" + str(private / "restore-mongod.log"), "--wiredTigerCacheSizeGB=0.25", "--auth"], creationflags=flags, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         initial = MongoClient("mongodb://127.0.0.1:" + str(port), serverSelectionTimeoutMS=1000)
         deadline = time.monotonic() + 45
         while True:

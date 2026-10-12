@@ -30,7 +30,7 @@ def main(settings):
     password = (private / "restore-owner.key").read_text()
     uri = "mongodb://restore_owner:" + quote(password, safe="") + "@127.0.0.1:" + str(port) + "/?authSource=admin"
     flags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
-    process = subprocess.Popen([settings["mongod"], "--auth", "--bind_ip=127.0.0.1", "--port=" + str(port), "--dbpath=" + str(private / "isolated-data"), "--logpath=" + str(private / "migration-mongod.log"), "--wiredTigerCacheSizeGB=0.25"], creationflags=flags, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    process = subprocess.Popen([settings["mongod"], "--bind_ip=127.0.0.1", "--port=" + str(port), "--dbpath=" + str(private / "isolated-data"), "--logpath=" + str(private / "migration-mongod.log"), "--wiredTigerCacheSizeGB=0.25", "--auth"], creationflags=flags, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     client = MongoClient(uri, serverSelectionTimeoutMS=1000)
     try:
         deadline = time.monotonic() + 45
