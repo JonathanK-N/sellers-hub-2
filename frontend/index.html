@@ -7,7 +7,20 @@
         <meta name="description" content="AfriMarket — Le marché de l'Afrique francophone" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="preload" as="image" type="image/avif" href="/images/market-hero-800.avif" imagesrcset="/images/market-hero-400.avif 400w, /images/market-hero-800.avif 800w, /images/market-hero-1280.avif 1280w" imagesizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) calc(100vw - 64px), 1216px" fetchpriority="high" />
+        <script>
+            // The market hero belongs to the landing page; private routes do not use it.
+            if (location.pathname === "/") {
+                const hero = document.createElement("link");
+                hero.rel = "preload";
+                hero.as = "image";
+                hero.type = "image/avif";
+                hero.href = "/images/market-hero-800.avif";
+                hero.imageSrcset = "/images/market-hero-400.avif 400w, /images/market-hero-800.avif 800w, /images/market-hero-1280.avif 1280w";
+                hero.imageSizes = "(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) calc(100vw - 64px), 1216px";
+                hero.fetchPriority = "high";
+                document.head.appendChild(hero);
+            }
+        </script>
 
         <!-- Favicon -->
         <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />

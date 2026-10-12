@@ -66,6 +66,18 @@ const ChatThread = lazy(() => import("./pages/ChatThread"));
 const OpenDispute = lazy(() => import("./pages/buyer/OpenDispute"));
 const DelivererDashboard = lazy(() => import("./pages/deliverer/Dashboard"));
 const Notifications = lazy(() => import("./pages/Notifications"));
+
+// Fetch the requested screen in parallel with session verification, without rendering it.
+// Route guards still decide whether the user may see or load private data.
+const initialScreenImports = {
+  "/buyer/home": () => import("./pages/buyer/Home"),
+  "/buyer/cart": () => import("./pages/buyer/Cart"),
+  "/buyer/orders": () => import("./pages/buyer/Orders"),
+  "/messages": () => import("./pages/Messages"),
+  "/seller/dashboard": () => import("./pages/seller/Dashboard"),
+  "/admin/overview": () => import("./pages/admin/Overview"),
+};
+initialScreenImports[window.location.pathname]?.().catch(() => {});
 import { useParams as useQrParams } from "react-router-dom";
 
 // Gestion du scan QR Click & Collect.

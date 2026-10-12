@@ -101,6 +101,10 @@
     {
       "test": "Public seller excludes OTP and WhatsApp verification proof",
       "status": "PASS"
+    },
+    {
+      "test": "WhatsApp opt-out hides contact and opt-in restores verified test contact",
+      "status": "PASS"
     }
   ]
 }
