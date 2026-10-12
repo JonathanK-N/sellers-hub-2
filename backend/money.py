@@ -27,6 +27,8 @@ def commission(total, rate):
 
 async def record_release(db, order, courier_id=None):
     """Balanced journal, written in the same transaction as the escrow CAS."""
+    if order.get("payment_method") == "direct":
+        raise HTTPException(409, "Le paiement direct ne crée aucun crédit ni escrow")
     total = minor_units(order["total_amount"])
     fee = minor_units(order.get("delivery_fee", 0))
     cut = minor_units(order["commission_amount"])

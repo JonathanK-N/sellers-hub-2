@@ -8,6 +8,7 @@ from money import minor_units
 from auth import require_role
 from payments.service import get_provider, cinetpay_configured, CinetPayProvider, is_sandbox
 from payments.webhook_security import authenticate
+from commerce_mode import integrated_payments_enabled
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 
@@ -28,6 +29,8 @@ async def init_payment(req: InitRequest, user: dict = Depends(require_role("buye
         raise HTTPException(404, "Groupe de commandes introuvable")
     if group["buyer_id"] != user["id"]:
         raise HTTPException(403, "Accès refusé")
+    if group.get("payment_method") == "direct":
+        return {"simulated": False, "status": "off_platform", "verified_by_platform": False, "funds_held_by_platform": False, "order_group_id": req.order_group_id}
     status = group.get("payment_status")
     if status in {"paid", "cash_on_delivery"}:
         return {"simulated": False, "cash": group.get("payment_method") == "cash", "status": status, "order_group_id": req.order_group_id}
@@ -41,7 +44,7 @@ async def init_payment(req: InitRequest, user: dict = Depends(require_role("buye
             await tx.orders.update_many({"order_group_id":req.order_group_id, "escrow_status":"held"}, {"$set":{"cash_on_delivery":True}})
         await run_transaction(db, cash_operation)
         return {"simulated":False,"cash":True,"status":"cash_on_delivery","order_group_id":req.order_group_id}
-    if not cinetpay_configured():
+    if not integrated_payments_enabled() or not cinetpay_configured():
         raise HTTPException(503, "Prestataire de paiement non configuré")
     if is_sandbox():
         raise HTTPException(503, "Checkout v2 ne constitue pas une API sandbox certifiée")
@@ -70,7 +73,7 @@ async def apply_verified_payment(tx, transaction_id, verified):
     group = await tx.order_groups.find_one({"id":transaction_id})
     if not group:
         raise HTTPException(404, "Référence de paiement inconnue")
-    if group.get("payment_method") == "cash":
+    if group.get("payment_method") in {"cash", "direct"}:
         raise HTTPException(409, "Commande cash incompatible avec le fournisseur")
     if not verified.ok and verified.status != "FAILED":
         raise HTTPException(503, "Vérification fournisseur indisponible")
@@ -106,7 +109,7 @@ async def apply_verified_payment(tx, transaction_id, verified):
 
 @router.post("/webhook/cinetpay")
 async def cinetpay_webhook(request: Request):
-    if not cinetpay_configured():
+    if not integrated_payments_enabled() or not cinetpay_configured():
         raise HTTPException(503, "Webhook du prestataire indisponible")
     if is_sandbox():
         raise HTTPException(503, "Webhook Checkout v2 désactivé dans le staging sandbox")

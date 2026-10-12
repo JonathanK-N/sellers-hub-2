@@ -1,3 +1,5 @@
+import DirectPaymentPanel from "../../components/DirectPaymentPanel";
+import WhatsAppContact from "../../components/WhatsAppContact";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -228,7 +230,7 @@ export default function OrderDetail() {
     setBusy(true);
     try {
       await api.post(`/orders/${id}/confirm-delivery`, { code });
-      toast.success("Livraison confirmée. Paiement libéré !");
+      toast.success(order.payment_method === "direct" ? "Livraison confirmée — paiement hors plateforme." : "Livraison confirmée. Paiement libéré !");
       await load();
     } catch (e) {
       toast.error(formatApiError(e.response?.data?.detail));
@@ -240,7 +242,7 @@ export default function OrderDetail() {
     try {
       await api.post(`/orders/${id}/confirm-collect`);
       setCollectConfirmed(true);
-      setOrder((o) => ({ ...o, status: "collected", escrow_status: "released" }));
+      await load();
     } catch (e) {
       toast.error(formatApiError(e.response?.data?.detail));
     } finally {
@@ -280,8 +282,10 @@ export default function OrderDetail() {
       </header>
 
       <div className="px-4 mt-4 space-y-3">
+        <DirectPaymentPanel order={order} role={user?.role} onChanged={load}/>
+        {isBuyer && <WhatsAppContact contact={order.seller_whatsapp} reference={order.public_reference || "AF-" + order.id.slice(0,8).toUpperCase()}/>}
         {/* Escrow banner — masqué pour paiement en espèces (escrow non applicable) */}
-        {order.payment_method !== "cash" && (
+        {!["cash", "direct"].includes(order.payment_method) && (
         <div className={`rounded-xl p-4 flex items-center gap-3 ${order.escrow_status === "released" ? "bg-emerald-100 border-emerald-300" : "bg-afri-soft border-afri-primary/30"} border`}>
           <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
             <ShieldCheck size={18} />
@@ -447,7 +451,7 @@ export default function OrderDetail() {
             <p className="text-sm text-gray-600">
               Commande <span className="font-bold">#{order.id.slice(0,8).toUpperCase()}</span> remise à l'acheteur.
             </p>
-            <p className="text-sm font-bold text-afri-primary">✓ Paiement cash encaissé</p>
+            <p className="text-sm font-bold text-afri-primary">{order.payment_method === "direct" ? "Paiement hors plateforme déclaré par le vendeur" : "✓ Paiement cash encaissé"}</p>
           </section>
         )}
 
@@ -455,15 +459,15 @@ export default function OrderDetail() {
         {isBuyer && (
           <button
             data-testid="chat-with-seller-btn"
-            onClick={() => nav(`/messages/${order.buyer_id}__${order.seller_id}`, { state: { other_name: order.seller_name } })}
+            onClick={() => nav(`/messages/${order.buyer_id}__${order.seller_id}`, { state: { other_name: isBuyer ? order.seller_name : order.buyer_name, order_id: order.id } })}
             className="w-full bg-white border border-afri-primary text-afri-primary hover:bg-afri-soft rounded-lg py-2.5 font-semibold transition-colors flex items-center justify-center gap-2 text-sm"
           >
-            <MessageSquare size={16} /> Discuter avec le vendeur
+            <MessageSquare size={16} /> {isBuyer ? "Discuter avec le vendeur" : "Discuter avec l’acheteur"}
           </button>
         )}
 
         {/* Buyer: confirmation code */}
-        {isBuyer && order.delivery_mode === "delivery" && order.escrow_status === "held" && (
+        {isBuyer && order.delivery_mode === "delivery" && (order.escrow_status === "held" || order.payment_method === "direct") && (
           <section className="bg-white rounded-xl border-2 border-afri-accent shadow-xs p-4">
             <h3 className="text-xs font-bold uppercase tracking-wide text-afri-accent mb-2">
               Code de confirmation
@@ -580,16 +584,16 @@ export default function OrderDetail() {
           )}
           <div className="text-sm">
             <div className="font-semibold text-gray-900">
-              {order.payment_method === "cash" ? "Paiement en espèces" : order.payment_method}
+              {order.payment_method === "direct" ? "Paiement direct avec le vendeur" : order.payment_method === "cash" ? "Paiement en espèces" : order.payment_method}
             </div>
             <div className="text-xs text-gray-500">
-              {order.payment_method === "cash" ? "À la livraison / au retrait" : "Mobile Money"}
+              {order.payment_method === "direct" ? "Hors plateforme — non vérifié par AfriMarket" : order.payment_method === "cash" ? "À la livraison / au retrait" : "Mobile Money"}
             </div>
           </div>
         </section>
 
         {/* Review prompt (buyer, post-delivery) */}
-        {isBuyer && (order.status === "delivered" || order.status === "collected") && order.escrow_status === "released" && (
+        {isBuyer && (order.status === "delivered" || order.status === "collected") && (order.escrow_status === "released" || order.payment_method === "direct") && (
           <ReviewPrompt orderId={order.id} sellerName={order.seller_name} />
         )}
 

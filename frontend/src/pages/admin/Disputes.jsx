@@ -14,13 +14,14 @@ const PRIORITY_STYLES = {
 export default function AdminDisputes() {
   const [items, setItems] = useState([]);
   const [resolving, setResolving] = useState(null);
+  const [directNotes, setDirectNotes] = useState({});
 
   const load = () => api.get("/admin/disputes").then(({ data }) => setItems(data));
   useEffect(() => { load(); }, []);
 
-  const resolve = async (id, decision) => {
+  const resolve = async (id, decision, note = "") => {
     try {
-      await api.post(`/admin/disputes/${id}/resolve`, { decision, note: "" });
+      await api.post(`/admin/disputes/${id}/resolve`, { decision, note });
       toast.success("Litige résolu");
       load();
     } catch (e) {
@@ -33,7 +34,7 @@ export default function AdminDisputes() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10">
         <h1 className="font-display font-black text-xl lg:text-2xl text-afri-secondary">Litiges</h1>
-        <p className="text-xs text-gray-500 mt-0.5">Escrow gelé en attente de votre décision</p>
+        <p className="text-xs text-gray-500 mt-0.5">Litiges et déclarations hors plateforme à examiner</p>
       </header>
       <main className="p-6 lg:p-10 max-w-7xl">
         {items.length === 0 ? (
@@ -72,7 +73,8 @@ export default function AdminDisputes() {
                         <CheckCircle2 size={12} /> Décision : {d.admin_decision}
                       </p>
                     )}
-                    {d.status === "open" && (
+                    {d.status === "open" && d.payment_mode === "direct" && <div className="mt-4 space-y-2"><p className="text-sm">Paiement direct : aucune somme détenue, aucun remboursement ou crédit AfriMarket.</p><label className="text-sm">Note de médiation<textarea maxLength={1000} value={directNotes[d.id] || ""} onChange={e => setDirectNotes(previous => ({...previous,[d.id]:e.target.value}))} className="block w-full border rounded-lg p-2"/></label><button disabled={!directNotes[d.id]?.trim()} onClick={() => resolve(d.id,"close_direct",directNotes[d.id])} className="bg-afri-primary text-white rounded-lg py-2 px-4">Clôturer avec une note, sans mouvement de fonds</button></div>}
+                    {d.status === "open" && d.payment_mode !== "direct" && (
                       <div className="grid grid-cols-3 gap-2 mt-4">
                         <button
                           data-testid={`refund-buyer-${d.id}`}

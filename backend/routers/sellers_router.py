@@ -10,6 +10,7 @@ from db import get_db
 from models import SellerSetupRequest
 from auth import require_role
 from s3_service import upload_public, upload_private
+from whatsapp_contact import public_seller, owner_seller
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/seller", tags=["seller"])
@@ -20,7 +21,9 @@ APP_NAME = "afrimarket"
 async def get_my_boutique(user: dict = Depends(require_role("seller"))):
     db = get_db()
     seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
-    return seller  # may be None -> setup needed
+    if seller:
+        seller.pop("whatsapp_verification", None)
+    return owner_seller(seller)  # may be None -> setup needed
 
 
 @router.post("/setup")
@@ -50,7 +53,7 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
     if existing:
         await db.sellers.update_one({"user_id": user["id"]}, {"$set": payload})
         seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
-        return seller
+        return owner_seller(seller)
 
     seller = {
         "id": str(uuid.uuid4()),
@@ -64,7 +67,7 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
     }
     await db.sellers.insert_one(seller)
     seller.pop("_id", None)
-    return seller
+    return owner_seller(seller)
 
 
 def _resize_image(data: bytes, max_px: int = 1200, quality: int = 85) -> tuple[bytes, str]:
@@ -367,7 +370,7 @@ async def get_public_profile(seller_id: str):
         {"_id": 0}
     ).sort("created_at", -1).to_list(50)
     reviews = await db.reviews.find({"seller_id": seller_id}, {"_id": 0}).sort("created_at", -1).to_list(20)
-    return {"seller": seller, "products": products, "reviews": reviews}
+    return {"seller": public_seller(seller), "products": products, "reviews": reviews}
 
 
 @router.get("/buyer-profile/{buyer_id}")

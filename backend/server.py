@@ -31,6 +31,8 @@ from routers.payments_router import router as payments_router
 from routers.premium_router import router as premium_router
 from routers.buyer_kyc_router import router as buyer_kyc_router
 from routers.deliverer_applications_router import router as deliverer_applications_router
+from routers.direct_payments_router import router as direct_payments_router
+from routers.whatsapp_router import router as whatsapp_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -128,6 +130,8 @@ api_router.include_router(payments_router)
 api_router.include_router(premium_router)
 api_router.include_router(buyer_kyc_router)
 api_router.include_router(deliverer_applications_router)
+api_router.include_router(direct_payments_router)
+api_router.include_router(whatsapp_router)
 
 app.include_router(api_router)
 
@@ -143,10 +147,13 @@ app.add_middleware(
 @app.on_event("startup")
 async def on_startup():
     init_db()
-    try:
-        await seed_all()
-    except Exception as e:
-        logger.error(f"Seed failed: {e}")
+    # Production startup never creates accounts or overwrites existing business/reference data.
+    # Schema migrations run separately after backup and compatibility checks.
+    if os.environ.get("AUTH_MODE", "production").lower() == "sandbox":
+        try:
+            await seed_all()
+        except Exception:
+            logger.error("Synthetic bootstrap failed", exc_info=True)
 
     try:
         init_storage()

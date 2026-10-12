@@ -138,7 +138,7 @@ export default function SellerOrders() {
                     <div className="flex items-center justify-between mt-2.5 pt-2.5 border-t border-gray-50">
                       <div className="flex items-center gap-1 text-xs text-gray-500">
                         <ShieldCheck size={12} className={o.escrow_status === "released" ? "text-green-600" : "text-gray-400"} />
-                        {o.escrow_status === "released" ? "Payé" : "En escrow"}
+                        {o.payment_method === "direct" ? (o.payment_status === "seller_declared_received" ? "Réception déclarée hors plateforme" : "Paiement direct à convenir") : o.escrow_status === "released" ? "Payé" : "En escrow"}
                       </div>
                       <span className="font-display font-bold text-afri-secondary">
                         {formatPrice(o.amount_due ?? o.total_amount, o.currency)}

@@ -10,6 +10,7 @@ from db import get_db
 from financial_transactions import atomic_operation
 from money import record_release
 from auth import require_role, get_current_user_dep
+from direct_orders import open_direct_dispute
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["disputes"])
@@ -21,14 +22,14 @@ def _now() -> str:
 
 class DisputeRequest(BaseModel):
     order_id: str
-    reason: str
+    reason: str = Field(min_length=1, max_length=1000)
     photo_url: str | None = None
 
 
 class ResolveRequest(BaseModel):
     decision: str  # refund_buyer | release_seller | partial_refund
     partial_buyer_amount: float | None = Field(default=None, gt=0, allow_inf_nan=False)
-    note: str = ""
+    note: str = Field(default="", max_length=1000)
 
 
 @router.post("/disputes", status_code=201)
@@ -40,6 +41,8 @@ async def open_dispute(req: DisputeRequest, user: dict = Depends(require_role("b
         raise HTTPException(status_code=404, detail="Commande introuvable")
     if order["buyer_id"] != user["id"]:
         raise HTTPException(status_code=403, detail="Accès refusé")
+    if order.get("payment_method") == "direct":
+        return await open_direct_dispute(db, order, user, req.reason)
     # Allow only within 7 days of delivery for resolved orders, OR while still in transit
     if order["status"] in ("delivered", "collected"):
         delivered_event = next((e for e in order.get("timeline", []) if e["status"] in ("delivered", "collected")), None)
@@ -122,6 +125,16 @@ async def admin_resolve(dispute_id: str, req: ResolveRequest, _: dict = Depends(
     order = await db.orders.find_one({"id": dispute["order_id"]}, {"_id": 0})
     if not order:
         raise HTTPException(status_code=404, detail="Commande introuvable")
+
+    if order.get("payment_method") == "direct":
+        if req.decision != "close_direct" or not req.note.strip():
+            raise HTTPException(409, "Un litige direct peut être clôturé avec une note ; aucun remboursement ni crédit AfriMarket")
+        now = _now()
+        result = await db.disputes.update_one({"id": dispute_id, "status": "open"}, {"$set": {"status": "resolved", "admin_decision": "close_direct", "admin_note": req.note.strip(), "resolved_at": now, "resolved_by": _["id"]}})
+        if result.modified_count != 1:
+            raise HTTPException(409, "Litige déjà résolu")
+        await db.orders.update_one({"id": order["id"]}, {"$set": {"dispute_status": "resolved"}, "$inc": {"revision": 1}, "$push": {"timeline": {"status": "dispute_resolved", "label": "Litige clôturé — aucun mouvement de fonds AfriMarket", "timestamp": now}}})
+        return {"ok": True, "decision": "close_direct", "escrow_status": "not_applicable", "automatic_refund": False}
 
     if order.get("escrow_status") != "frozen":
         raise HTTPException(status_code=409, detail="Escrow non gelé")

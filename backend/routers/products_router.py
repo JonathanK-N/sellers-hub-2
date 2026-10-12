@@ -13,6 +13,7 @@ from db import get_db
 from models import ProductCreateRequest, ProductUpdateRequest
 from auth import require_role, get_current_user_dep, get_current_user_optional
 from s3_service import generate_presigned_url, BUCKET_PUBLIC, AWS_REGION
+from whatsapp_contact import public_contact
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["products"])
@@ -135,6 +136,7 @@ async def get_product(product_id: str):
     s = await db.sellers.find_one({"id": p["seller_id"]}, {"_id": 0})
     if s:
         p["seller_name"] = s.get("shop_name")
+        p["seller_whatsapp"] = public_contact(s)
         p["seller_verified"] = s.get("badge_verified", False)
         p["seller_rating"] = s.get("rating", 0.0)
         p["seller_neighborhood"] = s.get("neighborhood")

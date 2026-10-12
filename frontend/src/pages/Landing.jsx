@@ -155,7 +155,7 @@ export default function Landing() {
                 <Truck size={11} /> Livraison locale
               </span>
               <span className="flex items-center gap-1 bg-white/10 backdrop-blur rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-medium">
-                <ShieldCheck size={11} /> Paiement sécurisé
+                <ShieldCheck size={11} /> Paiement direct
               </span>
               <span className="flex items-center gap-1 bg-white/10 backdrop-blur rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-medium">
                 <BadgeCheck size={11} /> Vendeurs vérifiés
@@ -206,7 +206,7 @@ export default function Landing() {
       <AnimatedContent distance={50} duration={0.7} threshold={0.15}>
       <section className={`${WRAP} mt-4 md:mt-8`}>
         <div className="grid grid-cols-3 gap-2 md:gap-4 md:max-w-2xl">
-          <TrustItem icon={ShieldCheck} label="Paiement sécurisé" />
+          <TrustItem icon={ShieldCheck} label="Paiement direct" />
           <TrustItem icon={MapPin} label="Livraison locale" />
           <TrustItem icon={Store} label="Vendeurs vérifiés" />
         </div>

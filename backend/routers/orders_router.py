@@ -15,6 +15,9 @@ from stock import aggregate_items, reserve_stock, release_stock
 from models import OrderCreateRequest, ConfirmDeliveryRequest
 from auth import get_current_user_dep, require_role, generate_otp
 from notifications import create_notification
+from commerce_mode import legacy_checkout_enabled, integrated_payments_enabled
+from direct_orders import finish_handoff
+from whatsapp_contact import public_contact
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["orders"])
@@ -70,6 +73,13 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
         return previous["response"]
     if not req.items:
         raise HTTPException(status_code=400, detail="Panier vide")
+    direct = req.payment_method == "direct"
+    if not direct and not legacy_checkout_enabled():
+        raise HTTPException(409, "Choisissez le paiement direct avec le vendeur")
+    if req.payment_method not in {"direct", "cash", "mtn", "airtel", "wave", "orange"}:
+        raise HTTPException(422, "Mode de paiement invalide")
+    if req.payment_method not in {"direct", "cash"} and not integrated_payments_enabled():
+        raise HTTPException(503, "Paiements intégrés désactivés")
     if req.delivery_mode not in ("delivery", "collect"):
         raise HTTPException(status_code=400, detail="Mode de livraison invalide")
 
@@ -102,6 +112,12 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     missing = [sid for sid in seller_ids if sid not in sellers]
     if missing:
         raise HTTPException(status_code=404, detail="Vendeur introuvable")
+    for seller in sellers.values():
+        owner = await db.users.find_one({"id": seller["user_id"]})
+        if direct and (not owner or owner.get("role") != "seller"):
+            raise HTTPException(409, "Compte vendeur indisponible")
+        if owner and (owner.get("banned") or owner.get("suspended") or owner.get("is_deleted") or owner.get("is_active") is False):
+            raise HTTPException(409, "Vendeur indisponible")
 
     group_id = str(uuid.uuid4())
     reservations = await reserve_stock(db, req.items)
@@ -130,7 +146,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
                 })
 
             commission_rate = seller.get("commission_rate", 0.07)
-            commission_amount = commission(sub_total, commission_rate)
+            commission_amount = 0 if direct else commission(sub_total, commission_rate)
 
             # Frais de livraison: definis par le vendeur (palier self_delivery_fee)
             # si livraison propre, ou fixes 16 000 FC si reseau AfriMarket. Aucun frais
@@ -143,6 +159,11 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
                 delivery_fee = float(tier if tier in SELF_DELIVERY_FEE_TIERS else 7500)
             else:
                 delivery_fee = 0.0
+            # Existing delivery tiers are denominated in CDF. Never add them as USD/XAF/XOF.
+            delivery_fee_status = "quoted"
+            if direct and item_mode == "delivery" and currency not in {"FC", "CDF"}:
+                delivery_fee = 0.0
+                delivery_fee_status = "to_arrange_with_seller"
             amount_due = sub_total + delivery_fee
             qr_token = str(uuid.uuid4()) if item_mode == "collect" else None
             grand_total = (minor_units(grand_total) + minor_units(amount_due)) / 100
@@ -167,7 +188,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
                 "payment_method": req.payment_method,
                 "checkout_currency": req.checkout_currency or "FC",
                 "status": "confirmed",
-                "escrow_status": "held" if req.payment_method == "cash" else "awaiting_payment",
+                "escrow_status": "not_applicable" if direct else ("held" if req.payment_method == "cash" else "awaiting_payment"),
                 "payment_confirmed": False,
                 "confirmation_code": _gen_code(),
                 "qr_code": qr_token,
@@ -175,12 +196,16 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
                 "created_at": now,
                 "timeline": [_timeline_event("confirmed", "Commande confirmée")],
             }
+            if direct:
+                order.update({"public_reference": "AF-" + order["id"].replace("-", "")[:12].upper(), "payment_status": "to_arrange", "payment_verification": "not_verified_by_platform", "funds_held_by_platform": False, "payment_history": [], "revision": 0, "commission_policy": "not_configured_no_payable_balance"})
+                order["delivery_fee_status"] = delivery_fee_status
             await db.orders.insert_one(order)
             order.pop("_id", None)
             created_orders.append(order)
 
             # Per-order escrow transaction
-            await db.transactions.insert_one({
+            if not direct:
+                await db.transactions.insert_one({
                 "id": str(uuid.uuid4()),
                 "order_id": order["id"],
                 "order_group_id": group_id,
@@ -190,7 +215,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
                 "payment_status": "cash_pending" if req.payment_method == "cash" else "pending",
                 "escrow_released_at": None,
                 "created_at": now,
-            })
+                })
 
             # Notify seller of the new order
             try:
@@ -213,7 +238,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
             "grand_total": grand_total,
             "currency": currency,
             "payment_method": req.payment_method,
-            "payment_status": "cash_pending" if req.payment_method == "cash" else "unpaid",
+            "payment_status": "off_platform" if direct else ("cash_pending" if req.payment_method == "cash" else "unpaid"),
             "country_code": user["country_code"],
             "created_at": now,
         })
@@ -323,6 +348,7 @@ async def get_order(order_id: str, user: dict = Depends(get_current_user_dep)):
     buyer = await db.users.find_one({"id": o["buyer_id"]}, {"_id": 0})
     if seller:
         o["seller_name"] = seller.get("shop_name")
+        o["seller_whatsapp"] = public_contact(seller)
         o["seller_neighborhood"] = seller.get("neighborhood")
     if buyer:
         o["buyer_name"] = buyer.get("name")
@@ -355,7 +381,10 @@ async def advance_order(order_id: str, user: dict = Depends(require_role("seller
     if not my_seller or my_seller["id"] != o["seller_id"]:
         raise HTTPException(status_code=403, detail="Accès refusé")
 
-    if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
+    if o.get("payment_method") == "direct":
+        if o.get("payment_status") != "seller_declared_received" or o.get("dispute_status") == "open":
+            raise HTTPException(409, "Paiement hors plateforme non déclaré reçu ou commande en litige")
+    elif o.get("payment_method") not in {"cash", "direct"} and not o.get("payment_confirmed"):
         raise HTTPException(409, detail="Paiement non confirmé")
 
     transitions = {
@@ -374,10 +403,12 @@ async def advance_order(order_id: str, user: dict = Depends(require_role("seller
         raise HTTPException(status_code=400, detail="Transition impossible")
     new_status, label = next_state
     event = _timeline_event(new_status, label)
-    result = await db.orders.update_one(
-        {"id": order_id, "status": o["status"]},
-        {"$set": {"status": new_status}, "$push": {"timeline": event}},
-    )
+    transition_query = {"id": order_id, "status": o["status"]}
+    transition_update = {"$set": {"status": new_status}, "$push": {"timeline": event}}
+    if o.get("payment_method") == "direct":
+        transition_query.update({"revision": o.get("revision", 0), "payment_status": "seller_declared_received", "dispute_status": {"$ne": "open"}})
+        transition_update["$inc"] = {"revision": 1}
+    result = await db.orders.update_one(transition_query, transition_update)
     if result.modified_count != 1:
         raise HTTPException(status_code=409, detail="Commande déjà modifiée")
     o["status"] = new_status
@@ -402,8 +433,12 @@ async def confirm_delivery(order_id: str, req: ConfirmDeliveryRequest, user: dic
         raise HTTPException(status_code=403, detail="Accès refusé")
     if o["status"] != "out_for_delivery":
         raise HTTPException(status_code=409, detail="Commande non disponible pour livraison")
-    if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
+    if o.get("payment_method") not in {"cash", "direct"} and not o.get("payment_confirmed"):
         raise HTTPException(status_code=409, detail="Paiement non confirmé")
+    if o.get("payment_method") == "direct":
+        if o.get("confirmation_code") != req.code.strip():
+            raise HTTPException(400, "Code incorrect")
+        return await finish_handoff(db, o, user, "delivered")
     if o["escrow_status"] != "held":
         raise HTTPException(status_code=400, detail="Escrow déjà libéré")
     if o["confirmation_code"] != req.code.strip():
@@ -441,6 +476,10 @@ async def confirm_collect(order_id: str, user: dict = Depends(require_role("sell
         raise HTTPException(status_code=403, detail="Accès refusé")
     if o["delivery_mode"] != "collect":
         raise HTTPException(status_code=400, detail="Cette commande n'est pas en retrait boutique")
+    if o.get("payment_method") == "direct":
+        if o.get("status") != "ready_for_pickup":
+            raise HTTPException(409, "Commande non disponible pour retrait")
+        return await finish_handoff(db, o, user, "collected")
     if o.get("payment_method") != "cash":
         raise HTTPException(status_code=409, detail="La remise cash exige une commande cash")
     if o.get("escrow_status") != "held":
@@ -495,8 +534,12 @@ async def scan_qr(order_id: str, req: ScanQrRequest, user: dict = Depends(requir
         raise HTTPException(status_code=400, detail="Cette commande n'est pas en Click & Collect")
     if o["status"] != "ready_for_pickup":
         raise HTTPException(status_code=409, detail="Commande non disponible pour retrait")
-    if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
+    if o.get("payment_method") not in {"cash", "direct"} and not o.get("payment_confirmed"):
         raise HTTPException(status_code=409, detail="Paiement non confirmé")
+    if o.get("payment_method") == "direct":
+        if o.get("qr_code") != req.qr_token.strip():
+            raise HTTPException(400, "QR code incorrect")
+        return await finish_handoff(db, o, user, "collected")
     if o["escrow_status"] != "held":
         raise HTTPException(status_code=400, detail="Escrow déjà libéré")
     if o.get("qr_code") != req.qr_token.strip():

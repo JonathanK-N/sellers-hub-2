@@ -12,6 +12,7 @@ from financial_transactions import atomic_operation
 from db import get_db
 from auth import require_role
 from money import minor_units
+from commerce_mode import legacy_financial_actions_enabled
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/seller/wallet", tags=["wallet"])
@@ -107,6 +108,8 @@ async def list_transactions(user: dict = Depends(require_role("seller"))):
 @router.post("/withdraw", status_code=201)
 @atomic_operation
 async def withdraw(req: WithdrawRequest, user: dict = Depends(require_role("seller")), idempotency_key: str = Header(alias="Idempotency-Key", min_length=8, max_length=128)):
+    if not legacy_financial_actions_enabled():
+        raise HTTPException(503, "Retraits intégrés désactivés ; les paiements directs restent hors plateforme")
     if not isinstance(idempotency_key, str) or not 8 <= len(idempotency_key) <= 128:
         raise HTTPException(422, "Clé de retrait requise")
     amount_minor = minor_units(req.amount)

@@ -1,3 +1,4 @@
+import WhatsAppSettings from "../../components/WhatsAppSettings";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -329,6 +330,7 @@ export default function EditProfile() {
         </Section>
       </div>
 
+      <div className="px-4 mb-6"><WhatsAppSettings/></div>
       <BottomNav role="seller" />
     </div>
   );

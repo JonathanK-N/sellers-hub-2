@@ -108,7 +108,7 @@ export default function Checkout() {
         delivery_landmark: mode === "delivery" ? landmark : null,
         delivery_address: mode === "delivery" ? city : null,
         pickup_slot: mode === "collect" ? pickupSlot : null,
-        payment_method: "cash",
+        payment_method: "direct",
         checkout_currency: checkoutCurrency,
       };
       // Keep the same request key after a timeout or reload. A changed payload
@@ -126,10 +126,10 @@ export default function Checkout() {
       const n = data.seller_count || (data.orders ? data.orders.length : 1);
       clear();
       if (n > 1) {
-        toast.success(`${n} commandes créées. Paiement à la livraison.`);
+        toast.success(`${n} commandes créées. Paiement direct à convenir avec le vendeur.`);
         nav(`/buyer/order-group/${groupId}`);
       } else {
-        toast.success("Commande créée. Paiement à la livraison.");
+        toast.success("Commande créée. Paiement direct à convenir avec le vendeur.");
         nav(`/buyer/orders/${data.orders[0].id}`);
       }
     } catch (e) {
@@ -204,15 +204,15 @@ export default function Checkout() {
               <Banknote size={20} />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-bold text-afri-secondary">Paiement en espèces</p>
-              <p className="text-xs text-afri-primary">À la livraison / au retrait · en <strong>{checkoutCurrency}</strong></p>
+              <p className="text-sm font-bold text-afri-secondary">Paiement direct avec le vendeur</p>
+              <p className="text-xs text-afri-primary">Moyen de paiement et livraison à convenir directement</p>
             </div>
           </div>
           <div className="mt-3 flex items-start gap-2 bg-[#F5F5F5] border border-gray-200 rounded-lg px-3 py-2.5">
             <Info size={15} className="text-gray-400 shrink-0 mt-0.5" />
             <p className="text-xs text-gray-500 leading-relaxed">
               <span className="font-semibold text-gray-600">Mobile Money</span> (MTN MoMo, Airtel Money, Orange Money…) —{" "}
-              <span className="text-afri-primary font-semibold">Disponible très prochainement</span> sur AfriMarket.
+              <span className="text-afri-primary font-semibold">Non activé sur la plateforme</span> sur AfriMarket.
             </p>
           </div>
         </section>
@@ -223,9 +223,9 @@ export default function Checkout() {
             <ShieldCheck size={18} />
           </div>
           <div className="text-xs text-afri-secondary">
-            <p className="font-semibold">Paiement sécurisé</p>
+            <p className="font-semibold">Paiement hors plateforme</p>
             <p className="mt-0.5 leading-relaxed">
-              Vous payez en espèces en <strong>{checkoutCurrency}</strong> à la livraison ou au retrait.
+              AfriMarket n’encaisse et ne conserve aucun fonds. Vérifiez le paiement avec votre vendeur ; une déclaration ou un justificatif ne constitue pas une vérification par AfriMarket.
             </p>
           </div>
         </section>

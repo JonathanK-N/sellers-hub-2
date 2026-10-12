@@ -19,6 +19,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 import httpx
+from commerce_mode import integrated_payments_enabled
 
 logger = logging.getLogger(__name__)
 
@@ -90,7 +91,7 @@ class CinetPayProvider(BaseProvider):
     def safe_checkout(self) -> bool:
         # This adapter implements legacy Checkout v2. PAYMENT_MODE does not
         # turn its production endpoint into the newer v1 sandbox endpoint.
-        return self.configured() and not is_sandbox()
+        return integrated_payments_enabled() and self.configured() and not is_sandbox()
 
     async def collect(self, phone: str, amount: float, currency: str, external_ref: str, description: str = "") -> PaymentResult:
         if not self.safe_checkout():
@@ -136,7 +137,7 @@ class CinetPayProvider(BaseProvider):
 
     async def check(self, transaction_id: str) -> PaymentResult:
         """Poll CinetPay for the final status of a transaction."""
-        if not self.configured():
+        if not integrated_payments_enabled() or not self.configured():
             return PaymentResult(ok=False, reference=transaction_id, status="PENDING", error="CinetPay non configuré")
         payload = {"apikey": self.api_key, "site_id": self.site_id, "transaction_id": transaction_id}
         try:
@@ -157,7 +158,7 @@ class CinetPayProvider(BaseProvider):
         return PaymentResult(ok=True, reference=transaction_id, status="PENDING", raw=body)
 
     async def disburse(self, phone: str, amount: float, currency: str, external_ref: str, description: str = "") -> PaymentResult:
-        if is_sandbox() or not self.configured() or not self.transfer_token:
+        if not integrated_payments_enabled() or is_sandbox() or not self.configured() or not self.transfer_token:
             return PaymentResult(ok=False, reference="", status="FAILED", error="Transfert CinetPay non configuré")
         # CinetPay Transfer API: requires a separate transfer token + contact pre-registration.
         # Kept as a guarded real call; falls back gracefully on any error.
@@ -331,7 +332,7 @@ class UnavailableProvider(BaseProvider):
 def get_provider(name: str) -> BaseProvider:
     # CinetPay is an aggregator: when configured it handles every operator
     # (MTN, Orange, Moov, Wave, Airtel, cards) across all countries via one key.
-    if cinetpay_configured():
+    if integrated_payments_enabled() and cinetpay_configured():
         return CinetPayProvider()
     # Local simulators are test fixtures, never certification or money adapters.
     return UnavailableProvider()

@@ -8,6 +8,7 @@ import { formatPrice, formatDistance, displayPrice, photoUrl, timeAgo } from "..
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import BannerCarousel from "../../components/BannerCarousel";
+import WhatsAppContact from "../../components/WhatsAppContact";
 
 export default function ProductDetail({ guest = false }) {
   const { openAuth } = useAuthModal();
@@ -56,7 +57,7 @@ export default function ProductDetail({ guest = false }) {
       requireAuth("contacter le vendeur");
       return;
     }
-    nav(`/messages/${user.id}__${p.seller_id}`, { state: { other_name: p.seller_name } });
+    nav(`/messages/${user.id}__${p.seller_id}`, { state: { other_name: p.seller_name, product_id: p.id } });
   };
 
   return (
@@ -171,6 +172,7 @@ export default function ProductDetail({ guest = false }) {
           </button>
         )}
 
+        <WhatsAppContact contact={p.seller_whatsapp}/>
         {reviews.length > 0 && (
           <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
             <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Avis ({reviews.length})</h3>

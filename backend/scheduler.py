@@ -8,6 +8,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from db import get_db
 from payments.service import get_provider
 from notifications import create_notification
+from commerce_mode import integrated_payments_enabled, legacy_financial_actions_enabled
 
 logger = logging.getLogger(__name__)
 _scheduler: AsyncIOScheduler | None = None
@@ -18,6 +19,8 @@ def _now_iso() -> str:
 
 
 async def process_pending_withdrawals():
+    if not integrated_payments_enabled() or not legacy_financial_actions_enabled():
+        return
     db = get_db()
     cutoff = (datetime.now(timezone.utc) - timedelta(minutes=1)).isoformat()
     async for w in db.withdrawals.find({"status": "in_progress", "created_at": {"$lt": cutoff}}, {"_id": 0}):

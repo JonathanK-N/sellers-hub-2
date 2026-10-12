@@ -84,7 +84,8 @@ async def register(request: Request, req: RegisterRequest):
         {"$set": {"phone": phone, "code": code, "expires_at": expires}},
         upsert=True,
     )
-    await send_otp_sms(phone, code)
+    if not await send_otp_sms(phone, code):
+        raise HTTPException(503, "Envoi du code indisponible ; réessayez l’envoi")
     resp = {"message": "Compte créé. Vérifiez votre numéro avec le code envoyé.", "phone": phone}
     if not is_sms_configured() and otp_sandbox_enabled():
         resp["otp_dev"] = code  # visible only in simulation mode
@@ -108,7 +109,8 @@ async def send_otp(request: Request, req: SendOtpRequest):
         {"$set": {"phone": phone, "code": code, "expires_at": expires}},
         upsert=True,
     )
-    await send_otp_sms(phone, code)
+    if not await send_otp_sms(phone, code):
+        raise HTTPException(503, "Envoi du code indisponible ; réessayez l’envoi")
     resp = {"message": "Code envoyé.", "phone": phone}
     if not is_sms_configured() and otp_sandbox_enabled():
         resp["otp_dev"] = code  # visible only in simulation mode

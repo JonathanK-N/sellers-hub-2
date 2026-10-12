@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 
 from money import record_release
+from direct_orders import finish_handoff
 from db import get_db
 from financial_transactions import atomic_operation
 from auth import require_role, get_current_user_dep
@@ -72,6 +73,10 @@ async def assign_deliverer(order_id: str, req: AssignRequest, user: dict = Depen
     deliverer = await db.users.find_one({"id": req.deliverer_id, "role": "deliverer"}, {"_id": 0})
     if not deliverer:
         raise HTTPException(status_code=404, detail="Livreur introuvable")
+    if o.get("payment_method") == "direct" and (o.get("payment_status") != "seller_declared_received" or o.get("dispute_status") == "open"):
+        raise HTTPException(409, "Paiement direct non déclaré reçu ou commande en litige")
+    if deliverer.get("banned") or deliverer.get("suspended") or deliverer.get("country_code") != o.get("country_code"):
+        raise HTTPException(409, "Livreur indisponible pour cette commande")
 
     event = _timeline_event("assigned", f"Livreur assigné : {deliverer['name']}")
     await db.orders.update_one(
@@ -189,6 +194,10 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
         raise HTTPException(status_code=404, detail="Livraison introuvable")
     if o.get("delivery_mode") != "delivery" or o.get("status") != "out_for_delivery":
         raise HTTPException(status_code=409, detail="Livraison non disponible pour confirmation")
+    if o.get("payment_method") == "direct":
+        if o.get("confirmation_code") != req.code.strip():
+            raise HTTPException(400, "Code incorrect")
+        return await finish_handoff(db, o, user, "delivered")
     if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
         raise HTTPException(status_code=409, detail="Paiement non confirmé")
     if o["escrow_status"] != "held":
