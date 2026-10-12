@@ -1,7 +1,7 @@
 name: AfriMarket release validation
 on:
   pull_request:
-    branches: [main, ui-ux, fix/restore-original-green-theme, stabilization/afrimarket-phase-2]
+    branches: [main, ui-ux, fix/restore-original-green-theme, stabilization/afrimarket-phase-2, codex/afrimarket-rc3-validation]
   workflow_dispatch:
 permissions:
   contents: read
@@ -402,3 +402,30 @@ jobs:
         with:
           name: afrimarket-android-debug-${{ github.sha }}
           path: frontend/android/app/build/outputs/apk/debug/*
+
+  ui-premium-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+        working-directory: frontend
+      - run: yarn build
+        working-directory: frontend
+        env:
+          REACT_APP_BACKEND_URL: https://afrimarket-api-staging-staging.up.railway.app
+      - name: Install isolated browser testing tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/ui-tools" playwright@1.60.0
+          "$RUNNER_TEMP/ui-tools/node_modules/.bin/playwright" install --with-deps chromium firefox webkit
+      - name: Validate responsive and business UI states without database writes
+        run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/ui_premium_validation.cjs frontend/build ui-preview-evidence
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ui-premium-preview-${{ github.sha }}
+          path: ui-preview-evidence

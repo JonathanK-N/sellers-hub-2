@@ -6,7 +6,7 @@
    - Images CDN (S3)     → cache-first, réseau en fallback
    - Autres assets       → stale-while-revalidate
 */
-const CACHE = "afrimarket-green-direct-rc4-v13";
+const CACHE = "afrimarket-green-ui-elegant-v14";
 const OFFLINE_PAGE = "/index.html";
 
 // Assets à précacher au premier install
