@@ -28,7 +28,8 @@ def public_contact(seller):
 
 def public_seller(seller):
     out = {key: value for key, value in seller.items() if key not in {"_id", "kyc_docs", "whatsapp_contact", "whatsapp_verification", "commission_rate"}}
-    links = dict(seller.get("social_links") or {})
+    legacy_links = seller.get("social_links")
+    links = dict(legacy_links) if isinstance(legacy_links, dict) else {}
     links.pop("whatsapp_business", None)
     contact = public_contact(seller)
     if contact:

@@ -101,14 +101,14 @@ export default function OrderGroup() {
             <Lock size={18} />
           </div>
           <div className="text-xs text-afri-secondary">
-            <p className="font-semibold">{group.payment_method === "cash" ? "Paiement en espèces à la remise" : group.payment_status === "paid" ? "Paiement confirmé" : "Paiement en attente"}</p>
+            <p className="font-semibold">{group.payment_method === "direct" ? "Paiement direct à convenir avec chaque vendeur" : group.payment_method === "cash" ? "Paiement en espèces à la remise" : group.payment_status === "paid" ? "Paiement confirmé" : "Paiement en attente"}</p>
             <p className="mt-0.5 leading-relaxed">
-              {group.payment_method === "cash" ? "Réglez votre commande lors de sa remise." : group.payment_status === "paid" ? `Le total de ${formatPrice(group.grand_total, currency)} est bloqué. Chaque vendeur est payé séparément à la confirmation de sa propre livraison.` : "Aucun paiement n’est confirmé pour cette commande."}
+              {group.payment_method === "direct" ? "AfriMarket n’encaisse aucun fonds. Contactez chaque vendeur depuis sa commande ; les déclarations de paiement restent séparées et non vérifiées par la plateforme." : group.payment_method === "cash" ? "Réglez votre commande lors de sa remise." : group.payment_status === "paid" ? `Le total de ${formatPrice(group.grand_total, currency)} est bloqué. Chaque vendeur est payé séparément à la confirmation de sa propre livraison.` : "Aucun paiement n’est confirmé pour cette commande."}
             </p>
           </div>
         </section>
 
-        {group.payment_method !== "cash" && !["paid", "captured_in_escrow"].includes(group.payment_status) && (
+        {!["cash", "direct"].includes(group.payment_method) && !["paid", "captured_in_escrow"].includes(group.payment_status) && (
           <button
             onClick={handlePay}
             disabled={paying}

@@ -79,11 +79,16 @@ async def assign_deliverer(order_id: str, req: AssignRequest, user: dict = Depen
         raise HTTPException(409, "Livreur indisponible pour cette commande")
 
     event = _timeline_event("assigned", f"Livreur assigné : {deliverer['name']}")
-    await db.orders.update_one(
-        {"id": order_id},
-        {"$set": {"deliverer_id": req.deliverer_id, "deliverer_name": deliverer["name"], "status": "assigned"},
-         "$push": {"timeline": event}},
+    assignment_filter = {"id": order_id, "status": o["status"], "dispute_status": {"$ne": "open"}}
+    assignment_update = {"$set": {"deliverer_id": req.deliverer_id, "deliverer_name": deliverer["name"], "status": "assigned"}, "$push": {"timeline": event}}
+    if o.get("payment_method") == "direct":
+        assignment_filter.update({"payment_status": "seller_declared_received", "revision": o.get("revision", 0)})
+        assignment_update["$inc"] = {"revision": 1}
+    assigned = await db.orders.update_one(
+        assignment_filter, assignment_update,
     )
+    if assigned.modified_count != 1:
+        raise HTTPException(409, "Commande déjà modifiée")
     try:
         await create_notification(
             req.deliverer_id, "order_received", "Nouvelle livraison",
@@ -139,7 +144,7 @@ async def deliverer_earnings(user: dict = Depends(require_role("deliverer"))):
     completed_today = 0
     total_today = 0
     completed_all = await db.orders.count_documents({"deliverer_id": user["id"], "status": "delivered"})
-    async for o in db.orders.find({"deliverer_id": user["id"], "status": "delivered"}, {"_id": 0, "delivered_at": 1}):
+    async for o in db.orders.find({"deliverer_id": user["id"], "status": "delivered", "payment_method": {"$ne": "direct"}}, {"_id": 0, "delivered_at": 1}):
         if (o.get("delivered_at") or "").startswith(today):
             completed_today += 1
             total_today += 1000  # flat fee per delivery (sandbox)
@@ -159,8 +164,12 @@ async def mark_picked_up(order_id: str, user: dict = Depends(require_role("deliv
         raise HTTPException(status_code=404, detail="Livraison introuvable")
     if o["status"] not in ("assigned", "preparing"):
         raise HTTPException(status_code=400, detail="Statut incorrect")
+    if o.get("payment_method") == "direct" and (o.get("payment_status") != "seller_declared_received" or o.get("dispute_status") == "open"):
+        raise HTTPException(409, "Paiement direct non déclaré reçu ou commande en litige")
     event = _timeline_event("picked_up", "Colis récupéré chez le vendeur")
-    await db.orders.update_one({"id": order_id}, {"$set": {"status": "picked_up"}, "$push": {"timeline": event}})
+    result = await db.orders.update_one({"id": order_id, "status": o["status"], "dispute_status": {"$ne": "open"}}, {"$set": {"status": "picked_up"}, "$push": {"timeline": event}})
+    if result.modified_count != 1:
+        raise HTTPException(409, "Commande déjà modifiée")
     return {"ok": True, "status": "picked_up"}
 
 
@@ -172,8 +181,12 @@ async def mark_en_route(order_id: str, user: dict = Depends(require_role("delive
         raise HTTPException(status_code=404, detail="Livraison introuvable")
     if o["status"] != "picked_up":
         raise HTTPException(status_code=400, detail="Récupérez d'abord le colis")
+    if o.get("payment_method") == "direct" and (o.get("payment_status") != "seller_declared_received" or o.get("dispute_status") == "open"):
+        raise HTTPException(409, "Paiement direct non déclaré reçu ou commande en litige")
     event = _timeline_event("out_for_delivery", "En cours de livraison")
-    await db.orders.update_one({"id": order_id}, {"$set": {"status": "out_for_delivery"}, "$push": {"timeline": event}})
+    result = await db.orders.update_one({"id": order_id, "status": "picked_up", "dispute_status": {"$ne": "open"}}, {"$set": {"status": "out_for_delivery"}, "$push": {"timeline": event}})
+    if result.modified_count != 1:
+        raise HTTPException(409, "Commande déjà modifiée")
     try:
         await create_notification(
             o["buyer_id"], "order_shipped", "Votre commande arrive",

@@ -91,7 +91,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     if len(products) != len(set(product_ids)):
         raise HTTPException(status_code=400, detail="Produit introuvable dans le panier")
 
-    if len({p["currency"] for p in products.values()}) != 1:
+    if len({"FC" if p["currency"] == "CDF" else p["currency"] for p in products.values()}) != 1:
         raise HTTPException(422, detail="Les paniers multi-devises nécessitent une conversion validée")
 
     # Group requested items by (seller_id, effective_delivery_mode).

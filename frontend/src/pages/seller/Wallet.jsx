@@ -11,6 +11,8 @@ import { useAuth } from "../../context/AuthContext";
 export default function SellerWallet() {
   const { user } = useAuth();
   const [balance, setBalance] = useState(null);
+  const [withdrawEnabled, setWithdrawEnabled] = useState(false);
+  const [loadError, setLoadError] = useState("");
   const [txs, setTxs] = useState([]);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const storageKey = "afrimarket.withdrawal." + user?.id;
@@ -39,7 +41,7 @@ export default function SellerWallet() {
         if (!pending) setOperator(c.mobile_money_operators[0]);
       }
     });
-    const t = setInterval(load, 10000);
+    const t = setInterval(() => load().catch(() => setLoadError("Historique temporairement indisponible.")), 10000);
     return () => clearInterval(t);
   }, [user?.country_code]);
 
@@ -72,10 +74,12 @@ export default function SellerWallet() {
       <TopBar title="Portefeuille" showCart={false} />
 
       <div className="px-4 mt-4 space-y-3">
+        {!withdrawEnabled && <p className="bg-afri-soft rounded-xl p-4 text-sm text-afri-secondary">Les paiements directs se font hors plateforme. Ce portefeuille historique ne prouve pas que des fonds sont détenus par AfriMarket ; les retraits sont désactivés.</p>}
+        {loadError && <p role="alert">{loadError}</p>}
         <section className="rounded-2xl bg-linear-to-br from-afri-secondary to-afri-primary text-white p-5 shadow">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-emerald-100 text-xs uppercase tracking-wider font-bold">
-              <WalletIcon size={14} /> Solde disponible
+              <WalletIcon size={14} /> {withdrawEnabled ? "Solde disponible" : "Historique à réconcilier"}
             </div>
           </div>
           <div className="font-display font-black text-4xl mt-2" data-testid="wallet-available">
@@ -84,7 +88,7 @@ export default function SellerWallet() {
           <button
             data-testid="open-withdraw-btn"
             onClick={() => setShowWithdraw(true)}
-            disabled={balance.available <= 0}
+            disabled={!withdrawEnabled || balance.available <= 0}
             className="mt-4 bg-white text-afri-secondary rounded-lg py-2.5 px-4 font-semibold text-sm disabled:opacity-50 flex items-center justify-center gap-2 w-full"
           >
             <ArrowDownToLine size={16} /> Retirer

@@ -78,3 +78,18 @@ def test_failed_sms_cannot_claim_success_or_leave_a_verifiable_code():
             assert error.value.status_code == 503
             assert "whatsapp_verification" not in await db.sellers.find_one({"id": "shop"})
     asyncio.run(isolated(run))
+
+
+def test_dashboard_and_buyer_profile_do_not_disclose_handoff_codes_or_otp_proof():
+    async def run(db):
+        await db.sellers.update_one({"id": "shop"}, {"$set": {"whatsapp_verification": {"digest": "TEST", "salt": "TEST"}}})
+        await db.orders.update_one({"id": "order"}, {"$set": {"confirmation_code": "123456", "qr_code": "TEST-private", "total_amount": 100, "commission_amount": 7, "status": "confirmed", "escrow_status": "held"}})
+        with patch.object(sellers_router, "get_db", return_value=db):
+            dashboard = await sellers_router.dashboard(SELLER)
+            assert "whatsapp_verification" not in dashboard["shop"]
+            assert "confirmation_code" not in dashboard["recent_orders"][0]
+            profile = await sellers_router.get_buyer_profile("buyer", SELLER)
+            assert "confirmation_code" not in profile["orders"][0]
+            with pytest.raises(HTTPException):
+                await sellers_router.get_buyer_profile("other", SELLER)
+    asyncio.run(isolated(run))

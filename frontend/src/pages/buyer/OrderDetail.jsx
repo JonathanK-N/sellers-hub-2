@@ -375,7 +375,7 @@ export default function OrderDetail() {
           </div>
           {order.delivery_fee > 0 && (
             <div className="border-t border-gray-100 mt-3 pt-3 flex justify-between text-sm text-gray-500">
-              <span>Frais de livraison (7%)</span>
+              <span>Frais de livraison</span>
               <span>{formatPrice(order.delivery_fee, order.currency)}</span>
             </div>
           )}
@@ -394,7 +394,7 @@ export default function OrderDetail() {
             <div className="text-sm text-afri-secondary">
               <p className="font-semibold">Présentez-vous en boutique</p>
               <p className="mt-0.5 text-xs leading-relaxed text-afri-secondary/80">
-                Le vendeur confirmera la remise après réception de votre paiement en espèces.
+                Le vendeur confirmera la remise après sa déclaration de réception du paiement convenu hors plateforme.
               </p>
               {order.pickup_slot && (
                 <p className="mt-1 text-xs font-bold">Créneau : {order.pickup_slot}</p>
@@ -412,7 +412,7 @@ export default function OrderDetail() {
             </p>
             <button
               data-testid="confirm-collect-btn"
-              disabled={confirmingCollect}
+              disabled={confirmingCollect || (order.payment_method === "direct" && (order.status !== "ready_for_pickup" || order.payment_status !== "seller_declared_received" || order.dispute_status === "open"))}
               onClick={confirmCollect}
               className="w-full bg-afri-primary hover:bg-afri-primary-hover active:scale-95 text-white rounded-xl py-4 font-bold text-base transition-all disabled:opacity-60 flex items-center justify-center gap-2 shadow-md"
             >
@@ -427,7 +427,7 @@ export default function OrderDetail() {
               ) : (
                 <>
                   <CheckCircle2 size={20} />
-                  Confirmer la remise — cash reçu
+                  {order.payment_method === "direct" ? "Confirmer la remise, sans crédit AfriMarket" : "Confirmer la remise — cash reçu"}
                 </>
               )}
             </button>

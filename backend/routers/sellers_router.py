@@ -245,12 +245,15 @@ async def dashboard(user: dict = Depends(require_role("seller"))):
     products_oos = sum(1 for p in products if p.get("stock", 0) <= 0)
 
     orders = await db.orders.find({"seller_id": seller["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for order in orders:
+        order.pop("confirmation_code", None)
+        order.pop("qr_code", None)
     revenue = sum(o["total_amount"] - o["commission_amount"] for o in orders if o.get("escrow_status") == "released")
     orders_pending = sum(1 for o in orders if o["status"] in ("confirmed", "preparing", "out_for_delivery"))
     orders_completed = sum(1 for o in orders if o["status"] in ("delivered", "collected"))
 
     return {
-        "shop": seller,
+        "shop": owner_seller(seller),
         "revenue": revenue,
         "orders_total": len(orders),
         "orders_pending": orders_pending,
@@ -380,6 +383,8 @@ async def get_buyer_profile(buyer_id: str, user: dict = Depends(require_role("se
     seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
     if not seller:
         raise HTTPException(status_code=400, detail="Boutique manquante")
+    if not await db.orders.find_one({"buyer_id": buyer_id, "seller_id": seller["id"]}):
+        raise HTTPException(404, "Acheteur introuvable")
     buyer = await db.users.find_one({"id": buyer_id}, dict.fromkeys(("_id", "password_hash", "otp_code"), 0))
     if not buyer:
         raise HTTPException(status_code=404, detail="Acheteur introuvable")
@@ -387,6 +392,9 @@ async def get_buyer_profile(buyer_id: str, user: dict = Depends(require_role("se
         {"buyer_id": buyer_id, "seller_id": seller["id"]},
         {"_id": 0}
     ).sort("created_at", -1).to_list(50)
+    for order in orders:
+        order.pop("confirmation_code", None)
+        order.pop("qr_code", None)
     total_spent = sum(o["total_amount"] for o in orders if o.get("escrow_status") == "released")
     return {
         "buyer": {"name": buyer.get("name"), "created_at": buyer.get("created_at"), "id": buyer_id},

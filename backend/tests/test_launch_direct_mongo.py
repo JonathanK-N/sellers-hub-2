@@ -37,7 +37,7 @@ async def isolated(callback):
         client.close()
 
 
-async def checkout(mode="collect", key="TEST-direct-key-0001"):
+async def checkout(mode="collect", key="TEST000000001"):
     req = OrderCreateRequest(items=[{"product_id": "product", "quantity": 1}], delivery_mode=mode, payment_method="direct")
     return (await orders.create_order(req, BUYER, key))["orders"][0]
 
@@ -176,5 +176,84 @@ def test_usd_delivery_never_adds_cdf_tier_as_usd():
         assert order["delivery_fee"] == 0
         assert order["amount_due"] == 10
         assert order["delivery_fee_status"] == "to_arrange_with_seller"
+        await no_funds(db)
+    asyncio.run(isolated(run))
+
+
+def test_multiple_sellers_cannot_declare_or_message_another_sellers_order():
+    from routers import messages_router as messages
+    async def run(db):
+        await db.users.insert_one({"id": "seller-two", "role": "seller"})
+        await db.sellers.insert_one({"id": "shop-two", "user_id": "seller-two", "shop_name": "TEST 2"})
+        await db.products.insert_one({"id": "product-two", "seller_id": "shop-two", "name": "TEST 2", "price": 200, "stock": 1, "currency": "FC", "photos": [], "delivery_modes": ["collect"], "is_active": True})
+        req = OrderCreateRequest(items=[{"product_id": "product", "quantity": 1}, {"product_id": "product-two", "quantity": 1}], delivery_mode="collect", payment_method="direct")
+        result = await orders.create_order(req, BUYER, "TEST-multiseller-0001")
+        assert len(result["orders"]) == 2 and result["grand_total"] == 300
+        other_order = next(o for o in result["orders"] if o["seller_id"] == "shop-two")
+        with pytest.raises(HTTPException):
+            await direct.declare_payment(other_order["id"], direct.DeclarationRequest(action="seller_received"), SELLER)
+        with pytest.raises(HTTPException):
+            await messages.send_message(messages.SendMessageRequest(seller_id="shop", order_id=other_order["id"], text="TEST wrong context", client_message_id="TEST-message-0001"), BUYER)
+        assert await db.messages.count_documents({}) == 0
+        own = await orders.my_orders(SELLER)
+        assert len(own) == 1 and own[0]["seller_id"] == "shop"
+        assert "confirmation_code" not in own[0] and "qr_code" not in own[0]
+        await no_funds(db)
+    asyncio.run(isolated(run))
+
+
+def test_suspended_seller_cannot_receive_checkout_stock_is_untouched():
+    async def run(db):
+        await db.users.update_one({"id": "seller"}, {"$set": {"suspended": True}})
+        with pytest.raises(HTTPException) as error:
+            await checkout()
+        assert error.value.status_code == 409
+        assert (await db.products.find_one({"id": "product"}))["stock"] == 3
+        assert await db.orders.count_documents({}) == 0
+    asyncio.run(isolated(run))
+
+
+def test_direct_courier_delivery_and_dispute_gates_never_credit_a_wallet():
+    from routers import delivery_router as delivery
+    async def run(db):
+        courier = {"id": "courier", "role": "deliverer", "country_code": "CD", "currency": "FC", "name": "TEST courier"}
+        await db.users.insert_one(courier)
+        order = await checkout("delivery")
+        await direct.declare_payment(order["id"], direct.DeclarationRequest(action="seller_received"), SELLER)
+        await delivery.assign_deliverer(order["id"], delivery.AssignRequest(deliverer_id="courier"), SELLER)
+        await delivery.mark_picked_up(order["id"], courier)
+        dispute = await direct.dispute_direct(order["id"], direct.DirectDisputeRequest(reason="TEST held shipment"), BUYER)
+        with pytest.raises(HTTPException):
+            await delivery.mark_en_route(order["id"], courier)
+        await disputes.admin_resolve(dispute["id"], disputes.ResolveRequest(decision="close_direct", note="TEST solved"), {"id": "admin", "role": "admin"})
+        await delivery.mark_en_route(order["id"], courier)
+        await delivery.deliverer_confirm(order["id"], delivery.ConfirmCodeRequest(code=order["confirmation_code"]), courier)
+        earnings = await delivery.deliverer_earnings(courier)
+        assert earnings["completed_all"] == 1
+        assert earnings["earnings_today"] == 0
+        await no_funds(db)
+    asyncio.run(isolated(run))
+
+
+def test_assignment_racing_payment_disagreement_never_assigns_unreceived_order():
+    from routers import delivery_router as delivery
+    async def run(db):
+        courier = {"id": "courier", "role": "deliverer", "country_code": "CD", "name": "TEST courier"}
+        await db.users.insert_one(courier)
+        await db.products.update_one({"id": "product"}, {"$set": {"stock": 20}})
+        async def allowed(operation):
+            try:
+                await operation
+            except HTTPException as error:
+                assert error.status_code == 409
+        for index in range(10):
+            order = await checkout("delivery", "TEST-assignment-race-" + str(index))
+            await direct.declare_payment(order["id"], direct.DeclarationRequest(action="seller_received"), SELLER)
+            await asyncio.gather(
+                allowed(delivery.assign_deliverer(order["id"], delivery.AssignRequest(deliverer_id="courier"), SELLER)),
+                allowed(direct.declare_payment(order["id"], direct.DeclarationRequest(action="buyer_disagrees"), BUYER)),
+            )
+            saved = await db.orders.find_one({"id": order["id"]})
+            assert saved["status"] != "assigned" or saved["payment_status"] == "seller_declared_received"
         await no_funds(db)
     asyncio.run(isolated(run))

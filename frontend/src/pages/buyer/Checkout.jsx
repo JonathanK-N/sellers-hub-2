@@ -8,7 +8,9 @@ import { useAuth } from "../../context/AuthContext";
 import { formatPrice } from "../../lib/format";
 
 export default function Checkout() {
-  const { items, totalFC, totalUSD, checkoutCurrency, fxRate, clear } = useCart();
+  const { items, clear } = useCart();
+  const checkoutCurrency = items[0]?.currency || "FC";
+  const mixedCurrencies = new Set(items.map(item => item.currency === "CDF" ? "FC" : item.currency)).size > 1;
   const { user } = useAuth();
   const nav = useNavigate();
   const [mode, setMode] = useState("delivery");
@@ -33,7 +35,7 @@ export default function Checkout() {
 
   // Frais de livraison toujours en FC
   const deliveryFeeFC = useMemo(() => {
-    if (mode !== "delivery") return 0;
+    if (mode !== "delivery" || !["FC", "CDF"].includes(checkoutCurrency)) return 0;
     const sellersToCharge = new Set();
     items.forEach((it) => {
       const modes = it.delivery_modes?.length ? it.delivery_modes : ["delivery", "collect"];
@@ -46,12 +48,10 @@ export default function Checkout() {
       fee += info.delivery_service === "afrimarket" ? 16000 : (info.self_delivery_fee || 7500);
     });
     return fee;
-  }, [mode, items, sellerInfo]);
+  }, [mode, items, sellerInfo, checkoutCurrency]);
 
   // Frais de livraison dans la devise choisie
-  const deliveryFeeDisplay = checkoutCurrency === "USD" && fxRate
-    ? deliveryFeeFC / fxRate
-    : deliveryFeeFC;
+  const deliveryFeeDisplay = deliveryFeeFC;
 
   useEffect(() => {
     if (mode === "delivery" && !deliveryAvailable && collectAvailable) setMode("collect");
@@ -91,10 +91,11 @@ export default function Checkout() {
   }
 
   // Totaux dans la devise choisie
-  const subtotalDisplay = checkoutCurrency === "USD" ? totalUSD : totalFC;
+  const subtotalDisplay = items.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
   const payableTotalDisplay = subtotalDisplay + deliveryFeeDisplay;
 
   const submit = async () => {
+    if (mixedCurrencies) { toast.error("Séparez les articles de devises différentes en commandes distinctes."); return; }
     if (mode === "delivery" && !neighborhood) {
       toast.error("Indiquez votre quartier");
       return;
@@ -153,6 +154,8 @@ export default function Checkout() {
       </header>
 
       <div className="px-4 mt-4 space-y-3 pb-28">
+        {mixedCurrencies && <p role="alert" className="text-sm text-red-700">Séparez les articles de devises différentes en commandes distinctes. Aucune conversion automatique n’est appliquée au paiement direct.</p>}
+        {mode === "delivery" && !["FC", "CDF"].includes(checkoutCurrency) && <p className="text-sm bg-afri-soft p-3 rounded-lg">Les frais de livraison sont à convenir séparément avec le vendeur ; le total ci-dessous couvre les articles.</p>}
         {/* Mode livraison */}
         <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Mode</h3>
@@ -258,7 +261,7 @@ export default function Checkout() {
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-4 py-3 pb-5 z-50 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
         <button
           data-testid="checkout-pay-btn"
-          disabled={loading}
+          disabled={loading || mixedCurrencies}
           onClick={submit}
           className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
         >

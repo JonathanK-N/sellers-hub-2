@@ -18,9 +18,14 @@ export default function ConversationsList() {
 
   useEffect(() => {
     let cancelled = false;
+    let firstLoad = true;
     const load = () =>
       api.get("/messages/conversations", { params: { limit: 50 } }).then(({ data }) => {
-        if (!cancelled) { setItems(data); setError(""); setOffset(data.length); setMore(data.length === 50); }
+        if (!cancelled) {
+          setItems(previous => [...new Map([...data, ...previous.filter(row => !data.some(fresh => fresh.conversation_id === row.conversation_id))].map(row => [row.conversation_id, row])).values()]);
+          setError("");
+          if (firstLoad) { setOffset(data.length); setMore(data.length === 50); firstLoad = false; }
+        }
       }).catch(() => { if (!cancelled) setError("Connexion interrompue. Nouvelle tentative automatique."); }).finally(() => { if (!cancelled) setLoading(false); });
     load();
     const t = setInterval(load, 5000);

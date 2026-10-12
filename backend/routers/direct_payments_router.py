@@ -6,7 +6,7 @@ from auth import get_current_user_dep
 from db import get_db
 from financial_transactions import atomic_operation
 from notifications import create_notification
-from commerce_mode import integrated_payments_enabled
+from commerce_mode import integrated_payments_enabled, legacy_financial_actions_enabled
 from direct_orders import open_direct_dispute
 
 router = APIRouter(tags=["direct-payment"])
@@ -31,7 +31,7 @@ async def authorize(db, order_id, user):
 
 @router.get("/commerce/features")
 async def features():
-    return {"direct_payment": True, "funds_held_by_platform": False, "cinetpay_enabled": integrated_payments_enabled(), "direct_refunds_automatic": False}
+    return {"direct_payment": True, "funds_held_by_platform": False, "cinetpay_enabled": integrated_payments_enabled(), "wallet_withdrawals_enabled": integrated_payments_enabled() and legacy_financial_actions_enabled(), "direct_refunds_automatic": False}
 
 
 class DirectDisputeRequest(BaseModel):

@@ -97,6 +97,8 @@ async def get_current_user_dep(request: Request):
         raise HTTPException(status_code=403, detail="Votre compte a été banni. Contactez le support.")
     if user.get("suspended"):
         raise HTTPException(status_code=403, detail="Votre compte est temporairement suspendu. Contactez le support.")
+    if user.get("is_deleted") or user.get("deleted") or user.get("is_active") is False:
+        raise HTTPException(403, "Compte désactivé")
     return user
 
 
