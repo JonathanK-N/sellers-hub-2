@@ -6,13 +6,13 @@ Base vérifiée : b3f503b0ae91c82772f9795f39ed06a8af47040b, CI phase 3 verte. Br
 
 | Tâche | Priorité | État | Constat / prochaine action |
 |---|---|---|---|
-| A01 Cartographie | P0 | IN_PROGRESS | GitHub et Railway inventoriés ; schéma Mongo réel inaccessible OAuth |
+| A01 Cartographie | P0 | PASS | GitHub/Railway et 23 collections Mongo inventoriés en lecture seule ; configuration sauvegardée chiffrée |
 | D01 Conservation Mongo | P0 | PASS | Backup cohérent chiffré et restauration authentifiée vérifiés ; 23 collections, documents/IDs/indexes identiques |
 | M01 Messagerie | P0 | TESTING | API Mongo, permissions, pagination et idempotence PASS ; E2E navigateur métier à vérifier |
 | W01 WhatsApp | P0 | TESTING | Numéro professionnel vérifié et consentement implémentés ; 6 tests API PASS ; navigateur à vérifier |
 | P01 Paiement direct | P0 | TESTING | 16 tests Mongo PASS sans fonds fictifs ; tests HTTP supplémentaires et E2E en cours |
-| S01 Staging | P0 | BLOCKED | Patch phase 3 non appliqué, variables scellées absentes ; refus du contrôle Railway conservé |
-| L01 Production | P0 | BLOCKED | Backup restaurable, migration, staging et approbation concrète requis |
+| S01 Staging | P0 | TESTING | Secrets standard autorisés et configurés ; patch complet API/Web/Mongo préparé, CI et approbation d’application requis |
+| L01 Production | P0 | BLOCKED | Backup et migration sur copie PASS ; staging réel, compatibilité Mongo transactionnelle et approbation finale requis |
 
 Le paiement direct rend CinetPay non bloquant ; les gates de protection des données restent obligatoires.
 
@@ -51,3 +51,5 @@ Migrations additives répétées sur la copie restaurée protégée : PASS, 23 c
 Cycle navigateur : premier parcours trouve un crash checkout sur variables de conversion supprimées ; correction c317886, aucune assertion retirée. Deux essais suivants ont précisé l’attente des réponses HTTP/états de préparation. Loop4 sur l’artefact exact c317886/build64dfa9e : 15 contrôles PASS, inscription/login HTTP et formulaires navigateur, produit/panier/checkout, WhatsApp public sans secrets, déclaration vendeur avec consentement, préparation/remise persistées, XSS texte, réponse perdue puis reload/retry avec une seule ligne Mongo, aucun document financier et stock réservé une fois, chat sans overflow 390/768/1440. Preuve production-launch-browser-e2e-loop4.json. CI 38251860341 : dix jobs PASS, dont scanner, backend, performance et émulateur. Ceci ne certifie pas le staging HTTPS du candidat.
 
 Correctifs voisins en vérification : bloquer préparation avant réception déclarée ; réinitialiser consentement par commande et protéger les réponses de routes obsolètes ; accès messagerie vendeur depuis sa commande ; conserver l’ancrage de lecture lors des pages anciennes et ne pas sauter en bas à chaque polling ; interface livreur sans promesse de crédit pour paiement direct, compteur de livraisons séparé des estimations anciennes. Test courier ciblé PASS avec compteur aujourd’hui=1 et gains directs=0. Nouveau build/E2E requis après ces changements.
+
+Cycle navigateur étendu : 25 contrôles PASS sur artefact c722650/build indiqué dans production-launch-browser-e2e-loop9.json. Acheteur, vendeur, livreur et administrateur : pagination 125 messages, lecture ancrée, consentement neuf par commande, livraison sans crédit, litige clôturé sans fonds et session expirée sans message stocké. Deux commandes, stock final 6, zéro document financier. Le correctif f5bcaa1 supprime en plus le doublon historique du bouton de litige direct ; son nouvel artefact reste à valider par CI. Alternative secrets staging autorisée/configurée sans déploiement, configuration production sauvegardée AES-256-GCM et vérifiée, patch staging complet préparé sur les trois services. Aucun déploiement production.

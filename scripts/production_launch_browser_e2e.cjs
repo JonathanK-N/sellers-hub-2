@@ -247,9 +247,11 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
     await buyer.page.getByTestId('chat-input').waitFor();
     const unsigned=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify({sub:identities.buyer.user.id,role:'buyer',type:'access',exp:1})).toString('base64url');
     const expiredToken=unsigned+'.'+crypto.createHmac('sha256',jwtSecret).update(unsigned).digest('base64url');
-    await buyer.page.evaluate(token=>localStorage.setItem('afri_token',token),expiredToken);
     await buyer.page.getByTestId('chat-input').fill('TEST expired blocked');
-    await buyer.page.getByTestId('chat-send-btn').click();
+    await buyer.page.evaluate(token=>{
+      localStorage.setItem('afri_token',token);
+      document.querySelector('[data-testid="chat-send-btn"]').click();
+    },expiredToken);
     await buyer.page.waitForURL('**/auth/login');
     const finalProof=fixturePython("import sys,json\nfrom pymongo import MongoClient\ns=json.load(sys.stdin); assert s['database'].startswith('afrimarket_test_launch_browser_'); c=MongoClient('mongodb://127.0.0.1:27018/?replicaSet=phase3-test'); d=c[s['database']]; print(json.dumps({'expired_messages':d.messages.count_documents({'text':'TEST expired blocked'}),'financial_records':sum(d[n].count_documents({}) for n in ['transactions','financial_ledger','withdrawals','deliverer_wallets','deliverer_wallet_transactions']),'orders':d.orders.count_documents({}),'stock':d.products.find_one({'id':s['product']})['stock']})); c.close()",{database,product:product.id});
     check('Expired JWT redirects an open conversation to login and stores no new message',finalProof.expired_messages===0);

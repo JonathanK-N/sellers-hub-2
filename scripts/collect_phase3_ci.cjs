@@ -7,6 +7,8 @@ const crypto = require('node:crypto');
 (async () => {
   const runId = Number(process.argv[2]);
   const output = path.resolve(process.argv[3]);
+  const expectedBranch = process.argv[4] || 'stabilization/afrimarket-phase-3';
+  if (!['stabilization/afrimarket-phase-3', 'release/afrimarket-production-launch'].includes(expectedBranch)) throw Error('Unsupported evidence branch');
   if (!runId || !process.argv[3]) throw Error('Run ID and private output directory required');
   const credential = cp.execFileSync('git', ['credential', 'fill'], { input: 'protocol=https\nhost=github.com\n\n', encoding: 'utf8', timeout: 60000 });
   const entries = Object.fromEntries(credential.trim().split('\n').map(line => { const i = line.indexOf('='); return [line.slice(0, i), line.slice(i + 1)]; }));
@@ -18,7 +20,8 @@ const crypto = require('node:crypto');
     return response.json();
   };
   const [run, jobs, inventory] = await Promise.all([get('/actions/runs/' + runId), get('/actions/runs/' + runId + '/jobs'), get('/actions/runs/' + runId + '/artifacts')]);
-  if (run.head_branch !== 'stabilization/afrimarket-phase-3') throw Error('Unexpected branch');
+  if (run.head_branch !== expectedBranch) throw Error('Unexpected branch');
+  if (expectedBranch === 'release/afrimarket-production-launch' && (!jobs.jobs.some(job => job.name === 'frontend-business-e2e') || jobs.jobs.length !== 11)) throw Error('Launch requires all eleven validation jobs');
   if (run.status !== 'completed' || run.conclusion !== 'success' || jobs.jobs.some(job => job.conclusion !== 'success')) throw Error('CI is not fully green');
   fs.mkdirSync(output, { recursive: true });
   const manifest = { sourceSha: run.head_sha, runId, url: run.html_url, status: 'PASS', jobs: jobs.jobs.map(job => ({ name: job.name, status: job.conclusion, id: job.id })), artifacts: [] };
