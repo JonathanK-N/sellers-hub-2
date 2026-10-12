@@ -1,0 +1,13 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "c492c70126a2ec9da71844c2d313df8e675c2ffb",
+  "buildSha": "5abd42d068632c7cb5c172d45c2c7746aae69798",
+  "artifactId": 11750943266,
+  "artifactZipSha256": "a5b0aa6e2b4489a7b63f3ae2177fdf461928803b5a683a38c001e441075faa8d",
+  "businessChecks": 25,
+  "pwaChecks": 6,
+  "status": "PASS",
+  "businessProof": "release-evidence/production-launch-browser-e2e-loop10.json",
+  "pwaProof": "release-evidence/production-launch-pwa-upgrade-c492c70.json",
+  "scope": "Exact CI Web artifact, synthetic loopback API/Mongo and desktop browser; no staging HTTPS, native installation or production certification"
+}
