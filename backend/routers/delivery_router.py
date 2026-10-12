@@ -144,15 +144,18 @@ async def deliverer_earnings(user: dict = Depends(require_role("deliverer"))):
     completed_today = 0
     total_today = 0
     completed_all = await db.orders.count_documents({"deliverer_id": user["id"], "status": "delivered"})
-    async for o in db.orders.find({"deliverer_id": user["id"], "status": "delivered", "payment_method": {"$ne": "direct"}}, {"_id": 0, "delivered_at": 1}):
+    async for o in db.orders.find({"deliverer_id": user["id"], "status": "delivered"}, {"_id": 0, "delivered_at": 1, "payment_method": 1}):
         if (o.get("delivered_at") or "").startswith(today):
             completed_today += 1
-            total_today += 1000  # flat fee per delivery (sandbox)
+            if o.get("payment_method") != "direct":
+                total_today += 1000  # historical sandbox estimate, never a direct credit
     return {
         "completed_today": completed_today,
         "completed_all": completed_all,
         "earnings_today": total_today,
         "currency": user["currency"],
+        "earnings_estimated": True,
+        "direct_deliveries_generate_credit": False,
     }
 
 

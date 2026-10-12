@@ -230,6 +230,7 @@ def test_direct_courier_delivery_and_dispute_gates_never_credit_a_wallet():
         await delivery.deliverer_confirm(order["id"], delivery.ConfirmCodeRequest(code=order["confirmation_code"]), courier)
         earnings = await delivery.deliverer_earnings(courier)
         assert earnings["completed_all"] == 1
+        assert earnings["completed_today"] == 1
         assert earnings["earnings_today"] == 0
         await no_funds(db)
     asyncio.run(isolated(run))

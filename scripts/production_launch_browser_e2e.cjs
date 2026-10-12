@@ -16,6 +16,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
   const metadata = JSON.parse(fs.readFileSync(path.join(build, 'release-metadata.json')));
   const database = 'afrimarket_test_launch_browser_' + crypto.randomBytes(10).toString('hex');
   const password = crypto.randomBytes(20).toString('hex');
+  const jwtSecret = crypto.randomBytes(32).toString('hex');
   const rows = [];
   const contexts = [];
   const browserErrors = [];
@@ -38,7 +39,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
     cwd:process.cwd(), windowsHide:true, stdio:['ignore',log,log], env:{...process.env,
       PYTHONPATH:path.resolve('backend'), MONGO_URL:'mongodb://127.0.0.1:27018/?replicaSet=phase3-test', DB_NAME:database,
       AUTH_MODE:'sandbox', SEED_DEMO:'false', COMMERCE_CHECKOUT_MODE:'direct', CINETPAY_ENABLED:'false', LEGACY_FINANCIAL_ACTIONS_ENABLED:'false',
-      JWT_SECRET:crypto.randomBytes(32).toString('hex'), ADMIN_PHONE:'+243000000099', ADMIN_PASSWORD:password, ADMIN_NAME:'TEST administrator',
+      JWT_SECRET:jwtSecret, ADMIN_PHONE:'+243000000099', ADMIN_PASSWORD:password, ADMIN_NAME:'TEST administrator',
       AT_USERNAME:'',AT_API_KEY:'',AWS_ACCESS_KEY_ID:'',AWS_SECRET_ACCESS_KEY:'',FOREXRATEAPI_KEY:'',RESEND_API_KEY:'',
       CINETPAY_API_KEY:'',CINETPAY_SITE_ID:'',CINETPAY_SIGNATURE_SECRET:'',REDIS_URL:'memory://',CORS_ORIGINS:'*'}
   });
@@ -71,6 +72,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
       identities[role]=await api('POST','/auth/login',{phone,password});
     }
     check('Synthetic buyer, seller and courier registered, OTP-verified and authenticated via real HTTP',true);
+    identities.admin=await api('POST','/auth/admin/login',{phone:'+243000000099',password});
     const seller=await api('POST','/seller/setup',{shop_name:'TEST browser shop',address:'TEST collection point'},identities.seller.access_token);
     await api('PUT','/seller/whatsapp',{phone:identities.seller.user.phone,visible:true},identities.seller.access_token);
     const product=await api('POST','/products',{name:'TEST browser product',price:1200,currency:'FC',stock:8,photos:[],delivery_modes:['collect','delivery']},identities.seller.access_token);
@@ -106,11 +108,11 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
       });
       const page=await context.newPage();
       page.on('pageerror',error=>browserErrors.push(error.message));
-      await page.goto(origin+'/auth/login');
-      await page.getByTestId('login-phone-input').fill(identities[role].user.phone.slice(4));
-      await page.getByTestId('login-password-input').fill(password);
-      await page.getByTestId('login-submit-btn').click();
-      await page.waitForURL(role==='seller'?'**/seller/dashboard':role==='deliverer'?'**/livreur':'**/buyer/home');
+      await page.goto(origin+(role==='admin'?'/admin/login':'/auth/login'));
+      await page.getByTestId(role==='admin'?'admin-phone-input':'login-phone-input').fill(role==='admin'?identities[role].user.phone:identities[role].user.phone.slice(4));
+      await page.getByTestId(role==='admin'?'admin-password-input':'login-password-input').fill(password);
+      await page.getByTestId(role==='admin'?'admin-login-submit':'login-submit-btn').click();
+      await page.waitForURL(role==='admin'?'**/admin/overview':role==='seller'?'**/seller/dashboard':role==='deliverer'?'**/livreur':'**/buyer/home');
       return {context,page,network};
     };
     const buyer=await actor('buyer');
@@ -136,11 +138,16 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
     await merchant.page.goto(origin+'/buyer/orders/'+orderId);
     await merchant.page.getByTestId('direct-seller-receive').waitFor();
     check('Seller receipt requires explicit checkbox',await merchant.page.getByTestId('direct-seller-receive').isDisabled());
+    check('Seller cannot prepare before declaring receipt',await merchant.page.getByTestId('advance-order-btn').isDisabled());
     await merchant.page.getByRole('checkbox').check();
     await merchant.page.getByTestId('direct-seller-receive').click();
+    await merchant.page.getByTestId('direct-seller-receive').waitFor({state:'hidden'});
     await merchant.page.getByTestId('advance-order-btn').click();
+    await merchant.page.getByTestId('advance-order-btn').getByText('Prêt pour retrait',{exact:true}).waitFor();
     await merchant.page.getByTestId('advance-order-btn').click();
+    await merchant.page.getByTestId('advance-order-btn').waitFor({state:'hidden'});
     await merchant.page.getByTestId('confirm-collect-btn').click();
+    await merchant.page.getByTestId('collect-confirmed-banner').waitFor();
     order=await api('GET','/orders/'+orderId,undefined,identities.buyer.access_token);
     check('Seller browser preparation and handoff persist without verified funds',order.status==='collected'&&order.payment_status==='seller_declared_received'&&!order.payment_confirmed&&order.escrow_status==='not_applicable');
     await buyer.page.reload();

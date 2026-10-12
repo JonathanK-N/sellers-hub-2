@@ -161,10 +161,12 @@ export default function OrderDetail() {
   const [tracking, setTracking] = useState(null);
   const [collectConfirmed, setCollectConfirmed] = useState(false);
   const [confirmingCollect, setConfirmingCollect] = useState(false);
+  const currentOrderId = useRef(id);
+  currentOrderId.current = id;
 
-  const load = useCallback(() => api.get(`/orders/${id}`).then(({ data }) => setOrder(data)), [id]);
+  const load = useCallback(() => api.get(`/orders/${id}`).then(({ data }) => { if (currentOrderId.current === id) setOrder(data); }), [id]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => { setCollectConfirmed(false); setConfirmingCollect(false); setBusy(false); setCode(""); setShowAssign(false); setDeliverers([]); load(); }, [load]);
 
   // Polling statut toutes les 15s
   useEffect(() => {
@@ -204,7 +206,7 @@ export default function OrderDetail() {
     } finally { setBusy(false); }
   };
 
-  if (!order) return <div className="mobile-shell pt-24 text-center text-gray-500">Chargement…</div>;
+  if (!order || order.id !== id) return <div className="mobile-shell pt-24 text-center text-gray-500">Chargement…</div>;
 
   const steps = order.delivery_mode === "delivery" ? STEPS_DELIVERY : STEPS_COLLECT;
   const STATUS_TO_STEP = {
@@ -219,6 +221,7 @@ export default function OrderDetail() {
     setBusy(true);
     try {
       const { data } = await api.post(`/orders/${id}/advance`);
+      if (currentOrderId.current !== id) return;
       setOrder(data);
       toast.success("Statut mis à jour");
     } catch (e) {
@@ -230,6 +233,7 @@ export default function OrderDetail() {
     setBusy(true);
     try {
       await api.post(`/orders/${id}/confirm-delivery`, { code });
+      if (currentOrderId.current !== id) return;
       toast.success(order.payment_method === "direct" ? "Livraison confirmée — paiement hors plateforme." : "Livraison confirmée. Paiement libéré !");
       await load();
     } catch (e) {
@@ -241,6 +245,7 @@ export default function OrderDetail() {
     setConfirmingCollect(true);
     try {
       await api.post(`/orders/${id}/confirm-collect`);
+      if (currentOrderId.current !== id) return;
       setCollectConfirmed(true);
       await load();
     } catch (e) {
@@ -282,7 +287,7 @@ export default function OrderDetail() {
       </header>
 
       <div className="px-4 mt-4 space-y-3">
-        <DirectPaymentPanel order={order} role={user?.role} onChanged={load}/>
+        <DirectPaymentPanel key={order.id} order={order} role={user?.role} onChanged={load}/>
         {isBuyer && <WhatsAppContact contact={order.seller_whatsapp} reference={order.public_reference || "AF-" + order.id.slice(0,8).toUpperCase()}/>}
         {/* Escrow banner — masqué pour paiement en espèces (escrow non applicable) */}
         {!["cash", "direct"].includes(order.payment_method) && (
@@ -408,7 +413,7 @@ export default function OrderDetail() {
           <section className="bg-white rounded-xl border-2 border-afri-primary shadow-xs p-4" data-testid="confirm-collect-section">
             <h3 className="text-sm font-bold text-afri-secondary mb-1">Remise en boutique</h3>
             <p className="text-xs text-gray-500 mb-4">
-              Appuyez après avoir remis la commande à l'acheteur et reçu le paiement en espèces.
+              {order.payment_method === "direct" ? "Confirmez après remise de la commande et déclaration de réception du paiement hors plateforme." : "Appuyez après avoir remis la commande à l'acheteur et reçu le paiement en espèces."}
             </p>
             <button
               data-testid="confirm-collect-btn"
@@ -456,7 +461,7 @@ export default function OrderDetail() {
         )}
 
         {/* Chat with seller (buyer) */}
-        {isBuyer && (
+        {(isBuyer || isSeller) && (
           <button
             data-testid="chat-with-seller-btn"
             onClick={() => nav(`/messages/${order.buyer_id}__${order.seller_id}`, { state: { other_name: isBuyer ? order.seller_name : order.buyer_name, order_id: order.id } })}
@@ -557,7 +562,7 @@ export default function OrderDetail() {
         {isSeller && ["confirmed", "preparing"].includes(order.status) && !(order.delivery_mode === "delivery" && order.deliverer_id && order.status === "preparing") && (
           <button
             data-testid="advance-order-btn"
-            disabled={busy}
+            disabled={busy || (order.payment_method === "direct" && (order.payment_status !== "seller_declared_received" || order.dispute_status === "open"))}
             onClick={advance}
             className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold transition-colors disabled:opacity-50"
           >

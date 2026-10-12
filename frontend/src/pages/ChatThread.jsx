@@ -11,6 +11,7 @@ export default function ChatThread() {
   const { user } = useAuth();
   const [msgs, setMsgs] = useState([]);
   const scrollAfter = useRef(false);
+  const prependAnchor = useRef(null);
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
@@ -41,7 +42,6 @@ export default function ChatThread() {
       merge(data.messages); acknowledgePending(data.messages);
       if (initial) { setOlder(data.next_before); setMore(data.has_more); }
       if (data.latest_cursor) latest.current = data.latest_cursor;
-      if (data.messages.length) scrollRef.current?.scrollTo({top:scrollRef.current.scrollHeight});
       setError("");
       if (data.latest_cursor && document.visibilityState === "visible") await api.post("/messages/conversations/" + conversationId + "/read", { through: data.latest_cursor });
     } catch (e) {
@@ -49,7 +49,7 @@ export default function ChatThread() {
     } finally { if (current === generation.current) { busy.current = false; setLoading(false); } }
   };
   useEffect(() => {
-    generation.current += 1; busy.current = false; latest.current = null; setMsgs([]); setLoading(true); setOlder(null); setMore(false);
+    generation.current += 1; busy.current = false; latest.current = null; prependAnchor.current = null; setSending(false); setMsgs([]); setLoading(true); setOlder(null); setMore(false);
     try { pending.current = JSON.parse(sessionStorage.getItem(storageKey)); } catch { pending.current = null; }
     setText(pending.current?.text || "");
     load(true);
@@ -58,14 +58,27 @@ export default function ChatThread() {
     window.addEventListener("online", reconnect);
     return () => { generation.current += 1; clearInterval(timer); window.removeEventListener("online", reconnect); };
   }, [conversationId, user?.id]);
-  useEffect(() => { if (scrollAfter.current) { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight }); scrollAfter.current = false; } }, [msgs]);
+  useEffect(() => {
+    const anchor = prependAnchor.current;
+    if (anchor && scrollRef.current) {
+      const element = [...scrollRef.current.querySelectorAll("[data-message-id]")].find(row => row.dataset.messageId === anchor.id);
+      if (element) scrollRef.current.scrollTop += element.getBoundingClientRect().top - anchor.top;
+      prependAnchor.current = null;
+    } else if (scrollAfter.current) scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
+    scrollAfter.current = false;
+  }, [msgs]);
   const loadOlder = async () => {
     const current = generation.current;
     try {
       const { data } = await api.get("/messages/conversations/" + conversationId + "/history", { params: { before: older, limit: 50 } });
       if (current !== generation.current) return;
+      if (scrollRef.current) {
+        const top = scrollRef.current.getBoundingClientRect().top;
+        const element = [...scrollRef.current.querySelectorAll("[data-message-id]")].find(row => row.getBoundingClientRect().bottom >= top);
+        if (element) prependAnchor.current = { id: element.dataset.messageId, top: element.getBoundingClientRect().top };
+      }
       scrollAfter.current = false; merge(data.messages); setOlder(data.next_before); setMore(data.has_more); setError("");
-    } catch (e) { setError(formatApiError(e.response?.data?.detail)); }
+    } catch (e) { if (current === generation.current) setError(formatApiError(e.response?.data?.detail)); }
   };
   const send = async () => {
     if (sending || !text.trim() || !user) return;
@@ -82,8 +95,7 @@ export default function ChatThread() {
       const { data } = await api.post("/messages", pending.current);
       if (current !== generation.current) return;
       scrollAfter.current = true; merge([data]); acknowledgePending([data]); setError("");
-      scrollRef.current?.scrollTo({top:scrollRef.current.scrollHeight});
-    } catch (e) { setError(formatApiError(e.response?.data?.detail) || "Envoi incertain. Réessayez : le même message sera repris sans doublon."); }
+    } catch (e) { if (current === generation.current) setError(formatApiError(e.response?.data?.detail) || "Envoi incertain. Réessayez : le même message sera repris sans doublon."); }
     finally { if (current === generation.current) setSending(false); }
   };
   return <div className="mobile-shell !pb-0 flex flex-col h-dvh">
@@ -95,7 +107,7 @@ export default function ChatThread() {
     <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-2" data-testid="chat-messages" aria-live="polite">
       {more && <button onClick={loadOlder} className="w-full text-afri-secondary text-sm py-2">Messages précédents</button>}
       {loading ? <p role="status">Chargement des messages…</p> : !msgs.length && <p className="text-center text-sm text-gray-500 mt-8">Démarrez la conversation.</p>}
-      {msgs.map(m => <div key={m.id} className={"flex " + (m.from_user_id === user?.id ? "justify-end" : "justify-start")}><div className={"max-w-[85%] rounded-2xl px-3 py-2 text-sm break-words whitespace-pre-wrap " + (m.from_user_id === user?.id ? "bg-afri-primary-hover text-white" : "bg-white border border-gray-200 text-gray-900")}>{m.text}<time dateTime={m.created_at} className="block text-[10px] mt-1 opacity-80">{new Date(m.created_at).toLocaleString("fr-FR", {day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}</time></div></div>)}
+      {msgs.map(m => <div key={m.id} data-message-id={m.id} className={"flex " + (m.from_user_id === user?.id ? "justify-end" : "justify-start")}><div className={"max-w-[85%] rounded-2xl px-3 py-2 text-sm break-words whitespace-pre-wrap " + (m.from_user_id === user?.id ? "bg-afri-primary-hover text-white" : "bg-white border border-gray-200 text-gray-900")}>{m.text}<time dateTime={m.created_at} className="block text-[10px] mt-1 opacity-80">{new Date(m.created_at).toLocaleString("fr-FR", {day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}</time></div></div>)}
     </div>
     <form onSubmit={e => { e.preventDefault(); send(); }} className="border-t bg-white px-3 py-3 flex items-center gap-2">
       <input aria-label="Votre message" data-testid="chat-input" value={text} maxLength={2000} readOnly={!!pending.current} onChange={e => setText(e.target.value)} placeholder="Votre message…" className="flex-1 min-w-0 border rounded-full px-4 py-2.5 text-sm focus:ring-2 focus:ring-afri-primary"/>

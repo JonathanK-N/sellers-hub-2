@@ -1,0 +1,73 @@
+{
+  "sourceSha": "c31788605b986a81b03f0f445cc58f19fa18cd80",
+  "buildSha": "64dfa9e03041e0dae61cd0ee9d1e7feedf0240cf",
+  "scope": "Exact compiled artifact against synthetic real loopback API/Mongo. No staging HTTPS or production business certification; scheduler disabled to prohibit outbound background calls; service workers blocked for deterministic API routing; WhatsApp links inspected without sending messages.",
+  "rows": [
+    {
+      "test": "Synthetic buyer, seller and courier registered, OTP-verified and authenticated via real HTTP",
+      "status": "PASS"
+    },
+    {
+      "test": "Buyer and seller login through actual browser forms",
+      "status": "PASS"
+    },
+    {
+      "test": "Product WhatsApp link uses verified opted-in business phone",
+      "status": "PASS"
+    },
+    {
+      "test": "Browser product/cart/checkout creates persisted direct order with native amount",
+      "status": "PASS"
+    },
+    {
+      "test": "Order WhatsApp message has public reference and no buyer phone or handoff secret",
+      "status": "PASS"
+    },
+    {
+      "test": "Seller receipt requires explicit checkbox",
+      "status": "PASS"
+    },
+    {
+      "test": "Seller browser preparation and handoff persist without verified funds",
+      "status": "PASS"
+    },
+    {
+      "test": "Message XSS renders as text without executing",
+      "status": "PASS"
+    },
+    {
+      "test": "Uncertain message draft survives reload",
+      "status": "PASS"
+    },
+    {
+      "test": "Seller sees persisted buyer messages after reconnect",
+      "status": "PASS"
+    },
+    {
+      "test": "Response-loss retry persists exactly one message",
+      "status": "PASS"
+    },
+    {
+      "test": "Completed direct browser checkout creates no ledger/wallet/transaction and reserves stock once",
+      "status": "PASS",
+      "detail": {
+        "uncertain_messages": 1,
+        "messages": 2,
+        "financial_records": 0,
+        "stock": 7
+      }
+    },
+    {
+      "test": "Chat layout has no horizontal overflow at 390",
+      "status": "PASS"
+    },
+    {
+      "test": "Chat layout has no horizontal overflow at 768",
+      "status": "PASS"
+    },
+    {
+      "test": "Chat layout has no horizontal overflow at 1440",
+      "status": "PASS"
+    }
+  ]
+}

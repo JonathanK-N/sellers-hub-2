@@ -83,7 +83,7 @@ export default function DelivererDashboard() {
     setBusy(orderId);
     try {
       await api.post(`/deliverer/orders/${orderId}/confirm`, { code: code.trim() });
-      toast.success("Livraison confirmée, paiement libéré");
+      toast.success(deliveries.find(order => order.id === orderId)?.payment_method === "direct" ? "Livraison confirmée — paiement hors plateforme." : "Livraison confirmée, paiement libéré");
       setCodeFor(null);
       setCode("");
       load();
@@ -165,7 +165,7 @@ export default function DelivererDashboard() {
       {earnings && (
         <div className="px-4 mt-4 grid grid-cols-3 gap-2">
           <StatMini icon={Package} label="Aujourd'hui" value={earnings.completed_today} />
-          <StatMini icon={TrendingUp} label="Gains" value={formatPrice(earnings.earnings_today, earnings.currency)} small />
+          <StatMini icon={TrendingUp} label="Estimation historique" value={formatPrice(earnings.earnings_today, earnings.currency)} small />
           <StatMini icon={CheckCircle2} label="Total" value={earnings.completed_all} />
         </div>
       )}
@@ -173,12 +173,12 @@ export default function DelivererDashboard() {
 
       {wallet && (
         <div className="mx-4 mt-3 bg-afri-secondary rounded-xl p-4 text-white">
-          <p className="text-xs text-emerald-200 uppercase tracking-wide font-semibold mb-1">Wallet — Mes gains</p>
+          <p className="text-xs text-emerald-200 uppercase tracking-wide font-semibold mb-1">Solde historique à vérifier</p>
           <p className="text-3xl font-display font-black">
             {wallet.balance?.toLocaleString("fr-FR")} <span className="text-base font-normal opacity-80">{wallet.currency || "CDF"}</span>
           </p>
           <p className="text-xs text-emerald-200 mt-1">{wallet.completed_deliveries} livraison{wallet.completed_deliveries !== 1 ? "s" : ""} effectuée{wallet.completed_deliveries !== 1 ? "s" : ""}</p>
-          <p className="text-[10px] text-emerald-300/70 mt-1">11 500 CDF par livraison AfriMarket confirmée</p>
+          <p className="text-xs text-emerald-100 mt-1">Les livraisons en paiement direct ne créditent pas ce solde. Aucun versement automatique AfriMarket n’est activé.</p>
         </div>
       )}
 
