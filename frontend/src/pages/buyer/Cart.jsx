@@ -111,7 +111,7 @@ export default function Cart() {
 
             {/* Sélecteur devise */}
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gray-500">Payer en</span>
+              <span className="text-xs text-gray-500">Estimation en</span>
               <div className="flex gap-1">
                 <button
                   onClick={() => setCheckoutCurrency("FC")}
@@ -138,7 +138,7 @@ export default function Cart() {
 
             {/* Total */}
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Total</span>
+              <span className="text-sm text-gray-600">Total indicatif</span>
               <div className="text-right">
                 <span className="font-display font-black text-xl text-afri-secondary" data-testid="cart-total">
                   {checkoutCurrency === "USD"

@@ -239,22 +239,12 @@ export default function Checkout() {
           {mode === "delivery" && deliveryFeeFC > 0 && (
             <Row label="Frais de livraison" value={formatPrice(deliveryFeeDisplay, checkoutCurrency)} muted />
           )}
-          {/* Ligne de conversion si USD */}
-          {checkoutCurrency === "USD" && fxRate && (
-            <p className="text-[11px] text-gray-400 text-right">
-              Taux BCC · 1 USD = {new Intl.NumberFormat("fr-FR").format(Math.round(fxRate))} FC
-            </p>
-          )}
           <div className="border-t border-gray-100 pt-2 mt-2 flex justify-between font-display font-black text-lg text-afri-secondary">
             <span>Total</span>
             <span data-testid="checkout-total">{formatPrice(payableTotalDisplay, checkoutCurrency)}</span>
           </div>
-          {/* Équivalent dans l'autre devise */}
-          {checkoutCurrency === "USD" ? (
-            <p className="text-[11px] text-gray-400 text-right">≈ {formatPrice(totalFC + deliveryFeeFC, "FC")}</p>
-          ) : totalUSD > 0 ? (
-            <p className="text-[11px] text-gray-400 text-right">≈ {formatPrice(totalUSD + (fxRate ? deliveryFeeFC / fxRate : 0), "USD")}</p>
-          ) : null}
+          <p className="text-xs text-gray-600">Montants dans la devise du produit, sans conversion automatique.</p>
+          {mode === "delivery" && !["FC", "CDF"].includes(checkoutCurrency) && <p className="text-xs text-gray-600">Les frais de livraison sont à convenir séparément avec le vendeur.</p>}
         </section>
       </div>
 
