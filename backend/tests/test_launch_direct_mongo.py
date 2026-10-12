@@ -257,3 +257,60 @@ def test_assignment_racing_payment_disagreement_never_assigns_unreceived_order()
             assert saved["status"] != "assigned" or saved["payment_status"] == "seller_declared_received"
         await no_funds(db)
     asyncio.run(isolated(run))
+
+
+def test_real_http_registration_login_messages_and_expired_session(monkeypatch):
+    import secrets
+    import httpx
+    import jwt
+    import server
+    from auth import JWT_ALGORITHM
+    from seed_data import COUNTRIES
+    monkeypatch.setenv("AUTH_MODE", "sandbox")
+    monkeypatch.setenv("AT_USERNAME", "")
+    monkeypatch.setenv("AT_API_KEY", "")
+    monkeypatch.setenv("CINETPAY_ENABLED", "false")
+    monkeypatch.setenv("COMMERCE_CHECKOUT_MODE", "direct")
+    secret = secrets.token_hex(32)
+    monkeypatch.setenv("JWT_SECRET", secret)
+    async def run(db):
+        await db.countries.insert_one(dict(COUNTRIES[0]))
+        transport = httpx.ASGITransport(app=server.app, client=("127.0.0.2", 12345))
+        async with httpx.AsyncClient(transport=transport, base_url="http://localhost") as client:
+            identities = {}
+            password = secrets.token_urlsafe(20)
+            for index, role in enumerate(["buyer", "seller", "deliverer"]):
+                phone = "+24300000001" + str(index)
+                registration = await client.post("/api/auth/register", json={"name": "TEST " + role, "phone": phone, "role": role, "country_code": "CD", "password": password})
+                assert registration.status_code == 200, registration.text
+                verification = await client.post("/api/auth/verify-otp", json={"phone": phone, "code": registration.json()["otp_dev"]})
+                assert verification.status_code == 200
+                login = await client.post("/api/auth/login", json={"phone": phone, "password": password})
+                assert login.status_code == 200
+                identities[role] = login.json()
+            buyer = identities["buyer"]
+            seller = identities["seller"]
+            headers = lambda who: {"Authorization": "Bearer " + identities[who]["access_token"]}
+            setup = await client.post("/api/seller/setup", headers=headers("seller"), json={"shop_name": "TEST HTTP shop"})
+            assert setup.status_code == 200, setup.text
+            shop = setup.json()["id"]
+            contact = await client.put("/api/seller/whatsapp", headers=headers("seller"), json={"phone": seller["user"]["phone"], "visible": True})
+            assert contact.status_code == 200
+            payload = {"seller_id": shop, "text": "<img src=x onerror=alert(1)>", "client_message_id": "TEST-http-message-0001"}
+            sent = await client.post("/api/messages", headers=headers("buyer"), json=payload)
+            assert sent.status_code == 201, sent.text
+            replay = await client.post("/api/messages", headers=headers("buyer"), json=payload)
+            assert replay.status_code == 201 and replay.json()["id"] == sent.json()["id"]
+            conversation = buyer["user"]["id"] + "__" + shop
+            endpoint = "/api/messages/conversations/" + conversation + "/history"
+            history = await client.get(endpoint, headers=headers("seller"))
+            assert history.status_code == 200 and len(history.json()["messages"]) == 1
+            assert (await client.get(endpoint, headers=headers("deliverer"))).status_code == 403
+            assert (await client.get(endpoint)).status_code in {401, 403}
+            expired = jwt.encode({"sub": buyer["user"]["id"], "role": "buyer", "type": "access", "exp": 1}, secret, algorithm=JWT_ALGORITHM)
+            assert (await client.get(endpoint, headers={"Authorization": "Bearer " + expired})).status_code == 401
+            await db.users.update_one({"id": buyer["user"]["id"]}, {"$set": {"suspended": True}})
+            assert (await client.get(endpoint, headers=headers("buyer"))).status_code == 403
+            assert await db.messages.count_documents({"conversation_id": conversation}) == 1
+            await no_funds(db)
+    asyncio.run(isolated(run))

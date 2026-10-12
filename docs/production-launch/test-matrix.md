@@ -9,5 +9,7 @@ Auteur : Jonathan Kakesa (JonathanK-N).
 | Direct | réservation stock atomique, clé idempotente, déclarations, logistique, absence ledger/escrow/wallet, annulation et litige | PASS Mongo replica set local, 16 tests ; E2E TESTING |
 | Régression | 88 tests phase 3 et audits inchangés | Backend CI 38204219475 PASS ; nouveau candidat TESTING ; scanner historique FAIL, exception exacte en attente |
 | E2E | comptes synthétiques, navigateur responsive, offline/reconnexion, permissions | TODO |
+| HTTP auth/messagerie | inscription/login réels, replay, droits, token expiré, suspension | Assertions locales PASS ; avertissement natif Windows teardown, CI Linux TESTING |
+| PWA upgrade | artefact 69d1ed6, v9 vers v10, caches tiers, offline, reprise | PASS navigateur desktop, 6 contrôles ; installation OS/appareil non certifiée |
 | Staging | SHA exact HTTPS, métier et données persistées, performance, logs | BLOCKED |
 | Production | backup et migration contrôlés, déploiement approuvé, smoke non destructif | BLOCKED |
