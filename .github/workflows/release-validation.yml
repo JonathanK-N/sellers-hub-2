@@ -22,7 +22,7 @@ jobs:
           docker volume create phase3-staging-data
           docker run -d --name phase3-staging-mongo --hostname phase3-staging-mongo -e MONGO_INITDB_ROOT_USERNAME -e MONGO_INITDB_ROOT_PASSWORD -e MONGO_APP_PASSWORD -e RAILWAY_PRIVATE_DOMAIN=phase3-staging-mongo -v phase3-staging-data:/data/db afrimarket-staging-mongo-test
           for attempt in $(seq 1 120); do
-            if docker logs phase3-staging-mongo 2>&1 | grep -q 'Authenticated staging replica set ready'; then break; fi
+            if docker logs phase3-staging-mongo 2>&1 | grep 'Authenticated staging replica set ready' >/dev/null; then break; fi
             sleep 1
           done
           docker exec phase3-staging-mongo mongosh --quiet --file /usr/local/bin/afrimarket-mongo-init.js
@@ -195,7 +195,7 @@ jobs:
       - name: Start synthetic loopback replica set
         run: |
           docker run -d --name launch-qa-mongo -p 127.0.0.1:27018:27018 mongo:8.0.32 mongod --port 27018 --replSet phase3-test --bind_ip_all --wiredTigerCacheSizeGB 0.25
-          for attempt in $(seq 1 30); do docker exec launch-qa-mongo mongosh --port 27018 --quiet --eval 'db.adminCommand("ping").ok' && break; sleep 1; done
+          for attempt in $(seq 1 90); do docker exec launch-qa-mongo mongosh --port 27018 --quiet --eval 'db.adminCommand("ping").ok' && break; sleep 1; done
           docker exec launch-qa-mongo mongosh --port 27018 --quiet --eval 'rs.initiate({_id:"phase3-test",members:[{_id:0,host:"localhost:27018"}]})'
           for attempt in $(seq 1 30); do docker exec launch-qa-mongo mongosh --port 27018 --quiet --eval 'if(!db.hello().isWritablePrimary) quit(1)' && break; sleep 1; done
       - name: Exercise browser business roles and persisted invariants

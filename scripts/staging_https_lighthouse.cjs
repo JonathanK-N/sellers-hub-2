@@ -28,7 +28,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/Djibril/.cache
         const stored=state.origins.find(o=>o.origin===origin);
         if(!stored)throw Error('Authorized test session unavailable');
         const page=await context.newPage();
-        await page.goto(origin,{waitUntil:'domcontentloaded'});
+        // Establish the origin without loading or warming the application bundle.
+        await page.goto(origin+'/robots.txt',{waitUntil:'domcontentloaded'});
         await page.evaluate(entries=>{for(const item of entries)localStorage.setItem(item.name,item.value);},stored.localStorage);
         await page.close();
       }
@@ -45,7 +46,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/Djibril/.cache
       console.log(JSON.stringify({page:target.name,status:passed?'PASS':'FAIL',metrics}));
     }catch{rows.push({page:target.name,route:target.route,status:'FAIL',diagnostic:'Measurement unavailable; protected details withheld'});process.exitCode=1;}
     finally{if(browser)await browser.close().catch(()=>{});if(chrome){try{await chrome.kill();}catch{}}}
-    fs.writeFileSync(summaryOutput,JSON.stringify({author:'Jonathan Kakesa (JonathanK-N)',sourceSha:expectedSha,scope:'Actual Railway staging HTTPS, Lighthouse 13.5 default mobile simulated throttling; fresh isolated browser per page, authenticated pages preserve dedicated test localStorage after landing initialization; raw authenticated reports private outside Git',rows},null,2));
+    fs.writeFileSync(summaryOutput,JSON.stringify({author:'Jonathan Kakesa (JonathanK-N)',sourceSha:expectedSha,scope:'Actual Railway staging HTTPS, Lighthouse 13.5 default mobile simulated throttling; fresh isolated browser per page, authentication initialized on robots.txt without warming application resources; raw authenticated reports private outside Git',rows},null,2));
   }
   if(rows.some(r=>r.status!=='PASS'))process.exitCode=1;
 })().catch(()=>{console.error('Staging performance runner failed; details withheld');process.exitCode=1;});

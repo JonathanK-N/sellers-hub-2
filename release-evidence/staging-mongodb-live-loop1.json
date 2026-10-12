@@ -1,0 +1,24 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "checkedAt": "2026-10-12T18:08:14.826Z",
+  "projectId": "bc40e22f-b963-46fa-a64e-240f3aa954cd",
+  "serviceId": "80a726a8-1cd5-4387-9e5d-8cd6c9671d9e",
+  "status": "PASS",
+  "replicaSet": "afrimarket-staging-rs",
+  "primary": true,
+  "authAnonymousDenied": true,
+  "appLeastPrivilege": true,
+  "crossDatabaseDenied": true,
+  "transactionAbort": true,
+  "transactionCommit": true,
+  "counts": {
+    "users": 5,
+    "products": 1,
+    "orders": 3,
+    "messages": 2
+  },
+  "retainedQaEvidence": true,
+  "sourceDocumentsDeleted": 0,
+  "persistenceAcrossRestart": "NOT_TESTED",
+  "backupRestore": "NOT_TESTED"
+}
