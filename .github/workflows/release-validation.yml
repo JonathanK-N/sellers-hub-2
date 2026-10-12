@@ -170,6 +170,43 @@ jobs:
         with:
           name: performance-comparison-${{ github.sha }}
           path: performance-evidence
+  frontend-business-e2e:
+    needs: web
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r backend/requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: afrimarket-web-${{ github.sha }}
+          path: browser-web
+      - name: Install browser test runtime
+        run: |
+          mkdir -p /tmp/afrimarket-browser-qa
+          npm install --prefix /tmp/afrimarket-browser-qa playwright@1.60.0
+          /tmp/afrimarket-browser-qa/node_modules/.bin/playwright install --with-deps chromium
+      - name: Start synthetic loopback replica set
+        run: |
+          docker run -d --name launch-qa-mongo -p 127.0.0.1:27018:27018 mongo:8.0.32 mongod --port 27018 --replSet phase3-test --bind_ip_all --wiredTigerCacheSizeGB 0.25
+          for attempt in $(seq 1 30); do docker exec launch-qa-mongo mongosh --port 27018 --quiet --eval 'db.adminCommand("ping").ok' && break; sleep 1; done
+          docker exec launch-qa-mongo mongosh --port 27018 --quiet --eval 'rs.initiate({_id:"phase3-test",members:[{_id:0,host:"localhost:27018"}]})'
+          for attempt in $(seq 1 30); do docker exec launch-qa-mongo mongosh --port 27018 --quiet --eval 'if(!db.hello().isWritablePrimary) quit(1)' && break; sleep 1; done
+      - name: Exercise browser business roles and persisted invariants
+        run: node scripts/production_launch_browser_e2e.cjs browser-web "$(command -v python)" "$RUNNER_TEMP/launch-browser-private" release-evidence/production-launch-browser-ci.json
+        env:
+          PLAYWRIGHT_MODULE: /tmp/afrimarket-browser-qa/node_modules/playwright
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-business-e2e-${{ github.sha }}
+          path: release-evidence/production-launch-browser-ci.json
   android-emulator:
     needs: android
     runs-on: ubuntu-latest

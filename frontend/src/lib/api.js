@@ -25,6 +25,7 @@ api.interceptors.response.use(
       // Token expired
       localStorage.removeItem("afri_token");
       localStorage.removeItem("afri_user");
+      window.dispatchEvent(new Event("afri-session-expired"));
     }
     return Promise.reject(err);
   }

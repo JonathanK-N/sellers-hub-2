@@ -164,7 +164,7 @@ export default function OrderDetail() {
   const currentOrderId = useRef(id);
   currentOrderId.current = id;
 
-  const load = useCallback(() => api.get(`/orders/${id}`).then(({ data }) => { if (currentOrderId.current === id) setOrder(data); }), [id]);
+  const load = useCallback(() => api.get(`/orders/${id}`).then(({ data }) => { if (currentOrderId.current === id) setOrder(previous => previous?.id === data.id && Number(previous.revision || 0) > Number(data.revision || 0) ? previous : data); }), [id]);
 
   useEffect(() => { setCollectConfirmed(false); setConfirmingCollect(false); setBusy(false); setCode(""); setShowAssign(false); setDeliverers([]); load(); }, [load]);
 
@@ -222,7 +222,7 @@ export default function OrderDetail() {
     try {
       const { data } = await api.post(`/orders/${id}/advance`);
       if (currentOrderId.current !== id) return;
-      setOrder(data);
+      setOrder(previous => previous?.id === data.id && Number(previous.revision || 0) > Number(data.revision || 0) ? previous : data);
       toast.success("Statut mis à jour");
     } catch (e) {
       toast.error(formatApiError(e.response?.data?.detail));

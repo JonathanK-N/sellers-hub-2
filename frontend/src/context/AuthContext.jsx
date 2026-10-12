@@ -41,6 +41,12 @@ export function AuthProvider({ children }) {
   }, [refresh]);
 
   useEffect(() => {
+    const expired = () => { setUser(null); setLoading(false); };
+    window.addEventListener("afri-session-expired", expired);
+    return () => window.removeEventListener("afri-session-expired", expired);
+  }, []);
+
+  useEffect(() => {
     if (!user) return;
     if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
     import("../lib/push").then(({ enablePushNotifications }) => {

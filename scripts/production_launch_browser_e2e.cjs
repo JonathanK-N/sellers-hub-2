@@ -86,7 +86,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
     });
     await new Promise(resolve=>staticServer.listen(0,'127.0.0.1',resolve));
     const origin='http://127.0.0.1:'+staticServer.address().port;
-    browser=await chromium.launch({headless:true,channel:'msedge'});
+    browser=await chromium.launch({headless:true,...(process.platform==='win32'?{channel:'msedge'}:{})});
     const actor=async role=>{
       const context=await browser.newContext({serviceWorkers:'block',viewport:{width:390,height:844}});
       context.setDefaultTimeout(20000);
@@ -179,6 +179,79 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
       await buyer.page.setViewportSize({width,height:900});
       check('Chat layout has no horizontal overflow at '+width,await buyer.page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
     }
+    fixturePython("import sys,json\nfrom datetime import datetime,timezone,timedelta\nfrom pymongo import MongoClient\ns=json.load(sys.stdin); assert s['database'].startswith('afrimarket_test_launch_browser_'); c=MongoClient('mongodb://127.0.0.1:27018/?replicaSet=phase3-test'); d=c[s['database']]; start=datetime(2000,1,1,tzinfo=timezone.utc); d.messages.insert_many([{'_id':'TEST-history-'+str(i),'id':'TEST-history-'+str(i),'conversation_id':s['conversation'],'buyer_id':s['buyer'],'seller_id':s['seller'],'from_user_id':s['buyer'],'to_user_id':s['seller_user'],'text':'TEST history '+str(i),'created_at':(start+timedelta(seconds=i)).isoformat(),'read':True} for i in range(125)]); c.close()",{database,conversation,buyer:identities.buyer.user.id,seller:seller.id,seller_user:identities.seller.user.id});
+    await buyer.page.reload();
+    await buyer.page.getByRole('button',{name:'Messages précédents',exact:true}).waitFor();
+    await buyer.page.getByRole('button',{name:'Messages précédents',exact:true}).click();
+    await buyer.page.waitForFunction(()=>document.querySelectorAll('[data-testid="chat-messages"] time').length===100);
+    await buyer.page.getByRole('button',{name:'Messages précédents',exact:true}).click();
+    await buyer.page.waitForFunction(()=>document.querySelectorAll('[data-testid="chat-messages"] time').length===127);
+    check('125 historical fixtures paginate without loss or duplicate alongside two real sent messages',await buyer.page.getByTestId('chat-messages').locator('time').count()===127);
+    await buyer.page.getByTestId('chat-messages').evaluate(element=>{element.scrollTop=0;});
+    const readingPosition=await buyer.page.getByTestId('chat-messages').evaluate(element=>element.scrollTop);
+    await merchant.page.getByTestId('chat-input').fill('TEST tail while reading');
+    await merchant.page.getByTestId('chat-send-btn').click();
+    await merchant.page.waitForFunction(()=>document.querySelector('[data-testid="chat-input"]')?.value==='');
+    await buyer.page.bringToFront();
+    await buyer.page.getByTestId('chat-messages').getByText('TEST tail while reading',{exact:false}).waitFor();
+    check('Polling a new message preserves position while reading older history',Math.abs(await buyer.page.getByTestId('chat-messages').evaluate(element=>element.scrollTop)-readingPosition)<=3);
+
+    const deliveryCreated=await api('POST','/orders',{items:[{product_id:product.id,quantity:1}],delivery_mode:'delivery',delivery_neighborhood:'TEST district',delivery_landmark:'TEST landmark',payment_method:'direct'},identities.buyer.access_token);
+    const deliveryId=deliveryCreated.orders[0].id;
+    await merchant.page.goto(origin+'/buyer/orders/'+deliveryId);
+    await merchant.page.getByTestId('direct-seller-receive').waitFor();
+    check('New order requires a fresh receipt consent',!await merchant.page.getByRole('checkbox').isChecked());
+    await merchant.page.getByRole('checkbox').check();
+    await merchant.page.getByTestId('direct-seller-receive').click();
+    await merchant.page.getByTestId('direct-seller-receive').waitFor({state:'hidden'});
+    await merchant.page.getByTestId('load-deliverers-btn').click();
+    await merchant.page.getByTestId('assign-deliverer-'+identities.deliverer.user.id).click();
+    const courier=await actor('deliverer');
+    const deliveryCard=courier.page.getByTestId('delivery-'+deliveryId);
+    await deliveryCard.waitFor();
+    const courierOrders=await api('GET','/deliverer/deliveries',undefined,identities.deliverer.access_token);
+    check('Courier dashboard login and assignment exclude buyer handoff codes',courierOrders.every(row=>!Object.hasOwn(row,'confirmation_code')&&!Object.hasOwn(row,'qr_code')));
+    await courier.page.getByTestId('advance-'+deliveryId).click();
+    await courier.page.getByTestId('advance-'+deliveryId).getByText('Je suis en route',{exact:false}).waitFor();
+    await courier.page.getByTestId('advance-'+deliveryId).click();
+    await courier.page.getByTestId('advance-'+deliveryId).getByText('Confirmer livraison',{exact:false}).waitFor();
+    await courier.page.getByTestId('advance-'+deliveryId).click();
+    const buyerDelivery=await api('GET','/orders/'+deliveryId,undefined,identities.buyer.access_token);
+    await courier.page.getByTestId('confirm-code-'+deliveryId).fill(buyerDelivery.confirmation_code);
+    await courier.page.getByTestId('submit-code-'+deliveryId).click();
+    await courier.page.getByTestId('submit-code-'+deliveryId).waitFor({state:'hidden'});
+    const delivered=await api('GET','/orders/'+deliveryId,undefined,identities.buyer.access_token);
+    const courierEarnings=await api('GET','/deliverer/earnings',undefined,identities.deliverer.access_token);
+    check('Courier browser pickup, route and confirmation deliver without financial credit',delivered.status==='delivered'&&delivered.escrow_status==='not_applicable'&&!delivered.payment_confirmed&&courierEarnings.completed_today===1&&courierEarnings.earnings_today===0);
+
+    await buyer.page.goto(origin+'/buyer/orders/'+orderId);
+    await buyer.page.locator('#direct-dispute-reason').fill('TEST mediation without funds');
+    await buyer.page.getByRole('button',{name:'Ouvrir un litige',exact:true}).click();
+    await buyer.page.getByText('Un litige est ouvert ; le traitement est suspendu.',{exact:true}).waitFor();
+    const administrator=await actor('admin');
+    await administrator.page.goto(origin+'/admin/disputes');
+    const adminDisputes=await api('GET','/admin/disputes',undefined,identities.admin.access_token);
+    const dispute=adminDisputes.find(row=>row.order_id===orderId);
+    const disputeCard=administrator.page.getByTestId('dispute-card-'+dispute.id);
+    await disputeCard.waitFor();
+    check('Admin direct dispute offers no refund or seller release buttons',await disputeCard.getByTestId('refund-buyer-'+dispute.id).count()===0&&await disputeCard.getByTestId('release-seller-'+dispute.id).count()===0);
+    await disputeCard.locator('textarea').fill('TEST agreed mediation');
+    await disputeCard.getByRole('button',{name:'Clôturer avec une note, sans mouvement de fonds',exact:true}).click();
+    await disputeCard.getByRole('button',{name:'Clôturer avec une note, sans mouvement de fonds',exact:true}).waitFor({state:'hidden'});
+    const resolved=await api('GET','/orders/'+orderId,undefined,identities.buyer.access_token);
+    check('Admin browser closes direct dispute without modifying received-payment declaration',resolved.dispute_status==='resolved'&&resolved.payment_status==='seller_declared_received'&&resolved.escrow_status==='not_applicable');
+
+    await buyer.page.goto(origin+'/messages/'+conversation);
+    await buyer.page.getByTestId('chat-input').waitFor();
+    const unsigned=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify({sub:identities.buyer.user.id,role:'buyer',type:'access',exp:1})).toString('base64url');
+    const expiredToken=unsigned+'.'+crypto.createHmac('sha256',jwtSecret).update(unsigned).digest('base64url');
+    await buyer.page.evaluate(token=>localStorage.setItem('afri_token',token),expiredToken);
+    await buyer.page.getByTestId('chat-input').fill('TEST expired blocked');
+    await buyer.page.getByTestId('chat-send-btn').click();
+    await buyer.page.waitForURL('**/auth/login');
+    const finalProof=fixturePython("import sys,json\nfrom pymongo import MongoClient\ns=json.load(sys.stdin); assert s['database'].startswith('afrimarket_test_launch_browser_'); c=MongoClient('mongodb://127.0.0.1:27018/?replicaSet=phase3-test'); d=c[s['database']]; print(json.dumps({'expired_messages':d.messages.count_documents({'text':'TEST expired blocked'}),'financial_records':sum(d[n].count_documents({}) for n in ['transactions','financial_ledger','withdrawals','deliverer_wallets','deliverer_wallet_transactions']),'orders':d.orders.count_documents({}),'stock':d.products.find_one({'id':s['product']})['stock']})); c.close()",{database,product:product.id});
+    check('Expired JWT redirects an open conversation to login and stores no new message',finalProof.expired_messages===0);
+    check('Buyer/seller/courier/admin browser cycle preserves stock and zero financial movement',finalProof.financial_records===0&&finalProof.orders===2&&finalProof.stock===6,finalProof);
   } catch(error){rows.push({test:'Business browser sequence',status:'FAIL',error:error.message,browserErrors});process.exitCode=1;}
   finally{
     for(const context of contexts)await context.close();
