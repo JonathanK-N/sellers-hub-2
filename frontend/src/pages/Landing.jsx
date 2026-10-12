@@ -151,13 +151,13 @@ export default function Landing() {
             </p>
 
             <div className="flex flex-wrap gap-1.5 md:gap-2 mt-4">
-              <span className="flex items-center gap-1 bg-white/10 backdrop-blur rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-medium">
+              <span className="flex items-center gap-1 bg-white/10 md:backdrop-blur rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-medium">
                 <Truck size={11} /> Livraison locale
               </span>
-              <span className="flex items-center gap-1 bg-white/10 backdrop-blur rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-medium">
+              <span className="flex items-center gap-1 bg-white/10 md:backdrop-blur rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-medium">
                 <ShieldCheck size={11} /> Paiement direct
               </span>
-              <span className="flex items-center gap-1 bg-white/10 backdrop-blur rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-medium">
+              <span className="flex items-center gap-1 bg-white/10 md:backdrop-blur rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-medium">
                 <BadgeCheck size={11} /> Vendeurs vérifiés
               </span>
             </div>

@@ -5,7 +5,7 @@ export default function AnimatedContent({ children, container, distance = 100, d
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !el.animate || !window.IntersectionObserver) return;
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.matchMedia('(pointer: coarse)').matches || !el.animate || !window.IntersectionObserver) return;
     const root = typeof container === 'string' ? document.querySelector(container) : (container || document.getElementById('snap-main-container'));
     const offset = reverse ? -distance : distance;
     const transform = value => direction === 'horizontal' ? 'translateX(' + value + 'px)' : 'translateY(' + value + 'px)';

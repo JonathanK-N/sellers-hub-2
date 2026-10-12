@@ -11,6 +11,10 @@ export default function CountUp({ to, from = 0, direction = 'up', delay = 0, dur
     const decimals = Math.max(String(from).split('.')[1]?.length || 0, String(to).split('.')[1]?.length || 0);
     const formatter = new Intl.NumberFormat('en-US', { useGrouping: !!separator, minimumFractionDigits: decimals, maximumFractionDigits: decimals });
     const paint = value => { el.textContent = formatter.format(value).replace(/,/g, separator); };
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.matchMedia('(pointer: coarse)').matches) {
+      paint(final);
+      return;
+    }
     paint(initial);
     let frame, timeout, observer;
     let cancelled = false;

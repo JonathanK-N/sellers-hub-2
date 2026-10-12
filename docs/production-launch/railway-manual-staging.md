@@ -2,6 +2,8 @@
 
 Auteur : Jonathan Kakesa (JonathanK-N). Vérification du 12 octobre 2026.
 
+**État actuel après intervention du propriétaire :** le patch initial a été appliqué et les trois services fonctionnent au SHA 779ec124. Mongo est maintenant authentifié en replica set avec son volume persistant. Les étapes ci-dessous décrivent le patch initial et ne doivent pas être réappliquées. Les contrôles Mongo réels et la sauvegarde/restauration staging passent ; le staging reste non validé à cause des défauts de sécurité, accessibilité et performances relevés sur HTTPS. Les correctifs rc.2 sont uniquement préparés sur la PR 5, sans déploiement. Une prochaine application devra concerner uniquement API/Web, avec SHA concret et approbation distincte ; préserver Mongo, son volume et ses secrets.
+
 ## 1. Diagnostic établi
 
 Le connecteur Railway lit correctement le projet, les services et le patch sous Jonathan Kakesa (@jonathank-n). Le réglage spécifique « Allow read actions » est enregistré : lecture sans demande, modifications avec demande. Les anciennes annulations ne prouvent ni une expiration ni un refus volontaire. Leur seule réponse disponible est « Cancelled — the user did not approve this action. No changes were made. », sans journal d’approbation, statut d’affichage, décision horodatée, scopes OAuth ou rôle d’écriture courant. La cause précise reste NON CONFIRMÉE. Le changement de permission n’a pas résolu le problème.
