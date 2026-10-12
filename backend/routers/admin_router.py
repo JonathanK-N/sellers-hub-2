@@ -101,7 +101,8 @@ async def overview(_: dict = Depends(require_role("admin"))):
 @router.get("/users")
 async def list_users(_: dict = Depends(require_role("admin"))):
     db = get_db()
-    users = await db.users.find({}, {"_id": 0, "password_hash": 0, "otp_code": 0, "otp_expires_at": 0}).sort("created_at", -1).to_list(500)
+    private_fields = ("_id", "password_hash", "otp_code", "otp_expires_at")
+    users = await db.users.find({}, dict.fromkeys(private_fields, 0)).sort("created_at", -1).to_list(500)
     return users
 
 
