@@ -1,0 +1,2914 @@
+{
+  "scope": "production read-only metadata, no document values",
+  "timestamp_utc": "2026-10-12T12:19:38.815934+00:00",
+  "replica_set": false,
+  "writable_primary": true,
+  "data_bytes": 136250,
+  "storage_bytes": 839680,
+  "collections": [
+    {
+      "name": "app_config",
+      "count": 1,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "key_1",
+          "key": [
+            [
+              "key",
+              1
+            ]
+          ],
+          "unique": true,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "key",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "subtitle",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "title",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "visible",
+            "type": "bool"
+          },
+          "sample_count": 1
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "application_otp_codes",
+      "count": 1,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "code",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "expires_at",
+            "type": "date"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "phone",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "user_id",
+            "type": "string"
+          },
+          "sample_count": 1
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "banners",
+      "count": 1,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "is_active_1_position_1",
+          "key": [
+            [
+              "is_active",
+              1
+            ],
+            [
+              "position",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "target_role_1",
+          "key": [
+            [
+              "target_role",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "image_url",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "is_active",
+            "type": "bool"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "link_url",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "position",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "subtitle",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "target_role",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "title",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "updated_at",
+            "type": "string"
+          },
+          "sample_count": 1
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "buyer_reviews",
+      "count": 3,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "buyer_id",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "order_id",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "rater_user_id",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "rating",
+            "type": "int"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "seller_id",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "seller_name",
+            "type": "string"
+          },
+          "sample_count": 3
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "countries",
+      "count": 5,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "code_1",
+          "key": [
+            [
+              "code",
+              1
+            ]
+          ],
+          "unique": true,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 5
+        },
+        {
+          "_id": {
+            "field": "code",
+            "type": "string"
+          },
+          "sample_count": 5
+        },
+        {
+          "_id": {
+            "field": "commission_rate",
+            "type": "double"
+          },
+          "sample_count": 5
+        },
+        {
+          "_id": {
+            "field": "currency",
+            "type": "string"
+          },
+          "sample_count": 5
+        },
+        {
+          "_id": {
+            "field": "currency_symbol",
+            "type": "string"
+          },
+          "sample_count": 5
+        },
+        {
+          "_id": {
+            "field": "dial_code",
+            "type": "string"
+          },
+          "sample_count": 5
+        },
+        {
+          "_id": {
+            "field": "flag",
+            "type": "string"
+          },
+          "sample_count": 5
+        },
+        {
+          "_id": {
+            "field": "is_active",
+            "type": "bool"
+          },
+          "sample_count": 5
+        },
+        {
+          "_id": {
+            "field": "mobile_money_operators",
+            "type": "array"
+          },
+          "sample_count": 5
+        },
+        {
+          "_id": {
+            "field": "name",
+            "type": "string"
+          },
+          "sample_count": 5
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "deliverer_applications",
+      "count": 1,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "address",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "application_type",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "contract_accepted",
+            "type": "bool"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "contract_accepted_at",
+            "type": "null"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "date_of_birth",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "documents",
+            "type": "object"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "email",
+            "type": "null"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "full_name",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "phone",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "phone_verified",
+            "type": "bool"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "reject_reason",
+            "type": "null"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "reviewed_at",
+            "type": "null"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "reviewed_by",
+            "type": "null"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "seller_id",
+            "type": "null"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "status",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "user_id",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "vehicle",
+            "type": "string"
+          },
+          "sample_count": 1
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "deliverers",
+      "count": 3,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "country_code",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "demo",
+            "type": "bool"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "is_active",
+            "type": "bool"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "test_account",
+            "type": "bool"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "user_id",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "vehicle",
+            "type": "string"
+          },
+          "sample_count": 3
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "device_tokens",
+      "count": 54,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 54
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 54
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 54
+        },
+        {
+          "_id": {
+            "field": "is_active",
+            "type": "bool"
+          },
+          "sample_count": 54
+        },
+        {
+          "_id": {
+            "field": "platform",
+            "type": "string"
+          },
+          "sample_count": 54
+        },
+        {
+          "_id": {
+            "field": "token",
+            "type": "string"
+          },
+          "sample_count": 54
+        },
+        {
+          "_id": {
+            "field": "updated_at",
+            "type": "string"
+          },
+          "sample_count": 54
+        },
+        {
+          "_id": {
+            "field": "user_id",
+            "type": "string"
+          },
+          "sample_count": 54
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "disputes",
+      "count": 2,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "admin_decision",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "admin_note",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "buyer_id",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "country_code",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "order_id",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "partial_buyer_amount",
+            "type": "null"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "photo_url",
+            "type": "null"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "reason",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "resolved_at",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "seller_id",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "status",
+            "type": "string"
+          },
+          "sample_count": 2
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "files",
+      "count": 35,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 35
+        },
+        {
+          "_id": {
+            "field": "content_type",
+            "type": "string"
+          },
+          "sample_count": 35
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 35
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 35
+        },
+        {
+          "_id": {
+            "field": "is_deleted",
+            "type": "bool"
+          },
+          "sample_count": 35
+        },
+        {
+          "_id": {
+            "field": "owner_id",
+            "type": "string"
+          },
+          "sample_count": 35
+        },
+        {
+          "_id": {
+            "field": "size",
+            "type": "int"
+          },
+          "sample_count": 35
+        },
+        {
+          "_id": {
+            "field": "storage_path",
+            "type": "string"
+          },
+          "sample_count": 35
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "fx_rates",
+      "count": 1,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "pair_1",
+          "key": [
+            [
+              "pair",
+              1
+            ]
+          ],
+          "unique": true,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "pair",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "rate",
+            "type": "double"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "updated_at",
+            "type": "string"
+          },
+          "sample_count": 1
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "messages",
+      "count": 4,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "thread_id_1_created_at_-1",
+          "key": [
+            [
+              "thread_id",
+              1
+            ],
+            [
+              "created_at",
+              -1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "buyer_id",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "conversation_id",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "from_user_id",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "order_id",
+            "type": "null"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "product_id",
+            "type": "null"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "read",
+            "type": "bool"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "seller_id",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "text",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "to_user_id",
+            "type": "string"
+          },
+          "sample_count": 4
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "notifications",
+      "count": 29,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "user_id_1_read_1",
+          "key": [
+            [
+              "user_id",
+              1
+            ],
+            [
+              "read",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "created_at_1",
+          "key": [
+            [
+              "created_at",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 29
+        },
+        {
+          "_id": {
+            "field": "body",
+            "type": "string"
+          },
+          "sample_count": 29
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 29
+        },
+        {
+          "_id": {
+            "field": "data",
+            "type": "object"
+          },
+          "sample_count": 29
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 29
+        },
+        {
+          "_id": {
+            "field": "read",
+            "type": "bool"
+          },
+          "sample_count": 29
+        },
+        {
+          "_id": {
+            "field": "read_at",
+            "type": "string"
+          },
+          "sample_count": 22
+        },
+        {
+          "_id": {
+            "field": "title",
+            "type": "string"
+          },
+          "sample_count": 29
+        },
+        {
+          "_id": {
+            "field": "type",
+            "type": "string"
+          },
+          "sample_count": 29
+        },
+        {
+          "_id": {
+            "field": "user_id",
+            "type": "string"
+          },
+          "sample_count": 29
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "order_groups",
+      "count": 28,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "buyer_id",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "country_code",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "currency",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "demo",
+            "type": "bool"
+          },
+          "sample_count": 12
+        },
+        {
+          "_id": {
+            "field": "grand_total",
+            "type": "double"
+          },
+          "sample_count": 16
+        },
+        {
+          "_id": {
+            "field": "grand_total",
+            "type": "int"
+          },
+          "sample_count": 12
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "order_ids",
+            "type": "array"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "payment_method",
+            "type": "string"
+          },
+          "sample_count": 16
+        },
+        {
+          "_id": {
+            "field": "seller_count",
+            "type": "int"
+          },
+          "sample_count": 28
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "orders",
+      "count": 28,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "buyer_id_1",
+          "key": [
+            [
+              "buyer_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "seller_id_1",
+          "key": [
+            [
+              "seller_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "id_1",
+          "key": [
+            [
+              "id",
+              1
+            ]
+          ],
+          "unique": true,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "status_1",
+          "key": [
+            [
+              "status",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "created_at_1",
+          "key": [
+            [
+              "created_at",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "amount_due",
+            "type": "double"
+          },
+          "sample_count": 14
+        },
+        {
+          "_id": {
+            "field": "buyer_id",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "checkout_currency",
+            "type": "string"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "collected_at",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "commission_amount",
+            "type": "double"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "confirmation_code",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "country_code",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "currency",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "delivered_at",
+            "type": "string"
+          },
+          "sample_count": 7
+        },
+        {
+          "_id": {
+            "field": "deliverer_id",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "deliverer_location",
+            "type": "object"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "deliverer_name",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "delivery_address",
+            "type": "null"
+          },
+          "sample_count": 13
+        },
+        {
+          "_id": {
+            "field": "delivery_address",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "delivery_fee",
+            "type": "double"
+          },
+          "sample_count": 14
+        },
+        {
+          "_id": {
+            "field": "delivery_landmark",
+            "type": "null"
+          },
+          "sample_count": 13
+        },
+        {
+          "_id": {
+            "field": "delivery_landmark",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "delivery_mode",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "delivery_neighborhood",
+            "type": "null"
+          },
+          "sample_count": 13
+        },
+        {
+          "_id": {
+            "field": "delivery_neighborhood",
+            "type": "string"
+          },
+          "sample_count": 15
+        },
+        {
+          "_id": {
+            "field": "demo",
+            "type": "bool"
+          },
+          "sample_count": 12
+        },
+        {
+          "_id": {
+            "field": "escrow_status",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "items",
+            "type": "array"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "order_group_id",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "payment_method",
+            "type": "string"
+          },
+          "sample_count": 16
+        },
+        {
+          "_id": {
+            "field": "pickup_slot",
+            "type": "null"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "pickup_slot",
+            "type": "string"
+          },
+          "sample_count": 13
+        },
+        {
+          "_id": {
+            "field": "qr_code",
+            "type": "null"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "qr_code",
+            "type": "string"
+          },
+          "sample_count": 13
+        },
+        {
+          "_id": {
+            "field": "seller_id",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "seller_name",
+            "type": "string"
+          },
+          "sample_count": 16
+        },
+        {
+          "_id": {
+            "field": "status",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "timeline",
+            "type": "array"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "total_amount",
+            "type": "double"
+          },
+          "sample_count": 16
+        },
+        {
+          "_id": {
+            "field": "total_amount",
+            "type": "int"
+          },
+          "sample_count": 12
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "otp_codes",
+      "count": 0,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "expires_at_1",
+          "key": [
+            [
+              "expires_at",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": 0
+        }
+      ],
+      "sample_fields": [],
+      "sample_limit": 100
+    },
+    {
+      "name": "premium_subscriptions",
+      "count": 6,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "activated_at",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "amount",
+            "type": "int"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "currency",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "demo",
+            "type": "bool"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "expires_at",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "seller_id",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "status",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "user_id",
+            "type": "string"
+          },
+          "sample_count": 6
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "products",
+      "count": 23,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "seller_id_1",
+          "key": [
+            [
+              "seller_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "id_1",
+          "key": [
+            [
+              "id",
+              1
+            ]
+          ],
+          "unique": true,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "country_code_1",
+          "key": [
+            [
+              "country_code",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "category_1",
+          "key": [
+            [
+              "category",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "is_active_1",
+          "key": [
+            [
+              "is_active",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "is_active_1_country_code_1_created_at_-1",
+          "key": [
+            [
+              "is_active",
+              1
+            ],
+            [
+              "country_code",
+              1
+            ],
+            [
+              "created_at",
+              -1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "seller_id_1_is_active_1",
+          "key": [
+            [
+              "seller_id",
+              1
+            ],
+            [
+              "is_active",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "category",
+            "type": "string"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "country_code",
+            "type": "string"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "currency",
+            "type": "string"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "delivery_modes",
+            "type": "array"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "demo",
+            "type": "bool"
+          },
+          "sample_count": 19
+        },
+        {
+          "_id": {
+            "field": "description",
+            "type": "string"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "fx_rate",
+            "type": "double"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "is_active",
+            "type": "bool"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "long_description",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "name",
+            "type": "string"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "photos",
+            "type": "array"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "price",
+            "type": "double"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "price",
+            "type": "int"
+          },
+          "sample_count": 19
+        },
+        {
+          "_id": {
+            "field": "price_fc",
+            "type": "double"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "seller_id",
+            "type": "string"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "specs",
+            "type": "array"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "stock",
+            "type": "int"
+          },
+          "sample_count": 23
+        },
+        {
+          "_id": {
+            "field": "updated_at",
+            "type": "string"
+          },
+          "sample_count": 3
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "reviews",
+      "count": 8,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "buyer_id",
+            "type": "string"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "buyer_name",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "comment",
+            "type": "string"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "demo",
+            "type": "bool"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "order_id",
+            "type": "string"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "rating",
+            "type": "int"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "seller_id",
+            "type": "string"
+          },
+          "sample_count": 8
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "sellers",
+      "count": 6,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "user_id_1",
+          "key": [
+            [
+              "user_id",
+              1
+            ]
+          ],
+          "unique": true,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "id_1",
+          "key": [
+            [
+              "id",
+              1
+            ]
+          ],
+          "unique": true,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "location_2dsphere",
+          "key": [
+            [
+              "location",
+              "2dsphere"
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "address",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "badge_verified",
+            "type": "bool"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "category",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "commission_rate",
+            "type": "double"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "country_code",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "delivery_service",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "demo",
+            "type": "bool"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "description",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "kyc_reject_reason",
+            "type": "null"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "kyc_status",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "location",
+            "type": "object"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "long_description",
+            "type": "string"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "neighborhood",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "opening_hours",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "premium",
+            "type": "bool"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "premium_expires_at",
+            "type": "null"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "premium_expires_at",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "premium_since",
+            "type": "null"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "premium_since",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "product_specialties",
+            "type": "array"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "rating",
+            "type": "double"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "reviews_count",
+            "type": "int"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "self_delivery_fee",
+            "type": "int"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "shop_banner_url",
+            "type": "null"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "shop_banner_url",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "shop_logo_url",
+            "type": "null"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "shop_logo_url",
+            "type": "string"
+          },
+          "sample_count": 2
+        },
+        {
+          "_id": {
+            "field": "shop_name",
+            "type": "string"
+          },
+          "sample_count": 6
+        },
+        {
+          "_id": {
+            "field": "social_links",
+            "type": "object"
+          },
+          "sample_count": 4
+        },
+        {
+          "_id": {
+            "field": "user_id",
+            "type": "string"
+          },
+          "sample_count": 6
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "transactions",
+      "count": 28,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "amount",
+            "type": "double"
+          },
+          "sample_count": 16
+        },
+        {
+          "_id": {
+            "field": "amount",
+            "type": "int"
+          },
+          "sample_count": 12
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "currency",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "demo",
+            "type": "bool"
+          },
+          "sample_count": 12
+        },
+        {
+          "_id": {
+            "field": "escrow_released_at",
+            "type": "null"
+          },
+          "sample_count": 12
+        },
+        {
+          "_id": {
+            "field": "escrow_released_at",
+            "type": "string"
+          },
+          "sample_count": 16
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "order_group_id",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "order_id",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "payment_method",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "payment_status",
+            "type": "string"
+          },
+          "sample_count": 28
+        },
+        {
+          "_id": {
+            "field": "released_at",
+            "type": "string"
+          },
+          "sample_count": 4
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "users",
+      "count": 33,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "phone_1",
+          "key": [
+            [
+              "phone",
+              1
+            ]
+          ],
+          "unique": true,
+          "sparse": false,
+          "ttl_seconds": null
+        },
+        {
+          "name": "id_1",
+          "key": [
+            [
+              "id",
+              1
+            ]
+          ],
+          "unique": true,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 33
+        },
+        {
+          "_id": {
+            "field": "banned",
+            "type": "bool"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "buyer_kyc_status",
+            "type": "string"
+          },
+          "sample_count": 7
+        },
+        {
+          "_id": {
+            "field": "buyer_rating",
+            "type": "double"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "buyer_reviews_count",
+            "type": "int"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "buyer_verified",
+            "type": "bool"
+          },
+          "sample_count": 7
+        },
+        {
+          "_id": {
+            "field": "country_code",
+            "type": "string"
+          },
+          "sample_count": 33
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 33
+        },
+        {
+          "_id": {
+            "field": "currency",
+            "type": "string"
+          },
+          "sample_count": 33
+        },
+        {
+          "_id": {
+            "field": "demo",
+            "type": "bool"
+          },
+          "sample_count": 12
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 33
+        },
+        {
+          "_id": {
+            "field": "kyc_level",
+            "type": "int"
+          },
+          "sample_count": 31
+        },
+        {
+          "_id": {
+            "field": "name",
+            "type": "string"
+          },
+          "sample_count": 33
+        },
+        {
+          "_id": {
+            "field": "password_hash",
+            "type": "string"
+          },
+          "sample_count": 19
+        },
+        {
+          "_id": {
+            "field": "phone",
+            "type": "string"
+          },
+          "sample_count": 33
+        },
+        {
+          "_id": {
+            "field": "phone_verified",
+            "type": "bool"
+          },
+          "sample_count": 18
+        },
+        {
+          "_id": {
+            "field": "profile_photo_url",
+            "type": "string"
+          },
+          "sample_count": 3
+        },
+        {
+          "_id": {
+            "field": "role",
+            "type": "string"
+          },
+          "sample_count": 33
+        },
+        {
+          "_id": {
+            "field": "suspend_motif",
+            "type": "string"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "suspended",
+            "type": "bool"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "suspended_at",
+            "type": "string"
+          },
+          "sample_count": 8
+        },
+        {
+          "_id": {
+            "field": "test_account",
+            "type": "bool"
+          },
+          "sample_count": 3
+        }
+      ],
+      "sample_limit": 100
+    },
+    {
+      "name": "withdrawals",
+      "count": 1,
+      "indexes": [
+        {
+          "name": "_id_",
+          "key": [
+            [
+              "_id",
+              1
+            ]
+          ],
+          "unique": false,
+          "sparse": false,
+          "ttl_seconds": null
+        }
+      ],
+      "sample_fields": [
+        {
+          "_id": {
+            "field": "_id",
+            "type": "objectId"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "amount",
+            "type": "double"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "completed_at",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "created_at",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "currency",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "id",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "mobile_money_number",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "operator",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "provider_ref",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "seller_id",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "status",
+            "type": "string"
+          },
+          "sample_count": 1
+        },
+        {
+          "_id": {
+            "field": "user_id",
+            "type": "string"
+          },
+          "sample_count": 1
+        }
+      ],
+      "sample_limit": 100
+    }
+  ]
+}
