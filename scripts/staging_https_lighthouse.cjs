@@ -39,7 +39,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/Djibril/.cache
         await page.evaluate(entries=>{for(const item of entries)localStorage.setItem(item.name,item.value);},stored.localStorage);
         await page.close();
       }
-      const result=await lighthouse(origin+target.route,{port:chrome.port,logLevel:'silent',output:'json',disableStorageReset:true,onlyCategories:['performance','accessibility','best-practices','seo']});
+      const result=await lighthouse(origin+target.route,{port:chrome.port,logLevel:'silent',output:'json',disableStorageReset:true,onlyCategories:['performance','accessibility','best-practices','seo'],...(pageFilter?{additionalTraceCategories:['disabled-by-default-v8.cpu_profiler']}:{})});
       const lhr=result.lhr;
       fs.writeFileSync(path.join(privateOutput,target.name+'.json'),JSON.stringify(lhr));
       const finalPath=new URL(lhr.finalDisplayedUrl||lhr.finalUrl).pathname;
@@ -63,7 +63,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/Djibril/.cache
       const cpuFrames=[];
       for(const profile of CpuProfileModel.collectProfileEvents(result.artifacts?.Trace?.traceEvents||[])){
         const nodes=new Map(profile.nodes.map(n=>[n.id,n])),parent=new Map(),self=new Map(),inclusive=new Map();
-        for(const node of profile.nodes)for(const child of node.children||[])parent.set(child,node.id);
+        for(const node of profile.nodes){if(typeof node.parent==='number')parent.set(node.id,node.parent);for(const child of node.children||[])parent.set(child,node.id);}
         for(let i=0;i<profile.samples.length;i++){
           const id=profile.samples[i],duration=profile.timeDeltas[i]||0;
           self.set(id,(self.get(id)||0)+duration);

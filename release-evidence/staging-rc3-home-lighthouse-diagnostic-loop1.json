@@ -1,0 +1,179 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "ddbbaabc01dda497d05ee3372f41a12503f4fddd",
+  "partialDiagnostic": true,
+  "scope": "Actual Railway staging HTTPS, Lighthouse 13.5 default mobile simulated throttling; fresh isolated browser per page, authentication initialized on robots.txt without warming application resources; raw authenticated reports private outside Git",
+  "rows": [
+    {
+      "page": "accueil",
+      "route": "/",
+      "finalPath": "/",
+      "pageVerified": true,
+      "seoPolicy": "public SEO >=95",
+      "status": "FAIL",
+      "metrics": {
+        "performance": 86,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100,
+        "lcpMs": 1967.22,
+        "tbtMs": 507.5000000000002,
+        "cls": 0.00393840403554298
+      },
+      "failures": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.93
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.97
+        },
+        {
+          "id": "total-blocking-time",
+          "title": "Total Blocking Time",
+          "score": 0.57
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.23
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.98
+        },
+        {
+          "id": "mainthread-work-breakdown",
+          "title": "Minimize main-thread work",
+          "score": 0
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0
+        }
+      ],
+      "diagnostics": {
+        "benchmarkIndex": 2217.5,
+        "mainThread": [
+          {
+            "group": "scriptEvaluation",
+            "durationMs": 984.3439999999969
+          },
+          {
+            "group": "other",
+            "durationMs": 611.6239999999982
+          },
+          {
+            "group": "styleLayout",
+            "durationMs": 324.20399999999995
+          },
+          {
+            "group": "paintCompositeRender",
+            "durationMs": 185.10800000000003
+          },
+          {
+            "group": "parseHTML",
+            "durationMs": 137.96
+          },
+          {
+            "group": "scriptParseCompile",
+            "durationMs": 5.252
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "part": "timeToFirstByte",
+            "durationMs": 206.437
+          },
+          {
+            "part": "resourceLoadDelay",
+            "durationMs": 66.047
+          },
+          {
+            "part": "resourceLoadDuration",
+            "durationMs": 111.477
+          },
+          {
+            "part": "elementRenderDelay",
+            "durationMs": 301.287
+          }
+        ],
+        "lcpElementTag": "img",
+        "staticResources": [
+          {
+            "path": "/fonts/poppins-400-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8022,
+            "startMs": 242.47499999997672,
+            "endMs": 297.24499999999534
+          },
+          {
+            "path": "/fonts/poppins-800-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7953,
+            "startMs": 242.8060000000114,
+            "endMs": 301.997000000003
+          },
+          {
+            "path": "/assets/index-CHyWaYwx.js",
+            "type": "Script",
+            "transferBytes": 114537,
+            "startMs": 247.5109999999986,
+            "endMs": 362.38199999998324
+          },
+          {
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "type": "Script",
+            "transferBytes": 4610,
+            "startMs": 247.86100000000442,
+            "endMs": 305.25599999999395
+          },
+          {
+            "path": "/images/market-hero-800.avif",
+            "type": "Image",
+            "transferBytes": 47209,
+            "startMs": 267.9459999999963,
+            "endMs": 378.9309999999823
+          },
+          {
+            "path": "/fonts/poppins-600-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8128,
+            "startMs": 592.5200000000186,
+            "endMs": 640.9750000000058
+          },
+          {
+            "path": "/fonts/poppins-500-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7877,
+            "startMs": 593.2200000000012,
+            "endMs": 641.8960000000079
+          },
+          {
+            "path": "/fonts/poppins-700-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7943,
+            "startMs": 593.4389999999839,
+            "endMs": 642.8249999999825
+          }
+        ],
+        "cpuFrames": []
+      }
+    }
+  ]
+}
