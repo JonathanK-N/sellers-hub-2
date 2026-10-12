@@ -3,8 +3,8 @@
 set -euo pipefail
 umask 077
 : "${MONGO_INITDB_ROOT_USERNAME:?Root username required}"
-: "${MONGO_INITDB_ROOT_PASSWORD:?Sealed root password required}"
-: "${MONGO_APP_PASSWORD:?Sealed application password required}"
+: "${MONGO_INITDB_ROOT_PASSWORD:?Root password required}"
+: "${MONGO_APP_PASSWORD:?Application password required}"
 : "${RAILWAY_PRIVATE_DOMAIN:?Private replica-set hostname required}"
 if [[ ${MONGO_INITDB_ROOT_PASSWORD} == '${{'* || ${MONGO_APP_PASSWORD} == '${{'* ]]; then
   echo 'Unresolved credential reference; startup refused' >&2

@@ -603,7 +603,7 @@ export default function OrderDetail() {
         )}
 
         {/* Open dispute button */}
-        {isBuyer && order.escrow_status !== "refunded" && (
+        {isBuyer && order.payment_method !== "direct" && order.escrow_status !== "refunded" && (
           <button
             data-testid="open-dispute-btn"
             onClick={() => nav(`/buyer/dispute/${order.id}`)}

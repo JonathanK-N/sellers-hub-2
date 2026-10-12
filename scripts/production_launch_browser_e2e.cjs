@@ -47,9 +47,9 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
   let staticServer;
   const check = (name, condition, detail) => { assert.ok(condition, name); rows.push({test:name,status:'PASS',...(detail?{detail}: {})}); console.log(JSON.stringify({passed:name})); };
   const api = async (method, endpoint, body, token) => {
-    const response = await fetch(apiOrigin+'/api'+endpoint,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
+    const response = await fetch(apiOrigin+'/api'+endpoint,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(method==='POST'&&endpoint==='/orders'?{'Idempotency-Key':crypto.randomUUID()}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
     const data = await response.json();
-    if (!response.ok) throw Error(method+' '+endpoint+' HTTP '+response.status);
+    if (!response.ok) throw Error(method+' '+endpoint+' HTTP '+response.status+(Array.isArray(data.detail)?' '+JSON.stringify(data.detail.map(row=>({type:row.type,loc:row.loc}))):''));
     return data;
   };
   const fixturePython = (code, settings) => {
@@ -97,11 +97,13 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
         const request=route.request();const url=new URL(request.url());
         if(url.origin===new URL(metadata.api).origin){
           if(network.down)return route.abort('internetdisconnected');
-          const response=await route.fetch({url:apiOrigin+url.pathname+url.search});
+          let response;
+          try { response=await route.fetch({url:apiOrigin+url.pathname+url.search}); }
+          catch { return route.abort('connectionfailed').catch(()=>{}); }
           if(network.loseMessageResponse&&request.method()==='POST'&&url.pathname==='/api/messages'){
             network.loseMessageResponse=false;network.down=true;return route.abort('internetdisconnected');
           }
-          return route.fulfill({response});
+          return route.fulfill({response}).catch(()=>{});
         }
         if(url.origin===origin)return route.continue();
         return route.abort('blockedbyclient');
@@ -226,7 +228,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
 
     await buyer.page.goto(origin+'/buyer/orders/'+orderId);
     await buyer.page.locator('#direct-dispute-reason').fill('TEST mediation without funds');
-    await buyer.page.getByRole('button',{name:'Ouvrir un litige',exact:true}).click();
+    await buyer.page.getByTestId('direct-payment-panel').getByRole('button',{name:'Ouvrir un litige',exact:true}).click();
     await buyer.page.getByText('Un litige est ouvert ; le traitement est suspendu.',{exact:true}).waitFor();
     const administrator=await actor('admin');
     await administrator.page.goto(origin+'/admin/disputes');
