@@ -242,6 +242,7 @@ jobs:
           for attempt in $(seq 1 90); do test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 && break; sleep 2; done
           test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1
           adb shell input keyevent 82
+      - run: python -m unittest discover -s scripts/tests -p test_android_ui_capture.py
       - run: python scripts/android_emulator_smoke.py
       - uses: actions/upload-artifact@v4
         if: always()

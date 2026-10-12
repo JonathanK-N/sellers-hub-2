@@ -4,11 +4,13 @@ import subprocess
 import time
 from pathlib import Path
 from PIL import Image
+from android_ui_capture import capture_ui
 
 package = "cd.cognito.afrimarket.staging"
 out = Path("android-emulator-evidence")
 out.mkdir(exist_ok=True)
 rows = []
+capture_failures = []
 
 
 def adb(*args):
@@ -28,7 +30,7 @@ try:
     for attempt in range(10):
         time.sleep(3)
         (out/"launch.png").write_bytes(subprocess.check_output(["adb", "exec-out", "screencap", "-p"], timeout=30))
-        dump = adb("shell", "uiautomator", "dump", "/sdcard/afrimarket.xml")
+        dump = capture_ui(adb, "/sdcard/afrimarket.xml", capture_failures.append)
         (out/"launch-dump.log").write_text(dump)
         if "UI hierchary dumped" not in dump and "UI hierarchy dumped" not in dump:
             continue
@@ -49,7 +51,7 @@ try:
     for attempt in range(10):
         time.sleep(3)
         (out/"offline.png").write_bytes(subprocess.check_output(["adb", "exec-out", "screencap", "-p"], timeout=30))
-        dump = adb("shell", "uiautomator", "dump", "/sdcard/afrimarket-offline.xml")
+        dump = capture_ui(adb, "/sdcard/afrimarket-offline.xml", capture_failures.append)
         (out/"offline-dump.log").write_text(dump)
         if "UI hierchary dumped" not in dump and "UI hierarchy dumped" not in dump:
             continue
@@ -77,5 +79,6 @@ try:
     check("old app files removed after uninstall", marker.returncode != 0)
     rows.append({"test":"physical device, iOS, authenticated sessions and modal/history Back behavior","status":"BLOCKED","detail":"Not covered by this installed-APK smoke test; offline coverage is limited to bundled landing and Back is tested from root only"})
 finally:
+    (out/"capture-driver-failures.json").write_text(json.dumps(capture_failures, indent=2))
     (out/"results.json").write_text(json.dumps({"package":package,"rows":rows},indent=2))
     (out/"logcat.txt").write_text(adb("logcat","-d","-t","300"))
