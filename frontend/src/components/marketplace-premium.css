@@ -169,7 +169,7 @@ to{transform:translateX(0);opacity:1}
 .premium-login{display:none}
 .premium-header-actions{gap:2px}
 .premium-hero-copy{max-width:540px;padding:45px 30px}
-.premium-floats{right:30px;width:240px}
+.premium-floats{display:none}
 .premium-floating{width:120px}
 .premium-hero-benefits{max-width:380px;flex-wrap:wrap}
 .premium-product-grid,.premium-shop-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
