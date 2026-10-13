@@ -420,10 +420,23 @@ jobs:
           REACT_APP_BACKEND_URL: https://afrimarket-api-staging-staging.up.railway.app
       - name: Install isolated browser testing tools
         run: |
-          npm install --prefix "$RUNNER_TEMP/ui-tools" playwright@1.60.0
+          npm install --prefix "$RUNNER_TEMP/ui-tools" playwright@1.60.0 lighthouse@13.5.0
           "$RUNNER_TEMP/ui-tools/node_modules/.bin/playwright" install --with-deps chromium firefox webkit
       - name: Validate responsive and business UI states without database writes
         run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/ui_premium_validation.cjs frontend/build ui-preview-evidence
+      - name: Build read-only API preview configuration
+        run: yarn build
+        working-directory: frontend
+        env:
+          REACT_APP_BACKEND_URL: ''
+      - name: Measure three cold public preview runs with actual staging reads
+        run: |
+          export QA_PRIVATE_ROOT="$RUNNER_TEMP/ui-private"
+          export LIGHTHOUSE_PACKAGE="$RUNNER_TEMP/ui-tools/node_modules/lighthouse/package.json"
+          mkdir -p "$QA_PRIVATE_ROOT"
+          node scripts/ui_premium_lighthouse.cjs frontend/build ui-preview-evidence/lighthouse.json "$SOURCE_SHA"
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

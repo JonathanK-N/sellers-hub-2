@@ -16,7 +16,7 @@ const favoriteKey='afri_public_favorite_ids';
 function Product({product, favorite, onFavorite, onCart, floating=false}) {
   const price=displayPrice(product), image=photoUrl(product.photos?.[0]);
   return <article className={`premium-product ${floating?'premium-floating':''}`} data-testid={`product-card-${product.id}`}>
-    <Link className="premium-product-image" to={`/explore/product/${product.id}`} aria-label={`Voir ${product.name}`}>
+    <Link className="premium-product-image" to={`/explore/product/${product.id}`} aria-label={image?`Voir ${product.name}`:`Photo à venir : voir ${product.name}`}>
       {image?<img src={image} alt={product.name} loading="lazy" decoding="async" width="320" height="320"/>:<span className="premium-no-image"><Store size={32}/><span>Photo à venir</span></span>}
     </Link>
     <button type="button" className="premium-favorite" aria-label={`${favorite?'Retirer des':'Ajouter aux'} favoris : ${product.name}`} aria-pressed={favorite} onClick={()=>onFavorite(product.id)}><Heart size={17} fill={favorite?'currentColor':'none'}/></button>
