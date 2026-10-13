@@ -19,7 +19,7 @@ export default function RegisterForm({ onSuccess, onSwitch, onStep }) {
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    role: "buyer",
+    role: new URLSearchParams(window.location.search).get("role") === "seller" ? "seller" : "buyer",
     country_code: "CD",
     password: "",
   });

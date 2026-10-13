@@ -1,0 +1,9 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "2806d719bf0edbdc31ebd32ab0887e1fb4dc40cb",
+  "version": "1.1.0-direct-rc.4",
+  "entry": "/assets/index-BIykiERR.js",
+  "entrySha256": "23505f350ac707eba0844a1cbeaa7e468f846fe16c64345f3bc8296cbebf8bed",
+  "capturedAt": "2026-10-12T23:49:29.959Z",
+  "scope": "Read-only live shared staging; service workers disabled for reproducible capture; no application writes"
+}

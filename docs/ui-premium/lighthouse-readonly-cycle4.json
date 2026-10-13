@@ -1,0 +1,438 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "f06855312ec4a386d3af91fb74f4bb06a4a2ef00",
+  "scope": "Local public built preview, Lighthouse 13.5 default mobile simulated throttling, fresh cold browser per iteration; API reads only; not an HTTPS staging certificate",
+  "rows": [
+    {
+      "iteration": 1,
+      "status": "FAIL",
+      "metrics": {
+        "performance": 64,
+        "accessibility": 96,
+        "bestPractices": 100,
+        "seo": 100,
+        "lcpMs": 2734.203,
+        "tbtMs": 2261.5989999999997,
+        "cls": 0.0001710877000703807
+      },
+      "diagnostics": {
+        "benchmarkIndex": 252,
+        "mainThread": [
+          {
+            "group": "other",
+            "groupLabel": "Other",
+            "duration": 2122.9919999999975
+          },
+          {
+            "group": "scriptEvaluation",
+            "groupLabel": "Script Evaluation",
+            "duration": 2008.3359999999966
+          },
+          {
+            "group": "styleLayout",
+            "groupLabel": "Style & Layout",
+            "duration": 1709.8159999999996
+          },
+          {
+            "group": "parseHTML",
+            "groupLabel": "Parse HTML & CSS",
+            "duration": 199.008
+          },
+          {
+            "group": "paintCompositeRender",
+            "groupLabel": "Rendering",
+            "duration": 167.2920000000001
+          },
+          {
+            "group": "scriptParseCompile",
+            "groupLabel": "Script Parsing & Compilation",
+            "duration": 17.907999999999998
+          },
+          {
+            "group": "garbageCollection",
+            "groupLabel": "Garbage Collection",
+            "duration": 16.135999999999996
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "subpart": "timeToFirstByte",
+            "label": "Time to first byte",
+            "duration": 68.852
+          },
+          {
+            "subpart": "resourceLoadDelay",
+            "label": "Resource load delay",
+            "duration": 98.016
+          },
+          {
+            "subpart": "resourceLoadDuration",
+            "label": "Resource load duration",
+            "duration": 532.226
+          },
+          {
+            "subpart": "elementRenderDelay",
+            "label": "Element render delay",
+            "duration": 845.372
+          }
+        ],
+        "failures": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.73
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.85
+          },
+          {
+            "id": "speed-index",
+            "title": "Speed Index",
+            "score": 0.86
+          },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.06
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.04
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.74
+          },
+          {
+            "id": "mainthread-work-breakdown",
+            "title": "Minimize main-thread work",
+            "score": 0
+          },
+          {
+            "id": "bootup-time",
+            "title": "Reduce JavaScript execution time",
+            "score": 0
+          },
+          {
+            "id": "color-contrast",
+            "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+            "score": 0
+          },
+          {
+            "id": "label-content-name-mismatch",
+            "title": "Elements with visible text labels do not have matching accessible names.",
+            "score": 0
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "cache-insight",
+            "title": "Use efficient cache lifetimes",
+            "score": 0
+          },
+          {
+            "id": "image-delivery-insight",
+            "title": "Improve image delivery",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 2,
+      "status": "FAIL",
+      "metrics": {
+        "performance": 63,
+        "accessibility": 96,
+        "bestPractices": 100,
+        "seo": 100,
+        "lcpMs": 2995.244,
+        "tbtMs": 2279.4389999999994,
+        "cls": 0.0001710877000703807
+      },
+      "diagnostics": {
+        "benchmarkIndex": 337.5,
+        "mainThread": [
+          {
+            "group": "other",
+            "groupLabel": "Other",
+            "duration": 2185.2679999999955
+          },
+          {
+            "group": "scriptEvaluation",
+            "groupLabel": "Script Evaluation",
+            "duration": 1747.4719999999966
+          },
+          {
+            "group": "styleLayout",
+            "groupLabel": "Style & Layout",
+            "duration": 1521.36
+          },
+          {
+            "group": "paintCompositeRender",
+            "groupLabel": "Rendering",
+            "duration": 133.94799999999998
+          },
+          {
+            "group": "parseHTML",
+            "groupLabel": "Parse HTML & CSS",
+            "duration": 123.664
+          },
+          {
+            "group": "scriptParseCompile",
+            "groupLabel": "Script Parsing & Compilation",
+            "duration": 15.703999999999999
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "subpart": "timeToFirstByte",
+            "label": "Time to first byte",
+            "duration": 62.42200001525879
+          },
+          {
+            "subpart": "resourceLoadDelay",
+            "label": "Resource load delay",
+            "duration": 64.9159999847412
+          },
+          {
+            "subpart": "resourceLoadDuration",
+            "label": "Resource load duration",
+            "duration": 196.653
+          },
+          {
+            "subpart": "elementRenderDelay",
+            "label": "Element render delay",
+            "duration": 1129.063
+          }
+        ],
+        "failures": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.79
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.78
+          },
+          {
+            "id": "speed-index",
+            "title": "Speed Index",
+            "score": 0.88
+          },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.05
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.77
+          },
+          {
+            "id": "mainthread-work-breakdown",
+            "title": "Minimize main-thread work",
+            "score": 0
+          },
+          {
+            "id": "bootup-time",
+            "title": "Reduce JavaScript execution time",
+            "score": 0
+          },
+          {
+            "id": "color-contrast",
+            "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+            "score": 0
+          },
+          {
+            "id": "label-content-name-mismatch",
+            "title": "Elements with visible text labels do not have matching accessible names.",
+            "score": 0
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "cache-insight",
+            "title": "Use efficient cache lifetimes",
+            "score": 0
+          },
+          {
+            "id": "image-delivery-insight",
+            "title": "Improve image delivery",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 3,
+      "status": "FAIL",
+      "metrics": {
+        "performance": 69,
+        "accessibility": 96,
+        "bestPractices": 100,
+        "seo": 100,
+        "lcpMs": 2416.11615,
+        "tbtMs": 1602.62795,
+        "cls": 0.0001710877000703807
+      },
+      "diagnostics": {
+        "benchmarkIndex": 354.5,
+        "mainThread": [
+          {
+            "group": "other",
+            "groupLabel": "Other",
+            "duration": 1898.059999999999
+          },
+          {
+            "group": "scriptEvaluation",
+            "groupLabel": "Script Evaluation",
+            "duration": 1572.2519999999959
+          },
+          {
+            "group": "styleLayout",
+            "groupLabel": "Style & Layout",
+            "duration": 1342.356
+          },
+          {
+            "group": "paintCompositeRender",
+            "groupLabel": "Rendering",
+            "duration": 140.49200000000008
+          },
+          {
+            "group": "parseHTML",
+            "groupLabel": "Parse HTML & CSS",
+            "duration": 112.004
+          },
+          {
+            "group": "scriptParseCompile",
+            "groupLabel": "Script Parsing & Compilation",
+            "duration": 13.872
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "subpart": "timeToFirstByte",
+            "label": "Time to first byte",
+            "duration": 26.69300001525879
+          },
+          {
+            "subpart": "resourceLoadDelay",
+            "label": "Resource load delay",
+            "duration": 66.25299998474121
+          },
+          {
+            "subpart": "resourceLoadDuration",
+            "label": "Resource load duration",
+            "duration": 120.321
+          },
+          {
+            "subpart": "elementRenderDelay",
+            "label": "Element render delay",
+            "duration": 890.49
+          }
+        ],
+        "failures": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.82
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.91
+          },
+          {
+            "id": "speed-index",
+            "title": "Speed Index",
+            "score": 0.96
+          },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.12
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.03
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.84
+          },
+          {
+            "id": "mainthread-work-breakdown",
+            "title": "Minimize main-thread work",
+            "score": 0
+          },
+          {
+            "id": "bootup-time",
+            "title": "Reduce JavaScript execution time",
+            "score": 0
+          },
+          {
+            "id": "color-contrast",
+            "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+            "score": 0
+          },
+          {
+            "id": "label-content-name-mismatch",
+            "title": "Elements with visible text labels do not have matching accessible names.",
+            "score": 0
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "cache-insight",
+            "title": "Use efficient cache lifetimes",
+            "score": 0
+          },
+          {
+            "id": "image-delivery-insight",
+            "title": "Improve image delivery",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          }
+        ]
+      }
+    }
+  ]
+}
