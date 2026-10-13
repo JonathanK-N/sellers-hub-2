@@ -1,5 +1,10 @@
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
-import api from "../lib/api";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 
 const AuthContext = createContext(null);
 
@@ -14,8 +19,11 @@ export function AuthProvider({ children }) {
     }
   });
   const [loading, setLoading] = useState(() => {
-    try { return Boolean(localStorage.getItem("afri_token")); }
-    catch { return false; }
+    try {
+      return Boolean(localStorage.getItem("afri_token"));
+    } catch {
+      return false;
+    }
   });
 
   const refresh = useCallback(async () => {
@@ -26,6 +34,7 @@ export function AuthProvider({ children }) {
       return;
     }
     try {
+      const { default: api } = await import("../lib/api");
       const { data } = await api.get("/auth/me");
       setUser(data);
       localStorage.setItem("afri_user", JSON.stringify(data));
@@ -45,17 +54,26 @@ export function AuthProvider({ children }) {
   }, [refresh]);
 
   useEffect(() => {
-    const expired = () => { setUser(null); setLoading(false); };
+    const expired = () => {
+      setUser(null);
+      setLoading(false);
+    };
     window.addEventListener("afri-session-expired", expired);
     return () => window.removeEventListener("afri-session-expired", expired);
   }, []);
 
   useEffect(() => {
     if (!user) return;
-    if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
-    import("../lib/push").then(({ enablePushNotifications }) => {
-      enablePushNotifications().catch(() => {});
-    }).catch(() => {});
+    if (
+      typeof Notification === "undefined" ||
+      Notification.permission !== "granted"
+    )
+      return;
+    import("../lib/push")
+      .then(({ enablePushNotifications }) => {
+        enablePushNotifications().catch(() => {});
+      })
+      .catch(() => {});
   }, [user]);
 
   const setSession = (token, userObj) => {
@@ -65,16 +83,20 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    import("../lib/push").then(({ disablePushNotifications }) => {
-      disablePushNotifications().catch(() => {});
-    }).catch(() => {});
+    import("../lib/push")
+      .then(({ disablePushNotifications }) => {
+        disablePushNotifications().catch(() => {});
+      })
+      .catch(() => {});
     localStorage.removeItem("afri_token");
     localStorage.removeItem("afri_user");
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, setSession, logout, refresh }}>
+    <AuthContext.Provider
+      value={{ user, loading, setSession, logout, refresh }}
+    >
       {children}
     </AuthContext.Provider>
   );
