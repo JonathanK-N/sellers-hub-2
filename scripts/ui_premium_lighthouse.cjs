@@ -1,11 +1,137 @@
 // Author: Jonathan Kakesa (JonathanK-N). Cold public preview measurements; no HTTPS certification.
-const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),{pathToFileURL}=require('node:url'),{createRequire}=require('node:module'),{gzipSync}=require('node:zlib');
-(async()=>{
- const build=path.resolve(process.argv[2]),output=path.resolve(process.argv[3]),privateRoot=path.resolve(process.env.QA_PRIVATE_ROOT||'../Afrimarket-private-backups');fs.mkdirSync(path.dirname(output),{recursive:true});
- const dependencies=createRequire(fs.realpathSync(process.env.LIGHTHOUSE_PACKAGE||path.join(privateRoot,'launch-lighthouse-13.5.0/node_modules/lighthouse/package.json')));
- const lighthouse=(await import(pathToFileURL(dependencies.resolve('lighthouse')).href)).default,launcher=await import(pathToFileURL(dependencies.resolve('chrome-launcher')).href);
- const {createPreviewHandler}=require('./ui_premium_preview.cjs');const server=http.createServer(createPreviewHandler(build));
- await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port,rows=[];
- try{for(let i=1;i<=3;i++){const chrome=await launcher.launch({...(process.platform==='win32'?{chromePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'}:{}),chromeFlags:['--headless','--disable-gpu','--no-first-run',...(process.platform==='win32'?[]:['--no-sandbox'])],logLevel:'silent'});try{const result=await lighthouse(origin,{port:chrome.port,logLevel:'silent',output:'json',onlyCategories:['performance','accessibility','best-practices','seo']});const r=result.lhr;const metrics={performance:Math.round(r.categories.performance.score*100),accessibility:Math.round(r.categories.accessibility.score*100),bestPractices:Math.round(r.categories['best-practices'].score*100),seo:Math.round(r.categories.seo.score*100),lcpMs:r.audits['largest-contentful-paint'].numericValue,tbtMs:r.audits['total-blocking-time'].numericValue,cls:r.audits['cumulative-layout-shift'].numericValue};const passed=!r.runtimeError&&metrics.performance>=90&&metrics.accessibility>=95&&metrics.bestPractices>=95&&metrics.seo>=95&&metrics.lcpMs<=2500&&metrics.tbtMs<200&&metrics.cls<.1;const diagnostics={benchmarkIndex:r.environment.benchmarkIndex,mainThread:r.audits['mainthread-work-breakdown']?.details?.items,lcpSubparts:r.audits['lcp-breakdown-insight']?.details?.items.filter(x=>x.type==='table').flatMap(x=>x.items),failures:Object.entries(r.audits).filter(([,a])=>a.score!==null&&a.score<1&&a.scoreDisplayMode!=='informative').map(([id,a])=>({id,title:a.title,score:a.score}))};rows.push({iteration:i,status:passed?'PASS':'FAIL',metrics,diagnostics});fs.writeFileSync(path.join(privateRoot,path.basename(output,'.json')+'-raw-'+i+'.json'),JSON.stringify(r));console.log(JSON.stringify(rows.at(-1)));}finally{await chrome.kill();}fs.writeFileSync(output,JSON.stringify({author:'Jonathan Kakesa (JonathanK-N)',sourceSha:process.argv[4],scope:'Local public built preview, Lighthouse 13.5 default mobile simulated throttling, fresh cold browser per iteration; API reads only; not an HTTPS staging certificate',rows},null,2));}}finally{await new Promise(r=>server.close(r));}
- if(rows.some(r=>r.status==='FAIL'))process.exitCode=1;
-})().catch(e=>{console.error(e.message);process.exitCode=1;});
+const fs = require("node:fs"),
+  path = require("node:path"),
+  http = require("node:http"),
+  { pathToFileURL } = require("node:url"),
+  { createRequire } = require("node:module"),
+  { gzipSync } = require("node:zlib");
+(async () => {
+  const build = path.resolve(process.argv[2]),
+    output = path.resolve(process.argv[3]),
+    privateRoot = path.resolve(
+      process.env.QA_PRIVATE_ROOT || "../Afrimarket-private-backups",
+    );
+  fs.mkdirSync(path.dirname(output), { recursive: true });
+  const dependencies = createRequire(
+    fs.realpathSync(
+      process.env.LIGHTHOUSE_PACKAGE ||
+        path.join(
+          privateRoot,
+          "launch-lighthouse-13.5.0/node_modules/lighthouse/package.json",
+        ),
+    ),
+  );
+  const lighthouse = (
+      await import(pathToFileURL(dependencies.resolve("lighthouse")).href)
+    ).default,
+    launcher = await import(
+      pathToFileURL(dependencies.resolve("chrome-launcher")).href
+    );
+  const { createPreviewHandler } = require("./ui_premium_preview.cjs");
+  const server = http.createServer(createPreviewHandler(build));
+  await new Promise((r) => server.listen(0, "127.0.0.1", r));
+  const origin = "http://127.0.0.1:" + server.address().port,
+    rows = [];
+  try {
+    for (let i = 1; i <= 3; i++) {
+      const chrome = await launcher.launch({
+        ...(process.platform === "win32"
+          ? {
+              chromePath:
+                "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+            }
+          : {}),
+        chromeFlags: [
+          "--headless",
+          "--disable-gpu",
+          "--no-first-run",
+          ...(process.platform === "win32" ? [] : ["--no-sandbox"]),
+        ],
+        logLevel: "silent",
+      });
+      try {
+        const result = await lighthouse(origin, {
+          port: chrome.port,
+          logLevel: "silent",
+          output: "json",
+          onlyCategories: [
+            "performance",
+            "accessibility",
+            "best-practices",
+            "seo",
+          ],
+        });
+        const r = result.lhr;
+        const metrics = {
+          performance: Math.round(r.categories.performance.score * 100),
+          accessibility: Math.round(r.categories.accessibility.score * 100),
+          bestPractices: Math.round(r.categories["best-practices"].score * 100),
+          seo: Math.round(r.categories.seo.score * 100),
+          lcpMs: r.audits["largest-contentful-paint"].numericValue,
+          tbtMs: r.audits["total-blocking-time"].numericValue,
+          cls: r.audits["cumulative-layout-shift"].numericValue,
+        };
+        const passed =
+          !r.runtimeError &&
+          metrics.performance >= 90 &&
+          metrics.accessibility >= 95 &&
+          metrics.bestPractices >= 95 &&
+          metrics.seo >= 95 &&
+          metrics.lcpMs <= 2500 &&
+          metrics.tbtMs < 200 &&
+          metrics.cls < 0.1;
+        const diagnostics = {
+          benchmarkIndex: r.environment.benchmarkIndex,
+          mainThread: r.audits["mainthread-work-breakdown"]?.details?.items,
+          lcpSubparts: r.audits["lcp-breakdown-insight"]?.details?.items
+            .filter((x) => x.type === "table")
+            .flatMap((x) => x.items),
+          failures: Object.entries(r.audits)
+            .filter(
+              ([, a]) =>
+                a.score !== null &&
+                a.score < 1 &&
+                a.scoreDisplayMode !== "informative",
+            )
+            .map(([id, a]) => ({ id, title: a.title, score: a.score })),
+        };
+        rows.push({
+          iteration: i,
+          status: passed ? "PASS" : "FAIL",
+          metrics,
+          diagnostics,
+        });
+        fs.writeFileSync(
+          path.join(
+            privateRoot,
+            path.basename(output, ".json") + "-raw-" + i + ".json",
+          ),
+          JSON.stringify(r),
+        );
+        console.log(JSON.stringify(rows.at(-1)));
+      } finally {
+        await chrome.kill();
+      }
+      fs.writeFileSync(
+        output,
+        JSON.stringify(
+          {
+            author: "Jonathan Kakesa (JonathanK-N)",
+            sourceSha: process.argv[4],
+            scope:
+              "Local public built preview, Lighthouse 13.5 default mobile simulated throttling, fresh cold browser per iteration; API reads only; not an HTTPS staging certificate",
+            rows,
+          },
+          null,
+          2,
+        ),
+      );
+    }
+  } finally {
+    await new Promise((r) => server.close(r));
+  }
+  if (rows.some((r) => r.status === "FAIL")) process.exitCode = 1;
+})().catch((e) => {
+  console.error(e.message);
+  process.exitCode = 1;
+});

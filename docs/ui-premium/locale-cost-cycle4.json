@@ -1,0 +1,12 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "appSourceSha": "f06855312ec4a386d3af91fb74f4bb06a4a2ef00",
+  "scope": "Independent actual read-only staging product timing on local touch preview, not Lighthouse scores",
+  "firstLocale": "fr-FR",
+  "firstConstructorStartMs": 2091.9,
+  "firstConstructorDurationMs": 183.2,
+  "observedLcpMs": 2596,
+  "viewportHeight": 823,
+  "catalogTop": 915.375,
+  "firstPriceTop": 1085.8125
+}

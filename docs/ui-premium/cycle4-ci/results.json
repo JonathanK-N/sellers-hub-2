@@ -1,0 +1,111 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Local built artifact; clearly synthetic UI fixtures via browser interception, zero backend writes; no HTTPS certificate",
+  "rows": [
+    {
+      "test": "chromium 320px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "chromium 375px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "chromium 390px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "Favorites survive reload as public IDs only",
+      "status": "PASS"
+    },
+    {
+      "test": "Menu traps forward and reverse keyboard focus",
+      "status": "PASS"
+    },
+    {
+      "test": "Keyboard menu Escape restores focus",
+      "status": "PASS"
+    },
+    {
+      "test": "Category controls request real API category parameter",
+      "status": "PASS"
+    },
+    {
+      "test": "Search navigates to existing search route",
+      "status": "PASS"
+    },
+    {
+      "test": "Guest cart action requests authentication",
+      "status": "PASS"
+    },
+    {
+      "test": "Slow connection exposes loading skeleton before actual products",
+      "status": "PASS"
+    },
+    {
+      "test": "Network failure visible and retry recovers",
+      "status": "PASS"
+    },
+    {
+      "test": "Empty catalog gives useful state without fabricated products",
+      "status": "PASS"
+    },
+    {
+      "test": "Become seller route loads existing registration",
+      "status": "PASS"
+    },
+    {
+      "test": "Stale stored admin identity cannot enter private route",
+      "status": "PASS"
+    },
+    {
+      "test": "Expired private session cleared before private API access",
+      "status": "PASS"
+    },
+    {
+      "test": "chromium 430px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "chromium 768px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "chromium 1024px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "chromium 1280px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "chromium 1440px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "chromium 1920px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "chromium 2560px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "firefox 390px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "firefox 1440px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "webkit 390px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    },
+    {
+      "test": "webkit 1440px responsive, prices, escaped data, badges",
+      "status": "PASS"
+    }
+  ],
+  "unavailable": []
+}

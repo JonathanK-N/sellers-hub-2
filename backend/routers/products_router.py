@@ -62,9 +62,15 @@ async def list_products(
     if category and category not in ("all", "Tout"):
         query["category"] = category
     if q:
+        literal = re.escape(q)
+        matching_shops = await db.sellers.find(
+            {"shop_name": {"$regex": literal, "$options": "i"}},
+            {"_id": 0, "id": 1},
+        ).to_list(500)
         query["$or"] = [
-            {"name": {"$regex": re.escape(q), "$options": "i"}},
-            {"description": {"$regex": re.escape(q), "$options": "i"}},
+            {"name": {"$regex": literal, "$options": "i"}},
+            {"description": {"$regex": literal, "$options": "i"}},
+            {"seller_id": {"$in": [shop["id"] for shop in matching_shops if isinstance(shop.get("id"), str)]}},
         ]
 
     products = await db.products.find(query, {"_id": 0}).to_list(500)
