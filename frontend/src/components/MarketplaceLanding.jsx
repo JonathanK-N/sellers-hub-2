@@ -1,71 +1,995 @@
 // Author: Jonathan Kakesa (JonathanK-N).
-import {useEffect, useRef, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import {Menu, X, Search, ShoppingCart, Heart, UserRound, ArrowRight, ChevronRight, Store, ShieldCheck, Truck, Wallet, Smartphone, Shirt, UtensilsCrossed, Armchair, Sun, Sprout, LayoutGrid, Flame, MapPin, Star} from 'lucide-react';
-import {useAuth} from '../context/AuthContext';
-import {useAuthModal} from '../context/AuthModalContext';
-import {useCart} from '../context/CartContext';
-import api from '../lib/api';
-import {displayPrice, formatPrice, photoUrl} from '../lib/format';
-import './marketplace-premium.css';
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Menu,
+  X,
+  Search,
+  ShoppingCart,
+  Heart,
+  UserRound,
+  ArrowRight,
+  ChevronRight,
+  Store,
+  ShieldCheck,
+  Truck,
+  Wallet,
+  Smartphone,
+  Shirt,
+  UtensilsCrossed,
+  Armchair,
+  Sun,
+  Sprout,
+  LayoutGrid,
+  Flame,
+  MapPin,
+  Star,
+} from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { useAuthModal } from "../context/AuthModalContext";
+import { useCart } from "../context/CartContext";
+import api from "../lib/api";
+import { displayPrice, formatPrice, photoUrl } from "../lib/format";
+import "./marketplace-premium.css";
 
-const categories=[['all','Tout',LayoutGrid],['Électronique','Électronique',Smartphone],['Vêtements','Vêtements',Shirt],['Alimentation','Alimentation',UtensilsCrossed],['Maison','Maison',Armchair],['Énergie / Solaire','Solaire',Sun],['Agriculture','Agriculture',Sprout]];
-const roleHome={buyer:'/buyer/home',seller:'/seller/dashboard',admin:'/admin/overview',deliverer:'/livreur'};
-const favoriteKey='afri_public_favorite_ids';
+const categories = [
+  ["all", "Tout", LayoutGrid],
+  ["Électronique", "Électronique", Smartphone],
+  ["Vêtements", "Vêtements", Shirt],
+  ["Alimentation", "Alimentation", UtensilsCrossed],
+  ["Maison", "Maison", Armchair],
+  ["Énergie / Solaire", "Solaire", Sun],
+  ["Agriculture", "Agriculture", Sprout],
+];
+const roleHome = {
+  buyer: "/buyer/home",
+  seller: "/seller/dashboard",
+  admin: "/admin/overview",
+  deliverer: "/livreur",
+};
+const favoriteKey = "afri_public_favorite_ids";
 
-function Product({product, favorite, onFavorite, onCart, floating=false}) {
-  const price=displayPrice(product), image=photoUrl(product.photos?.[0]);
-  return <article className={`premium-product ${floating?'premium-floating':''}`} data-testid={`product-card-${product.id}`}>
-    <Link className="premium-product-image" to={`/explore/product/${product.id}`} aria-label={image?`Voir ${product.name}`:`Photo à venir : voir ${product.name}`}>
-      {image?<img src={image} alt={product.name} loading="lazy" decoding="async" width="320" height="320"/>:<span className="premium-no-image"><Store size={32}/><span>Photo à venir</span></span>}
-    </Link>
-    <button type="button" className="premium-favorite" aria-label={`${favorite?'Retirer des':'Ajouter aux'} favoris : ${product.name}`} aria-pressed={favorite} onClick={()=>onFavorite(product.id)}><Heart size={17} fill={favorite?'currentColor':'none'}/></button>
-    <div className="premium-product-body"><Link to={`/explore/product/${product.id}`}>{floating?<h2>{product.name}</h2>:<h3>{product.name}</h3>}</Link><strong>{formatPrice(price.amount,price.currency)}</strong>
-      <Link className="premium-product-shop" to={`/explore/shop/${product.seller_id}`}>{product.seller_name||'Voir la boutique'}{product.seller_verified&&<ShieldCheck size={14} aria-label="Vendeur vérifié"/>}</Link>
-      <div className="premium-product-bottom">{Number(product.seller_rating)>0?<span><Star size={13} fill="currentColor"/>{Number(product.seller_rating).toFixed(1)} <span className="sr-only">Note de la boutique</span></span>:<span>Consulter le produit</span>}<button type="button" aria-label={`Ajouter au panier : ${product.name}`} disabled={product.stock<=0} onClick={()=>onCart(product)}><ShoppingCart size={16}/></button></div>
-    </div>
-  </article>;
+function Product({ product, favorite, onFavorite, onCart, floating = false }) {
+  const price = displayPrice(product),
+    image = photoUrl(product.photos?.[0]);
+  return (
+    <article
+      className={`premium-product ${floating ? "premium-floating" : ""}`}
+      data-testid={`product-card-${product.id}`}
+    >
+      <Link
+        className="premium-product-image"
+        to={`/explore/product/${product.id}`}
+        aria-label={
+          image
+            ? `Voir ${product.name}`
+            : `Photo non disponible : voir ${product.name}`
+        }
+      >
+        {image ? (
+          <img
+            src={image}
+            alt={product.name}
+            loading="lazy"
+            decoding="async"
+            width="320"
+            height="320"
+          />
+        ) : (
+          <span className="premium-no-image">
+            <Store size={32} />
+            <span>Photo non disponible</span>
+          </span>
+        )}
+      </Link>
+      <button
+        type="button"
+        className="premium-favorite"
+        aria-label={`${favorite ? "Retirer des" : "Ajouter aux"} favoris : ${product.name}`}
+        aria-pressed={favorite}
+        onClick={() => onFavorite(product.id)}
+      >
+        <Heart size={17} fill={favorite ? "currentColor" : "none"} />
+      </button>
+      <div className="premium-product-body">
+        <Link to={`/explore/product/${product.id}`}>
+          {floating ? <h2>{product.name}</h2> : <h3>{product.name}</h3>}
+        </Link>
+        <strong>{formatPrice(price.amount, price.currency)}</strong>
+        <Link
+          className="premium-product-shop"
+          to={`/explore/shop/${product.seller_id}`}
+        >
+          {product.seller_name || "Voir la boutique"}
+          {product.seller_verified === true && (
+            <ShieldCheck size={14} aria-label="Vendeur vérifié" />
+          )}
+        </Link>
+        <div className="premium-product-bottom">
+          {Number(product.seller_rating) > 0 ? (
+            <span>
+              <Star size={13} fill="currentColor" />
+              {Number(product.seller_rating).toFixed(1)}{" "}
+              <span className="sr-only">Note de la boutique</span>
+            </span>
+          ) : (
+            <span>Consulter le produit</span>
+          )}
+          <button
+            type="button"
+            aria-label={`Ajouter au panier : ${product.name}`}
+            disabled={product.stock <= 0}
+            onClick={() => onCart(product)}
+          >
+            <ShoppingCart size={16} />
+          </button>
+        </div>
+      </div>
+    </article>
+  );
 }
 
-export default function MarketplaceLanding({variant='dynamic'}) {
-  const {user}=useAuth(),{openAuth}=useAuthModal(),{addItem,openCart,count}=useCart(),nav=useNavigate();
-  const [category,setCategory]=useState('all'),[country,setCountry]=useState(user?.country_code||'CD'),[query,setQuery]=useState(''),[products,setProducts]=useState([]),[shops,setShops]=useState([]),[loading,setLoading]=useState(true),[error,setError]=useState(false),[retry,setRetry]=useState(0),[menu,setMenu]=useState(false),[favoritesOnly,setFavoritesOnly]=useState(false),[notice,setNotice]=useState('');
-  const [favorites,setFavorites]=useState(()=>{try{const value=JSON.parse(localStorage.getItem(favoriteKey)||'[]');return Array.isArray(value)?value.filter(v=>typeof v==='string').slice(0,200):[];}catch{return [];}});
-  const menuButton=useRef(),menuPanel=useRef(),productsSection=useRef();
-  useEffect(()=>{let active=true;setLoading(true);setError(false);setProducts([]);setShops([]);api.get('/products',{params:{country_code:country,sort:'newest',limit:24,...(category!=='all'?{category}:{})}}).then(({data})=>{if(active)setProducts(Array.isArray(data)?data:[]);}).catch(()=>{if(active){setError(true);setProducts([]);}}).finally(()=>{if(active)setLoading(false);});return()=>{active=false;};},[country,category,retry]);
-  useEffect(()=>{let active=true;const ids=[...new Set(products.map(p=>p.seller_id).filter(Boolean))].slice(0,5);Promise.allSettled(ids.map(id=>api.get(`/seller/public/${encodeURIComponent(id)}`))).then(results=>{if(active)setShops(results.filter(r=>r.status==='fulfilled').map(r=>r.value.data.seller).filter(Boolean));});return()=>{active=false;};},[products]);
-  useEffect(()=>{if(!menu)return;const panel=menuPanel.current;panel?.querySelector('button,a')?.focus();const onKey=e=>{if(e.key==='Escape'){setMenu(false);menuButton.current?.focus();}if(e.key==='Tab'){const nodes=[...panel.querySelectorAll('button,a,input,select')].filter(n=>!n.disabled);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}};document.addEventListener('keydown',onKey);return()=>document.removeEventListener('keydown',onKey);},[menu]);
-  const toggleFavorite=id=>{setFavorites(old=>{const next=old.includes(id)?old.filter(x=>x!==id):[...old,id].slice(-200);try{localStorage.setItem(favoriteKey,JSON.stringify(next));}catch{setNotice('La sélection ne peut pas être conservée sur cet appareil.');}return next;});};
-  const cart=product=>{if(!user){openAuth('login');return;}if(user.role!=='buyer'){setNotice('Les commandes sont réservées aux comptes acheteurs.');return;}addItem(product);setNotice(`${product.name} ajouté au panier.`);};
-  const search=e=>{e.preventDefault();if(query.trim())nav(`/explore/search?q=${encodeURIComponent(query.trim())}`);};
-  const becomeSeller=()=>user?.role==='seller'?nav('/seller/setup'):nav('/auth/register?role=seller');
-  const showFavorites=()=>{setFavoritesOnly(v=>!v);productsSection.current?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});};
-  const visible=favoritesOnly?products.filter(p=>favorites.includes(p.id)):products;
-  const choose=value=>{setCategory(value);setFavoritesOnly(false);setMenu(false);};
-  return <div className={`premium-market premium-${variant}`}>
-    <a className="premium-skip" href="#main-content">Aller au contenu</a>
-    <header className="premium-header" data-testid="guest-top-header"><div className="premium-header-inner">
-      <button ref={menuButton} type="button" className="premium-icon premium-menu-toggle" aria-label="Ouvrir le menu" aria-expanded={menu} aria-controls="premium-menu" onClick={()=>setMenu(true)}><Menu size={21}/></button>
-      <Link className="premium-logo" to="/" aria-label="AfriMarket, accueil">Afri<span>Market</span><small>Le marché près de vous</small></Link>
-      <form className="premium-search" onSubmit={search}><label className="sr-only" htmlFor="premium-category">Catégorie</label><select id="premium-category" value={category} onChange={e=>choose(e.target.value)}>{categories.map(([value,label])=><option key={value} value={value}>{value==='all'?'Toutes les catégories':label}</option>)}</select><label className="sr-only" htmlFor="premium-search">Rechercher un produit</label><input id="premium-search" value={query} maxLength={100} onChange={e=>setQuery(e.target.value)} placeholder="Rechercher un produit, une boutique…"/><button aria-label="Rechercher" type="submit"><Search size={18}/></button></form>
-      <div className="premium-header-actions"><button type="button" className="premium-icon" aria-label={`Panier, ${count} articles`} onClick={openCart}><ShoppingCart size={20}/>{count>0&&<span className="premium-count">{count}</span>}</button><button type="button" className="premium-icon premium-desktop-favorites" aria-label="Afficher mes favoris sur cet appareil" aria-pressed={favoritesOnly} onClick={showFavorites}><Heart size={20}/></button>{user?<Link className="premium-account" to={roleHome[user.role]||'/'}><UserRound size={18}/><span>Mon espace</span></Link>:<><button type="button" className="premium-login" data-testid="guest-login-btn" onClick={()=>openAuth('login')}>Se connecter</button><button type="button" className="premium-register" data-testid="guest-register-btn" onClick={()=>openAuth('register')}>S’inscrire</button></>}</div>
-    </div></header>
-    {menu&&<div className="premium-menu-backdrop" onClick={()=>setMenu(false)}><div id="premium-menu" ref={menuPanel} className="premium-menu-panel" role="dialog" aria-modal="true" aria-label="Navigation" onClick={e=>e.stopPropagation()}><div><strong>AfriMarket</strong><button className="premium-icon" type="button" aria-label="Fermer le menu" onClick={()=>{setMenu(false);menuButton.current?.focus();}}><X/></button></div><Link to="/explore/search" onClick={()=>setMenu(false)}>Tous les produits</Link>{categories.slice(1).map(([value,label])=><button type="button" key={value} onClick={()=>choose(value)}>{label}</button>)}<button type="button" onClick={()=>{setMenu(false);becomeSeller();}}>Devenir vendeur</button><button type="button" onClick={()=>{setMenu(false);openAuth('login');}}>Connexion</button></div></div>}
-    <main id="main-content">
-      <section className="premium-hero premium-container" aria-label="Bienvenue sur AfriMarket"><div className="premium-hero-photo"><picture><source type="image/avif" srcSet="/images/market-hero-400.avif 400w, /images/market-hero-800.avif 800w, /images/market-hero-1280.avif 1280w" sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) calc(100vw - 64px), 1216px"/><img src="/images/market-hero-800.avif" width="1280" height="853" alt="Une commerçante sur un marché africain" fetchPriority="high" decoding="async"/></picture></div><div className="premium-hero-shade"/>
-      <div className="premium-hero-copy"><span className="premium-eyebrow">Le marché de l’Afrique francophone</span><h1>{variant==='dynamic'?<>Tout le meilleur de<br/>l’Afrique francophone<br/>au même endroit.</>:<>Le marché africain,<br/><em>à portée de main.</em></>}</h1><p>Parcourez les boutiques et produits locaux. Commandez simplement ou échangez directement avec votre vendeur.</p><div className="premium-hero-benefits"><span><Sprout/>Produits locaux</span><span><Wallet/>Paiement direct<br/>avec le vendeur</span><span><Truck/>Livraison locale</span><span><Store/>Boutiques à découvrir</span></div><div className="premium-hero-buttons"><Link className="premium-button premium-primary" data-testid="hero-explore-btn" to="/explore/search">{variant==='dynamic'?'Découvrir les offres':'Explorer les produits'}<ArrowRight size={18}/></Link>{variant==='elegant'&&<button type="button" className="premium-button premium-outline" onClick={becomeSeller}>Devenir vendeur</button>}</div></div>
-      {variant==='dynamic'&&products.length>0&&<div className="premium-floats" aria-label="Produits disponibles">{products.slice(0,3).map(p=><Product key={p.id} product={p} floating favorite={favorites.includes(p.id)} onFavorite={toggleFavorite} onCart={cart}/>)}</div>}
-      </section>
-      <section className="premium-categories premium-container" aria-label="Catégories de produits"><div className="premium-section-heading"><h2>{variant==='elegant'?'Nos catégories populaires':'À chaque envie, sa catégorie'}</h2><Link to="/explore/search">Tout explorer<ArrowRight size={14}/></Link></div><div className="premium-category-strip">{categories.slice(1).map(([value,label,Icon])=>{const image=variant==='elegant'&&photoUrl(products.find(p=>p.category===value&&p.photos?.[0])?.photos[0]);return <button type="button" key={value} data-testid={`guest-category-${value}`} aria-pressed={category===value} onClick={()=>choose(value)}>{image?<img src={image} alt="" loading="lazy" width="100" height="80"/>:<span><Icon size={28}/></span>}<strong>{label}</strong></button>;})}</div></section>
-      <section className="premium-catalog premium-container" ref={productsSection}><div className="premium-section-heading"><div><h2>{variant==='dynamic'?<><Flame size={23}/>Découvrez les nouveautés</>:'Produits recommandés'}</h2><p>Des produits à découvrir auprès des boutiques présentes sur AfriMarket.</p></div><Link to="/explore/search">Voir plus<ArrowRight size={14}/></Link></div><div className="premium-catalog-toolbar"><div className="premium-product-tabs"><button type="button" aria-pressed={!favoritesOnly&&category==='all'} onClick={()=>choose('all')}>Tout</button><button type="button" aria-pressed={favoritesOnly} onClick={showFavorites}>Mes favoris</button>{categories.slice(1).map(([value,label])=><button type="button" key={value} aria-pressed={!favoritesOnly&&category===value} onClick={()=>choose(value)}>{label}</button>)}</div><label>Pays <select aria-label="Pays du catalogue" value={country} onChange={e=>setCountry(e.target.value)}><option value="CD">RD Congo</option><option value="CM">Cameroun</option><option value="CI">Côte d’Ivoire</option><option value="SN">Sénégal</option><option value="BJ">Bénin</option></select></label></div>
-      <p className="premium-selection-note">{favoritesOnly?'Favoris enregistrés uniquement sur cet appareil, dans le catalogue sélectionné.':''}</p>
-      <div className="premium-product-grid" aria-busy={loading}>{loading?Array.from({length:5},(_,i)=><div key={i} className="premium-skeleton" aria-hidden="true"><div/><span/><span/></div>):!error&&visible.map(p=><Product key={p.id} product={p} favorite={favorites.includes(p.id)} onFavorite={toggleFavorite} onCart={cart}/>)}</div>{loading&&<p role="status" className="sr-only">Chargement des produits…</p>}{error?<div className="premium-empty" role="alert"><h3>Le catalogue est momentanément indisponible.</h3><p>Vos données sont conservées. Réessayez dans un instant.</p><button type="button" className="premium-button premium-green" onClick={()=>setRetry(v=>v+1)}>Réessayer</button></div>:!loading&&visible.length===0&&<div className="premium-empty"><Store size={32}/><h3>{favoritesOnly?'Aucun favori dans cette sélection':'Aucun produit dans cette catégorie pour le moment'}</h3><p>Explorez une autre catégorie ou un autre pays.</p><button className="premium-button premium-green" type="button" onClick={()=>choose('all')}>Voir toutes les catégories</button></div>}</section>
-      <section className="premium-seller-banner premium-container"><div><span className="premium-banner-symbol"><Store size={42}/></span><div><h2>Soutenez les vendeurs locaux</h2><p>Votre boutique, vos produits, une communauté à rencontrer.</p></div></div><button type="button" className="premium-button premium-primary" onClick={becomeSeller}>Devenir vendeur<ArrowRight size={17}/></button></section>
-      <div className="premium-trust premium-container"><span><ShieldCheck/>Statuts vendeurs visibles</span><span><Wallet/>Paiement direct au vendeur</span><span><Truck/>Options de livraison</span><span><MapPin/>Boutiques de proximité</span></div>
-      <section className="premium-shops premium-container"><div className="premium-section-heading"><div><h2>Nos boutiques à découvrir</h2><p>Rencontrez les vendeurs présents dans votre sélection.</p></div><Link to="/explore/search">Explorer les boutiques<ArrowRight size={14}/></Link></div><div className="premium-shop-grid">{shops.map(shop=><Link key={shop.id} className="premium-shop" to={`/explore/shop/${shop.id}`}><div className="premium-shop-cover">{shop.shop_banner_url?<img src={photoUrl(shop.shop_banner_url)} loading="lazy" alt="" width="320" height="140"/>:<Store size={35}/>}</div><div className="premium-shop-info">{shop.shop_logo_url?<img src={photoUrl(shop.shop_logo_url)} alt="" loading="lazy" width="36" height="36"/>:<span><Store size={19}/></span>}<div><h3>{shop.shop_name}</h3><p>{shop.category||'Voir la boutique'}</p>{shop.badge_verified&&<small><ShieldCheck size={12}/>Vendeur vérifié</small>}</div><ChevronRight size={17}/></div></Link>)}</div>{!loading&&!shops.length&&<p className="premium-selection-note">Les boutiques apparaîtront dès que des produits seront disponibles.</p>}</section>
-    </main>
-    <footer className="premium-footer"><div className="premium-container premium-footer-grid"><div><Link className="premium-logo" to="/">Afri<span>Market</span></Link><p>Le marché de l’Afrique francophone.<br/>Découvrez, échangez et achetez près de chez vous.</p></div><div><h2>Explorer</h2><Link to="/explore/search">Tous les produits</Link><button type="button" onClick={becomeSeller}>Devenir vendeur</button><button type="button" onClick={showFavorites}>Favoris sur cet appareil</button></div><div><h2>Mon compte</h2>{user?<Link to={roleHome[user.role]||'/'}>Mon espace</Link>:<><button type="button" onClick={()=>openAuth('login')}>Se connecter</button><button type="button" onClick={()=>openAuth('register')}>Créer un compte</button></>}<button type="button" onClick={openCart}>Mon panier</button></div><div><h2>Acheter en confiance</h2><p>Le paiement s’effectue directement avec le vendeur. AfriMarket ne détient pas vos fonds.</p><p>Les modalités de livraison sont précisées lors de la commande.</p></div></div><div className="premium-container premium-footer-bottom">© {new Date().getFullYear()} AfriMarket · JonathanK-N</div></footer>
-    <nav className="premium-mobile-nav" aria-label="Navigation mobile"><Link to="/" aria-current="page"><Store size={20}/><span>Accueil</span></Link><Link to="/explore/search"><LayoutGrid size={20}/><span>Catégories</span></Link><button type="button" onClick={openCart}><ShoppingCart size={20}/><span>Panier{count>0?` (${count})`:''}</span></button><button type="button" onClick={showFavorites} aria-pressed={favoritesOnly}><Heart size={20}/><span>Favoris</span></button>{user?<Link to={roleHome[user.role]||'/'}><UserRound size={20}/><span>Profil</span></Link>:<button type="button" onClick={()=>openAuth('login')}><UserRound size={20}/><span>Profil</span></button>}</nav>
-    <div className="premium-notice" role="status" aria-live="polite">{notice&&<><span>{notice}</span><button type="button" aria-label="Fermer la notification" onClick={()=>setNotice('')}><X size={16}/></button></>}</div>
-  </div>;
+export default function MarketplaceLanding({ variant = "dynamic" }) {
+  const { user } = useAuth(),
+    { openAuth } = useAuthModal(),
+    { addItem, openCart, count } = useCart(),
+    nav = useNavigate();
+  const [category, setCategory] = useState("all"),
+    [country, setCountry] = useState(user?.country_code || "CD"),
+    [query, setQuery] = useState(""),
+    [products, setProducts] = useState([]),
+    [shops, setShops] = useState([]),
+    [loading, setLoading] = useState(true),
+    [shopsLoading, setShopsLoading] = useState(false),
+    [error, setError] = useState(false),
+    [retry, setRetry] = useState(0),
+    [menu, setMenu] = useState(false),
+    [favoritesOnly, setFavoritesOnly] = useState(false),
+    [notice, setNotice] = useState("");
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const value = JSON.parse(localStorage.getItem(favoriteKey) || "[]");
+      return Array.isArray(value)
+        ? value.filter((v) => typeof v === "string").slice(0, 200)
+        : [];
+    } catch {
+      return [];
+    }
+  });
+  const [catalogVisible, setCatalogVisible] = useState(
+      () => typeof IntersectionObserver === "undefined",
+    ),
+    [floatViewport, setFloatViewport] = useState(
+      () => matchMedia("(min-width: 1101px)").matches,
+    );
+  const menuButton = useRef(),
+    menuPanel = useRef(),
+    productsSection = useRef(),
+    productGrid = useRef();
+  useEffect(() => {
+    if (catalogVisible) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setCatalogVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px" },
+    );
+    observer.observe(productGrid.current);
+    return () => observer.disconnect();
+  }, [catalogVisible]);
+  useEffect(() => {
+    const media = matchMedia("(min-width: 1101px)");
+    const change = () => setFloatViewport(media.matches);
+    media.addEventListener("change", change);
+    return () => media.removeEventListener("change", change);
+  }, []);
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setError(false);
+    setProducts([]);
+    setShops([]);
+    api
+      .get("/products", {
+        params: {
+          country_code: country,
+          sort: "newest",
+          limit: 24,
+          ...(category !== "all" ? { category } : {}),
+        },
+      })
+      .then(({ data }) => {
+        if (active) setProducts(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        if (active) {
+          setError(true);
+          setProducts([]);
+        }
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [country, category, retry]);
+  useEffect(() => {
+    if (!catalogVisible) return;
+    let active = true;
+    const ids = [
+      ...new Set(products.map((p) => p.seller_id).filter(Boolean)),
+    ].slice(0, 5);
+    setShopsLoading(ids.length > 0);
+    Promise.allSettled(
+      ids.map((id) => api.get(`/seller/public/${encodeURIComponent(id)}`)),
+    ).then((results) => {
+      if (active) {
+        setShops(
+          results
+            .filter((r) => r.status === "fulfilled")
+            .map((r) => r.value.data.seller)
+            .filter(Boolean),
+        );
+        setShopsLoading(false);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [products, catalogVisible]);
+  useEffect(() => {
+    if (!menu) return;
+    const panel = menuPanel.current;
+    panel?.querySelector("button,a")?.focus();
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        setMenu(false);
+        menuButton.current?.focus();
+      }
+      if (e.key === "Tab") {
+        const nodes = [
+          ...panel.querySelectorAll("button,a,input,select"),
+        ].filter((n) => !n.disabled);
+        const first = nodes[0],
+          last = nodes.at(-1);
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [menu]);
+  const toggleFavorite = (id) => {
+    setFavorites((old) => {
+      const next = old.includes(id)
+        ? old.filter((x) => x !== id)
+        : [...old, id].slice(-200);
+      try {
+        localStorage.setItem(favoriteKey, JSON.stringify(next));
+      } catch {
+        setNotice("La sélection ne peut pas être conservée sur cet appareil.");
+      }
+      return next;
+    });
+  };
+  const cart = (product) => {
+    if (!user) {
+      openAuth("login");
+      return;
+    }
+    if (user.role !== "buyer") {
+      setNotice("Les commandes sont réservées aux comptes acheteurs.");
+      return;
+    }
+    addItem(product);
+    setNotice(`${product.name} ajouté au panier.`);
+  };
+  const search = (e) => {
+    e.preventDefault();
+    if (query.trim())
+      nav(
+        `/explore/search?country_code=${country}&q=${encodeURIComponent(query.trim())}`,
+      );
+  };
+  const becomeSeller = () =>
+    user?.role === "seller"
+      ? nav("/seller/setup")
+      : nav("/auth/register?role=seller");
+  const showFavorites = () => {
+    setFavoritesOnly((v) => !v);
+    productsSection.current?.scrollIntoView({
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+  };
+  const exploreUrl = `/explore/search?country_code=${country}`;
+  const visible = favoritesOnly
+    ? products.filter((p) => favorites.includes(p.id))
+    : products;
+  const choose = (value) => {
+    setCategory(value);
+    setFavoritesOnly(false);
+    setMenu(false);
+  };
+  return (
+    <div className={`premium-market premium-${variant}`}>
+      <a className="premium-skip" href="#main-content">
+        Aller au contenu
+      </a>
+      <header className="premium-header" data-testid="guest-top-header">
+        <div className="premium-header-inner">
+          <button
+            ref={menuButton}
+            type="button"
+            className="premium-icon premium-menu-toggle"
+            aria-label="Ouvrir le menu"
+            aria-expanded={menu}
+            aria-controls="premium-menu"
+            onClick={() => setMenu(true)}
+          >
+            <Menu size={21} />
+          </button>
+          <Link
+            className="premium-logo"
+            to="/"
+            aria-label="AfriMarket, accueil"
+          >
+            Afri<span>Market</span>
+            <small>Le marché près de vous</small>
+          </Link>
+          <form className="premium-search" onSubmit={search}>
+            <label className="sr-only" htmlFor="premium-category">
+              Catégorie
+            </label>
+            <select
+              id="premium-category"
+              value={category}
+              onChange={(e) => choose(e.target.value)}
+            >
+              {categories.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {value === "all" ? "Toutes les catégories" : label}
+                </option>
+              ))}
+            </select>
+            <label className="sr-only" htmlFor="premium-search">
+              Rechercher un produit
+            </label>
+            <input
+              id="premium-search"
+              value={query}
+              maxLength={100}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Rechercher un produit, une boutique…"
+            />
+            <button aria-label="Rechercher" type="submit">
+              <Search size={18} />
+            </button>
+          </form>
+          <div className="premium-header-actions">
+            <button
+              type="button"
+              className="premium-icon"
+              aria-label={`Panier, ${count} articles`}
+              onClick={openCart}
+            >
+              <ShoppingCart size={20} />
+              {count > 0 && <span className="premium-count">{count}</span>}
+            </button>
+            <button
+              type="button"
+              className="premium-icon premium-desktop-favorites"
+              aria-label="Afficher mes favoris sur cet appareil"
+              aria-pressed={favoritesOnly}
+              onClick={showFavorites}
+            >
+              <Heart size={20} />
+            </button>
+            {user ? (
+              <Link className="premium-account" to={roleHome[user.role] || "/"}>
+                <UserRound size={18} />
+                <span>Mon espace</span>
+              </Link>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="premium-login"
+                  data-testid="guest-login-btn"
+                  onClick={() => openAuth("login")}
+                >
+                  Se connecter
+                </button>
+                <button
+                  type="button"
+                  className="premium-register"
+                  data-testid="guest-register-btn"
+                  onClick={() => openAuth("register")}
+                >
+                  S’inscrire
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </header>
+      {menu && (
+        <div className="premium-menu-backdrop" onClick={() => setMenu(false)}>
+          <div
+            id="premium-menu"
+            ref={menuPanel}
+            className="premium-menu-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div>
+              <strong>AfriMarket</strong>
+              <button
+                className="premium-icon"
+                type="button"
+                aria-label="Fermer le menu"
+                onClick={() => {
+                  setMenu(false);
+                  menuButton.current?.focus();
+                }}
+              >
+                <X />
+              </button>
+            </div>
+            <Link to={exploreUrl} onClick={() => setMenu(false)}>
+              Tous les produits
+            </Link>
+            {categories.slice(1).map(([value, label]) => (
+              <button type="button" key={value} onClick={() => choose(value)}>
+                {label}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                setMenu(false);
+                becomeSeller();
+              }}
+            >
+              Devenir vendeur
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMenu(false);
+                openAuth("login");
+              }}
+            >
+              Connexion
+            </button>
+          </div>
+        </div>
+      )}
+      <main id="main-content">
+        <section
+          className="premium-hero premium-container"
+          aria-label="Bienvenue sur AfriMarket"
+        >
+          <div className="premium-hero-photo">
+            <picture>
+              <source
+                type="image/avif"
+                srcSet="/images/market-hero-400.avif 400w, /images/market-hero-800.avif 800w, /images/market-hero-1280.avif 1280w"
+                sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) calc(100vw - 64px), 1216px"
+              />
+              <img
+                src="/images/market-hero-800.avif"
+                width="1280"
+                height="853"
+                alt="Une commerçante sur un marché africain"
+                fetchPriority="high"
+                decoding="async"
+              />
+            </picture>
+          </div>
+          <div className="premium-hero-shade" />
+          <div className="premium-hero-copy">
+            <span className="premium-eyebrow">
+              Le marché de l’Afrique francophone
+            </span>
+            <h1>
+              {variant === "dynamic" ? (
+                <>
+                  Tout le meilleur de
+                  <br />
+                  l’Afrique francophone
+                  <br />
+                  au même endroit.
+                </>
+              ) : (
+                <>
+                  Le marché africain,
+                  <br />
+                  <em>à portée de main.</em>
+                </>
+              )}
+            </h1>
+            <p>
+              Parcourez les boutiques et produits locaux. Commandez simplement
+              ou échangez directement avec votre vendeur.
+            </p>
+            <div className="premium-hero-benefits">
+              <span>
+                <Sprout />
+                Produits locaux
+              </span>
+              <span>
+                <Wallet />
+                Paiement direct
+                <br />
+                avec le vendeur
+              </span>
+              <span>
+                <Truck />
+                Livraison locale
+              </span>
+              <span>
+                <Store />
+                Boutiques à découvrir
+              </span>
+            </div>
+            <div className="premium-hero-buttons">
+              <Link
+                className="premium-button premium-primary"
+                data-testid="hero-explore-btn"
+                to={exploreUrl}
+              >
+                {variant === "dynamic"
+                  ? "Découvrir les offres"
+                  : "Explorer les produits"}
+                <ArrowRight size={18} />
+              </Link>
+              {variant === "elegant" && (
+                <button
+                  type="button"
+                  className="premium-button premium-outline"
+                  onClick={becomeSeller}
+                >
+                  Devenir vendeur
+                </button>
+              )}
+            </div>
+          </div>
+          {variant === "dynamic" && floatViewport && products.length > 0 && (
+            <div className="premium-floats" aria-label="Produits disponibles">
+              {products
+                .filter((p) => Number(p.stock) > 0)
+                .slice(0, 3)
+                .map((p) => (
+                  <Product
+                    key={p.id}
+                    product={p}
+                    floating
+                    favorite={favorites.includes(p.id)}
+                    onFavorite={toggleFavorite}
+                    onCart={cart}
+                  />
+                ))}
+            </div>
+          )}
+        </section>
+        <section
+          className="premium-categories premium-container"
+          aria-label="Catégories de produits"
+        >
+          <div className="premium-section-heading">
+            <h2>
+              {variant === "elegant"
+                ? "Nos catégories populaires"
+                : "À chaque envie, sa catégorie"}
+            </h2>
+            <Link to={exploreUrl}>
+              Tout explorer
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+          <div className="premium-category-strip">
+            {categories.slice(1).map(([value, label, Icon]) => {
+              const image =
+                variant === "elegant" &&
+                photoUrl(
+                  products.find((p) => p.category === value && p.photos?.[0])
+                    ?.photos[0],
+                );
+              return (
+                <button
+                  type="button"
+                  key={value}
+                  data-testid={`guest-category-${value}`}
+                  aria-pressed={category === value}
+                  onClick={() => choose(value)}
+                >
+                  {image ? (
+                    <img
+                      src={image}
+                      alt=""
+                      loading="lazy"
+                      width="100"
+                      height="80"
+                    />
+                  ) : (
+                    <span>
+                      <Icon size={28} />
+                    </span>
+                  )}
+                  <strong>{label}</strong>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+        <section
+          className="premium-catalog premium-container"
+          ref={productsSection}
+          onFocusCapture={() => setCatalogVisible(true)}
+        >
+          <div className="premium-section-heading">
+            <div>
+              <h2>
+                {variant === "dynamic" ? (
+                  <>
+                    <Flame size={23} />
+                    Découvrez les nouveautés
+                  </>
+                ) : (
+                  "Produits recommandés"
+                )}
+              </h2>
+              <p>
+                Des produits à découvrir auprès des boutiques présentes sur
+                AfriMarket.
+              </p>
+            </div>
+            <Link to={exploreUrl}>
+              Voir plus
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+          <div className="premium-catalog-toolbar">
+            <div className="premium-product-tabs">
+              <button
+                type="button"
+                aria-pressed={!favoritesOnly && category === "all"}
+                onClick={() => choose("all")}
+              >
+                Tout
+              </button>
+              <button
+                type="button"
+                aria-pressed={favoritesOnly}
+                onClick={showFavorites}
+              >
+                Mes favoris
+              </button>
+              {categories.slice(1).map(([value, label]) => (
+                <button
+                  type="button"
+                  key={value}
+                  aria-pressed={!favoritesOnly && category === value}
+                  onClick={() => choose(value)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <label>
+              Pays{" "}
+              <select
+                aria-label="Pays du catalogue"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              >
+                <option value="CD">RD Congo</option>
+                <option value="CM">Cameroun</option>
+                <option value="CI">Côte d’Ivoire</option>
+                <option value="SN">Sénégal</option>
+                <option value="BJ">Bénin</option>
+              </select>
+            </label>
+          </div>
+          <p className="premium-selection-note">
+            {favoritesOnly
+              ? "Favoris enregistrés uniquement sur cet appareil, dans le catalogue sélectionné."
+              : ""}
+          </p>
+          <div
+            className="premium-product-grid"
+            ref={productGrid}
+            data-visible={catalogVisible}
+            aria-busy={loading || (!catalogVisible && products.length > 0)}
+          >
+            {loading || (!catalogVisible && products.length > 0)
+              ? Array.from(
+                  { length: loading ? 5 : products.length },
+                  (_, i) => (
+                    <div
+                      key={i}
+                      className="premium-skeleton"
+                      aria-hidden="true"
+                    >
+                      <div />
+                      <span />
+                      <span />
+                    </div>
+                  ),
+                )
+              : !error &&
+                visible.map((p) => (
+                  <Product
+                    key={p.id}
+                    product={p}
+                    favorite={favorites.includes(p.id)}
+                    onFavorite={toggleFavorite}
+                    onCart={cart}
+                  />
+                ))}
+          </div>
+          {loading && (
+            <p role="status" className="sr-only">
+              Chargement des produits…
+            </p>
+          )}
+          {error ? (
+            <div className="premium-empty" role="alert">
+              <h3>Le catalogue est momentanément indisponible.</h3>
+              <p>Vos données sont conservées. Réessayez dans un instant.</p>
+              <button
+                type="button"
+                className="premium-button premium-green"
+                onClick={() => setRetry((v) => v + 1)}
+              >
+                Réessayer
+              </button>
+            </div>
+          ) : (
+            !loading &&
+            visible.length === 0 && (
+              <div className="premium-empty">
+                <Store size={32} />
+                <h3>
+                  {favoritesOnly
+                    ? "Aucun favori dans cette sélection"
+                    : "Aucun produit dans cette catégorie pour le moment"}
+                </h3>
+                <p>Explorez une autre catégorie ou un autre pays.</p>
+                <button
+                  className="premium-button premium-green"
+                  type="button"
+                  onClick={() => choose("all")}
+                >
+                  Voir toutes les catégories
+                </button>
+              </div>
+            )
+          )}
+        </section>
+        <section className="premium-seller-banner premium-container">
+          <div>
+            <span className="premium-banner-symbol">
+              <Store size={42} />
+            </span>
+            <div>
+              <h2>Soutenez les vendeurs locaux</h2>
+              <p>Votre boutique, vos produits, une communauté à rencontrer.</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="premium-button premium-primary"
+            onClick={becomeSeller}
+          >
+            Devenir vendeur
+            <ArrowRight size={17} />
+          </button>
+        </section>
+        <div className="premium-trust premium-container">
+          <span>
+            <ShieldCheck />
+            Statuts vendeurs visibles
+          </span>
+          <span>
+            <Wallet />
+            Paiement direct au vendeur
+          </span>
+          <span>
+            <Truck />
+            Options de livraison
+          </span>
+          <span>
+            <MapPin />
+            Boutiques de proximité
+          </span>
+        </div>
+        <section className="premium-shops premium-container">
+          <div className="premium-section-heading">
+            <div>
+              <h2>Nos boutiques à découvrir</h2>
+              <p>Rencontrez les vendeurs présents dans votre sélection.</p>
+            </div>
+            <Link to={exploreUrl}>
+              Explorer les boutiques
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+          <div className="premium-shop-grid">
+            {shops.map((shop) => (
+              <Link
+                key={shop.id}
+                className="premium-shop"
+                to={`/explore/shop/${shop.id}`}
+              >
+                <div className="premium-shop-cover">
+                  {shop.shop_banner_url ? (
+                    <img
+                      src={photoUrl(shop.shop_banner_url)}
+                      loading="lazy"
+                      alt=""
+                      width="320"
+                      height="140"
+                    />
+                  ) : (
+                    <Store size={35} />
+                  )}
+                </div>
+                <div className="premium-shop-info">
+                  {shop.shop_logo_url ? (
+                    <img
+                      src={photoUrl(shop.shop_logo_url)}
+                      alt=""
+                      loading="lazy"
+                      width="36"
+                      height="36"
+                    />
+                  ) : (
+                    <span>
+                      <Store size={19} />
+                    </span>
+                  )}
+                  <div>
+                    <h3>{shop.shop_name}</h3>
+                    <p>{shop.category || "Voir la boutique"}</p>
+                    {shop.badge_verified === true && (
+                      <small>
+                        <ShieldCheck size={12} />
+                        Vendeur vérifié
+                      </small>
+                    )}
+                  </div>
+                  <ChevronRight size={17} />
+                </div>
+              </Link>
+            ))}
+          </div>
+          {!loading &&
+            !shopsLoading &&
+            (catalogVisible || products.length === 0) &&
+            !shops.length && (
+              <p className="premium-selection-note">
+                Les boutiques apparaîtront dès que des produits seront
+                disponibles.
+              </p>
+            )}
+        </section>
+      </main>
+      <footer className="premium-footer">
+        <div className="premium-container premium-footer-grid">
+          <div>
+            <Link className="premium-logo" to="/">
+              Afri<span>Market</span>
+            </Link>
+            <p>
+              Le marché de l’Afrique francophone.
+              <br />
+              Découvrez, échangez et achetez près de chez vous.
+            </p>
+          </div>
+          <div>
+            <h2>Explorer</h2>
+            <Link to={exploreUrl}>Tous les produits</Link>
+            <button type="button" onClick={becomeSeller}>
+              Devenir vendeur
+            </button>
+            <button type="button" onClick={showFavorites}>
+              Favoris sur cet appareil
+            </button>
+          </div>
+          <div>
+            <h2>Mon compte</h2>
+            {user ? (
+              <Link to={roleHome[user.role] || "/"}>Mon espace</Link>
+            ) : (
+              <>
+                <button type="button" onClick={() => openAuth("login")}>
+                  Se connecter
+                </button>
+                <button type="button" onClick={() => openAuth("register")}>
+                  Créer un compte
+                </button>
+              </>
+            )}
+            <button type="button" onClick={openCart}>
+              Mon panier
+            </button>
+          </div>
+          <div>
+            <h2>Acheter en confiance</h2>
+            <p>
+              Le paiement s’effectue directement avec le vendeur. AfriMarket ne
+              détient pas vos fonds.
+            </p>
+            <p>
+              Les modalités de livraison sont précisées lors de la commande.
+            </p>
+          </div>
+        </div>
+        <div className="premium-container premium-footer-bottom">
+          © {new Date().getFullYear()} AfriMarket · JonathanK-N
+        </div>
+      </footer>
+      <nav className="premium-mobile-nav" aria-label="Navigation mobile">
+        <Link to="/" aria-current="page">
+          <Store size={20} />
+          <span>Accueil</span>
+        </Link>
+        <Link to={exploreUrl}>
+          <LayoutGrid size={20} />
+          <span>Catégories</span>
+        </Link>
+        <button type="button" onClick={openCart}>
+          <ShoppingCart size={20} />
+          <span>Panier{count > 0 ? ` (${count})` : ""}</span>
+        </button>
+        <button
+          type="button"
+          onClick={showFavorites}
+          aria-pressed={favoritesOnly}
+        >
+          <Heart size={20} />
+          <span>Favoris</span>
+        </button>
+        {user ? (
+          <Link to={roleHome[user.role] || "/"}>
+            <UserRound size={20} />
+            <span>Profil</span>
+          </Link>
+        ) : (
+          <button type="button" onClick={() => openAuth("login")}>
+            <UserRound size={20} />
+            <span>Profil</span>
+          </button>
+        )}
+      </nav>
+      <div className="premium-notice" role="status" aria-live="polite">
+        {notice && (
+          <>
+            <span>{notice}</span>
+            <button
+              type="button"
+              aria-label="Fermer la notification"
+              onClick={() => setNotice("")}
+            >
+              <X size={16} />
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
 }

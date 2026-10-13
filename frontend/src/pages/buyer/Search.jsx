@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { Search as SearchIcon, MapPin, ShieldCheck, ArrowLeft } from "lucide-react";
+import {
+  Search as SearchIcon,
+  MapPin,
+  ShieldCheck,
+  ArrowLeft,
+} from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Slider } from "../../components/ui/slider";
 import { Switch } from "../../components/ui/switch";
@@ -14,6 +19,10 @@ const PRESETS = [1, 5, 10, 25, 50];
 export default function SearchPage({ guest = false }) {
   const { user } = useAuth();
   const [searchParams] = useSearchParams();
+  const queryCountry = searchParams.get("country_code");
+  const guestCountry = ["CD", "CM", "CI", "SN", "BJ"].includes(queryCountry)
+    ? queryCountry
+    : "CD";
   const [q, setQ] = useState(() => searchParams.get("q") || "");
   const [radius, setRadius] = useState(25);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
@@ -28,13 +37,13 @@ export default function SearchPage({ guest = false }) {
     navigator.geolocation.getCurrentPosition(
       (p) => setPos({ lat: p.coords.latitude, lng: p.coords.longitude }),
       () => setPos(null),
-      { timeout: 5000 }
+      { timeout: 5000 },
     );
   }, []);
 
   useEffect(() => {
     const params = {
-      country_code: user?.country_code || (guest ? "CD" : undefined),
+      country_code: user?.country_code || (guest ? guestCountry : undefined),
       radius_km: radius,
       verified_only: verifiedOnly,
       sort,
@@ -50,20 +59,41 @@ export default function SearchPage({ guest = false }) {
       api
         .get("/products", { params })
         .then(({ data }) => setProducts(data))
-        .catch(() => { setProducts([]); setError("La recherche est momentanément indisponible. Réessayez lorsque la connexion est rétablie."); })
+        .catch(() => {
+          setProducts([]);
+          setError(
+            "La recherche est momentanément indisponible. Réessayez lorsque la connexion est rétablie.",
+          );
+        })
         .finally(() => setLoading(false));
     }, 250);
     return () => clearTimeout(t);
-  }, [q, radius, verifiedOnly, sort, pos, user?.country_code, guest]);
+  }, [
+    q,
+    radius,
+    verifiedOnly,
+    sort,
+    pos,
+    user?.country_code,
+    guest,
+    guestCountry,
+  ]);
 
   return (
     <div className="mobile-shell shell-wide">
       <header className="sticky top-0 z-40 bg-afri-secondary text-white px-4 md:px-8 py-3 flex items-center gap-3 shadow-md">
-        <Link to={guest ? "/" : "/buyer/home"} className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
+        <Link
+          to={guest ? "/" : "/buyer/home"}
+          className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center"
+          data-testid="back-btn"
+        >
           <ArrowLeft size={20} />
         </Link>
         <div className="relative flex-1">
-          <SearchIcon size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <SearchIcon
+            size={18}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+          />
           <input
             data-testid="search-input"
             value={q}
@@ -75,7 +105,11 @@ export default function SearchPage({ guest = false }) {
       </header>
 
       {/* Banner search_top — juste sous la barre de recherche */}
-      <BannerCarousel position="search_top" role={user?.role || "buyer"} className="mx-4 mt-3" />
+      <BannerCarousel
+        position="search_top"
+        role={user?.role || "buyer"}
+        className="mx-4 mt-3"
+      />
 
       <section className="px-4 md:px-8 mt-4 space-y-3">
         <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
@@ -84,7 +118,9 @@ export default function SearchPage({ guest = false }) {
               <MapPin size={16} className="text-afri-primary" />
               Rayon : {radius} km
             </div>
-            <span className="text-xs text-gray-500">{products.length} résultat{products.length !== 1 ? "s" : ""}</span>
+            <span className="text-xs text-gray-500">
+              {products.length} résultat{products.length !== 1 ? "s" : ""}
+            </span>
           </div>
           <Slider
             data-testid="radius-slider"
@@ -114,7 +150,9 @@ export default function SearchPage({ guest = false }) {
 
           {q && (
             <p className="text-xs text-gray-500 mt-3 bg-afri-soft rounded-lg px-3 py-2">
-              La recherche par mot-clé ignore le rayon : tous les produits correspondants sont affichés, quel que soit l'emplacement du vendeur.
+              La recherche par mot-clé ignore le rayon : tous les produits
+              correspondants sont affichés, quel que soit l'emplacement du
+              vendeur.
             </p>
           )}
         </div>
@@ -129,7 +167,9 @@ export default function SearchPage({ guest = false }) {
           />
 
           <div>
-            <label className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Tri</label>
+            <label className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+              Tri
+            </label>
             <div className="grid grid-cols-2 gap-2 mt-1.5">
               {[
                 { v: "nearest", l: "Plus proche" },
@@ -166,7 +206,12 @@ export default function SearchPage({ guest = false }) {
             ))}
           </div>
         ) : error ? (
-          <p role="alert" className="text-center py-12 text-sm text-afri-secondary">{error}</p>
+          <p
+            role="alert"
+            className="text-center py-12 text-sm text-afri-secondary"
+          >
+            {error}
+          </p>
         ) : products.length === 0 ? (
           <div className="text-center py-12 text-sm text-gray-500">
             Aucun produit trouvé dans ce rayon.
@@ -174,13 +219,20 @@ export default function SearchPage({ guest = false }) {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 afri-stagger">
             {products.map((p) => (
-              <ProductCard key={p.id} product={p} guest={guest} className="afri-fade-up" />
+              <ProductCard
+                key={p.id}
+                product={p}
+                guest={guest}
+                className="afri-fade-up"
+              />
             ))}
           </div>
         )}
       </section>
 
-      {!guest && <BottomNav role={user?.role === "seller" ? "seller" : "buyer"} />}
+      {!guest && (
+        <BottomNav role={user?.role === "seller" ? "seller" : "buyer"} />
+      )}
     </div>
   );
 }
@@ -192,7 +244,11 @@ function Toggle({ label, checked, onChange, icon, testid }) {
         {icon}
         {label}
       </div>
-      <Switch checked={checked} onCheckedChange={onChange} data-testid={testid} />
+      <Switch
+        checked={checked}
+        onCheckedChange={onChange}
+        data-testid={testid}
+      />
     </div>
   );
 }
