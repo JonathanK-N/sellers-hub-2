@@ -20,7 +20,7 @@ function Product({product, favorite, onFavorite, onCart, floating=false}) {
       {image?<img src={image} alt={product.name} loading="lazy" decoding="async" width="320" height="320"/>:<span className="premium-no-image"><Store size={32}/><span>Photo à venir</span></span>}
     </Link>
     <button type="button" className="premium-favorite" aria-label={`${favorite?'Retirer des':'Ajouter aux'} favoris : ${product.name}`} aria-pressed={favorite} onClick={()=>onFavorite(product.id)}><Heart size={17} fill={favorite?'currentColor':'none'}/></button>
-    <div className="premium-product-body"><Link to={`/explore/product/${product.id}`}><h3>{product.name}</h3></Link><strong>{formatPrice(price.amount,price.currency)}</strong>
+    <div className="premium-product-body"><Link to={`/explore/product/${product.id}`}>{floating?<h2>{product.name}</h2>:<h3>{product.name}</h3>}</Link><strong>{formatPrice(price.amount,price.currency)}</strong>
       <Link className="premium-product-shop" to={`/explore/shop/${product.seller_id}`}>{product.seller_name||'Voir la boutique'}{product.seller_verified&&<ShieldCheck size={14} aria-label="Vendeur vérifié"/>}</Link>
       <div className="premium-product-bottom">{Number(product.seller_rating)>0?<span><Star size={13} fill="currentColor"/>{Number(product.seller_rating).toFixed(1)} <span className="sr-only">Note de la boutique</span></span>:<span>Consulter le produit</span>}<button type="button" aria-label={`Ajouter au panier : ${product.name}`} disabled={product.stock<=0} onClick={()=>onCart(product)}><ShoppingCart size={16}/></button></div>
     </div>
