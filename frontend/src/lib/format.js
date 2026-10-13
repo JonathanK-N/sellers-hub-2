@@ -1,4 +1,4 @@
-import { API_BASE } from "./api";
+import { API_BASE } from "./api_config";
 
 export function formatPrice(value, currency = "FC") {
   const n = Number(value || 0);

@@ -28,7 +28,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { useAuthModal } from "../context/AuthModalContext";
 import { useCart } from "../context/CartContext";
-import api from "../lib/api";
+import api from "../lib/public_api";
 import { displayPrice, formatPrice, photoUrl } from "../lib/format";
 import "./marketplace-premium.css";
 
