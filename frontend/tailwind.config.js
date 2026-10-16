@@ -13,6 +13,7 @@ module.exports = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+            afri: { primary: 'rgb(var(--afri-primary-rgb) / <alpha-value>)', 'primary-hover': 'rgb(var(--afri-primary-hover-rgb) / <alpha-value>)', secondary: 'rgb(var(--afri-secondary-rgb) / <alpha-value>)', soft: 'rgb(var(--afri-soft-rgb) / <alpha-value>)', accent: 'rgb(var(--afri-accent-rgb) / <alpha-value>)' },
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

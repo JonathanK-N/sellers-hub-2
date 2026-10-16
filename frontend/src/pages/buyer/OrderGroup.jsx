@@ -21,8 +21,8 @@ const STATUS_COLORS = {
   preparing: "bg-[#FAEEDA] text-[#633806]",
   out_for_delivery: "bg-[#FAEEDA] text-[#633806]",
   ready_for_pickup: "bg-[#FAEEDA] text-[#633806]",
-  delivered: "bg-[#E1F5EE] text-[#085041]",
-  collected: "bg-[#E1F5EE] text-[#085041]",
+  delivered: "bg-afri-soft text-afri-secondary",
+  collected: "bg-afri-soft text-afri-secondary",
   cancelled: "bg-[#FCEBEB] text-[#791F1F]",
 };
 
@@ -67,7 +67,7 @@ export default function OrderGroup() {
     return (
       <div className="mobile-shell pt-24 px-6 text-center">
         <p className="text-gray-500">{error || "Groupe introuvable."}</p>
-        <Link to="/buyer/orders" className="text-[#1D9E75] font-semibold mt-2 inline-block">
+        <Link to="/buyer/orders" className="text-afri-primary font-semibold mt-2 inline-block">
           Mes commandes
         </Link>
       </div>
@@ -78,7 +78,7 @@ export default function OrderGroup() {
 
   return (
     <div className="mobile-shell">
-      <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-afri-secondary text-white px-4 py-3 flex items-center gap-3 shadow-md">
         <Link to="/buyer/orders" className="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center" data-testid="back-btn">
           <ArrowLeft size={20} />
         </Link>
@@ -86,9 +86,9 @@ export default function OrderGroup() {
       </header>
 
       <div className="px-4 mt-4 space-y-3">
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <div className="flex items-center gap-2 text-gray-900">
-            <Package size={18} className="text-[#1D9E75]" />
+            <Package size={18} className="text-afri-primary" />
             <span className="font-semibold text-sm">
               {group.seller_count} commande{group.seller_count > 1 ? "s" : ""} chez {group.seller_count} vendeur{group.seller_count > 1 ? "s" : ""}
             </span>
@@ -96,23 +96,23 @@ export default function OrderGroup() {
           <p className="text-xs text-gray-500 mt-1">Passée {timeAgo(group.created_at)} · Paiement unique via {group.payment_method}</p>
         </section>
 
-        <section className="bg-[#E1F5EE] border border-[#1D9E75]/30 rounded-xl p-4 flex items-start gap-3">
-          <div className="w-9 h-9 rounded-full bg-[#1D9E75] text-white flex items-center justify-center shrink-0">
+        <section className="bg-afri-soft border border-afri-primary/30 rounded-xl p-4 flex items-start gap-3">
+          <div className="w-9 h-9 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0">
             <Lock size={18} />
           </div>
-          <div className="text-xs text-[#085041]">
-            <p className="font-semibold">Paiement réparti en escrow</p>
+          <div className="text-xs text-afri-secondary">
+            <p className="font-semibold">{group.payment_method === "direct" ? "Paiement direct à convenir avec chaque vendeur" : group.payment_method === "cash" ? "Paiement en espèces à la remise" : group.payment_status === "paid" ? "Paiement confirmé" : "Paiement en attente"}</p>
             <p className="mt-0.5 leading-relaxed">
-              Le total de {formatPrice(group.grand_total, currency)} est bloqué. Chaque vendeur est payé séparément à la confirmation de sa propre livraison.
+              {group.payment_method === "direct" ? "AfriMarket n’encaisse aucun fonds. Contactez chaque vendeur depuis sa commande ; les déclarations de paiement restent séparées et non vérifiées par la plateforme." : group.payment_method === "cash" ? "Réglez votre commande lors de sa remise." : group.payment_status === "paid" ? `Le total de ${formatPrice(group.grand_total, currency)} est bloqué. Chaque vendeur est payé séparément à la confirmation de sa propre livraison.` : "Aucun paiement n’est confirmé pour cette commande."}
             </p>
           </div>
         </section>
 
-        {!["paid", "captured_in_escrow"].includes(group.payment_status) && (
+        {!["cash", "direct"].includes(group.payment_method) && !["paid", "captured_in_escrow"].includes(group.payment_status) && (
           <button
             onClick={handlePay}
             disabled={paying}
-            className="w-full flex items-center justify-center gap-2 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-60 text-white rounded-xl py-3.5 font-semibold transition-colors"
+            className="w-full flex items-center justify-center gap-2 bg-afri-primary hover:bg-afri-primary-hover disabled:opacity-60 text-white rounded-xl py-3.5 font-semibold transition-colors"
           >
             {paying ? (
               <Loader2 size={18} className="animate-spin" />
@@ -129,10 +129,10 @@ export default function OrderGroup() {
               key={o.id}
               to={`/buyer/orders/${o.id}`}
               data-testid={`group-order-${o.id}`}
-              className="block bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:border-[#1D9E75]/40 transition-colors"
+              className="block bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden hover:border-afri-primary/40 transition-colors"
             >
               <div className="flex items-center gap-2 px-3 py-2 bg-[#F1EFE8] border-b border-gray-100">
-                <div className="w-6 h-6 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center">
                   <Store size={13} />
                 </div>
                 <span className="text-sm font-semibold text-gray-900 flex-1 line-clamp-1">{o.seller_name}</span>
@@ -145,10 +145,10 @@ export default function OrderGroup() {
                   {o.items.length} article{o.items.length > 1 ? "s" : ""} · {o.delivery_mode === "delivery" ? "Livraison" : "Retrait"}
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="font-display font-black text-base text-[#085041]">
+                  <span className="font-display font-black text-base text-afri-secondary">
                     {formatPrice(o.amount_due ?? o.total_amount, currency)}
                   </span>
-                  <span className="text-[#1D9E75] flex items-center gap-1 text-sm font-medium">
+                  <span className="text-afri-primary flex items-center gap-1 text-sm font-medium">
                     Suivre <ChevronRight size={16} />
                   </span>
                 </div>
@@ -157,7 +157,7 @@ export default function OrderGroup() {
           ))}
         </div>
 
-        <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex justify-between font-display font-black text-lg text-[#085041]">
+        <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex justify-between font-display font-black text-lg text-afri-secondary">
           <span>Total payé</span>
           <span data-testid="group-total">{formatPrice(group.grand_total, currency)}</span>
         </section>

@@ -1,0 +1,26 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "webRevision": "6606024e027ed163e697100ed83b8ff3475785ac",
+  "deployment": "62b1a5f8-a450-4611-823b-f2cb98b663a1",
+  "status": "SUCCESS",
+  "entry": "/assets/index-D1sBFCvN.js",
+  "bundleSha256": "2e2dcaaaa36345cb2250d9e2b35cdea78e90da2e1cd4245393112ade4927d4d1",
+  "artifact": 12023786934,
+  "digest": "sha256:53a86831af1c5f01bd0e2a6e463f123f496c8db3f072787e362d3a0304cbc5ab",
+  "verified": true,
+  "temporarySessions": [
+    {
+      "role": "BUYER",
+      "absent": true
+    },
+    {
+      "role": "SELLER",
+      "absent": true
+    },
+    {
+      "role": "ADMIN",
+      "absent": true
+    }
+  ],
+  "productionMutations": []
+}

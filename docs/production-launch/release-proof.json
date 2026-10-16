@@ -1,0 +1,118 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "id": 410663997,
+  "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/tag/untagged-1de09333980cc6290109",
+  "draft": true,
+  "prerelease": true,
+  "tag": "v1.1.0-direct-rc.1",
+  "sourceSha": "c492c70126a2ec9da71844c2d313df8e675c2ffb",
+  "buildSha": "5abd42d068632c7cb5c172d45c2c7746aae69798",
+  "productionDecision": "NO-GO",
+  "assets": [
+    {
+      "name": "afrimarket-afrimarket-android-debug-c492c701.zip",
+      "id": 633960655,
+      "sha256": "c9214e751cba84e583deb61996516bd1655743e75805654065ab2f41d51a5c0c",
+      "bytes": 5062939,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-android-emulator-c492c701.zip",
+      "id": 633960735,
+      "sha256": "1918d62b57a987941beed3012c7e708fb59c71597f6e6b87d378ad805e7ac3e0",
+      "bytes": 373545,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-mongodb-recovery-c492c701.zip",
+      "id": 633960758,
+      "sha256": "39abf33fe4cd56d96698397d65fff8254cefb5f5db42f38624b1b8828f5cc7b4",
+      "bytes": 738,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-frontend-business-e2e-c492c701.zip",
+      "id": 633960787,
+      "sha256": "c08e38aa285da4ca9ba8bee8326af53014cbd12a92985e8b61a0d103a7348dae",
+      "bytes": 1364,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-backend-tests-c492c701.zip",
+      "id": 633960800,
+      "sha256": "e64849cbc602b30a08a704d45cbbfb21f11bf60c44dfbf37a26887dcd77d3516",
+      "bytes": 3188,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-performance-comparison-c492c701.zip",
+      "id": 633960828,
+      "sha256": "1c3169f80321d5e9f0f1931892b20296511b99068083479881ff6c1845437598",
+      "bytes": 2479729,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-afrimarket-web-c492c701.zip",
+      "id": 633960857,
+      "sha256": "a5b0aa6e2b4489a7b63f3ae2177fdf461928803b5a683a38c001e441075faa8d",
+      "bytes": 1449411,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-secrets-scan-c492c701.zip",
+      "id": 633961554,
+      "sha256": "37134866f2f14eacdf3a347e2b226429b834b61a451e7a1749fe71d584de1be1",
+      "bytes": 161,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-web-security-c492c701.zip",
+      "id": 633961584,
+      "sha256": "141b7637e9dd713974ad24f4126ca2b84a1ac80ee3bb2f5d438fda338985d3b1",
+      "bytes": 86096,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-backend-security-c492c701.zip",
+      "id": 633961605,
+      "sha256": "decb14b43ff8b2ef559be16c9b8df48c74ca8dec8f41d9c7ed91f8d9bcbc7ff0",
+      "bytes": 1684,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-mongodb-staging-topology-c492c701.zip",
+      "id": 633961629,
+      "sha256": "4c56040492ea27297b73b762c139114f87d5a6c3d9edd5c3d49b41612090e810",
+      "bytes": 378,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-backend-c492c701.zip",
+      "id": 633961648,
+      "sha256": "d28e79ca7b564a0b3d1d482a661dc6e59b98c53add8b8c1c0bf502b4b6ded912",
+      "bytes": 129675,
+      "digestVerified": true
+    },
+    {
+      "name": "afrimarket-validation-report-c492c701.zip",
+      "id": 633961671,
+      "sha256": "b72b06fb1b9fe4735ad46fc2ae558e419691df828481da7a54958dffd6b7f821",
+      "bytes": 18748,
+      "digestVerified": true
+    },
+    {
+      "name": "artifact-manifest.json",
+      "id": 633961689,
+      "sha256": "8d873909b8c3ce61c112009359759f31bcb94cddbe15f296f533b36f2cee10ab",
+      "bytes": 2582,
+      "digestVerified": true
+    },
+    {
+      "name": "SHA256SUMS",
+      "id": 633961711,
+      "sha256": "1d0b870fb125091cee81b420203217652c5f0fc4e28293a481a751c732f1a24c",
+      "bytes": 1397,
+      "digestVerified": true
+    }
+  ]
+}

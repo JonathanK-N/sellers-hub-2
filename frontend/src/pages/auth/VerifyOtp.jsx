@@ -57,18 +57,22 @@ export default function VerifyOtp() {
 
   return (
     <div className="mobile-shell bg-white">
-      <header className="px-5 pt-5 pb-2 flex items-center gap-3">
-        <Link
-          to={from === "register" ? "/auth/register" : "/auth/login"}
-          className="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center"
-          data-testid="back-btn"
-        >
-          <ArrowLeft size={20} />
-        </Link>
-        <h1 className="font-display font-black text-xl text-[#085041]">Vérification</h1>
+      <Link
+        to={from === "register" ? "/auth/register" : "/auth/login"}
+        className="absolute left-4 top-4 w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center z-10"
+        data-testid="back-btn"
+      >
+        <ArrowLeft size={20} />
+      </Link>
+      <header className="px-6 pt-8 pb-5 flex flex-col items-center text-center border-b border-gray-100">
+        <div className="w-12 h-12 rounded-xl bg-afri-secondary text-afri-primary flex items-center justify-center font-black text-xl mb-3">
+          A
+        </div>
+        <h1 className="font-display font-black text-xl text-afri-secondary">Vérification</h1>
+        <p className="text-sm text-gray-500 mt-1">Sécurisez votre compte AfriMarket</p>
       </header>
 
-      <div className="px-5 mt-6 space-y-4">
+      <div className="px-6 mt-6 space-y-4">
         <p className="text-sm text-gray-600">
           Un code à 6 chiffres a été envoyé au <span className="font-semibold">{phone}</span>.
         </p>
@@ -80,14 +84,14 @@ export default function VerifyOtp() {
           maxLength={6}
           inputMode="numeric"
           placeholder="000000"
-          className="w-full text-center text-3xl tracking-[1rem] font-display font-bold py-4 rounded-lg border-2 border-gray-200 focus:border-[#1D9E75] focus:ring-2 focus:ring-[#1D9E75]/20 outline-none"
+          className="w-full text-center text-3xl tracking-[1rem] font-display font-bold py-4 rounded-lg border-2 border-gray-200 focus:border-afri-primary focus:ring-2 focus:ring-afri-primary/20 outline-hidden"
         />
 
         <button
           data-testid="otp-verify-btn"
           disabled={loading || code.length !== 6}
           onClick={submit}
-          className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
+          className="w-full bg-afri-primary var(--afri-primary-hover) text-white rounded-lg py-3 px-4 font-semibold transition-colors disabled:opacity-50"
         >
           {loading ? "Vérification…" : "Vérifier le code"}
         </button>
@@ -99,7 +103,7 @@ export default function VerifyOtp() {
             <button
               data-testid="otp-resend-btn"
               onClick={resend}
-              className="text-sm text-[#1D9E75] font-semibold hover:underline"
+              className="text-sm text-afri-primary font-semibold hover:underline"
             >
               Renvoyer le code
             </button>

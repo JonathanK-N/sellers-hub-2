@@ -6,7 +6,7 @@
    - Images CDN (S3)     → cache-first, réseau en fallback
    - Autres assets       → stale-while-revalidate
 */
-const CACHE = "afrimarket-v6";
+const CACHE = "afrimarket-green-ui-dynamic-v14";
 const OFFLINE_PAGE = "/index.html";
 
 // Assets à précacher au premier install
@@ -32,7 +32,7 @@ self.addEventListener("install", (e) => {
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+      Promise.all(keys.filter((k) => k.startsWith("afrimarket-") && k !== CACHE).map((k) => caches.delete(k)))
     )
   );
   self.clients.claim();
@@ -54,7 +54,7 @@ self.addEventListener("fetch", (e) => {
   const url = new URL(request.url);
 
   // 1. API — réseau pur, jamais de cache
-  if (url.pathname.startsWith("/api/")) {
+  if (url.pathname === "/api" || url.pathname.startsWith("/api/") || request.headers.has("Authorization")) {
     e.respondWith(
       fetch(request).catch(() =>
         new Response(JSON.stringify({ detail: "Hors ligne" }), {
@@ -123,8 +123,9 @@ self.addEventListener("fetch", (e) => {
     return;
   }
 
-  // 4. Images CDN externes (S3, Cloudfront) — cache-first
+  // 4. Only explicitly public image/font origins may enter the public cache.
   if (url.origin !== self.location.origin) {
+    if (!["images.unsplash.com", "fonts.googleapis.com", "fonts.gstatic.com"].includes(url.hostname)) return;
     e.respondWith(
       caches.match(request).then((cached) => {
         if (cached) return cached;

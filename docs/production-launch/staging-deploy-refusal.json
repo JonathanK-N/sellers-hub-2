@@ -1,0 +1,16 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "projectId": "bc40e22f-b963-46fa-a64e-240f3aa954cd",
+  "environmentId": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+  "patchId": "6d13f9a6-4924-4c69-92e3-d351404d5136",
+  "sourceSha": "c492c70126a2ec9da71844c2d313df8e675c2ffb",
+  "humanApproved": true,
+  "connectorAction": "accept_deploy",
+  "connectorResult": "Cancelled — the user did not approve this action. No changes were made.",
+  "patchStatusAfter": "STAGED",
+  "changes": 24,
+  "destructive": false,
+  "ownerCanApplyManually": false,
+  "status": "BLOCKED",
+  "noAlternativeApplyPerformed": true
+}

@@ -1,0 +1,10 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Old worker locally intercepted on actual HTTPS origin; new bytes fetched from HTTPS; bounded polling until activation finishes",
+  "status": "PASS",
+  "cacheNames": [
+    "unrelated-validation-cache",
+    "afrimarket-green-ui-dynamic-v14"
+  ],
+  "attempts": 6
+}

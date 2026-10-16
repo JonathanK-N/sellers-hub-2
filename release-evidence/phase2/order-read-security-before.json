@@ -1,0 +1,15 @@
+{
+  "synthetic": true,
+  "rows": [
+    {
+      "test": "unassigned deliverer cannot read another order",
+      "http": 200,
+      "status": "FAIL",
+      "exposedFields": [
+        "confirmation_code",
+        "qr_code",
+        "buyer_phone"
+      ]
+    }
+  ]
+}

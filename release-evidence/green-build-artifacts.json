@@ -1,0 +1,37 @@
+[
+  {
+    "version": "1.0.1-green.1-debug",
+    "sourceSha": "890d8e76341c3bb08f3d7452e7ecf87e08d222dd",
+    "buildSha": "837024d51699099f7805776f8f734cbe301a227c",
+    "date": "2026-10-10T21:30:38Z",
+    "type": "Android debug staging",
+    "file": "C-green-890d8e7-android-debug.zip",
+    "sha256": "a83f5562d60e1c54720936e946a609f17841f1b6a660c50955bb368b3fa84703",
+    "bytes": 6585257,
+    "tools": {
+      "node": "20.20.2",
+      "java": "Temurin 17.0.20.1+1",
+      "androidSdk": 34,
+      "gradlePlugin": "8.2.1"
+    },
+    "run": 38087694857,
+    "tests": "CI PASS; device tests BLOCKED",
+    "restore": "Use isolated test environment and staging API; no production secrets included."
+  },
+  {
+    "version": "0.1.1-green.1",
+    "sourceSha": "890d8e76341c3bb08f3d7452e7ecf87e08d222dd",
+    "buildSha": "837024d51699099f7805776f8f734cbe301a227c",
+    "date": "2026-10-10T21:29:00Z",
+    "type": "Web/PWA staging",
+    "file": "C-green-890d8e7-web-pwa.zip",
+    "sha256": "34535b381009ba357679ec4e76738069c52661615176e4d383c6703254e2136d",
+    "bytes": 2513056,
+    "tools": {
+      "node": "20.20.2"
+    },
+    "run": 38087694857,
+    "tests": "CI PASS; device tests BLOCKED",
+    "restore": "Use isolated test environment and staging API; no production secrets included."
+  }
+]

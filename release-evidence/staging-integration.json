@@ -1,0 +1,151 @@
+{
+  "time": "2026-10-10T20:33:34.799Z",
+  "environment": "isolated synthetic staging",
+  "rows": [
+    {
+      "test": "staging health",
+      "status": "PASS",
+      "http": 200,
+      "checks": {
+        "mongodb": "ok",
+        "fx_rate": "no_data"
+      }
+    },
+    {
+      "test": "buyer registration",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer OTP verification",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer password login",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller registration",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller OTP verification",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller password login",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "deliverer registration",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "deliverer OTP verification",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "deliverer password login",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller shop setup",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller create product",
+      "status": "PASS",
+      "http": 201,
+      "note": "Endpoint declares status_code=201; initial exploratory expectation 200 was incorrect"
+    },
+    {
+      "test": "buyer profile",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer order history",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer notifications",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer conversations",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer KYC status",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller dashboard",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller wallet",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller KYC status",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller shop read",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "buyer denied admin users",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "synthetic cash pickup order creation",
+      "status": "PASS",
+      "http": 201
+    },
+    {
+      "test": "buyer sends message",
+      "status": "PASS",
+      "http": 201
+    },
+    {
+      "test": "seller receives conversation",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "seller order notification created",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "reject zero order quantity before correction",
+      "status": "FAIL",
+      "http": 201
+    },
+    {
+      "test": "reject zero quantity after correction",
+      "status": "PASS",
+      "http": 422
+    }
+  ]
+}

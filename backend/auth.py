@@ -1,6 +1,6 @@
 """Phone+OTP authentication with JWT."""
 import os
-import random
+import secrets
 import logging
 from datetime import datetime, timezone, timedelta
 from typing import Optional
@@ -39,7 +39,7 @@ def get_jwt_secret() -> str:
 
 
 def generate_otp() -> str:
-    return f"{random.randint(0, 999999):06d}"
+    return f"{secrets.randbelow(1000000):06d}"
 
 
 def create_access_token(user_id: str, role: str) -> str:
@@ -54,7 +54,10 @@ def create_access_token(user_id: str, role: str) -> str:
 
 
 def decode_token(token: str) -> dict:
-    return jwt.decode(token, get_jwt_secret(), algorithms=[JWT_ALGORITHM])
+    payload = jwt.decode(token, get_jwt_secret(), algorithms=[JWT_ALGORITHM], options={"require": ["sub", "exp", "iat", "type"]})
+    if payload.get("type") != "access":
+        raise jwt.InvalidTokenError("Invalid token type")
+    return payload
 
 
 def normalize_phone(phone: str) -> str:
@@ -86,7 +89,7 @@ async def get_current_user_dep(request: Request):
         raise HTTPException(status_code=401, detail="Token invalide")
 
     db = get_db()
-    user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0, "password_hash": 0})
+    user = await db.users.find_one({"id": payload["sub"]}, dict.fromkeys(("_id", "otp_code", "otp_expires_at", "password_hash"), 0))
     if not user:
         raise HTTPException(status_code=401, detail="Utilisateur introuvable")
     # Bloquer les comptes suspendus/bannis — même avec un token encore valide
@@ -94,6 +97,8 @@ async def get_current_user_dep(request: Request):
         raise HTTPException(status_code=403, detail="Votre compte a été banni. Contactez le support.")
     if user.get("suspended"):
         raise HTTPException(status_code=403, detail="Votre compte est temporairement suspendu. Contactez le support.")
+    if user.get("is_deleted") or user.get("deleted") or user.get("is_active") is False:
+        raise HTTPException(403, "Compte désactivé")
     return user
 
 
@@ -124,5 +129,17 @@ async def get_current_user_optional(request: Request):
         return None
 
     db = get_db()
-    user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0, "password_hash": 0})
+    user = await db.users.find_one({"id": payload["sub"]}, dict.fromkeys(("_id", "otp_code", "otp_expires_at", "password_hash"), 0))
+    if user and (user.get("banned") or user.get("suspended")):
+        return None
     return user
+
+
+def otp_sandbox_enabled():
+    return os.environ.get("AUTH_MODE", "live").lower() == "sandbox"
+
+
+def require_otp_delivery():
+    from sms import is_sms_configured
+    if not is_sms_configured() and not otp_sandbox_enabled():
+        raise HTTPException(status_code=503, detail="Vérification téléphonique temporairement indisponible")

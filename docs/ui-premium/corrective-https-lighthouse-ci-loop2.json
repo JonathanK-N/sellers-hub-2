@@ -1,0 +1,1728 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "2806d719bf0edbdc31ebd32ab0887e1fb4dc40cb",
+  "webSourceSha": "584f0c463ee53e65be790526cb38819eb8d6dd83",
+  "blockedMutations": [],
+  "partialDiagnostic": false,
+  "scope": "Actual Railway staging HTTPS, Lighthouse 13.5 default mobile simulated throttling; fresh isolated browser per page, authentication initialized on robots.txt without warming application resources; raw authenticated reports private outside Git",
+  "rows": [
+    {
+      "page": "accueil",
+      "route": "/",
+      "finalPath": "/",
+      "pageVerified": true,
+      "seoPolicy": "public SEO >=95",
+      "status": "FAIL",
+      "metrics": {
+        "performance": 78,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100,
+        "lcpMs": 2942.883,
+        "tbtMs": 601.9999999999998,
+        "cls": 0
+      },
+      "failures": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.92
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.79
+        },
+        {
+          "id": "speed-index",
+          "title": "Speed Index",
+          "score": 0.92
+        },
+        {
+          "id": "total-blocking-time",
+          "title": "Total Blocking Time",
+          "score": 0.49
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.5
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.96
+        },
+        {
+          "id": "mainthread-work-breakdown",
+          "title": "Minimize main-thread work",
+          "score": 0
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "score": 0.5
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0
+        }
+      ],
+      "diagnostics": {
+        "apiResources": [
+          {
+            "path": "/api/products",
+            "startMs": 592.6070000000036,
+            "endMs": 805.5140000000029,
+            "http": 200
+          },
+          {
+            "path": "/api/fx/rate",
+            "startMs": 592.6929999999993,
+            "endMs": 799.8399999999965,
+            "http": 200
+          }
+        ],
+        "lcpElementClasses": null,
+        "benchmarkIndex": 2141.5,
+        "mainThread": [
+          {
+            "group": "other",
+            "durationMs": 987.0080000000003
+          },
+          {
+            "group": "scriptEvaluation",
+            "durationMs": 494.9080000000003
+          },
+          {
+            "group": "parseHTML",
+            "durationMs": 396.33200000000005
+          },
+          {
+            "group": "styleLayout",
+            "durationMs": 215.832
+          },
+          {
+            "group": "paintCompositeRender",
+            "durationMs": 118.27200000000003
+          },
+          {
+            "group": "scriptParseCompile",
+            "durationMs": 3.788
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "part": "timeToFirstByte",
+            "durationMs": 128.653
+          },
+          {
+            "part": "resourceLoadDelay",
+            "durationMs": 197.098
+          },
+          {
+            "part": "resourceLoadDuration",
+            "durationMs": 337.98
+          },
+          {
+            "part": "elementRenderDelay",
+            "durationMs": 1008.192
+          }
+        ],
+        "lcpElementTag": "img",
+        "staticResources": [
+          {
+            "path": "/fonts/poppins-400-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8013,
+            "startMs": 257.1600000000035,
+            "endMs": 305.25800000000163
+          },
+          {
+            "path": "/fonts/poppins-800-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7984,
+            "startMs": 258.03600000000006,
+            "endMs": 301.0020000000004
+          },
+          {
+            "path": "/assets/index-DAc0oo52.js",
+            "type": "Script",
+            "transferBytes": 96054,
+            "startMs": 259.07800000000134,
+            "endMs": 355.80600000000413
+          },
+          {
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "type": "Script",
+            "transferBytes": 4611,
+            "startMs": 260.0400000000009,
+            "endMs": 307.890999999996
+          },
+          {
+            "path": "/images/market-hero-800.avif",
+            "type": "Image",
+            "transferBytes": 47208,
+            "startMs": 334.1640000000043,
+            "endMs": 663.0720000000001
+          },
+          {
+            "path": "/fonts/poppins-700-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7943,
+            "startMs": 559.4430000000066,
+            "endMs": 662.5149999999994
+          },
+          {
+            "path": "/fonts/poppins-600-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8127,
+            "startMs": 559.5390000000043,
+            "endMs": 662.9859999999971
+          }
+        ],
+        "cpuFrames": []
+      }
+    },
+    {
+      "page": "produits",
+      "route": "/buyer/home",
+      "finalPath": "/buyer/home",
+      "pageVerified": true,
+      "seoPolicy": "private page must remain non-indexable",
+      "status": "FAIL",
+      "metrics": {
+        "performance": 88,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 63,
+        "lcpMs": 3344.6142,
+        "tbtMs": 228,
+        "cls": 0.0011547443540616648
+      },
+      "failures": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.95
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.68
+        },
+        {
+          "id": "total-blocking-time",
+          "title": "Total Blocking Time",
+          "score": 0.87
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.65
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.93
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0
+        },
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0
+        }
+      ],
+      "diagnostics": {
+        "apiResources": [
+          {
+            "path": "/api/auth/me",
+            "startMs": 190.7190000000046,
+            "endMs": 218.62200000000303,
+            "http": 204
+          },
+          {
+            "path": "/api/fx/rate",
+            "startMs": 222.54100000000471,
+            "endMs": 342.0410000000047,
+            "http": 200
+          },
+          {
+            "path": "/api/auth/me",
+            "startMs": 223.50700000000506,
+            "endMs": 341.57500000000437,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 650.5500000000029,
+            "endMs": 654.4599999999991,
+            "http": 204
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 650.7950000000055,
+            "endMs": 655.3840000000055,
+            "http": 204
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 651.6500000000015,
+            "endMs": 655.6680000000051,
+            "http": 204
+          },
+          {
+            "path": "/api/products",
+            "startMs": 652.6370000000024,
+            "endMs": 655.7690000000075,
+            "http": 204
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 653.8340000000026,
+            "endMs": 657.474000000002,
+            "http": 204
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 659.7800000000061,
+            "endMs": 733.9870000000083,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 660.8600000000079,
+            "endMs": 733.6390000000029,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 661.6520000000019,
+            "endMs": 733.1789999999964,
+            "http": 200
+          },
+          {
+            "path": "/api/products",
+            "startMs": 662.5130000000063,
+            "endMs": 735.6520000000019,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 664.2770000000019,
+            "endMs": 734.336000000003,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 668.8310000000056,
+            "endMs": 734.2229999999981,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 653.8920000000071,
+            "endMs": 658.1770000000033,
+            "http": 204
+          }
+        ],
+        "lcpElementClasses": "text-sm font-semibold text-gray-900 line-clamp-1",
+        "benchmarkIndex": 4234.5,
+        "mainThread": [
+          {
+            "group": "other",
+            "durationMs": 642.0239999999989
+          },
+          {
+            "group": "scriptEvaluation",
+            "durationMs": 310.5120000000001
+          },
+          {
+            "group": "styleLayout",
+            "durationMs": 113.35599999999998
+          },
+          {
+            "group": "garbageCollection",
+            "durationMs": 82.81999999999996
+          },
+          {
+            "group": "paintCompositeRender",
+            "durationMs": 21.404000000000014
+          },
+          {
+            "group": "parseHTML",
+            "durationMs": 15.336
+          },
+          {
+            "group": "scriptParseCompile",
+            "durationMs": 2.8360000000000003
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "part": "timeToFirstByte",
+            "durationMs": 49.282
+          },
+          {
+            "part": "elementRenderDelay",
+            "durationMs": 827.193
+          }
+        ],
+        "lcpElementTag": "h3",
+        "staticResources": [
+          {
+            "path": "/fonts/poppins-400-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8022,
+            "startMs": 65.19400000000314,
+            "endMs": 111.52999999999884
+          },
+          {
+            "path": "/fonts/poppins-800-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7953,
+            "startMs": 65.87299999999959,
+            "endMs": 110.45500000000175
+          },
+          {
+            "path": "/assets/index-DAc0oo52.js",
+            "type": "Script",
+            "transferBytes": 96054,
+            "startMs": 66.50200000000041,
+            "endMs": 158.54200000000128
+          },
+          {
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "type": "Script",
+            "transferBytes": 4609,
+            "startMs": 67.98099999999977,
+            "endMs": 113.96399999999994
+          },
+          {
+            "path": "/assets/Home-40r3jNth.js",
+            "type": "Script",
+            "transferBytes": 1891,
+            "startMs": 179.71400000000722,
+            "endMs": 244.81300000000192
+          },
+          {
+            "path": "/assets/BottomNav-CV7ZGYpW.js",
+            "type": "Script",
+            "transferBytes": 1093,
+            "startMs": 182.23099999999977,
+            "endMs": 243.03800000000774
+          },
+          {
+            "path": "/assets/package-BGHL9rsw.js",
+            "type": "Script",
+            "transferBytes": 366,
+            "startMs": 184.80500000000757,
+            "endMs": 245.07000000000698
+          },
+          {
+            "path": "/assets/user-CmNxfkCq.js",
+            "type": "Script",
+            "transferBytes": 307,
+            "startMs": 184.90600000000268,
+            "endMs": 243.81000000000495
+          },
+          {
+            "path": "/assets/sparkles-fCoHjBIM.js",
+            "type": "Script",
+            "transferBytes": 413,
+            "startMs": 184.96600000000035,
+            "endMs": 234.4190000000017
+          },
+          {
+            "path": "/assets/api-DP3VHiPk.js",
+            "type": "Script",
+            "transferBytes": 19546,
+            "startMs": 188.20900000000256,
+            "endMs": 241.33800000000338
+          },
+          {
+            "path": "/assets/TopBar-BYuqJD00.js",
+            "type": "Script",
+            "transferBytes": 1217,
+            "startMs": 188.30099999999948,
+            "endMs": 244.99400000000605
+          },
+          {
+            "path": "/assets/bell-Dg2919wN.js",
+            "type": "Script",
+            "transferBytes": 344,
+            "startMs": 188.375,
+            "endMs": 235.0060000000085
+          },
+          {
+            "path": "/assets/ProductCard-B4Grex3b.js",
+            "type": "Script",
+            "transferBytes": 1291,
+            "startMs": 188.43500000000495,
+            "endMs": 242.2430000000022
+          },
+          {
+            "path": "/assets/crown-k1gbRv7p.js",
+            "type": "Script",
+            "transferBytes": 367,
+            "startMs": 188.66799999999785,
+            "endMs": 242.69700000000012
+          },
+          {
+            "path": "/assets/BannerCarousel-Bf53E6eP.js",
+            "type": "Script",
+            "transferBytes": 1047,
+            "startMs": 188.85599999999977,
+            "endMs": 258.9850000000006
+          },
+          {
+            "path": "/fonts/poppins-600-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8128,
+            "startMs": 279.8000000000029,
+            "endMs": 346.63900000000285
+          },
+          {
+            "path": "/fonts/poppins-500-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7893,
+            "startMs": 670.112000000001,
+            "endMs": 714.8610000000044
+          },
+          {
+            "path": "/fonts/poppins-700-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8002,
+            "startMs": 762.6790000000037,
+            "endMs": 848.3029999999999
+          }
+        ],
+        "cpuFrames": []
+      }
+    },
+    {
+      "page": "panier",
+      "route": "/buyer/cart",
+      "finalPath": "/buyer/cart",
+      "pageVerified": true,
+      "seoPolicy": "private page must remain non-indexable",
+      "status": "FAIL",
+      "metrics": {
+        "performance": 97,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 63,
+        "lcpMs": 2533.29346,
+        "tbtMs": 0,
+        "cls": 0.0000541880312226407
+      },
+      "failures": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.95
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.89
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.98
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0
+        },
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0
+        }
+      ],
+      "diagnostics": {
+        "apiResources": [
+          {
+            "path": "/api/auth/me",
+            "startMs": 198.98600000000442,
+            "endMs": 202.95300000000134,
+            "http": 204
+          },
+          {
+            "path": "/api/fx/rate",
+            "startMs": 205.69200000001,
+            "endMs": 332.1070000000036,
+            "http": 200
+          },
+          {
+            "path": "/api/auth/me",
+            "startMs": 208.0650000000096,
+            "endMs": 324.4579999999987,
+            "http": 200
+          }
+        ],
+        "lcpElementClasses": "text-sm text-gray-500 mt-1",
+        "benchmarkIndex": 4303.5,
+        "mainThread": [
+          {
+            "group": "scriptEvaluation",
+            "durationMs": 156.3280000000002
+          },
+          {
+            "group": "other",
+            "durationMs": 143.096
+          },
+          {
+            "group": "styleLayout",
+            "durationMs": 55.60000000000001
+          },
+          {
+            "group": "parseHTML",
+            "durationMs": 16.888
+          },
+          {
+            "group": "paintCompositeRender",
+            "durationMs": 5.975999999999997
+          },
+          {
+            "group": "scriptParseCompile",
+            "durationMs": 3.3560000000000003
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "part": "timeToFirstByte",
+            "durationMs": 47.339
+          },
+          {
+            "part": "elementRenderDelay",
+            "durationMs": 815.153
+          }
+        ],
+        "lcpElementTag": "p",
+        "staticResources": [
+          {
+            "path": "/fonts/poppins-400-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8022,
+            "startMs": 65.97900000000664,
+            "endMs": 112.4230000000025
+          },
+          {
+            "path": "/fonts/poppins-800-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7952,
+            "startMs": 67.27599999999802,
+            "endMs": 115.09900000000198
+          },
+          {
+            "path": "/assets/index-DAc0oo52.js",
+            "type": "Script",
+            "transferBytes": 96053,
+            "startMs": 68.12600000001112,
+            "endMs": 162.2320000000036
+          },
+          {
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "type": "Script",
+            "transferBytes": 4610,
+            "startMs": 68.8920000000071,
+            "endMs": 117.14700000000448
+          },
+          {
+            "path": "/assets/Cart-CkXCqo8i.js",
+            "type": "Script",
+            "transferBytes": 2171,
+            "startMs": 187.9250000000029,
+            "endMs": 239.72200000000157
+          },
+          {
+            "path": "/assets/arrow-left-BaNGbCrz.js",
+            "type": "Script",
+            "transferBytes": 280,
+            "startMs": 188.06400000000576,
+            "endMs": 845.872000000003
+          },
+          {
+            "path": "/assets/BottomNav-CV7ZGYpW.js",
+            "type": "Script",
+            "transferBytes": 1093,
+            "startMs": 189.91300000000774,
+            "endMs": 244.13600000000588
+          },
+          {
+            "path": "/assets/package-BGHL9rsw.js",
+            "type": "Script",
+            "transferBytes": 371,
+            "startMs": 190.02500000000873,
+            "endMs": 247.91100000000006
+          },
+          {
+            "path": "/assets/user-CmNxfkCq.js",
+            "type": "Script",
+            "transferBytes": 308,
+            "startMs": 193.20100000000093,
+            "endMs": 246.3790000000081
+          },
+          {
+            "path": "/assets/shopping-bag-DJjZXvKu.js",
+            "type": "Script",
+            "transferBytes": 368,
+            "startMs": 193.32700000000477,
+            "endMs": 247.31700000000274
+          },
+          {
+            "path": "/fonts/poppins-600-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8128,
+            "startMs": 270.95900000000984,
+            "endMs": 314.1590000000069
+          }
+        ],
+        "cpuFrames": []
+      }
+    },
+    {
+      "page": "commandes",
+      "route": "/buyer/orders",
+      "finalPath": "/buyer/orders",
+      "pageVerified": true,
+      "seoPolicy": "private page must remain non-indexable",
+      "status": "PASS",
+      "metrics": {
+        "performance": 98,
+        "accessibility": 95,
+        "bestPractices": 100,
+        "seo": 63,
+        "lcpMs": 2175.4365,
+        "tbtMs": 3.5,
+        "cls": 0.0000541880312226407
+      },
+      "failures": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.95
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.95
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.99
+        },
+        {
+          "id": "color-contrast",
+          "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+          "score": 0
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0
+        },
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0
+        }
+      ],
+      "diagnostics": {
+        "apiResources": [
+          {
+            "path": "/api/auth/me",
+            "startMs": 209.83699999999953,
+            "endMs": 213.57099999999627,
+            "http": 204
+          },
+          {
+            "path": "/api/fx/rate",
+            "startMs": 219.39300000001094,
+            "endMs": 338.37500000001455,
+            "http": 200
+          },
+          {
+            "path": "/api/auth/me",
+            "startMs": 221.38000000000466,
+            "endMs": 330.74000000000524,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 640.0430000000051,
+            "endMs": 711.1889999999985,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 640.476999999999,
+            "endMs": 719.726999999999,
+            "http": 200
+          },
+          {
+            "path": "/api/orders/my",
+            "startMs": 640.851999999999,
+            "endMs": 723.1549999999988,
+            "http": 200
+          }
+        ],
+        "lcpElementClasses": "text-xs text-gray-500",
+        "benchmarkIndex": 3595,
+        "mainThread": [
+          {
+            "group": "scriptEvaluation",
+            "durationMs": 310.1639999999999
+          },
+          {
+            "group": "other",
+            "durationMs": 217.4320000000005
+          },
+          {
+            "group": "styleLayout",
+            "durationMs": 168.89199999999997
+          },
+          {
+            "group": "parseHTML",
+            "durationMs": 23.348
+          },
+          {
+            "group": "paintCompositeRender",
+            "durationMs": 16.527999999999995
+          },
+          {
+            "group": "scriptParseCompile",
+            "durationMs": 3.1520000000000006
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "part": "timeToFirstByte",
+            "durationMs": 48.603
+          },
+          {
+            "part": "elementRenderDelay",
+            "durationMs": 239.729
+          }
+        ],
+        "lcpElementTag": "div",
+        "staticResources": [
+          {
+            "path": "/fonts/poppins-400-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8014,
+            "startMs": 69.70900000000256,
+            "endMs": 119.31700000001001
+          },
+          {
+            "path": "/fonts/poppins-800-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7961,
+            "startMs": 70.34599999999045,
+            "endMs": 115.5460000000021
+          },
+          {
+            "path": "/assets/index-DAc0oo52.js",
+            "type": "Script",
+            "transferBytes": 96054,
+            "startMs": 70.50899999999092,
+            "endMs": 166.1860000000015
+          },
+          {
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "type": "Script",
+            "transferBytes": 4610,
+            "startMs": 70.68700000000536,
+            "endMs": 121.5520000000106
+          },
+          {
+            "path": "/assets/Orders-CMttL_WB.js",
+            "type": "Script",
+            "transferBytes": 2340,
+            "startMs": 191.00299999999697,
+            "endMs": 249.5130000000063
+          },
+          {
+            "path": "/assets/BottomNav-CV7ZGYpW.js",
+            "type": "Script",
+            "transferBytes": 1093,
+            "startMs": 195.21600000000035,
+            "endMs": 251.9090000000142
+          },
+          {
+            "path": "/assets/package-BGHL9rsw.js",
+            "type": "Script",
+            "transferBytes": 366,
+            "startMs": 196.7560000000085,
+            "endMs": 256.72000000000116
+          },
+          {
+            "path": "/assets/user-CmNxfkCq.js",
+            "type": "Script",
+            "transferBytes": 307,
+            "startMs": 196.9600000000064,
+            "endMs": 256.2280000000028
+          },
+          {
+            "path": "/assets/api-DP3VHiPk.js",
+            "type": "Script",
+            "transferBytes": 19546,
+            "startMs": 200.8850000000093,
+            "endMs": 255.40700000000652
+          },
+          {
+            "path": "/assets/TopBar-BYuqJD00.js",
+            "type": "Script",
+            "transferBytes": 1218,
+            "startMs": 201.9250000000029,
+            "endMs": 251.70200000000477
+          },
+          {
+            "path": "/assets/bell-Dg2919wN.js",
+            "type": "Script",
+            "transferBytes": 347,
+            "startMs": 202.02300000000105,
+            "endMs": 256.12399999999616
+          },
+          {
+            "path": "/fonts/poppins-600-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8127,
+            "startMs": 290.916000000012,
+            "endMs": 336.81200000000536
+          },
+          {
+            "path": "/fonts/poppins-700-latin.woff2",
+            "type": "Font",
+            "transferBytes": 0,
+            "startMs": 742.8240000000078,
+            "endMs": 802.8579999999929
+          }
+        ],
+        "cpuFrames": []
+      }
+    },
+    {
+      "page": "messagerie",
+      "route": "/messages",
+      "finalPath": "/messages",
+      "pageVerified": true,
+      "seoPolicy": "private page must remain non-indexable",
+      "status": "FAIL",
+      "metrics": {
+        "performance": 94,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 63,
+        "lcpMs": 2996.97672,
+        "tbtMs": 0,
+        "cls": 0.0000541880312226407
+      },
+      "failures": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.95
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.78
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.96
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0
+        },
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0
+        }
+      ],
+      "diagnostics": {
+        "apiResources": [
+          {
+            "path": "/api/auth/me",
+            "startMs": 200.0639999999985,
+            "endMs": 202.09799999998359,
+            "http": 204
+          },
+          {
+            "path": "/api/fx/rate",
+            "startMs": 203.58899999999267,
+            "endMs": 337.7179999999935,
+            "http": 200
+          },
+          {
+            "path": "/api/auth/me",
+            "startMs": 205.35399999999208,
+            "endMs": 334.38300000000163,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 641.8189999999886,
+            "endMs": 719.5409999999829,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 642.2649999999849,
+            "endMs": 719.7569999999978,
+            "http": 200
+          },
+          {
+            "path": "/api/messages/conversations",
+            "startMs": 643.1579999999958,
+            "endMs": 729.5129999999917,
+            "http": 200
+          }
+        ],
+        "lcpElementClasses": "font-semibold text-gray-900 truncate",
+        "benchmarkIndex": 3915.5,
+        "mainThread": [
+          {
+            "group": "scriptEvaluation",
+            "durationMs": 218.96800000000013
+          },
+          {
+            "group": "other",
+            "durationMs": 169.32400000000038
+          },
+          {
+            "group": "styleLayout",
+            "durationMs": 84.02800000000002
+          },
+          {
+            "group": "parseHTML",
+            "durationMs": 17.215999999999998
+          },
+          {
+            "group": "paintCompositeRender",
+            "durationMs": 10.571999999999996
+          },
+          {
+            "group": "scriptParseCompile",
+            "durationMs": 3.3640000000000003
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "part": "timeToFirstByte",
+            "durationMs": 46.007
+          },
+          {
+            "part": "elementRenderDelay",
+            "durationMs": 701.23
+          }
+        ],
+        "lcpElementTag": "span",
+        "staticResources": [
+          {
+            "path": "/fonts/poppins-400-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8022,
+            "startMs": 65.61499999999069,
+            "endMs": 107.81399999999849
+          },
+          {
+            "path": "/fonts/poppins-800-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7952,
+            "startMs": 67.11000000000058,
+            "endMs": 111.60399999999208
+          },
+          {
+            "path": "/assets/index-DAc0oo52.js",
+            "type": "Script",
+            "transferBytes": 96054,
+            "startMs": 67.79499999999825,
+            "endMs": 159.3649999999907
+          },
+          {
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "type": "Script",
+            "transferBytes": 4610,
+            "startMs": 68.57200000000012,
+            "endMs": 114.28599999999278
+          },
+          {
+            "path": "/assets/Messages-BSuVC0_X.js",
+            "type": "Script",
+            "transferBytes": 1478,
+            "startMs": 177.19099999999162,
+            "endMs": 222.083999999988
+          },
+          {
+            "path": "/assets/BottomNav-CV7ZGYpW.js",
+            "type": "Script",
+            "transferBytes": 1115,
+            "startMs": 178.5610000000015,
+            "endMs": 221.60699999998906
+          },
+          {
+            "path": "/assets/package-BGHL9rsw.js",
+            "type": "Script",
+            "transferBytes": 371,
+            "startMs": 179.83699999998498,
+            "endMs": 227.47099999999045
+          },
+          {
+            "path": "/assets/user-CmNxfkCq.js",
+            "type": "Script",
+            "transferBytes": 308,
+            "startMs": 183.903999999995,
+            "endMs": 232.99099999999453
+          },
+          {
+            "path": "/assets/message-square-CVHPIsVE.js",
+            "type": "Script",
+            "transferBytes": 298,
+            "startMs": 184.0179999999964,
+            "endMs": 232.6579999999958
+          },
+          {
+            "path": "/assets/api-DP3VHiPk.js",
+            "type": "Script",
+            "transferBytes": 19545,
+            "startMs": 184.27199999998265,
+            "endMs": 231.83199999999488
+          },
+          {
+            "path": "/assets/TopBar-BYuqJD00.js",
+            "type": "Script",
+            "transferBytes": 1217,
+            "startMs": 184.3819999999978,
+            "endMs": 226.72000000000116
+          },
+          {
+            "path": "/assets/bell-Dg2919wN.js",
+            "type": "Script",
+            "transferBytes": 343,
+            "startMs": 185.20799999999872,
+            "endMs": 233.43499999999767
+          },
+          {
+            "path": "/fonts/poppins-600-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8128,
+            "startMs": 262.85299999998824,
+            "endMs": 311.15099999998347
+          },
+          {
+            "path": "/fonts/poppins-700-latin.woff2",
+            "type": "Font",
+            "transferBytes": 0,
+            "startMs": 725.0190000000002,
+            "endMs": 773.4339999999938
+          }
+        ],
+        "cpuFrames": []
+      }
+    },
+    {
+      "page": "vendeur",
+      "route": "/seller/dashboard",
+      "finalPath": "/seller/dashboard",
+      "pageVerified": true,
+      "seoPolicy": "private page must remain non-indexable",
+      "status": "FAIL",
+      "metrics": {
+        "performance": 94,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 63,
+        "lcpMs": 2987.80442,
+        "tbtMs": 0,
+        "cls": 0.00009253082204160957
+      },
+      "failures": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.95
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.78
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.96
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0
+        },
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0
+        }
+      ],
+      "diagnostics": {
+        "apiResources": [
+          {
+            "path": "/api/auth/me",
+            "startMs": 209.46399999999267,
+            "endMs": 218.20099999998638,
+            "http": 204
+          },
+          {
+            "path": "/api/fx/rate",
+            "startMs": 219.38999999998487,
+            "endMs": 333.6970000000001,
+            "http": 200
+          },
+          {
+            "path": "/api/auth/me",
+            "startMs": 224.31699999999546,
+            "endMs": 327.86699999999837,
+            "http": 200
+          },
+          {
+            "path": "/api/seller/dashboard",
+            "startMs": 636.0959999999905,
+            "endMs": 696.9440000000031,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 706.1479999999865,
+            "endMs": 774.4099999999889,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 706.4229999999952,
+            "endMs": 777.7679999999964,
+            "http": 200
+          }
+        ],
+        "lcpElementClasses": "font-display font-black text-lg tracking-tight",
+        "benchmarkIndex": 3990,
+        "mainThread": [
+          {
+            "group": "scriptEvaluation",
+            "durationMs": 211.1599999999998
+          },
+          {
+            "group": "other",
+            "durationMs": 188.66400000000039
+          },
+          {
+            "group": "styleLayout",
+            "durationMs": 127.248
+          },
+          {
+            "group": "paintCompositeRender",
+            "durationMs": 16.476
+          },
+          {
+            "group": "parseHTML",
+            "durationMs": 15.904000000000002
+          },
+          {
+            "group": "scriptParseCompile",
+            "durationMs": 4.548
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "part": "timeToFirstByte",
+            "durationMs": 55.399
+          },
+          {
+            "part": "elementRenderDelay",
+            "durationMs": 681.546
+          }
+        ],
+        "lcpElementTag": "span",
+        "staticResources": [
+          {
+            "path": "/fonts/poppins-400-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8022,
+            "startMs": 73.72299999999814,
+            "endMs": 115.88399999999092
+          },
+          {
+            "path": "/fonts/poppins-800-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7952,
+            "startMs": 74.40799999998126,
+            "endMs": 130.68499999999767
+          },
+          {
+            "path": "/assets/index-DAc0oo52.js",
+            "type": "Script",
+            "transferBytes": 96054,
+            "startMs": 75.13499999998021,
+            "endMs": 169.65499999998428
+          },
+          {
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "type": "Script",
+            "transferBytes": 4610,
+            "startMs": 75.90099999999802,
+            "endMs": 130.79999999998836
+          },
+          {
+            "path": "/assets/Dashboard-CNNRkxsW.js",
+            "type": "Script",
+            "transferBytes": 2621,
+            "startMs": 193.90699999999197,
+            "endMs": 251.33799999998882
+          },
+          {
+            "path": "/assets/circle-alert-DA0gDQvM.js",
+            "type": "Script",
+            "transferBytes": 366,
+            "startMs": 194.08699999998498,
+            "endMs": 247.05999999998312
+          },
+          {
+            "path": "/assets/crown-k1gbRv7p.js",
+            "type": "Script",
+            "transferBytes": 366,
+            "startMs": 199.64199999999255,
+            "endMs": 251.1649999999936
+          },
+          {
+            "path": "/assets/eye-LYTNoaGB.js",
+            "type": "Script",
+            "transferBytes": 365,
+            "startMs": 199.76799999998184,
+            "endMs": 251.06999999999243
+          },
+          {
+            "path": "/assets/BottomNav-CV7ZGYpW.js",
+            "type": "Script",
+            "transferBytes": 1093,
+            "startMs": 199.84199999998964,
+            "endMs": 250.93299999999
+          },
+          {
+            "path": "/assets/package-BGHL9rsw.js",
+            "type": "Script",
+            "transferBytes": 366,
+            "startMs": 199.90099999999802,
+            "endMs": 244.79999999998836
+          },
+          {
+            "path": "/assets/user-CmNxfkCq.js",
+            "type": "Script",
+            "transferBytes": 306,
+            "startMs": 199.95399999998335,
+            "endMs": 251.77499999999418
+          },
+          {
+            "path": "/assets/pencil-BHSA_-WI.js",
+            "type": "Script",
+            "transferBytes": 338,
+            "startMs": 200.10699999998906,
+            "endMs": 244.09899999998743
+          },
+          {
+            "path": "/assets/shopping-bag-DJjZXvKu.js",
+            "type": "Script",
+            "transferBytes": 368,
+            "startMs": 200.16899999997986,
+            "endMs": 246.05599999999686
+          },
+          {
+            "path": "/assets/trending-up-C1VXR6BO.js",
+            "type": "Script",
+            "transferBytes": 289,
+            "startMs": 200.23199999998906,
+            "endMs": 251.24699999998847
+          },
+          {
+            "path": "/assets/api-DP3VHiPk.js",
+            "type": "Script",
+            "transferBytes": 19594,
+            "startMs": 200.2839999999851,
+            "endMs": 275.3899999999994
+          },
+          {
+            "path": "/assets/TopBar-BYuqJD00.js",
+            "type": "Script",
+            "transferBytes": 1217,
+            "startMs": 200.34199999998964,
+            "endMs": 270.98699999997916
+          },
+          {
+            "path": "/assets/bell-Dg2919wN.js",
+            "type": "Script",
+            "transferBytes": 344,
+            "startMs": 200.39999999999418,
+            "endMs": 271.7509999999893
+          },
+          {
+            "path": "/fonts/poppins-600-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8137,
+            "startMs": 297.06299999999464,
+            "endMs": 342.4979999999923
+          },
+          {
+            "path": "/fonts/poppins-500-latin.woff2",
+            "type": "Font",
+            "transferBytes": 0,
+            "startMs": 717.3979999999865,
+            "endMs": 770.3549999999959
+          },
+          {
+            "path": "/fonts/poppins-700-latin.woff2",
+            "type": "Font",
+            "transferBytes": 0,
+            "startMs": 717.5679999999993,
+            "endMs": 765.4599999999919
+          }
+        ],
+        "cpuFrames": []
+      }
+    },
+    {
+      "page": "administrateur",
+      "route": "/admin/overview",
+      "finalPath": "/admin/overview",
+      "pageVerified": true,
+      "seoPolicy": "private page must remain non-indexable",
+      "status": "PASS",
+      "metrics": {
+        "performance": 98,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 63,
+        "lcpMs": 2170.506,
+        "tbtMs": 0,
+        "cls": 0.0000541880312226407
+      },
+      "failures": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.95
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.95
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.99
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0
+        },
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0
+        }
+      ],
+      "diagnostics": {
+        "apiResources": [
+          {
+            "path": "/api/auth/me",
+            "startMs": 204.35500000001048,
+            "endMs": 214.4030000000057,
+            "http": 204
+          },
+          {
+            "path": "/api/fx/rate",
+            "startMs": 214.76800000001094,
+            "endMs": 356.95900000000256,
+            "http": 200
+          },
+          {
+            "path": "/api/auth/me",
+            "startMs": 221.13099999999395,
+            "endMs": 331.41100000000733,
+            "http": 200
+          },
+          {
+            "path": "/api/admin/overview",
+            "startMs": 639.1739999999991,
+            "endMs": 728.0829999999987,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 639.5420000000013,
+            "endMs": 707.5369999999966,
+            "http": 200
+          },
+          {
+            "path": "/api/[private]",
+            "startMs": 639.8870000000024,
+            "endMs": 743.6900000000023,
+            "http": 200
+          }
+        ],
+        "lcpElementClasses": "text-xs text-gray-500",
+        "benchmarkIndex": 3902,
+        "mainThread": [
+          {
+            "group": "scriptEvaluation",
+            "durationMs": 225.64400000000012
+          },
+          {
+            "group": "other",
+            "durationMs": 176.19200000000035
+          },
+          {
+            "group": "styleLayout",
+            "durationMs": 126.396
+          },
+          {
+            "group": "parseHTML",
+            "durationMs": 18.432000000000002
+          },
+          {
+            "group": "paintCompositeRender",
+            "durationMs": 15.587999999999992
+          },
+          {
+            "group": "scriptParseCompile",
+            "durationMs": 4.5360000000000005
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "part": "timeToFirstByte",
+            "durationMs": 53.026
+          },
+          {
+            "part": "elementRenderDelay",
+            "durationMs": 240.268
+          }
+        ],
+        "lcpElementTag": "div",
+        "staticResources": [
+          {
+            "path": "/fonts/poppins-400-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8022,
+            "startMs": 73.24699999998847,
+            "endMs": 121.18399999999383
+          },
+          {
+            "path": "/fonts/poppins-800-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7952,
+            "startMs": 74.21600000000035,
+            "endMs": 124.40000000000873
+          },
+          {
+            "path": "/assets/index-DAc0oo52.js",
+            "type": "Script",
+            "transferBytes": 96055,
+            "startMs": 74.62800000001153,
+            "endMs": 169.12700000000768
+          },
+          {
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "type": "Script",
+            "transferBytes": 4610,
+            "startMs": 75.25599999999395,
+            "endMs": 117.60700000000361
+          },
+          {
+            "path": "/assets/Overview-DbjhxouY.js",
+            "type": "Script",
+            "transferBytes": 2240,
+            "startMs": 188.05500000000757,
+            "endMs": 229.8810000000085
+          },
+          {
+            "path": "/assets/crown-k1gbRv7p.js",
+            "type": "Script",
+            "transferBytes": 370,
+            "startMs": 188.2219999999943,
+            "endMs": 234.5130000000063
+          },
+          {
+            "path": "/assets/AdminSidebar-kWEvcnKf.js",
+            "type": "Script",
+            "transferBytes": 2110,
+            "startMs": 200.2719999999972,
+            "endMs": 244.15700000000652
+          },
+          {
+            "path": "/assets/bike-CLzPkKj1.js",
+            "type": "Script",
+            "transferBytes": 315,
+            "startMs": 203.7800000000134,
+            "endMs": 245.44400000000314
+          },
+          {
+            "path": "/assets/layout-dashboard-B1hIOenc.js",
+            "type": "Script",
+            "transferBytes": 319,
+            "startMs": 204.24200000001292,
+            "endMs": 250.25800000000163
+          },
+          {
+            "path": "/assets/log-out-D2vF2aiN.js",
+            "type": "Script",
+            "transferBytes": 342,
+            "startMs": 205.1579999999958,
+            "endMs": 249.53100000000268
+          },
+          {
+            "path": "/assets/package-BGHL9rsw.js",
+            "type": "Script",
+            "transferBytes": 366,
+            "startMs": 206.0069999999978,
+            "endMs": 255.35800000000745
+          },
+          {
+            "path": "/assets/shopping-bag-DJjZXvKu.js",
+            "type": "Script",
+            "transferBytes": 368,
+            "startMs": 211.75,
+            "endMs": 257.73799999999756
+          },
+          {
+            "path": "/assets/triangle-alert-C9ejFR-j.js",
+            "type": "Script",
+            "transferBytes": 327,
+            "startMs": 211.90499999999884,
+            "endMs": 262.7630000000063
+          },
+          {
+            "path": "/assets/refresh-cw-Bf7qJi4X.js",
+            "type": "Script",
+            "transferBytes": 337,
+            "startMs": 212.00400000000081,
+            "endMs": 267.51699999999255
+          },
+          {
+            "path": "/assets/trending-up-C1VXR6BO.js",
+            "type": "Script",
+            "transferBytes": 290,
+            "startMs": 212.07300000000396,
+            "endMs": 263.27399999999034
+          },
+          {
+            "path": "/assets/api-DP3VHiPk.js",
+            "type": "Script",
+            "transferBytes": 19546,
+            "startMs": 212.14800000000105,
+            "endMs": 272.4490000000078
+          },
+          {
+            "path": "/fonts/poppins-600-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8128,
+            "startMs": 283.3819999999978,
+            "endMs": 329.83000000000175
+          },
+          {
+            "path": "/fonts/poppins-700-latin.woff2",
+            "type": "Font",
+            "transferBytes": 0,
+            "startMs": 758.4499999999971,
+            "endMs": 810.5240000000049
+          }
+        ],
+        "cpuFrames": []
+      }
+    }
+  ]
+}

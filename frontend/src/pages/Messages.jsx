@@ -12,13 +12,21 @@ export default function ConversationsList() {
   const nav = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [offset, setOffset] = useState(0);
+  const [more, setMore] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+    let firstLoad = true;
     const load = () =>
-      api.get("/messages/conversations").then(({ data }) => {
-        if (!cancelled) setItems(data);
-      }).finally(() => setLoading(false));
+      api.get("/messages/conversations", { params: { limit: 50 } }).then(({ data }) => {
+        if (!cancelled) {
+          setItems(previous => [...new Map([...data, ...previous.filter(row => !data.some(fresh => fresh.conversation_id === row.conversation_id))].map(row => [row.conversation_id, row])).values()]);
+          setError("");
+          if (firstLoad) { setOffset(data.length); setMore(data.length === 50); firstLoad = false; }
+        }
+      }).catch(() => { if (!cancelled) setError("Connexion interrompue. Nouvelle tentative automatique."); }).finally(() => { if (!cancelled) setLoading(false); });
     load();
     const t = setInterval(load, 5000);
     return () => { cancelled = true; clearInterval(t); };
@@ -29,11 +37,13 @@ export default function ConversationsList() {
       <TopBar title="Messages" showCart={false} />
 
       <div className="px-4 mt-4">
+        {error && <p role="alert" className="mb-3 text-sm text-amber-800">{error}</p>}
+        {more && <button className="mb-3 text-afri-secondary underline" onClick={async () => { try { const { data } = await api.get("/messages/conversations", { params: { limit: 50, offset } }); setItems(previous => [...new Map([...previous, ...data].map(row => [row.conversation_id, row])).values()]); setOffset(offset + data.length); setMore(data.length === 50); } catch { setError("Impossible de charger les conversations précédentes."); } }}>Conversations précédentes</button>}
         {loading ? (
           <div className="space-y-3">{[1,2,3].map((i) => <div key={i} className="h-16 rounded-xl bg-gray-100 animate-pulse" />)}</div>
         ) : items.length === 0 ? (
           <div className="text-center py-12">
-            <div className="w-16 h-16 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 rounded-full bg-afri-soft text-afri-primary flex items-center justify-center mx-auto">
               <MessageSquare size={28} />
             </div>
             <p className="text-sm text-gray-500 mt-3">Aucune conversation pour l'instant.</p>
@@ -45,9 +55,9 @@ export default function ConversationsList() {
                 key={c.conversation_id}
                 data-testid={`conversation-${c.conversation_id}`}
                 onClick={() => nav(`/messages/${c.conversation_id}`, { state: { other_name: c.other_name, buyer_id: c.buyer_id, seller_id: c.seller_id } })}
-                className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm p-3 flex items-center gap-3 hover:border-[#1D9E75] transition-colors"
+                className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-xs p-3 flex items-center gap-3 hover:border-afri-primary transition-colors"
               >
-                <div className="w-11 h-11 rounded-full bg-[#1D9E75] text-white flex items-center justify-center font-display font-black">
+                <div className="w-11 h-11 rounded-full bg-afri-primary text-white flex items-center justify-center font-display font-black">
                   {c.other_name?.charAt(0).toUpperCase() || "?"}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -58,7 +68,7 @@ export default function ConversationsList() {
                   <p className="text-xs text-gray-500 truncate">{c.last_text}</p>
                 </div>
                 {c.unread_count > 0 && (
-                  <span className="ml-2 bg-[#EF9F27] text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1.5">
+                  <span className="ml-2 bg-afri-accent text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1.5">
                     {c.unread_count}
                   </span>
                 )}

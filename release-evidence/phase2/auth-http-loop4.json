@@ -1,0 +1,35 @@
+{
+  "synthetic": true,
+  "rows": [
+    {
+      "test": "register buyer",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "verify synthetic buyer OTP",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "password login buyer",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "register deliverer",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "verify synthetic deliverer OTP",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "password login deliverer",
+      "http": 200,
+      "status": "PASS"
+    }
+  ]
+}

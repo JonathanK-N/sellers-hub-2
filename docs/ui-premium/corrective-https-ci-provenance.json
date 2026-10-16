@@ -1,0 +1,34 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "deployedRevision": "584f0c463ee53e65be790526cb38819eb8d6dd83",
+  "applicationRevision": "838cc9523267be74561edd9b395d46615b2fad0a",
+  "backendRevision": "2806d719bf0edbdc31ebd32ab0887e1fb4dc40cb",
+  "runs": [
+    {
+      "id": 38840744159,
+      "artifact": 12021222361,
+      "digest": "sha256:8c9f367d4f0b27d1307ee6ad71fb02b9d6eb77f096c4fa7f73fc38d4c3c84330",
+      "verified": true
+    },
+    {
+      "id": 38841227001,
+      "artifact": 12021427347,
+      "digest": "sha256:a9274064e7d930cdc026b2463e46a4e860385e605f8ea85d9508a5cbe6a4ea53",
+      "verified": true
+    }
+  ],
+  "temporarySessionsRemoved": [
+    {
+      "role": "BUYER",
+      "absent": true
+    },
+    {
+      "role": "SELLER",
+      "absent": true
+    },
+    {
+      "role": "ADMIN",
+      "absent": true
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+name: AfriMarket historical reference packages
+on:
+  pull_request:
+    branches: [ui-ux]
+    paths: [release-evidence/reference-build-request.json]
+permissions:
+  contents: read
+jobs:
+  reference-web:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - version: A-original
+            ref: 6722492d85e0f8646ebe03c9b841c4a0e3611449
+          - version: B-uiux-tip
+            ref: 83be26533e8bca3aa4ca1b1fa84c93f686aabec0
+          - version: B-uiux-deployed
+            ref: 0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile && yarn build
+        working-directory: frontend
+        env:
+          CI: 'false'
+          REACT_APP_BACKEND_URL: https://afrimarket-api-staging-staging.up.railway.app
+      - name: Record exact historical source reference
+        run: |
+          node -e "const fs=require('fs');fs.writeFileSync('frontend/build/reference-metadata.json',JSON.stringify({version:process.env.REFERENCE_VERSION,sha:process.env.REFERENCE_SHA,date:new Date().toISOString(),type:'historical web build',node:process.version,api:'isolated staging; not historical production configuration'},null,2));"
+        env:
+          REFERENCE_VERSION: ${{ matrix.version }}
+          REFERENCE_SHA: ${{ matrix.ref }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: afrimarket-${{ matrix.version }}-${{ matrix.ref }}
+          path: frontend/build

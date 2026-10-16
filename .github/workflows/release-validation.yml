@@ -1,0 +1,449 @@
+name: AfriMarket release validation
+on:
+  pull_request:
+    branches: [main, ui-ux, fix/restore-original-green-theme, stabilization/afrimarket-phase-2, codex/afrimarket-rc3-validation, feature/afrimarket-ui-dynamic-premium, codex/afrimarket-dynamic-https-evidence]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mongodb-staging-topology:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and validate authenticated persistent staging topology
+        run: |
+          set -euo pipefail
+          umask 077
+          docker build -f Dockerfile.mongodb-staging -t afrimarket-staging-mongo-test .
+          export MONGO_INITDB_ROOT_USERNAME=staging_root
+          export MONGO_INITDB_ROOT_PASSWORD="$(openssl rand -hex 32)"
+          export MONGO_APP_PASSWORD="$(openssl rand -hex 32)"
+          docker volume create phase3-staging-data
+          docker run -d --name phase3-staging-mongo --hostname phase3-staging-mongo -e MONGO_INITDB_ROOT_USERNAME -e MONGO_INITDB_ROOT_PASSWORD -e MONGO_APP_PASSWORD -e RAILWAY_PRIVATE_DOMAIN=phase3-staging-mongo -v phase3-staging-data:/data/db afrimarket-staging-mongo-test
+          for attempt in $(seq 1 120); do
+            if docker logs phase3-staging-mongo 2>&1 | grep 'Authenticated staging replica set ready' >/dev/null; then break; fi
+            sleep 1
+          done
+          docker exec phase3-staging-mongo mongosh --quiet --file /usr/local/bin/afrimarket-mongo-init.js
+          docker exec phase3-staging-mongo mongosh --quiet --eval '
+            const app=db.getSiblingDB("afrimarket_staging_synthetic");
+            try { app.proof.findOne(); quit(1); } catch(e) { if(e.code!==13) quit(1); }
+            if(!app.auth("afrimarket_staging",process.env.MONGO_APP_PASSWORD)) quit(1);
+            app.createCollection("proof");
+            const session=db.getMongo().startSession(); session.startTransaction({writeConcern:{w:"majority"}});
+            session.getDatabase("afrimarket_staging_synthetic").proof.insertOne({_id:"transaction",amount:100}); session.commitTransaction(); session.endSession();
+            try { db.getSiblingDB("unrelated_database").proof.insertOne({x:1}); quit(1); } catch(e) { if(e.code!==13) quit(1); }
+          '
+          docker restart phase3-staging-mongo
+          for attempt in $(seq 1 90); do
+            if docker exec phase3-staging-mongo mongosh --quiet --eval 'const app=db.getSiblingDB("afrimarket_staging_synthetic"); if(!app.auth("afrimarket_staging",process.env.MONGO_APP_PASSWORD)||app.proof.findOne({_id:"transaction"})?.amount!==100) quit(1);' >/dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          docker exec phase3-staging-mongo mongosh --quiet --file /usr/local/bin/afrimarket-mongo-init.js
+          docker exec phase3-staging-mongo mongosh --quiet --eval 'const app=db.getSiblingDB("afrimarket_staging_synthetic"); if(!app.auth("afrimarket_staging",process.env.MONGO_APP_PASSWORD)||app.proof.findOne({_id:"transaction"})?.amount!==100) quit(1);'
+          mkdir topology-evidence
+          printf '%s\n' '{"status":"PASS","scope":"isolated Docker synthetic data","checks":["authenticated PRIMARY","anonymous access denied","application access restricted to synthetic database","majority transaction committed","data and keyfile persist after restart"],"railwayDeployment":"BLOCKED pending approval control and sealed variables"}' > topology-evidence/staging-topology.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mongodb-staging-topology-${{ github.sha }}
+          path: topology-evidence
+      - name: Inspect and remove isolated topology
+        if: always()
+        run: |
+          docker logs phase3-staging-mongo
+          docker rm -f phase3-staging-mongo || true
+          docker volume rm phase3-staging-data || true
+  security-secrets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install pinned official scanner
+        run: |
+          curl -fsSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz -o /tmp/gitleaks.tar.gz
+          echo '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  /tmp/gitleaks.tar.gz' | sha256sum --check
+          mkdir /tmp/gitleaks
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp/gitleaks
+      - name: Scan reachable Git history with redacted output
+        run: /tmp/gitleaks/gitleaks git --redact --report-format json --report-path secrets-redacted.json --log-opts=HEAD .
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: secrets-scan-${{ github.sha }}
+          path: secrets-redacted.json
+  mongodb-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pymongo==4.18.2 cryptography==50.0.2
+      - name: Prepare isolated synthetic replica set and official tools
+        run: |
+          docker run -d --name recovery-source -p 127.0.0.1:27018:27017 mongo:8.0.32 mongod --replSet test-rs --bind_ip_all --wiredTigerCacheSizeGB 0.25
+          for attempt in $(seq 1 30); do docker exec recovery-source mongosh --quiet --eval 'db.adminCommand({ping:1})' && break; sleep 1; done
+          docker exec recovery-source mongosh --quiet --eval 'rs.initiate({_id:"test-rs",members:[{_id:0,host:"127.0.0.1:27017"}]})'
+          for attempt in $(seq 1 30); do docker exec recovery-source mongosh --quiet --eval 'if (!db.hello().isWritablePrimary) quit(1)' && break; sleep 1; done
+          python - <<'PY'
+          import hashlib, json, pathlib, urllib.request, tarfile
+          metadata=json.load(urllib.request.urlopen('https://downloads.mongodb.org/tools/db/release.json'))
+          version=next(v for v in metadata['versions'] if v['version']=='100.19.1')
+          tool=next(d for d in version['downloads'] if d['name']=='ubuntu2404' and d['arch']=='x86_64')['archive']
+          data=urllib.request.urlopen(tool['url']).read()
+          assert hashlib.sha256(data).hexdigest()==tool['sha256']
+          pathlib.Path('/tmp/mongo-tools.tgz').write_bytes(data)
+          with tarfile.open('/tmp/mongo-tools.tgz') as archive:
+              archive.extractall('/tmp/mongo-tools',filter='data')
+          PY
+      - name: Encrypted full dump and isolated restoration
+        run: |
+          export RECOVERY_PRIVATE="$RUNNER_TEMP/afrimarket-recovery-private"
+          mkdir -p "$RECOVERY_PRIVATE"
+          cat > /tmp/recovery-mongod <<'SH'
+          #!/bin/sh
+          exec docker run --rm --user "$(id -u):$(id -g)" --name recovery-target --network host -v "$RECOVERY_PRIVATE:$RECOVERY_PRIVATE" mongo:8.0.32 mongod "$@"
+          SH
+          chmod +x /tmp/recovery-mongod
+          mkdir -p recovery-evidence
+          python scripts/validate_mongodb_recovery.py --mongod /tmp/recovery-mongod --mongodump "$(find /tmp/mongo-tools -name mongodump -type f)" --mongorestore "$(find /tmp/mongo-tools -name mongorestore -type f)" --private-output "$RECOVERY_PRIVATE" --evidence recovery-evidence/synthetic-recovery.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mongodb-recovery-${{ github.sha }}
+          path: recovery-evidence
+      - name: Inspect isolated recovery server
+        if: always()
+        run: docker logs recovery-source
+      - name: Remove isolated containers
+        if: always()
+        run: docker rm -f recovery-source recovery-target || true
+  performance-comparison:
+    needs: web
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: v1.0.1-green-rc.2
+          path: perf-baseline
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile && yarn build
+        working-directory: perf-baseline/frontend
+        env:
+          REACT_APP_BACKEND_URL: https://afrimarket-api-staging-staging.up.railway.app
+          CI: 'false'
+      - uses: actions/download-artifact@v4
+        with:
+          name: afrimarket-web-${{ github.sha }}
+          path: perf-candidate
+      - name: Measure baseline and candidate sequentially on the same runner
+        run: |
+          mkdir performance-evidence
+          npm install --prefix /tmp/perf-tools lighthouse@13.5.0
+          perf-baseline/frontend/node_modules/.bin/serve -s perf-baseline/frontend/build -l tcp://127.0.0.1:8081 > performance-evidence/baseline-server.log 2>&1 &
+          perf-baseline/frontend/node_modules/.bin/serve -s perf-candidate -l tcp://127.0.0.1:8082 > performance-evidence/candidate-server.log 2>&1 &
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:8081/ >/dev/null && curl -fsS http://127.0.0.1:8082/ >/dev/null && break; sleep 1; done
+          google-chrome --version > performance-evidence/browser-version.txt
+          for attempt in 1 2 3; do
+            /tmp/perf-tools/node_modules/.bin/lighthouse http://127.0.0.1:8081 --chrome-flags='--headless --no-sandbox' --output=json --output-path=performance-evidence/baseline-$attempt.json --quiet
+            /tmp/perf-tools/node_modules/.bin/lighthouse http://127.0.0.1:8082 --chrome-flags='--headless --no-sandbox' --output=json --output-path=performance-evidence/candidate-$attempt.json --quiet
+          done
+          node -e "(async()=>{const fs=require('fs');const url='https://afrimarket-web-staging-staging.up.railway.app';const r=await fetch(url);const html=await r.text();const main=s=>s.match(/src=\"([^\"]*(?:static\/js\/main\.|assets\/index-)[^\"]+)\"/)?.[1];const expected=main(fs.readFileSync('perf-candidate/index.html','utf8'));const observed=main(html);fs.writeFileSync('performance-evidence/staging-context.json',JSON.stringify({url,sourceSha:process.env.SOURCE_SHA,expectedMain:expected,observedMain:observed,artifactMatchesStaging:!!expected&&expected===observed,observedAt:new Date().toISOString()},null,2));})().catch(e=>{console.error(e.message);process.exitCode=1;});"
+          for attempt in 1 2 3; do
+            /tmp/perf-tools/node_modules/.bin/lighthouse https://afrimarket-web-staging-staging.up.railway.app --chrome-flags='--headless --no-sandbox' --output=json --output-path=performance-evidence/staging-$attempt.json --quiet
+          done
+          node -e "require('fs').writeFileSync('performance-evidence/context.json',JSON.stringify({baselineSha:'9176e82debf2b35f7262d64416fa9cb5e983726b',sourceSha:process.env.SOURCE_SHA,runner:process.env.RUNNER_OS,profile:'Lighthouse 13.5 default mobile; same runner; sequential; 3 pairs; local static hosts; staging API'},null,2));"
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-comparison-${{ github.sha }}
+          path: performance-evidence
+  frontend-business-e2e:
+    needs: web
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r backend/requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: afrimarket-web-${{ github.sha }}
+          path: browser-web
+      - name: Install browser test runtime
+        run: |
+          mkdir -p /tmp/afrimarket-browser-qa
+          npm install --prefix /tmp/afrimarket-browser-qa playwright@1.60.0
+          /tmp/afrimarket-browser-qa/node_modules/.bin/playwright install --with-deps chromium
+      - name: Start synthetic loopback replica set
+        run: |
+          docker run -d --name launch-qa-mongo -p 127.0.0.1:27018:27018 mongo:8.0.32 mongod --port 27018 --replSet phase3-test --bind_ip_all --wiredTigerCacheSizeGB 0.25
+          for attempt in $(seq 1 90); do docker exec launch-qa-mongo mongosh --port 27018 --quiet --eval 'db.adminCommand("ping").ok' && break; sleep 1; done
+          docker exec launch-qa-mongo mongosh --port 27018 --quiet --eval 'rs.initiate({_id:"phase3-test",members:[{_id:0,host:"localhost:27018"}]})'
+          for attempt in $(seq 1 30); do docker exec launch-qa-mongo mongosh --port 27018 --quiet --eval 'if(!db.hello().isWritablePrimary) quit(1)' && break; sleep 1; done
+      - name: Exercise browser business roles and persisted invariants
+        run: node scripts/production_launch_browser_e2e.cjs browser-web "$(command -v python)" "$RUNNER_TEMP/launch-browser-private" release-evidence/production-launch-browser-ci.json
+        env:
+          PLAYWRIGHT_MODULE: /tmp/afrimarket-browser-qa/node_modules/playwright
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-business-e2e-${{ github.sha }}
+          path: release-evidence/production-launch-browser-ci.json
+  android-emulator:
+    needs: android
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools emulator system-images;android-34;google_apis;x86_64'
+          log-accepted-android-sdk-licenses: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: afrimarket-android-debug-${{ github.sha }}
+          path: android-apk
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow
+      - name: Boot isolated Android emulator
+        run: |
+          test -e /dev/kvm
+          sudo chmod 666 /dev/kvm
+          export ANDROID_AVD_HOME="$RUNNER_TEMP/afrimarket-avds"
+          mkdir -p "$ANDROID_AVD_HOME"
+          echo no | avdmanager create avd -n afrimarket-ci -p "$ANDROID_AVD_HOME/afrimarket-ci.avd" -k 'system-images;android-34;google_apis;x86_64' --force
+          "$ANDROID_HOME/emulator/emulator" -list-avds | grep -Fx afrimarket-ci
+          "$ANDROID_HOME/emulator/emulator" -avd afrimarket-ci -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect > emulator.log 2>&1 &
+          timeout 180 adb wait-for-device
+          for attempt in $(seq 1 90); do test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 && break; sleep 2; done
+          test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1
+          adb shell input keyevent 82
+      - run: python -m unittest discover -s scripts/tests -p test_android_ui_capture.py
+      - run: python scripts/android_emulator_smoke.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-emulator-${{ github.sha }}
+          path: |
+            android-emulator-evidence
+            emulator.log
+  security-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pip-audit ruff bandit
+      - name: Undefined names
+        run: ruff check backend --select F821
+      - name: Security static analysis
+        if: always()
+        run: bandit -r backend --exclude backend/tests -f json -o backend-sast.json
+      - name: Dependency vulnerability report
+        if: always()
+        run: pip-audit -r backend/requirements.txt --format json --output backend-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-security-${{ github.sha }}
+          path: |
+            backend-audit.json
+            backend-sast.json
+  security-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+        working-directory: frontend
+      - name: Dependency vulnerability report
+        run: yarn audit --json > web-audit.json
+        working-directory: frontend
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: web-security-${{ github.sha }}
+          path: |
+            frontend/web-audit.json
+            frontend/yarn.lock
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+        working-directory: frontend
+      - run: yarn build
+        working-directory: frontend
+        env:
+          REACT_APP_BACKEND_URL: https://afrimarket-api-staging-staging.up.railway.app
+          CI: 'false'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/validate_release.py
+      - run: node scripts/test_service_worker.cjs
+      - run: node scripts/test_count_up.cjs
+      - name: Record Web build metadata
+        run: |
+          node -e "const fs=require('fs'); fs.writeFileSync('frontend/build/release-metadata.json',JSON.stringify({version:require('./frontend/package.json').version,sourceSha:process.env.SOURCE_SHA,buildSha:process.env.GITHUB_SHA,date:new Date().toISOString(),type:'Web/PWA staging',tools:{node:process.version},api:'https://afrimarket-api-staging-staging.up.railway.app'},null,2));"
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Hash Web artifact contents
+        run: cd frontend/build && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: afrimarket-web-${{ github.sha }}
+          path: frontend/build
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:8.0.32
+        ports: [27017:27017]
+        options: >-
+          --health-cmd "mongosh --quiet --eval \"db.adminCommand('ping').ok\""
+          --health-interval 10s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r backend/requirements.txt
+      - name: Start isolated MongoDB replica set for financial transactions
+        run: |
+          docker run -d --name wallet-mongo -p 127.0.0.1:27018:27017 mongo:8.0.32 mongod --replSet test-rs --bind_ip_all --wiredTigerCacheSizeGB 0.25 --setParameter enableTestCommands=1
+          for attempt in $(seq 1 30); do docker exec wallet-mongo mongosh --quiet --eval 'db.adminCommand("ping").ok' && break; sleep 1; done
+          docker exec wallet-mongo mongosh --quiet --eval 'rs.initiate({_id:"test-rs",members:[{_id:0,host:"localhost:27017"}]})'
+          for attempt in $(seq 1 30); do docker exec wallet-mongo mongosh --quiet --eval 'if(!db.hello().isWritablePrimary) quit(1)' && break; sleep 1; done
+      - run: python -m compileall -q backend
+      - run: python -m pytest backend/tests/test_health_unit.py backend/tests/test_models_unit.py backend/tests/test_payment_security_unit.py backend/tests/test_stock_unit.py backend/tests/test_commerce_mongo.py backend/tests/test_order_handoff_unit.py backend/tests/test_financial_inputs_unit.py backend/tests/test_uploads_unit.py backend/tests/test_withdrawal_mongo.py backend/tests/test_auth_security_unit.py backend/tests/test_order_privacy_unit.py backend/tests/test_financial_transactions_mongo.py backend/tests/test_phase3_payment_security.py backend/tests/test_launch_messages_mongo.py backend/tests/test_launch_direct_mongo.py backend/tests/test_launch_whatsapp_mongo.py backend/tests/test_ui_shop_search_mongo.py --junitxml=backend-test-results.xml -q
+        env:
+          PYTHONPATH: backend
+          TEST_MONGO_URL: mongodb://127.0.0.1:27017
+          TEST_MONGO_TRANSACTION_URL: mongodb://127.0.0.1:27018/?directConnection=true
+          TEST_MONGO_FAILPOINTS: "1"
+          # Exercise preserved historical finance contracts explicitly; direct-default tests remove these flags.
+          COMMERCE_CHECKOUT_MODE: legacy-compatible
+          LEGACY_FINANCIAL_ACTIONS_ENABLED: "true"
+          CINETPAY_ENABLED: "true"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-tests-${{ github.sha }}
+          path: backend-test-results.xml
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
+          log-accepted-android-sdk-licenses: false
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile && yarn build
+        working-directory: frontend
+        env:
+          REACT_APP_BACKEND_URL: https://afrimarket-api-staging-staging.up.railway.app
+          CI: 'false'
+      - name: Bundle corrected UI in test APK instead of loading production website
+        working-directory: frontend
+        run: |
+          node -e "const fs=require('fs'); const p='capacitor.config.json'; const c=JSON.parse(fs.readFileSync(p)); delete c.server.url; fs.writeFileSync(p,JSON.stringify(c,null,2));"
+          npx cap sync android
+      - run: chmod +x gradlew && ./gradlew assembleDebug
+        working-directory: frontend/android
+      - name: Record Android build metadata
+        run: |
+          node -e "const fs=require('fs'),cp=require('child_process'); fs.writeFileSync('frontend/android/app/build/outputs/apk/debug/release-metadata.json',JSON.stringify({version:require('./frontend/package.json').version+'-debug',sourceSha:process.env.SOURCE_SHA,buildSha:process.env.GITHUB_SHA,date:new Date().toISOString(),type:'Android debug staging',tools:{node:process.version,java:cp.execSync('java -version 2>&1').toString().trim(),androidSdk:34,gradlePlugin:'8.2.1'},api:'https://afrimarket-api-staging-staging.up.railway.app'},null,2));"
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Hash Android artifact contents
+        run: cd frontend/android/app/build/outputs/apk/debug && sha256sum *.apk release-metadata.json > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: afrimarket-android-debug-${{ github.sha }}
+          path: frontend/android/app/build/outputs/apk/debug/*
+
+  ui-premium-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+        working-directory: frontend
+      - run: yarn build
+        working-directory: frontend
+        env:
+          REACT_APP_BACKEND_URL: https://afrimarket-api-staging-staging.up.railway.app
+      - name: Install isolated browser testing tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/ui-tools" playwright@1.60.0 lighthouse@13.5.0
+          "$RUNNER_TEMP/ui-tools/node_modules/.bin/playwright" install --with-deps chromium firefox webkit
+      - name: Validate session transport and route preload without network access
+        run: |
+          node scripts/test_session_transport.cjs
+          node scripts/test_preloadable_screen.cjs
+          node scripts/test_route_resource_hints.cjs frontend/build
+      - name: Validate responsive and business UI states without database writes
+        run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/ui_premium_validation.cjs frontend/build ui-preview-evidence
+      - name: Build read-only API preview configuration
+        run: yarn build
+        working-directory: frontend
+        env:
+          REACT_APP_BACKEND_URL: ''
+      - name: Measure three cold public preview runs with actual staging reads
+        run: |
+          export QA_PRIVATE_ROOT="$RUNNER_TEMP/ui-private"
+          export LIGHTHOUSE_PACKAGE="$RUNNER_TEMP/ui-tools/node_modules/lighthouse/package.json"
+          mkdir -p "$QA_PRIVATE_ROOT"
+          node scripts/ui_premium_lighthouse.cjs frontend/build ui-preview-evidence/lighthouse.json "$SOURCE_SHA"
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ui-premium-preview-${{ github.sha }}
+          path: ui-preview-evidence

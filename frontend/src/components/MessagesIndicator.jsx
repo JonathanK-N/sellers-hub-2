@@ -32,13 +32,13 @@ export default function MessagesIndicator() {
       to="/messages"
       data-testid="messages-indicator"
       className="relative w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center"
-      aria-label="Messages"
+      aria-label={count > 0 ? `Messages, ${count} non lus` : "Messages"}
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </svg>
       {count > 0 && (
-        <span className="absolute -top-1 -right-1 bg-[#EF9F27] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white">
+        <span className="absolute -top-1 -right-1 bg-afri-accent text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-afri-secondary">
           {count}
         </span>
       )}

@@ -1,0 +1,169 @@
+{
+  "staging": {
+    "service": {
+      "id": "80a726a8-1cd5-4387-9e5d-8cd6c9671d9e",
+      "name": "afrimarket-mongo-staging",
+      "state": "live"
+    },
+    "environment": {
+      "id": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+      "name": "staging"
+    },
+    "staged": null,
+    "config": {
+      "source": {
+        "image": "mongo:8.0"
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "buildEnvironment": "V3"
+      },
+      "deploy": {
+        "useLegacyStacker": false,
+        "ipv6EgressEnabled": false,
+        "runtime": "V2",
+        "multiRegionConfig": {
+          "us-west2": {
+            "numReplicas": 1
+          }
+        }
+      }
+    },
+    "stagedChanges": [],
+    "variableNames": [],
+    "volumes": [],
+    "domains": {
+      "serviceDomains": [],
+      "customDomains": []
+    },
+    "tcpProxies": [],
+    "latestDeployment": {
+      "id": "537379a4-f8fb-42c8-ade7-32fee56637de",
+      "status": "SUCCESS",
+      "createdAt": "2026-10-10T20:18:21.774Z",
+      "url": null
+    },
+    "tracing": {
+      "tracingEnabled": false,
+      "autoInstrumentationEnabled": false,
+      "autoInstrumentationActive": false
+    }
+  },
+  "production": {
+    "service": {
+      "id": "8807024a-a89f-4c55-8b4b-fb49641c58c3",
+      "name": "MongoDB",
+      "state": "live"
+    },
+    "environment": {
+      "id": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+      "name": "production"
+    },
+    "staged": null,
+    "config": {
+      "source": {
+        "image": "mongo:8.0"
+      },
+      "networking": {
+        "tcpProxies": {
+          "27017": {}
+        },
+        "privateNetworkEndpoint": "mongodb"
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "buildEnvironment": "V3"
+      },
+      "deploy": {
+        "startCommand": "docker-entrypoint.sh mongod --ipv6 --bind_ip ::,0.0.0.0 --setParameter diagnosticDataCollectionEnabled=false",
+        "useLegacyStacker": false,
+        "ipv6EgressEnabled": false,
+        "runtime": "V2",
+        "multiRegionConfig": {
+          "us-west2": {
+            "numReplicas": 1
+          }
+        },
+        "requiredMountPath": "/data/db"
+      },
+      "volumeMounts": {
+        "73f2765f-a5db-48f9-88b7-3f9a868b4842": {
+          "mountPath": "/data/db"
+        }
+      }
+    },
+    "stagedChanges": [],
+    "variableNames": [
+      "MONGOHOST",
+      "MONGOPASSWORD",
+      "MONGOPORT",
+      "MONGOUSER",
+      "MONGO_INITDB_ROOT_PASSWORD",
+      "MONGO_INITDB_ROOT_USERNAME",
+      "MONGO_PUBLIC_URL",
+      "MONGO_URL"
+    ],
+    "volumes": [
+      {
+        "id": "73f2765f-a5db-48f9-88b7-3f9a868b4842",
+        "name": "mongodb-volume",
+        "mountPath": "/data/db",
+        "sizeMB": 5000,
+        "region": "us-west2",
+        "state": "live"
+      }
+    ],
+    "domains": {
+      "serviceDomains": [],
+      "customDomains": []
+    },
+    "tcpProxies": [
+      {
+        "id": "81e19390-1d11-4017-b2d7-643ceef073a0",
+        "endpoint": "zephyr.proxy.rlwy.net:35998",
+        "domain": "zephyr.proxy.rlwy.net",
+        "proxyPort": 35998,
+        "applicationPort": 27017,
+        "syncStatus": "ACTIVE"
+      }
+    ],
+    "latestDeployment": {
+      "id": "03f6edbf-03a2-436f-846d-13421e778531",
+      "status": "SUCCESS",
+      "createdAt": "2026-09-17T23:41:57.509Z",
+      "url": null
+    },
+    "tracing": {
+      "tracingEnabled": false,
+      "autoInstrumentationEnabled": false,
+      "autoInstrumentationActive": false
+    }
+  },
+  "staging_variables": {
+    "variableNames": [
+      "ADMIN_NAME",
+      "ADMIN_PASSWORD",
+      "ADMIN_PHONE",
+      "AUTH_MODE",
+      "CORS_ORIGINS",
+      "DB_NAME",
+      "JWT_SECRET",
+      "MONGO_URL",
+      "PAYMENT_MODE",
+      "RAILWAY_ENVIRONMENT",
+      "RAILWAY_ENVIRONMENT_ID",
+      "RAILWAY_ENVIRONMENT_NAME",
+      "RAILWAY_PRIVATE_DOMAIN",
+      "RAILWAY_PROJECT_ID",
+      "RAILWAY_PROJECT_NAME",
+      "RAILWAY_PUBLIC_DOMAIN",
+      "RAILWAY_SERVICE_AFRIMARKET_API_STAGING_URL",
+      "RAILWAY_SERVICE_AFRIMARKET_WEB_STAGING_URL",
+      "RAILWAY_SERVICE_ID",
+      "RAILWAY_SERVICE_NAME",
+      "RAILWAY_STATIC_URL",
+      "SEED_DEMO"
+    ],
+    "valuesRedacted": true
+  }
+}

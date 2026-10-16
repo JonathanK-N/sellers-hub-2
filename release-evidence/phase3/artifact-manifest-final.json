@@ -1,0 +1,48 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "tag": "v1.0.1-green-rc.3",
+  "sourceSha": "058b6a51bf00c4525155b20e1e1a96e939fdfad5",
+  "buildSha": "624b32d0b2e506c9434f87b122413232ef13cb7e",
+  "sourceTree": "070419b11af71f95ec18e3dc6b82655768312e3c",
+  "runId": 38166788235,
+  "decision": "NO-GO production",
+  "artifacts": [
+    {
+      "name": "afrimarket-rc3-058b6a5-android-debug.zip",
+      "size": 5057541,
+      "sha256": "8c1ab22e1aff58620038bb8a1bec529445f3e07accc833444569f08a532bf723"
+    },
+    {
+      "name": "afrimarket-rc3-058b6a5-pwa.zip",
+      "size": 1443552,
+      "sha256": "92c46adb7f2401098b24ba057f562911d44dc0384ac4055b5726a72e4a465bb3"
+    },
+    {
+      "name": "afrimarket-rc3-058b6a5-reports-and-evidence.zip",
+      "size": 4960950,
+      "sha256": "345cb7571bd94c4724edd30d5d1b898eac766ac5b87d354c58e87daab89c2845"
+    },
+    {
+      "name": "afrimarket-rc3-058b6a5-source.zip",
+      "size": 6483789,
+      "sha256": "f2f8ef777fe8f546411808694ee556253cf99b4250c38c64808cf27e19ba3754"
+    },
+    {
+      "name": "AfriMarket-rc3-058b6a5-staging-debug.apk",
+      "size": 5523568,
+      "sha256": "5e7a0a9011db1300ea422a5318a8ad30c5a8f693a4f855039ce099af3a103053"
+    },
+    {
+      "name": "afrimarket-rc3-058b6a5-web.zip",
+      "size": 1443552,
+      "sha256": "92c46adb7f2401098b24ba057f562911d44dc0384ac4055b5726a72e4a465bb3"
+    },
+    {
+      "name": "phase3-report.md",
+      "size": 12922,
+      "sha256": "1ebea59adf763fe26b4d0898efced56da8da3c77ea32a3af8333718e3a230543"
+    }
+  ],
+  "pwaNote": "Web and PWA ZIP are intentionally identical; same compiled application and service worker",
+  "privateDataExcluded": "No MongoDB exports, encryption keys, credentials or backup bundles"
+}

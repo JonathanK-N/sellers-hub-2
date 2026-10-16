@@ -1,0 +1,60 @@
+{
+  "package": "cd.cognito.afrimarket.staging",
+  "rows": [
+    {
+      "test": "fresh APK install",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "installed WebView renders AfriMarket",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "historical dark green visible",
+      "status": "PASS",
+      "detail": "23725 matching pixels"
+    },
+    {
+      "test": "bundled landing renders with Wi-Fi and mobile data disabled",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "hardware Back from root returns outside app",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "debug APK update",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "app files preserved during update",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "uninstall",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "reinstall",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "old app files removed after uninstall",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "physical device, iOS, authenticated sessions and modal/history Back behavior",
+      "status": "BLOCKED",
+      "detail": "Not covered by this installed-APK smoke test; offline coverage is limited to bundled landing and Back is tested from root only"
+    }
+  ]
+}

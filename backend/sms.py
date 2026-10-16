@@ -50,8 +50,10 @@ async def send_otp_sms(phone: str, code: str) -> bool:
     sms = _get_at()
 
     if sms is None:
-        # Simulation mode
-        logger.warning(f"[SMS-SIMULATED] phone={phone} code={code}")
+        if is_sms_configured():
+            logger.error("SMS provider initialization unavailable")
+            return False
+        logger.warning("SMS sandbox simulation; verification values excluded from logs")
         return True
 
     sender_id = os.environ.get("AT_SENDER_ID", "").strip() or None
@@ -64,13 +66,13 @@ async def send_otp_sms(phone: str, code: str) -> bool:
             status = recipients[0].get("status", "unknown")
             cost = recipients[0].get("cost", "?")
             if status == "Success":
-                logger.info(f"[SMS] Envoyé à {phone} | statut={status} | coût={cost}")
+                logger.info("SMS verification accepted by provider")
                 return True
             else:
-                logger.error(f"[SMS] Échec pour {phone} | statut={status}")
+                logger.error("SMS verification rejected by provider")
                 return False
-        logger.error(f"[SMS] Réponse inattendue: {response}")
+        logger.error("Unexpected SMS provider response")
         return False
     except Exception as e:
-        logger.error(f"[SMS] Exception lors de l'envoi à {phone}: {e}")
+        logger.error("SMS verification transmission failed")
         return False

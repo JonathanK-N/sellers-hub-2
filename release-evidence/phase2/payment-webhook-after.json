@@ -1,0 +1,5 @@
+{
+  "test": "unconfigured external provider webhook rejects unauthenticated callback",
+  "status": "PASS",
+  "http": 503
+}

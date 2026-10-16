@@ -32,10 +32,10 @@ export default function AdminOverview() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex items-center justify-between">
         <div className="pl-10 lg:pl-0">
-          <h1 className="font-display font-black text-xl lg:text-2xl text-[#085041]">Vue d'ensemble</h1>
+          <h1 className="font-display font-black text-xl lg:text-2xl text-afri-secondary">Vue d'ensemble</h1>
           <p className="text-xs text-gray-500 mt-0.5">AfriMarket · Administration</p>
         </div>
-        <button onClick={load} className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className={`text-gray-500 ${loading ? "animate-spin" : ""}`} /></button>
+        <button onClick={load} aria-label="Actualiser le tableau de bord" className="p-2 hover:bg-gray-100 rounded-lg"><RefreshCw size={16} className={`text-gray-500 ${loading ? "animate-spin" : ""}`} /></button>
       </header>
 
       <main className="p-4 lg:p-8 max-w-7xl space-y-5">
@@ -55,21 +55,21 @@ export default function AdminOverview() {
 
             {/* Revenus */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center"><TrendingUp size={20} /></div>
+                  <div className="w-10 h-10 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center"><TrendingUp size={20} /></div>
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wide text-gray-500">Commission totale</div>
-                    <div className="font-display font-black text-3xl text-[#085041] mt-1">{formatPrice(data.total_commission, "FC")}</div>
+                    <div className="font-display font-black text-3xl text-afri-secondary mt-1">{formatPrice(data.total_commission, "FC")}</div>
                   </div>
                 </div>
               </div>
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-[#FAEEDA] text-[#BA7517] flex items-center justify-center"><Crown size={20} /></div>
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wide text-gray-500">Revenus Premium</div>
-                    <div className="font-display font-black text-3xl text-[#085041] mt-1">{formatPrice(data.premium_revenue || 0, "FC")}</div>
+                    <div className="font-display font-black text-3xl text-afri-secondary mt-1">{formatPrice(data.premium_revenue || 0, "FC")}</div>
                     <div className="text-xs text-gray-500 mt-0.5">{data.premium_active || 0} boutiques Premium actives</div>
                   </div>
                 </div>
@@ -78,10 +78,10 @@ export default function AdminOverview() {
 
             {/* Alertes */}
             {alerts.length > 0 && (
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-                <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3 flex items-center gap-1.5">
+              <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
+                <h2 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3 flex items-center gap-1.5">
                   <AlertTriangle size={14} className="text-amber-500" /> Alertes ({alerts.length})
-                </h3>
+                </h2>
                 <div className="space-y-2">
                   {alerts.map((a, i) => (
                     <div key={i} className={`flex items-center gap-3 p-3 rounded-lg text-sm ${
@@ -98,8 +98,8 @@ export default function AdminOverview() {
 
             {/* Commandes récentes */}
             {orders.length > 0 && (
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-                <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Dernières commandes</h3>
+              <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
+                <h2 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Dernières commandes</h2>
                 <div className="space-y-2">
                   {orders.map((o) => (
                     <div key={o.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
@@ -108,8 +108,8 @@ export default function AdminOverview() {
                         <div className="text-sm text-gray-700">{o.buyer_name || "—"} → {o.seller_name || "—"}</div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="font-semibold text-[#085041] text-sm">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</span>
-                        <span className="text-xs text-gray-400">{timeAgo(o.created_at)}</span>
+                        <span className="font-semibold text-afri-secondary text-sm">{formatPrice(o.amount_due ?? o.total_amount, o.currency)}</span>
+                        <span className="text-xs text-gray-600">{timeAgo(o.created_at)}</span>
                       </div>
                     </div>
                   ))}
@@ -118,8 +118,8 @@ export default function AdminOverview() {
             )}
 
             {/* Performance par pays */}
-            <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-              <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Performance par pays</h3>
+            <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
+              <h2 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-4">Performance par pays</h2>
               <div className="space-y-3">
                 {Object.keys(COUNTRY_NAMES).map((code) => {
                   const stats = data.by_country?.[code] || { commission: 0, orders: 0 };
@@ -130,7 +130,7 @@ export default function AdminOverview() {
                         <div className="text-sm font-semibold text-gray-900">{COUNTRY_NAMES[code]}</div>
                         <div className="text-xs text-gray-500">{stats.orders} commandes</div>
                       </div>
-                      <div className="font-display font-bold text-[#085041]">{formatPrice(stats.commission, "FC")}</div>
+                      <div className="font-display font-bold text-afri-secondary">{formatPrice(stats.commission, "FC")}</div>
                     </div>
                   );
                 })}
@@ -145,11 +145,11 @@ export default function AdminOverview() {
 
 function Stat({ icon: Icon, label, value, highlight }) {
   return (
-    <div className={`bg-white rounded-xl border shadow-sm p-4 ${highlight ? "border-[#EF9F27]" : "border-gray-200"}`}>
-      <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${highlight ? "bg-amber-50 text-[#EF9F27]" : "bg-[#E1F5EE] text-[#1D9E75]"}`}>
+    <div className={`bg-white rounded-xl border shadow-xs p-4 ${highlight ? "border-afri-accent" : "border-gray-200"}`}>
+      <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${highlight ? "bg-amber-50 text-afri-accent" : "bg-afri-soft text-afri-primary"}`}>
         <Icon size={18} />
       </div>
-      <div className="font-display font-black text-2xl text-[#085041] mt-2">{value ?? "—"}</div>
+      <div className="font-display font-black text-2xl text-afri-secondary mt-2">{value ?? "—"}</div>
       <div className="text-xs text-gray-500">{label}</div>
     </div>
   );

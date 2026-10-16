@@ -1,0 +1,62 @@
+[
+  {
+    "file": "baseline-1.json",
+    "performance": 70,
+    "accessibility": 94,
+    "best": 96,
+    "seo": 92,
+    "lcp": 7289.379399999999,
+    "tbt": 272,
+    "cls": 0.0039615861396722395
+  },
+  {
+    "file": "baseline-2.json",
+    "performance": 71,
+    "accessibility": 94,
+    "best": 96,
+    "seo": 92,
+    "lcp": 7237.980599999999,
+    "tbt": 198,
+    "cls": 0.0039615861396722395
+  },
+  {
+    "file": "baseline-3.json",
+    "performance": 73,
+    "accessibility": 94,
+    "best": 96,
+    "seo": 92,
+    "lcp": 7087.688800000001,
+    "tbt": 125,
+    "cls": 0.0039615861396722395
+  },
+  {
+    "file": "candidate-1.json",
+    "performance": 97,
+    "accessibility": 100,
+    "best": 96,
+    "seo": 100,
+    "lcp": 2674.5526,
+    "tbt": 32,
+    "cls": 0.00002038117864363487
+  },
+  {
+    "file": "candidate-2.json",
+    "performance": 97,
+    "accessibility": 100,
+    "best": 96,
+    "seo": 100,
+    "lcp": 2652.7878,
+    "tbt": 35,
+    "cls": 0.003672031005009726
+  },
+  {
+    "file": "candidate-3.json",
+    "performance": 97,
+    "accessibility": 100,
+    "best": 96,
+    "seo": 100,
+    "lcp": 2655.3764,
+    "tbt": 39.5,
+    "cls": 0.003672031005009726
+  }
+]

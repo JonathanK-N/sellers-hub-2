@@ -1,0 +1,10 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "rows": [
+    {
+      "test": "Offline API cannot replay cached successful response",
+      "status": "PASS",
+      "result": 503
+    }
+  ]
+}

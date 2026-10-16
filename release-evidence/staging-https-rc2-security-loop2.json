@@ -1,0 +1,110 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "cd248cacb084e357c7affb6f530f6f168274cd1d",
+  "scope": "Real HTTPS, dedicated fixtures only, no provider calls",
+  "rows": [
+    {
+      "test": "/admin/users omits password/OTP/verification fields",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/admin/sellers omits password/OTP/verification fields",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/auth/me omits password/OTP/verification fields",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/messages/unread-count requires authentication",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "/auth/me requires authentication",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "/orders/my requires authentication",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "Seller cannot access admin overview",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "/messages/conversations requires authentication",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "/seller/wallet requires authentication",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "Buyer cannot access seller wallet",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "Courier cannot read buyer/seller chat",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "Oversized message rejected",
+      "status": "PASS",
+      "http": 422
+    },
+    {
+      "test": "Malformed history cursor rejected",
+      "status": "PASS",
+      "http": 422
+    },
+    {
+      "test": "CinetPay webhook stays disabled",
+      "status": "PASS",
+      "http": 503
+    },
+    {
+      "test": "Checkout replay retains one order and one stock reservation",
+      "status": "PASS"
+    },
+    {
+      "test": "Direct cancellation replays without double stock return or refund",
+      "status": "PASS",
+      "http": [
+        200,
+        200
+      ]
+    },
+    {
+      "test": "Integrated withdrawals remain disabled",
+      "status": "PASS",
+      "http": 503
+    },
+    {
+      "test": "Direct provider init never asserts verification or funds held",
+      "status": "PASS"
+    },
+    {
+      "test": "Untrusted origin preflight rejected without access allow header",
+      "status": "PASS"
+    },
+    {
+      "test": "Public seller excludes OTP and WhatsApp verification proof",
+      "status": "PASS"
+    },
+    {
+      "test": "WhatsApp opt-out hides contact and opt-in restores verified test contact",
+      "status": "PASS"
+    }
+  ]
+}

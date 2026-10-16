@@ -6,7 +6,10 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 
+from money import record_release
+from direct_orders import finish_handoff
 from db import get_db
+from financial_transactions import atomic_operation
 from auth import require_role, get_current_user_dep
 from notifications import create_notification
 
@@ -70,13 +73,22 @@ async def assign_deliverer(order_id: str, req: AssignRequest, user: dict = Depen
     deliverer = await db.users.find_one({"id": req.deliverer_id, "role": "deliverer"}, {"_id": 0})
     if not deliverer:
         raise HTTPException(status_code=404, detail="Livreur introuvable")
+    if o.get("payment_method") == "direct" and (o.get("payment_status") != "seller_declared_received" or o.get("dispute_status") == "open"):
+        raise HTTPException(409, "Paiement direct non déclaré reçu ou commande en litige")
+    if deliverer.get("banned") or deliverer.get("suspended") or deliverer.get("country_code") != o.get("country_code"):
+        raise HTTPException(409, "Livreur indisponible pour cette commande")
 
     event = _timeline_event("assigned", f"Livreur assigné : {deliverer['name']}")
-    await db.orders.update_one(
-        {"id": order_id},
-        {"$set": {"deliverer_id": req.deliverer_id, "deliverer_name": deliverer["name"], "status": "assigned"},
-         "$push": {"timeline": event}},
+    assignment_filter = {"id": order_id, "status": o["status"], "dispute_status": {"$ne": "open"}}
+    assignment_update = {"$set": {"deliverer_id": req.deliverer_id, "deliverer_name": deliverer["name"], "status": "assigned"}, "$push": {"timeline": event}}
+    if o.get("payment_method") == "direct":
+        assignment_filter.update({"payment_status": "seller_declared_received", "revision": o.get("revision", 0)})
+        assignment_update["$inc"] = {"revision": 1}
+    assigned = await db.orders.update_one(
+        assignment_filter, assignment_update,
     )
+    if assigned.modified_count != 1:
+        raise HTTPException(409, "Commande déjà modifiée")
     try:
         await create_notification(
             req.deliverer_id, "order_received", "Nouvelle livraison",
@@ -112,7 +124,7 @@ async def my_deliveries(user: dict = Depends(require_role("deliverer"))):
     """Deliveries assigned to the current deliverer."""
     db = get_db()
     orders = await db.orders.find(
-        {"deliverer_id": user["id"]}, {"_id": 0, "confirmation_code": 0}
+        {"deliverer_id": user["id"]}, {"_id": 0, "confirmation_code": 0, "qr_code": 0}
     ).sort("created_at", -1).to_list(200)
     seller_ids = list({o["seller_id"] for o in orders})
     sellers = {s["id"]: s async for s in db.sellers.find({"id": {"$in": seller_ids}}, {"_id": 0})}
@@ -132,15 +144,18 @@ async def deliverer_earnings(user: dict = Depends(require_role("deliverer"))):
     completed_today = 0
     total_today = 0
     completed_all = await db.orders.count_documents({"deliverer_id": user["id"], "status": "delivered"})
-    async for o in db.orders.find({"deliverer_id": user["id"], "status": "delivered"}, {"_id": 0, "delivered_at": 1}):
+    async for o in db.orders.find({"deliverer_id": user["id"], "status": "delivered"}, {"_id": 0, "delivered_at": 1, "payment_method": 1}):
         if (o.get("delivered_at") or "").startswith(today):
             completed_today += 1
-            total_today += 1000  # flat fee per delivery (sandbox)
+            if o.get("payment_method") != "direct":
+                total_today += 1000  # historical sandbox estimate, never a direct credit
     return {
         "completed_today": completed_today,
         "completed_all": completed_all,
         "earnings_today": total_today,
         "currency": user["currency"],
+        "earnings_estimated": True,
+        "direct_deliveries_generate_credit": False,
     }
 
 
@@ -152,8 +167,12 @@ async def mark_picked_up(order_id: str, user: dict = Depends(require_role("deliv
         raise HTTPException(status_code=404, detail="Livraison introuvable")
     if o["status"] not in ("assigned", "preparing"):
         raise HTTPException(status_code=400, detail="Statut incorrect")
+    if o.get("payment_method") == "direct" and (o.get("payment_status") != "seller_declared_received" or o.get("dispute_status") == "open"):
+        raise HTTPException(409, "Paiement direct non déclaré reçu ou commande en litige")
     event = _timeline_event("picked_up", "Colis récupéré chez le vendeur")
-    await db.orders.update_one({"id": order_id}, {"$set": {"status": "picked_up"}, "$push": {"timeline": event}})
+    result = await db.orders.update_one({"id": order_id, "status": o["status"], "dispute_status": {"$ne": "open"}}, {"$set": {"status": "picked_up"}, "$push": {"timeline": event}})
+    if result.modified_count != 1:
+        raise HTTPException(409, "Commande déjà modifiée")
     return {"ok": True, "status": "picked_up"}
 
 
@@ -165,63 +184,55 @@ async def mark_en_route(order_id: str, user: dict = Depends(require_role("delive
         raise HTTPException(status_code=404, detail="Livraison introuvable")
     if o["status"] != "picked_up":
         raise HTTPException(status_code=400, detail="Récupérez d'abord le colis")
+    if o.get("payment_method") == "direct" and (o.get("payment_status") != "seller_declared_received" or o.get("dispute_status") == "open"):
+        raise HTTPException(409, "Paiement direct non déclaré reçu ou commande en litige")
     event = _timeline_event("out_for_delivery", "En cours de livraison")
-    await db.orders.update_one({"id": order_id}, {"$set": {"status": "out_for_delivery"}, "$push": {"timeline": event}})
+    result = await db.orders.update_one({"id": order_id, "status": "picked_up", "dispute_status": {"$ne": "open"}}, {"$set": {"status": "out_for_delivery"}, "$push": {"timeline": event}})
+    if result.modified_count != 1:
+        raise HTTPException(409, "Commande déjà modifiée")
     try:
         await create_notification(
             o["buyer_id"], "order_shipped", "Votre commande arrive",
             "Le livreur est en route vers vous.", {"order_id": order_id},
         )
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
     return {"ok": True, "status": "out_for_delivery"}
 
 
 @router.post("/deliverer/orders/{order_id}/confirm")
+@atomic_operation
 async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict = Depends(require_role("deliverer"))):
     """Deliverer enters the buyer's 6-digit code -> escrow released."""
     db = get_db()
     o = await db.orders.find_one({"id": order_id, "deliverer_id": user["id"]}, {"_id": 0})
     if not o:
         raise HTTPException(status_code=404, detail="Livraison introuvable")
+    if o.get("delivery_mode") != "delivery" or o.get("status") != "out_for_delivery":
+        raise HTTPException(status_code=409, detail="Livraison non disponible pour confirmation")
+    if o.get("payment_method") == "direct":
+        if o.get("confirmation_code") != req.code.strip():
+            raise HTTPException(400, "Code incorrect")
+        return await finish_handoff(db, o, user, "delivered")
+    if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
+        raise HTTPException(status_code=409, detail="Paiement non confirmé")
     if o["escrow_status"] != "held":
         raise HTTPException(status_code=400, detail="Escrow déjà libéré")
     if o.get("confirmation_code") != req.code.strip():
         raise HTTPException(status_code=400, detail="Code incorrect")
 
-    LIVREUR_PART = 11_500.0
-    PLATFORM_PART = 4_500.0
-
     event = _timeline_event("delivered", "Livré et paiement libéré")
-    await db.orders.update_one(
-        {"id": order_id},
+    result = await db.orders.update_one(
+        {"id": order_id, "deliverer_id": user["id"], "status": "out_for_delivery", "escrow_status": "held"},
         {"$set": {"status": "delivered", "escrow_status": "released", "delivered_at": _now()},
          "$push": {"timeline": event}},
     )
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Livraison déjà modifiée")
     await db.transactions.update_one(
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
     )
-
-    # Crediter le wallet du livreur si delivery_fee AfriMarket
-    delivery_fee = o.get("delivery_fee", 0)
-    if delivery_fee > 0:
-        await db.deliverer_wallets.update_one(
-            {"user_id": user["id"]},
-            {"$inc": {"balance": LIVREUR_PART}, "$set": {"currency": o.get("currency", "CDF"), "user_id": user["id"]}},
-            upsert=True,
-        )
-        await db.deliverer_wallet_transactions.insert_one({
-            "id": str(uuid.uuid4()),
-            "user_id": user["id"],
-            "order_id": order_id,
-            "type": "delivery_fee",
-            "amount": LIVREUR_PART,
-            "platform_fee": PLATFORM_PART,
-            "currency": o.get("currency", "CDF"),
-            "created_at": _now(),
-        })
-        logger.info(f"[WALLET] livreur {user['id']} credite {LIVREUR_PART} CDF pour commande {order_id}")
 
     try:
         await create_notification(
@@ -229,7 +240,8 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
             "Votre commande a été livrée. Merci !", {"order_id": order_id},
         )
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
+    await record_release(db, o, user["id"])
     return {"ok": True, "status": "delivered", "escrow_status": "released"}
 
 
@@ -266,7 +278,7 @@ async def get_tracking(order_id: str, user: dict = Depends(get_current_user_dep)
         {"id": order_id},
         {"_id": 0, "status": 1, "deliverer_location": 1, "deliverer_name": 1,
          "delivery_neighborhood": 1, "delivery_landmark": 1,
-         "buyer_id": 1, "seller_id": 1},
+         "buyer_id": 1, "seller_id": 1, "deliverer_id": 1},
     )
     if not o:
         raise HTTPException(status_code=404, detail="Commande introuvable")
@@ -276,6 +288,10 @@ async def get_tracking(order_id: str, user: dict = Depends(get_current_user_dep)
         my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0, "id": 1})
         if not my_seller or my_seller["id"] != o.get("seller_id"):
             raise HTTPException(status_code=403, detail="Acces refuse")
+    if user["role"] == "deliverer" and o.get("deliverer_id") != user["id"]:
+        raise HTTPException(status_code=403, detail="Acces refuse")
+    if user["role"] not in {"buyer", "seller", "deliverer", "admin"}:
+        raise HTTPException(status_code=403, detail="Acces refuse")
     loc = o.get("deliverer_location")
     fresh = False
     if loc:

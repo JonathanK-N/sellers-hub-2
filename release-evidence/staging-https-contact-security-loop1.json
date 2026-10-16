@@ -1,0 +1,23 @@
+{
+  "sourceSha": "779ec1244bb25077e639ffc4dbe64f17ce344024",
+  "scope": "Actual staging HTTPS own TEST seller contact revoked and restored; no external message",
+  "rows": [
+    {
+      "test": "Public seller exposes verified consented contact only",
+      "status": "PASS"
+    },
+    {
+      "test": "Revoked WhatsApp consent removes public contact/link",
+      "status": "PASS"
+    },
+    {
+      "test": "Public seller omits KYC and OTP verification proof",
+      "status": "PASS"
+    },
+    {
+      "test": "CinetPay webhook remains disabled",
+      "status": "PASS",
+      "httpStatus": 503
+    }
+  ]
+}

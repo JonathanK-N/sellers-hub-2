@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "scope": "synthetic standalone",
+  "encryption": "AES-256-GCM; plaintext archive only in process memory",
+  "encrypted_sha256": "d302c1327e7d925b9e85789139a1bf9fa721fb03ccc8c0bfb9b269a4dcc963ee",
+  "encrypted_bytes": 556,
+  "write_pause_seconds": 0.25,
+  "dump_seconds": 0.1409999999887077,
+  "restore_seconds": 1.8440000000118744,
+  "collections": {
+    "orders": {
+      "documents": 1,
+      "sha256": "32dee126486743957e7f145ebf9e0de80a58b35415dfaec9089a88deb4753f89",
+      "indexes_sha256": "0140be2b4af2a2d307218bffa1d661f40fc9987f576ca24781ed1e74ae26154c",
+      "index_count": 1
+    },
+    "products": {
+      "documents": 1,
+      "sha256": "04eb571780f6abfc333e5a5b120e43f0269999ae99ae63389014e2b4da3b7483",
+      "indexes_sha256": "7e718214215db23b88d229fa658faeb47107350c440ed70be73ff772603d852c",
+      "index_count": 2
+    }
+  },
+  "source_unlock_confirmed": true,
+  "database_RPO": "snapshot at write pause",
+  "application_RTO": "not measured"
+}

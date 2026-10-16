@@ -1,0 +1,43 @@
+{
+  "originalAsset": "https://images.unsplash.com/photo-1625989744655-9bff7a23dac4",
+  "license": "https://unsplash.com/license",
+  "usage": "Same pre-existing landing background, locally hosted responsive WebP variants; no new photograph",
+  "variants": [
+    {
+      "file": "market-hero-400.webp",
+      "source": "https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?fm=webp&w=400&q=45",
+      "bytes": 28658,
+      "sha256": "39f73da0c2db8aebbea6156285847d3585beb017538c031a26b78d80b2e40899"
+    },
+    {
+      "file": "market-hero-800.webp",
+      "source": "https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?fm=webp&w=800&q=45",
+      "bytes": 77526,
+      "sha256": "9bc975174f0782e342f97d6d4a179478e09233b43fba684e64fe84d65d12ce7a"
+    },
+    {
+      "file": "market-hero-1280.webp",
+      "source": "https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?fm=webp&w=1280&q=45",
+      "bytes": 145572,
+      "sha256": "ea37ca6807fbb0108d6b0aa386e6e60ed5b78277a473efc48a38d4a5381b4e88"
+    },
+    {
+      "file": "market-hero-400.avif",
+      "source": "https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?fm=avif&w=400&q=35",
+      "bytes": 18940,
+      "sha256": "1daeac1ede2ea4a349ec47879b1c3475f0c5887369742585e933dcde8cf2d794"
+    },
+    {
+      "file": "market-hero-800.avif",
+      "source": "https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?fm=avif&w=800&q=35",
+      "bytes": 47029,
+      "sha256": "ad2ea527b0e85bc3cec6f15e07775d6ad12e873491a6ebf8c2d9071c1d3682b0"
+    },
+    {
+      "file": "market-hero-1280.avif",
+      "source": "https://images.unsplash.com/photo-1625989744655-9bff7a23dac4?fm=avif&w=1280&q=35",
+      "bytes": 80429,
+      "sha256": "11ce38a2c8bf82de9656a8132dfb38e37a784ba6f5824c7cf21ca9734d6d6bdf"
+    }
+  ]
+}

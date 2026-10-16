@@ -1,0 +1,1 @@
+{"status":"PASS","scope":"isolated Docker synthetic data","checks":["authenticated PRIMARY","anonymous access denied","application access restricted to synthetic database","majority transaction committed","data and keyfile persist after restart"],"railwayDeployment":"BLOCKED pending approval control and sealed variables"}

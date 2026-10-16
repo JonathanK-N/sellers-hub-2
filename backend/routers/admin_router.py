@@ -1,3 +1,4 @@
+from uploads import read_upload
 """Admin panel endpoints."""
 import io
 import csv
@@ -39,10 +40,10 @@ async def admin_upload(file: UploadFile = File(...), _: dict = Depends(require_r
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
     path = f"{APP_NAME}/admin/{_uuid.uuid4()}.{ext}"
-    raw_data = await file.read()
+    raw_data = await read_upload(file)
     # Redimensionner à max 1400px pour les bannières admin (légèrement plus grand que les produits)
     try:
-        from sellers_router import _resize_image
+        from routers.sellers_router import _resize_image
         data, content_type = _resize_image(raw_data, max_px=1400)
     except Exception:
         data, content_type = raw_data, file.content_type or "image/jpeg"
@@ -100,16 +101,17 @@ async def overview(_: dict = Depends(require_role("admin"))):
 @router.get("/users")
 async def list_users(_: dict = Depends(require_role("admin"))):
     db = get_db()
-    users = await db.users.find({}, {"_id": 0, "otp_code": 0, "otp_expires_at": 0}).sort("created_at", -1).to_list(500)
+    private_fields = ("_id", "password_hash", "otp_code", "otp_expires_at")
+    users = await db.users.find({}, dict.fromkeys(private_fields, 0)).sort("created_at", -1).to_list(500)
     return users
 
 
 @router.get("/sellers")
 async def list_sellers(_: dict = Depends(require_role("admin"))):
     db = get_db()
-    sellers = await db.sellers.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    sellers = await db.sellers.find({}, {"_id": 0, "whatsapp_verification": 0}).sort("created_at", -1).to_list(500)
     user_ids = list({s["user_id"] for s in sellers})
-    users = {u["id"]: u async for u in db.users.find({"id": {"$in": user_ids}}, {"_id": 0})}
+    users = {u["id"]: u async for u in db.users.find({"id": {"$in": user_ids}}, {"_id": 0, "id": 1, "name": 1, "phone": 1, "kyc_level": 1})}
     for s in sellers:
         u = users.get(s["user_id"])
         if u:
@@ -224,7 +226,7 @@ async def buyer_kyc_approve(user_id: str, _: dict = Depends(require_role("admin"
         from notifications import create_notification
         await create_notification(user_id, "kyc_approved", "Profil vérifié", "Votre identité a été vérifiée. Le badge Vérifié est maintenant actif sur votre profil.", {})
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
     return {"ok": True}
 
 
@@ -241,7 +243,7 @@ async def buyer_kyc_reject(user_id: str, req: KycRejectRequest, _: dict = Depend
         from notifications import create_notification
         await create_notification(user_id, "kyc_rejected", "Vérification refusée", f"Motif : {req.reason or 'non précisé'}", {})
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
     return {"ok": True}
 
 
@@ -307,6 +309,7 @@ async def geo_growth(_: dict = Depends(require_role("admin"))):
         try:
             ts = datetime.fromisoformat(u["created_at"].replace("Z", "+00:00"))
         except Exception:
+            logger.warning("Invalid record skipped", exc_info=True)
             continue
         for b in buckets:
             if ts.year == b["year"] and ts.month == b["month"]:
@@ -344,7 +347,7 @@ async def geo_alerts(_: dict = Depends(require_role("admin"))):
             if (now - t).days > 5:
                 urgent_count += 1
         except Exception:
-            pass
+            logger.warning("Best-effort operation failed", exc_info=True)
     if urgent_count > 0:
         alerts.append({
             "level": "danger",
@@ -492,7 +495,7 @@ async def fraud_action(user_id: str, req: FraudActionRequest, _: dict = Depends(
             from notifications import create_notification
             await create_notification(user_id, "fraud_alert", "Avertissement", "Votre activité a été signalée. Merci de respecter les règles de la plateforme.", {})
         except Exception:
-            pass
+            logger.warning("Best-effort operation failed", exc_info=True)
     elif req.action in ("suspend", "ban"):
         await db.users.update_one(
             {"id": user_id},

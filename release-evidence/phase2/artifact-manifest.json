@@ -1,0 +1,72 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "version": "1.0.1-green-rc.2",
+  "date": "2026-10-11T14:27:40.158Z",
+  "sourceSha": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+  "buildSha": "7f01a60aaf64df622fb3732a16195e25e7068650",
+  "tag": "v1.0.1-green-rc.2",
+  "ci": "https://github.com/JonathanK-N/sellers-hub-2/actions/runs/38146644352",
+  "api": "https://afrimarket-api-staging-staging.up.railway.app",
+  "target": "isolated staging; Android debug cd.cognito.afrimarket.staging",
+  "decision": "NO-GO production",
+  "tests": {
+    "backend": 53,
+    "androidSmoke": 10,
+    "webBuild": "PASS",
+    "androidBuild": "PASS",
+    "backendAudit": "PASS",
+    "webAudit": "FAIL",
+    "lcpHttps": "FAIL",
+    "pwaBrowser": "PASS",
+    "nativePhysicalAndIOS": "BLOCKED",
+    "mongoBackupRestore": "BLOCKED"
+  },
+  "install": "Verify SHA256 with Get-FileHash; extract source into a new workspace. Web assets are static and use the staging API. Install only the staging debug APK on an isolated test device; debug updates across independent signing keys are not certified. Read report-evidence/docs/phase2-report.md. No production deployment, signing or database dump is included.",
+  "assets": [
+    {
+      "name": "phase2-9176e82-android.zip",
+      "bytes": 7674688,
+      "sha256": "b1c35f2ffd374cf9d742704abdfefe611d80d6fd245499cb388f220a0d714b0b"
+    },
+    {
+      "name": "phase2-9176e82-backend-security.zip",
+      "bytes": 808,
+      "sha256": "8e4ba769b9147a7a0fc9f5a204f2a31548cb381a83e319711a40b9500db94e3b"
+    },
+    {
+      "name": "phase2-9176e82-emulator.zip",
+      "bytes": 371790,
+      "sha256": "8f98b0115da12fc04c38913979de0c48c2ffe889dc1eee5d978610bda426166e"
+    },
+    {
+      "name": "phase2-9176e82-performance.zip",
+      "bytes": 2025617,
+      "sha256": "c75a4c3c0c8a5383348a3ceb4bc56d284622b6c2d38e11476b9a6845c799bc2d"
+    },
+    {
+      "name": "phase2-9176e82-report-evidence.zip",
+      "bytes": 4172886,
+      "sha256": "74caa34ee81566ee8abdc460d268e4f8dae85653759af211e87c664ceddb9905"
+    },
+    {
+      "name": "phase2-9176e82-source.zip",
+      "bytes": 4817095,
+      "sha256": "56d0fc61bc82b3aa489594614f40879c2f36a8b8e781c799c3f976d2968a4fd0"
+    },
+    {
+      "name": "phase2-9176e82-web-security.zip",
+      "bytes": 364426,
+      "sha256": "4a683bc6a52208329ec73d0fb05afaa5df8449eeeb3714a2ea4411005e5f2c27"
+    },
+    {
+      "name": "phase2-9176e82-web.zip",
+      "bytes": 3622699,
+      "sha256": "356dd3a8680a259f37c2b9f58f30b00489154948b81f808cad73979e33268013"
+    },
+    {
+      "name": "AfriMarket-1.0.1-green-rc.2-staging-debug-9176e82.apk",
+      "bytes": 8159834,
+      "sha256": "3449a4d8db6b3beb51a269c99f2cc46f9b322dcbc4f147c9fcade52b480c7a9d"
+    }
+  ]
+}

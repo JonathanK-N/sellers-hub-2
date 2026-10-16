@@ -1,0 +1,43 @@
+[
+  {
+    "artifact": "web",
+    "files": 236,
+    "status": "PASS",
+    "metadata": {
+      "version": "1.0.1-green-rc.2",
+      "sourceSha": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+      "buildSha": "7f01a60aaf64df622fb3732a16195e25e7068650",
+      "date": "2026-10-11T14:19:27.913Z",
+      "type": "Web/PWA staging",
+      "tools": {
+        "node": "v20.20.2"
+      },
+      "api": "https://afrimarket-api-staging-staging.up.railway.app"
+    }
+  },
+  {
+    "artifact": "android",
+    "files": 2,
+    "status": "PASS",
+    "metadata": {
+      "version": "1.0.1-green-rc.2-debug",
+      "sourceSha": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+      "buildSha": "7f01a60aaf64df622fb3732a16195e25e7068650",
+      "date": "2026-10-11T14:21:12.597Z",
+      "type": "Android debug staging",
+      "tools": {
+        "node": "v20.20.2",
+        "java": "openjdk version \"17.0.20.1\" 2026-08-18\nOpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\nOpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)",
+        "androidSdk": 34,
+        "gradlePlugin": "8.2.1"
+      },
+      "api": "https://afrimarket-api-staging-staging.up.railway.app"
+    }
+  },
+  {
+    "artifact": "AfriMarket-1.0.1-green-rc.2-staging-debug-9176e82.apk",
+    "bytes": 8159834,
+    "sha256": "3449a4d8db6b3beb51a269c99f2cc46f9b322dcbc4f147c9fcade52b480c7a9d",
+    "status": "PASS"
+  }
+]

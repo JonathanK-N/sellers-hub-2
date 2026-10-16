@@ -1,0 +1,24 @@
+{
+  "sourceSha": "69d1ed6197de9cee38852c2f0111c56c31caf8ad",
+  "buildSha": "2ca5646b48f95148a4ad401a28c76ad139de14e4",
+  "scope": "Exact compiled artifact against synthetic real loopback API/Mongo. No staging HTTPS or production business certification; scheduler disabled to prohibit outbound background calls; service workers blocked for deterministic API routing; WhatsApp links inspected without sending messages.",
+  "rows": [
+    {
+      "test": "Synthetic buyer, seller and courier registered, OTP-verified and authenticated via real HTTP",
+      "status": "PASS"
+    },
+    {
+      "test": "Buyer and seller login through actual browser forms",
+      "status": "PASS"
+    },
+    {
+      "test": "Product WhatsApp link uses verified opted-in business phone",
+      "status": "PASS"
+    },
+    {
+      "test": "Business browser sequence",
+      "status": "FAIL",
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('mode-collect')\u001b[22m\n"
+    }
+  ]
+}

@@ -14,13 +14,14 @@ const PRIORITY_STYLES = {
 export default function AdminDisputes() {
   const [items, setItems] = useState([]);
   const [resolving, setResolving] = useState(null);
+  const [directNotes, setDirectNotes] = useState({});
 
   const load = () => api.get("/admin/disputes").then(({ data }) => setItems(data));
   useEffect(() => { load(); }, []);
 
-  const resolve = async (id, decision) => {
+  const resolve = async (id, decision, note = "") => {
     try {
-      await api.post(`/admin/disputes/${id}/resolve`, { decision, note: "" });
+      await api.post(`/admin/disputes/${id}/resolve`, { decision, note });
       toast.success("Litige résolu");
       load();
     } catch (e) {
@@ -32,8 +33,8 @@ export default function AdminDisputes() {
     <div className="min-h-screen bg-gray-50 lg:pl-[250px]">
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10">
-        <h1 className="font-display font-black text-xl lg:text-2xl text-[#085041]">Litiges</h1>
-        <p className="text-xs text-gray-500 mt-0.5">Escrow gelé en attente de votre décision</p>
+        <h1 className="font-display font-black text-xl lg:text-2xl text-afri-secondary">Litiges</h1>
+        <p className="text-xs text-gray-500 mt-0.5">Litiges et déclarations hors plateforme à examiner</p>
       </header>
       <main className="p-6 lg:p-10 max-w-7xl">
         {items.length === 0 ? (
@@ -41,7 +42,7 @@ export default function AdminDisputes() {
         ) : (
           <div className="space-y-4">
             {items.map((d) => (
-              <div key={d.id} className={`bg-white rounded-xl border-l-4 shadow-sm p-5 ${PRIORITY_STYLES[d.priority] || PRIORITY_STYLES.normal}`} data-testid={`dispute-card-${d.id}`}>
+              <div key={d.id} className={`bg-white rounded-xl border-l-4 shadow-xs p-5 ${PRIORITY_STYLES[d.priority] || PRIORITY_STYLES.normal}`} data-testid={`dispute-card-${d.id}`}>
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-lg bg-red-50 text-[#E24B4A] flex items-center justify-center shrink-0">
                     <AlertTriangle size={20} />
@@ -62,7 +63,7 @@ export default function AdminDisputes() {
                     {d.order && (
                       <div className="mt-2 text-xs text-gray-600 flex flex-wrap gap-3">
                         <span>Commande <code className="font-mono">{d.order.id?.slice(0,8)}</code></span>
-                        <span className="font-semibold text-[#085041]">{formatPrice(d.order.total_amount, d.order.currency)}</span>
+                        <span className="font-semibold text-afri-secondary">{formatPrice(d.order.total_amount, d.order.currency)}</span>
                         <span>Mode : {d.order.delivery_mode === "delivery" ? "Livraison" : "Retrait"}</span>
                         <span>Pays : {d.country_code}</span>
                       </div>
@@ -72,7 +73,8 @@ export default function AdminDisputes() {
                         <CheckCircle2 size={12} /> Décision : {d.admin_decision}
                       </p>
                     )}
-                    {d.status === "open" && (
+                    {d.status === "open" && d.payment_mode === "direct" && <div className="mt-4 space-y-2"><p className="text-sm">Paiement direct : aucune somme détenue, aucun remboursement ou crédit AfriMarket.</p><label className="text-sm">Note de médiation<textarea maxLength={1000} value={directNotes[d.id] || ""} onChange={e => setDirectNotes(previous => ({...previous,[d.id]:e.target.value}))} className="block w-full border rounded-lg p-2"/></label><button disabled={!directNotes[d.id]?.trim()} onClick={() => resolve(d.id,"close_direct",directNotes[d.id])} className="bg-afri-primary text-white rounded-lg py-2 px-4">Clôturer avec une note, sans mouvement de fonds</button></div>}
+                    {d.status === "open" && d.payment_mode !== "direct" && (
                       <div className="grid grid-cols-3 gap-2 mt-4">
                         <button
                           data-testid={`refund-buyer-${d.id}`}
@@ -83,15 +85,16 @@ export default function AdminDisputes() {
                         </button>
                         <button
                           data-testid={`partial-refund-${d.id}`}
-                          onClick={() => resolve(d.id, "partial_refund")}
-                          className="bg-white border-2 border-amber-500 text-amber-600 hover:bg-amber-50 rounded-lg py-2 text-sm font-semibold"
+                          disabled
+                          title="Remboursements partiels temporairement suspendus"
+                          className="bg-gray-100 border-2 border-gray-300 text-gray-600 rounded-lg py-2 text-sm font-semibold cursor-not-allowed"
                         >
-                          Partiel
+                          Partiel suspendu
                         </button>
                         <button
                           data-testid={`release-seller-${d.id}`}
                           onClick={() => resolve(d.id, "release_seller")}
-                          className="bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-2 text-sm font-semibold"
+                          className="bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-2 text-sm font-semibold"
                         >
                           Libérer vendeur
                         </button>

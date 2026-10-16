@@ -1,0 +1,21 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "838cc9523267be74561edd9b395d46615b2fad0a",
+  "run": 38832186336,
+  "artifacts": [
+    {
+      "id": 12017656139,
+      "name": "afrimarket-web-6df1a1792537dfba1d29b99f7725993c824ff838",
+      "digest": "sha256:4b00bdd921251b0e3f642b8db1a24671a217fcca7b20d70670ffe24954681260",
+      "verified": true
+    },
+    {
+      "id": 12017338492,
+      "name": "ui-premium-preview-6df1a1792537dfba1d29b99f7725993c824ff838",
+      "digest": "sha256:bb5513f24acc89b2c580e2f53237d839c952d15f2280c0a36a2ab6cd916a6a0a",
+      "verified": true
+    }
+  ],
+  "internalWebFilesVerified": 163,
+  "metadataSourceVerified": "838cc9523267be74561edd9b395d46615b2fad0a"
+}

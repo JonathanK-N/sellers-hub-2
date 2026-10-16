@@ -65,6 +65,18 @@ async def seed_admin():
 
 async def create_indexes():
     db = get_db()
+    # Avoid concurrent implicit namespace creation during the first checkout.
+    from pymongo.errors import CollectionInvalid
+    for name in ("orders", "transactions", "order_groups", "checkout_requests", "withdrawal_requests", "financial_ledger", "payment_intents", "payment_events", "notification_outbox", "fraud_outbox", "deliverer_wallets", "deliverer_wallet_transactions", "disputes", "withdrawals"):
+        try:
+            await db.create_collection(name)
+        except CollectionInvalid:
+            pass
+    await db.order_groups.create_index("id", unique=True)
+    await db.transactions.create_index("order_id", unique=True, partialFilterExpression={"order_id": {"$type": "string"}})
+    await db.disputes.create_index("order_id", unique=True, partialFilterExpression={"status": "open"})
+    await db.deliverer_wallets.create_index("user_id", unique=True)
+    await db.withdrawals.create_index("id", unique=True)
     await db.users.create_index("phone", unique=True)
     await db.users.create_index("id", unique=True)
     await db.sellers.create_index("user_id", unique=True)
@@ -88,7 +100,11 @@ async def create_indexes():
     await db.banners.create_index("target_role")
     await db.notifications.create_index([("user_id", 1), ("read", 1)])
     await db.notifications.create_index("created_at")
-    await db.messages.create_index([("thread_id", 1), ("created_at", -1)])
+    await db.messages.create_index([("conversation_id", 1), ("created_at", -1), ("id", -1)])
+    await db.messages.create_index([("to_user_id", 1), ("read", 1)])
+    await db.messages.create_index([("buyer_id", 1), ("created_at", -1)])
+    await db.messages.create_index([("seller_id", 1), ("created_at", -1)])
+    await db.message_rate_limits.create_index("expires_at", expireAfterSeconds=0)
     await db.app_config.create_index("key", unique=True)
     await db.fx_rates.create_index("pair", unique=True)
     try:

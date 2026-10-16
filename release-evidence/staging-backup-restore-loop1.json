@@ -1,0 +1,21 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "checkedAt": "2026-10-12T18:12:47.862Z",
+  "projectId": "bc40e22f-b963-46fa-a64e-240f3aa954cd",
+  "archiveSha256": "b236962927e85e1b8fb50b849fdf04f48e4087a86181b05a49a3edac5d8a1670",
+  "encryptedArchiveBytes": 8982,
+  "encryption": "AES-256-GCM",
+  "oplogIncluded": true,
+  "oplogReplay": true,
+  "writePause": false,
+  "authenticatedLocalRestore": true,
+  "initialRepresentationComparison": "FAIL: Javascript/Python numeric encoding differed; original failure preserved in private proof",
+  "status": "PASS",
+  "collections": 27,
+  "documents": 46,
+  "allIdsFieldsValuesAndIndexesIdentical": true,
+  "comparison": "canonical field ordering and equivalent numeric representations; not BSON byte identity",
+  "mismatchCollections": [],
+  "sourceWritesDeleted": 0,
+  "sourceRestarted": false
+}

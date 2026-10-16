@@ -1,0 +1,40 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "779ec1244bb25077e639ffc4dbe64f17ce344024",
+  "ownerAuthorizedObservedSha": true,
+  "realHttps": true,
+  "proofs": [
+    {
+      "file": "staging-https-business-loop1.json",
+      "total": 24,
+      "passed": 24
+    },
+    {
+      "file": "staging-https-security-preflight-loop2.json",
+      "total": 6,
+      "passed": 6
+    },
+    {
+      "file": "staging-https-security-auth-loop1.json",
+      "total": 7,
+      "passed": 7
+    },
+    {
+      "file": "staging-https-idor-checkout-loop1.json",
+      "total": 5,
+      "passed": 5
+    },
+    {
+      "file": "staging-https-contact-security-loop1.json",
+      "total": 4,
+      "passed": 4
+    }
+  ],
+  "mongoDirectTests": "PASS: live authenticated PRIMARY, anonymous/cross-database denial, least privilege, transaction abort and commit; staging-mongodb-live-loop1.json",
+  "stagingBackupRestore": "PASS: encrypted oplog archive, authenticated isolated restore, 27 collections/46 documents with matching normalized values, IDs and indexes; staging-backup-restore-loop1.json",
+  "liveMongoRestartPersistence": "NOT_TESTED: requires separate restart approval",
+  "temporaryAccessCleanup": "Railway SSH key revoked and local key removed; all three GitHub QA session secrets deleted after both runs",
+  "performance": "FAIL: controlled cold CI on deployed 779ec124; accueil 74/LCP3104ms/TBT681ms, private pages 95-97 but accessibility/LCP/non-indexation failures remain; staging-https-lighthouse-ci-cold-loop2.json",
+  "stagingReady": false,
+  "productionTouched": false
+}

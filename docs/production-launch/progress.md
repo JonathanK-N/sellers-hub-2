@@ -1,0 +1,59 @@
+# Journal de lancement
+
+Auteur : Jonathan Kakesa (JonathanK-N).
+
+Base vérifiée : b3f503b0ae91c82772f9795f39ed06a8af47040b, CI phase 3 verte. Branche release/afrimarket-production-launch. Bundle privé production-launch-before.bundle vérifié, 47 références. Les PR 1/2/3 et leurs 38 assets restent préservés.
+
+| Tâche | Priorité | État | Constat / prochaine action |
+|---|---|---|---|
+| A01 Cartographie | P0 | PASS | GitHub/Railway et 23 collections Mongo inventoriés en lecture seule ; configuration sauvegardée chiffrée |
+| D01 Conservation Mongo | P0 | PASS | Backup cohérent chiffré et restauration authentifiée vérifiés ; 23 collections, documents/IDs/indexes identiques |
+| M01 Messagerie | P0 | TESTING | API Mongo, permissions, pagination et idempotence PASS ; E2E navigateur métier à vérifier |
+| W01 WhatsApp | P0 | TESTING | Numéro professionnel vérifié et consentement implémentés ; 6 tests API PASS ; navigateur à vérifier |
+| P01 Paiement direct | P0 | TESTING | 16 tests Mongo PASS sans fonds fictifs ; tests HTTP supplémentaires et E2E en cours |
+| S01 Staging | P0 | BLOCKED | Patch complet autorisé et onze jobs PASS ; contrôle automatique refuse l’application, propriétaire ne peut pas appliquer actuellement |
+| L01 Production | P0 | BLOCKED | Backup et migration sur copie PASS ; staging réel, compatibilité Mongo transactionnelle et approbation finale requis |
+
+Le paiement direct rend CinetPay non bloquant ; les gates de protection des données restent obligatoires.
+
+Cycle M01 : 9 tests Mongo réels PASS sur loopback, dont 15 envois concurrents de la même clé -> une ligne et une notification, IDOR/contextes étrangers refusés, 125 messages paginés sans doublons, compte suspendu, débit 30/minute, XSS conservé comme texte et limites de modèle. Preuve locale : release-evidence/production-launch-messages-loop2.xml. Interface mobile modifiée ; build et tests navigateur encore TESTING, pas PASS.
+
+Cycle P01/W01 (6955f6f) : 41 tests locaux ciblés PASS, dont 12 directs, 9 messages et 5 WhatsApp, plus régressions paiement/remise. Aucun mouvement de fonds dans les tests directs. CI 38204219475 : backend/builds/audits dépendances/SAST PASS ; scanner FAIL sur clé d’idempotence synthétique historique, exclusion exacte proposée mais non activée.
+
+CLI Railway 5.64.2 vérifiée SHA-256. Login navigateur expiré après cinq minutes sans callback ; session authentifiée toujours BLOCKED. Lanceur privé railway-login.cmd disponible hors dépôt. Aucun token ou secret publié. Les tâches indépendantes continuent.
+
+Cycle d’audit adversarial : solde historique marqué non payable avec retraits inactifs ; suppression des preuves OTP dans toutes les vues vendeur identifiées ; suppression des codes de remise dans dashboard et fiche acheteur ; transitions livreur conditionnelles ; devises natives au checkout et frais CDF non ajoutés comme USD. Version préparée 1.1.0-direct-rc.1, cache v10 et version Android code 5, sans déplacement des tags rc.2/rc.3. Tests frontend/e2e encore TESTING.
+
+Cycle adversarial suivant : 21 tests directs/WhatsApp PASS (production-launch-adversarial-loop1.xml). Après correction des gains forfaitaires pour les livraisons directes et ajout d’un CAS revision/paiement lors de l’assignation : 16 tests directs PASS (production-launch-direct-loop3.xml), dont dix courses assignation/désaccord acheteur. Aucune commande assignée avec paiement non reçu. Cinq tests health/startup PASS, dont absence de seed par défaut et en production. Cache v10 : validation isolée PASS ; upgrade navigateur encore TESTING. La liste de conversations conserve les pages chargées pendant le polling.
+
+Accès production : utilisateur choisit une session Railway CLI locale authentifiée. Nouvelle connexion navigateur lancée ; callback en attente. Aucune lecture de données métier et aucune sauvegarde production effectuée à ce stade.
+
+Commit 69d1ed6197de9cee38852c2f0111c56c31caf8ad poussé. CI 38205480395 : backend/Web/Android/audits/topologie/restauration synthétique PASS ; scanner historique FAIL, performance/émulateur encore en cours à la vérification. Build Web 2ca5646b48f95148a4ad401a28c76ad139de14e4 téléchargé et SHA-256 9672c9f3379e7085f8a8f9cb65d53ce201bc3683dd2355ab535c28ed05004bdc vérifié.
+
+PWA navigateur sur cet artefact exact : 6 contrôles PASS, ancienne version rc.3/v9 remplacée par v10, caches tiers préservés, landing offline, API offline 503, fallback lisible et reconnexion. Preuve production-launch-pwa-upgrade-69d1ed6.json. Ceci ne certifie ni staging HTTPS ni appareil physique.
+
+Test HTTP ASGI avec Mongo réel : inscription/OTP synthétique/login acheteur-vendeur-livreur, configuration WhatsApp, message/replay/historique persistés, rôle livreur refusé 403, session expirée 401, compte suspendu 403. Assertions PASS ; avertissement natif Windows 0x8007000e pendant le teardown WMI de pytest malgré sortie 0, validation CI Linux requise avant gate PASS. Les deux premiers essais ont corrigé les attentes de contrat (POST messages 201, rôle livreur 403), sans changement des protections ni suppression d’assertions.
+
+Deuxième login Railway expiré sans callback ; ne pas relancer automatiquement une troisième fois. Lanceur privé disponible pour connexion interactive par le propriétaire. Sauvegarde production toujours BLOCKED. Installation locale Yarn interrompue après erreurs réseau répétées ; remplacement par l’artefact CI vérifié, sans modification du lockfile.
+
+Reprise du 12 octobre : connexion CLI confirmée après nouvelle ouverture explicitement demandée. Inventaire production en lecture seule PASS : 23 collections, 33 utilisateurs, 6 vendeurs, 23 produits, 28 commandes ; standalone et données 136 Ko. Valeurs personnelles et secrets exclus du rapport. Les deux mots de passe scellés staging restent absents.
+
+Gitleaks : exclusion de l’unique empreinte historique autorisée par le propriétaire, commit 87180f7 ; scan local de 260 commits PASS. CI d7a9c06 : neuf jobs PASS dont backend Linux avec nouveau test HTTP, performance et émulateur ; seul scanner historique FAIL avant cette exclusion. Aucun seuil ni règle abaissé.
+
+Procédure cohérente standalone préparée dans scripts/production_mongo_backup.py et plan backup-approval-plan.md : source production verrouillée uniquement avec approbation, archive chiffrée sans archive plaintext sur disque, restauration locale authentifiée et protégée. Deux preuves synthétiques PASS, dont déverrouillage après panne injectée. Production non sauvegardée à ce stade ; approbation de la brève pause des écritures requise avant exécution.
+
+Sauvegarde production autorisée et exécutée : première tentative arrêtée sur authentification de mongodump, source déverrouillée et ping vérifié. Diagnostic en lecture seule : `--db` changeait la base d’authentification implicite ; `authSource` fixé selon le contrat URI et chemin `/` explicite avant query. Export de diagnostic jeté, jamais déclaré cohérent. Deuxième tentative PASS : pause 12,5 secondes, archive AES-256-GCM 34 819 octets, SHA-256 7a409f26c720e840509f9e7e66dc770f8e4f65086ae239f23732a8c3db24c9bb, restauration authentifiée 3,03 secondes ; 23 collections, documents/IDs/indexes identiques. Preuve production-backup-proof.json. Source déverrouillée et ping vérifié indépendamment, Mongo 8.0.32. Archive/clé/copie restaurée restent hors Git, ACL privée. L’API existante 1.0.0 annonce degraded au healthcheck ; diagnostic en cours, ne pas transformer cette réponse en PASS métier.
+
+Le propriétaire ne peut pas configurer les deux secrets staging actuellement. La CLI 5.64.2 ne propose aucune option de création scellée dans `variable set --help` ; ne pas remplacer cette exigence par des secrets lisibles. Conversion staging toujours BLOCKED. Aucun déploiement, migration ou conversion production exécuté.
+
+Migrations additives répétées sur la copie restaurée protégée : PASS, 23 collections existantes et tous leurs documents/IDs inchangés ; dix collections ajoutées vides, nouveaux index uniques/messagerie/TTL présents. Aucune migration de production ni seed. Preuve migration-copy-proof.json. Healthcheck production degraded identifié comme défaut préexistant du SHA 6722492 : import get_db absent dans server.py ; lecture publique produits HTTP 200 et Mongo ping OK. Le candidat corrige déjà cet import et ses tests health passent.
+
+Cycle navigateur : premier parcours trouve un crash checkout sur variables de conversion supprimées ; correction c317886, aucune assertion retirée. Deux essais suivants ont précisé l’attente des réponses HTTP/états de préparation. Loop4 sur l’artefact exact c317886/build64dfa9e : 15 contrôles PASS, inscription/login HTTP et formulaires navigateur, produit/panier/checkout, WhatsApp public sans secrets, déclaration vendeur avec consentement, préparation/remise persistées, XSS texte, réponse perdue puis reload/retry avec une seule ligne Mongo, aucun document financier et stock réservé une fois, chat sans overflow 390/768/1440. Preuve production-launch-browser-e2e-loop4.json. CI 38251860341 : dix jobs PASS, dont scanner, backend, performance et émulateur. Ceci ne certifie pas le staging HTTPS du candidat.
+
+Correctifs voisins en vérification : bloquer préparation avant réception déclarée ; réinitialiser consentement par commande et protéger les réponses de routes obsolètes ; accès messagerie vendeur depuis sa commande ; conserver l’ancrage de lecture lors des pages anciennes et ne pas sauter en bas à chaque polling ; interface livreur sans promesse de crédit pour paiement direct, compteur de livraisons séparé des estimations anciennes. Test courier ciblé PASS avec compteur aujourd’hui=1 et gains directs=0. Nouveau build/E2E requis après ces changements.
+
+Cycle navigateur étendu : 25 contrôles PASS sur artefact c722650/build indiqué dans production-launch-browser-e2e-loop9.json. Acheteur, vendeur, livreur et administrateur : pagination 125 messages, lecture ancrée, consentement neuf par commande, livraison sans crédit, litige clôturé sans fonds et session expirée sans message stocké. Deux commandes, stock final 6, zéro document financier. Le correctif f5bcaa1 supprime en plus le doublon historique du bouton de litige direct ; son nouvel artefact reste à valider par CI. Alternative secrets staging autorisée/configurée sans déploiement, configuration production sauvegardée AES-256-GCM et vérifiée, patch staging complet préparé sur les trois services. Aucun déploiement production.
+
+Clôture du cycle local : c492c701/build5abd42d, onze jobs CI PASS et 123 tests backend sans échec/erreur/skip ; navigateur exact loop10 25 PASS, PWA upgrade six PASS. Tag v1.1.0-direct-rc.1 et release brouillon créée avec quinze assets dont digests vérifiés. Répétition conversion/transactions/redémarrage/retour standalone PASS sur copie protégée locale, archive initiale inchangée. Application du patch staging explicitement autorisée mais refusée par contrôle automatique ; propriétaire ne peut pas appliquer actuellement. Aucun contournement. Sept pages HTTPS, conversion/déploiement production et rollback applicatif restent BLOCKED ; rapport détaillé report.md.
+
+Diagnostic d’approbation demandé : connexion en lecture PASS sous Jonathan Kakesa, permission spécifique demander avant modification confirmée, patch 24 changements inchangé. Cause des annulations NON CONFIRMÉE faute de journal/scopes/rôle d’écriture ; aucune nouvelle tentative de déploiement. Guide railway-manual-staging.md livré avec contrôles exacts et garde de conservation du Mongo staging éphémère. Surveillance de reprise en lecture seule active toutes les dix minutes, identifiant reprise-des-validations-afrimarket-staging. Production non touchée.

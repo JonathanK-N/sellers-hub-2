@@ -1,3 +1,4 @@
+from uploads import read_upload
 """Seller boutique + profile management."""
 import uuid
 import logging
@@ -9,6 +10,7 @@ from db import get_db
 from models import SellerSetupRequest
 from auth import require_role
 from s3_service import upload_public, upload_private
+from whatsapp_contact import public_seller, owner_seller
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/seller", tags=["seller"])
@@ -19,7 +21,9 @@ APP_NAME = "afrimarket"
 async def get_my_boutique(user: dict = Depends(require_role("seller"))):
     db = get_db()
     seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
-    return seller  # may be None -> setup needed
+    if seller:
+        seller.pop("whatsapp_verification", None)
+    return owner_seller(seller)  # may be None -> setup needed
 
 
 @router.post("/setup")
@@ -49,7 +53,7 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
     if existing:
         await db.sellers.update_one({"user_id": user["id"]}, {"$set": payload})
         seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
-        return seller
+        return owner_seller(seller)
 
     seller = {
         "id": str(uuid.uuid4()),
@@ -63,7 +67,7 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
     }
     await db.sellers.insert_one(seller)
     seller.pop("_id", None)
-    return seller
+    return owner_seller(seller)
 
 
 def _resize_image(data: bytes, max_px: int = 1200, quality: int = 85) -> tuple[bytes, str]:
@@ -85,7 +89,7 @@ def _resize_image(data: bytes, max_px: int = 1200, quality: int = 85) -> tuple[b
                         if val in rotations:
                             img = img.rotate(rotations[val], expand=True)
         except Exception:
-            pass
+            logger.warning("Best-effort operation failed", exc_info=True)
         # Convertir en RGB (pour JPEG — pas de canal alpha)
         if img.mode in ("RGBA", "P", "LA"):
             bg = Image.new("RGB", img.size, (255, 255, 255))
@@ -116,7 +120,7 @@ async def upload_photo(file: UploadFile = File(...), user: dict = Depends(requir
         ext = file.filename.rsplit(".", 1)[-1].lower()
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
-    raw_data = await file.read()
+    raw_data = await read_upload(file)
     # Redimensionner à max 1200px, JPEG optimisé — réduit la taille de 70-90% pour les photos mobiles
     data, content_type = _resize_image(raw_data)
     ext = "jpg"
@@ -154,7 +158,7 @@ async def upload_kyc_doc(
     if file.filename and "." in file.filename:
         ext = file.filename.rsplit(".", 1)[-1].lower()
     path = f"{APP_NAME}/kyc/{user['id']}/{doc_type}_{uuid.uuid4()}.{ext}"
-    data = await file.read()
+    data = await read_upload(file, allow_pdf=True)
     try:
         result = upload_private(path, data, file.content_type or "image/jpeg")
     except Exception as e:
@@ -241,12 +245,15 @@ async def dashboard(user: dict = Depends(require_role("seller"))):
     products_oos = sum(1 for p in products if p.get("stock", 0) <= 0)
 
     orders = await db.orders.find({"seller_id": seller["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for order in orders:
+        order.pop("confirmation_code", None)
+        order.pop("qr_code", None)
     revenue = sum(o["total_amount"] - o["commission_amount"] for o in orders if o.get("escrow_status") == "released")
     orders_pending = sum(1 for o in orders if o["status"] in ("confirmed", "preparing", "out_for_delivery"))
     orders_completed = sum(1 for o in orders if o["status"] in ("delivered", "collected"))
 
     return {
-        "shop": seller,
+        "shop": owner_seller(seller),
         "revenue": revenue,
         "orders_total": len(orders),
         "orders_pending": orders_pending,
@@ -291,7 +298,7 @@ async def upload_logo(file: UploadFile = File(...), user: dict = Depends(require
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
     path = f"{APP_NAME}/shop-logos/{seller['id']}/{uuid.uuid4()}.{ext}"
-    data = await file.read()
+    data = await read_upload(file)
     try:
         result = upload_public(path, data, file.content_type or "image/jpeg")
     except Exception as e:
@@ -326,7 +333,7 @@ async def upload_banner(file: UploadFile = File(...), user: dict = Depends(requi
     if ext not in {"jpg", "jpeg", "png", "webp", "gif"}:
         ext = "jpg"
     path = f"{APP_NAME}/shop-banners/{seller['id']}/{uuid.uuid4()}.{ext}"
-    data = await file.read()
+    data = await read_upload(file)
     try:
         result = upload_public(path, data, file.content_type or "image/jpeg")
     except Exception as e:
@@ -366,7 +373,7 @@ async def get_public_profile(seller_id: str):
         {"_id": 0}
     ).sort("created_at", -1).to_list(50)
     reviews = await db.reviews.find({"seller_id": seller_id}, {"_id": 0}).sort("created_at", -1).to_list(20)
-    return {"seller": seller, "products": products, "reviews": reviews}
+    return {"seller": public_seller(seller), "products": products, "reviews": reviews}
 
 
 @router.get("/buyer-profile/{buyer_id}")
@@ -376,13 +383,18 @@ async def get_buyer_profile(buyer_id: str, user: dict = Depends(require_role("se
     seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
     if not seller:
         raise HTTPException(status_code=400, detail="Boutique manquante")
-    buyer = await db.users.find_one({"id": buyer_id}, {"_id": 0, "password_hash": 0, "otp_code": 0})
+    if not await db.orders.find_one({"buyer_id": buyer_id, "seller_id": seller["id"]}):
+        raise HTTPException(404, "Acheteur introuvable")
+    buyer = await db.users.find_one({"id": buyer_id}, dict.fromkeys(("_id", "password_hash", "otp_code"), 0))
     if not buyer:
         raise HTTPException(status_code=404, detail="Acheteur introuvable")
     orders = await db.orders.find(
         {"buyer_id": buyer_id, "seller_id": seller["id"]},
         {"_id": 0}
     ).sort("created_at", -1).to_list(50)
+    for order in orders:
+        order.pop("confirmation_code", None)
+        order.pop("qr_code", None)
     total_spent = sum(o["total_amount"] for o in orders if o.get("escrow_status") == "released")
     return {
         "buyer": {"name": buyer.get("name"), "created_at": buyer.get("created_at"), "id": buyer_id},

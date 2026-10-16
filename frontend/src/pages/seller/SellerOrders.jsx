@@ -61,7 +61,7 @@ function RateBuyerModal({ order, onClose, onRated }) {
         <div className="flex justify-center gap-2 my-5">
           {[1, 2, 3, 4, 5].map((n) => (
             <button key={n} data-testid={`rate-buyer-star-${n}`} onClick={() => setRating(n)}>
-              <Star size={32} className={n <= rating ? "text-[#EF9F27] fill-[#EF9F27]" : "text-gray-200"} />
+              <Star size={32} className={n <= rating ? "text-afri-accent fill-afri-accent" : "text-gray-200"} />
             </button>
           ))}
         </div>
@@ -69,7 +69,7 @@ function RateBuyerModal({ order, onClose, onRated }) {
           data-testid="submit-buyer-rating-btn"
           disabled={busy}
           onClick={submit}
-          className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold disabled:opacity-50"
+          className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold disabled:opacity-50"
         >
           {busy ? "Envoi…" : "Valider la note"}
         </button>
@@ -106,7 +106,7 @@ export default function SellerOrders() {
             {orders.map((o) => {
               const status = ORDER_STATUS_LABELS[o.status] || { label: o.status, color: "bg-gray-100 text-gray-700" };
               return (
-                <div key={o.id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-testid={`seller-order-${o.id}`}>
+                <div key={o.id} className="bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden" data-testid={`seller-order-${o.id}`}>
                   <Link to={`/buyer/orders/${o.id}`} className="block p-4 hover:bg-gray-50 transition-colors">
                     <div className="flex items-center justify-between">
                       <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full ${status.color}`}>
@@ -137,10 +137,10 @@ export default function SellerOrders() {
                     {/* Montant + escrow */}
                     <div className="flex items-center justify-between mt-2.5 pt-2.5 border-t border-gray-50">
                       <div className="flex items-center gap-1 text-xs text-gray-500">
-                        <ShieldCheck size={12} className={o.escrow_status === "released" ? "text-[#1D9E75]" : "text-gray-400"} />
-                        {o.escrow_status === "released" ? "Payé" : "En escrow"}
+                        <ShieldCheck size={12} className={o.escrow_status === "released" ? "text-green-600" : "text-gray-400"} />
+                        {o.payment_method === "direct" ? (o.payment_status === "seller_declared_received" ? "Réception déclarée hors plateforme" : "Paiement direct à convenir") : o.escrow_status === "released" ? "Payé" : "En escrow"}
                       </div>
-                      <span className="font-display font-bold text-[#085041]">
+                      <span className="font-display font-bold text-afri-secondary">
                         {formatPrice(o.amount_due ?? o.total_amount, o.currency)}
                       </span>
                     </div>
@@ -150,7 +150,7 @@ export default function SellerOrders() {
                     <button
                       data-testid={`rate-buyer-btn-${o.id}`}
                       onClick={() => setRateTarget(o)}
-                      className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-[#EF9F27] bg-[#FEF3E2] py-2.5 border-t border-amber-100"
+                      className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-afri-accent bg-[#FEF3E2] py-2.5 border-t border-amber-100"
                     >
                       <Star size={13} /> Noter ce client
                     </button>

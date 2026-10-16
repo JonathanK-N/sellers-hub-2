@@ -7,7 +7,7 @@ import api from "../lib/api";
 import MessagesIndicator from "./MessagesIndicator";
 
 export default function TopBar({ title = "AfriMarket", showCart = true }) {
-  const { count } = useCart();
+  const { count, openCart } = useCart();
   const { user } = useAuth();
   const [notifCount, setNotifCount] = useState(0);
 
@@ -28,32 +28,34 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
   return (
     <header
       data-testid="top-header"
-      className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 flex justify-between items-center shadow-md"
+      className="sticky top-0 z-40 bg-afri-secondary text-white px-4 md:px-8 py-3 flex justify-between items-center shadow-md"
     >
       <Link to="/buyer/home" className="flex items-center gap-2" data-testid="logo-link">
-        <div className="w-8 h-8 rounded-md bg-[#1D9E75] flex items-center justify-center font-black text-white">
+        <div className="w-8 h-8 rounded-md bg-afri-primary flex items-center justify-center font-black text-white">
           A
         </div>
         <span className="font-display font-black text-lg tracking-tight">{title}</span>
       </Link>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 md:gap-2">
         <MessagesIndicator />
         <Link
           to="/notifications"
-          aria-label="Notifications"
+          aria-label={notifCount > 0 ? `Notifications, ${notifCount} non lues` : "Notifications"}
           data-testid="notifications-btn"
           className="relative w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center"
         >
           <Bell size={20} />
           {notifCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-[#EF9F27] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-white">
+            <span className="absolute -top-1 -right-1 bg-afri-accent text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 text-afri-secondary">
               {notifCount}
             </span>
           )}
         </Link>
         {showCart && (
-          <Link
-            to="/buyer/cart"
+          <button
+            type="button"
+            onClick={openCart}
+            aria-label="Ouvrir le panier"
             data-testid="cart-icon-link"
             className="relative w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center"
           >
@@ -61,12 +63,12 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
             {count > 0 && (
               <span
                 data-testid="cart-badge"
-                className="absolute -top-1 -right-1 bg-[#EF9F27] text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1"
+                className="absolute -top-1 -right-1 bg-afri-accent text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1"
               >
                 {count}
               </span>
             )}
-          </Link>
+          </button>
         )}
       </div>
     </header>

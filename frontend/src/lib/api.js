@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-export const API_BASE = `${BACKEND_URL}/api`;
+import { API_BASE } from "./api_config";
+export { API_BASE } from "./api_config";
 
 const api = axios.create({
   baseURL: API_BASE,
   withCredentials: false,
+  timeout: 15000,
 });
 
 api.interceptors.request.use((config) => {
@@ -24,9 +25,10 @@ api.interceptors.response.use(
       // Token expired
       localStorage.removeItem("afri_token");
       localStorage.removeItem("afri_user");
+      window.dispatchEvent(new Event("afri-session-expired"));
     }
     return Promise.reject(err);
-  }
+  },
 );
 
 export function formatApiError(detail) {

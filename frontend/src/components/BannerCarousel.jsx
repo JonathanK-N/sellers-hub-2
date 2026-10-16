@@ -62,7 +62,7 @@ export default function BannerCarousel({ position = "home_top", role = "all", cl
       {/* Image principale */}
       <div
         onClick={handleClick}
-        className={`relative w-full aspect-[2.5/1] bg-gradient-to-r from-[#085041] to-[#1D9E75] overflow-hidden ${b.link_url ? "cursor-pointer" : ""}`}
+        className={`relative w-full aspect-[2.5/1] bg-linear-to-r from-afri-secondary to-afri-primary overflow-hidden ${b.link_url ? "cursor-pointer" : ""}`}
       >
         {b.image_url && (
           <img
@@ -75,7 +75,7 @@ export default function BannerCarousel({ position = "home_top", role = "all", cl
 
         {/* Overlay texte en bas */}
         {(b.title || b.subtitle) && (
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 py-3">
+          <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/70 to-transparent px-4 py-3">
             {b.title && (
               <p className="text-white font-display font-bold text-sm leading-tight">
                 {b.title}

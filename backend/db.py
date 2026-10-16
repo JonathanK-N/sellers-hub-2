@@ -17,6 +17,10 @@ def init_db() -> AsyncIOMotorDatabase:
 
 
 def get_db() -> AsyncIOMotorDatabase:
+    from financial_transactions import active_database
+    current = active_database.get()
+    if current is not None:
+        return current
     if _db is None:
         return init_db()
     return _db

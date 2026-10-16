@@ -1,0 +1,632 @@
+{
+  "production": {
+    "project": {
+      "id": "7cf04965-3d75-4965-9e76-cd33c3b716c5",
+      "name": "AFRIMARKET",
+      "workspaceName": "Jonathan Kakesa's Projects"
+    },
+    "environment": {
+      "id": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+      "name": "production",
+      "isEphemeral": false
+    },
+    "staged": null,
+    "region": null,
+    "services": [
+      {
+        "id": "8807024a-a89f-4c55-8b4b-fb49641c58c3",
+        "name": "MongoDB",
+        "state": "live",
+        "source": {
+          "image": "mongo:8.0",
+          "repo": null,
+          "branch": null
+        },
+        "regions": [
+          "us-west2"
+        ],
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "volumeMounts": [
+          {
+            "volumeId": "73f2765f-a5db-48f9-88b7-3f9a868b4842",
+            "volumeName": "mongodb-volume",
+            "mountPath": "/data/db"
+          }
+        ],
+        "latestDeployment": {
+          "id": "03f6edbf-03a2-436f-846d-13421e778531",
+          "status": "SUCCESS",
+          "createdAt": "2026-09-17T23:41:57.509Z",
+          "url": null
+        },
+        "stagedChangeCount": 0
+      },
+      {
+        "id": "69e4d050-47d4-4e24-8d0d-d47807f4b99a",
+        "name": "sellers-hub-2",
+        "state": "live",
+        "source": {
+          "image": null,
+          "repo": "JonathanK-N/sellers-hub-2",
+          "branch": "main"
+        },
+        "regions": [
+          "us-west2"
+        ],
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "volumeMounts": [],
+        "latestDeployment": {
+          "id": "8ebcb33c-8c54-4fc4-afb0-8a5c717f3b4b",
+          "status": "SUCCESS",
+          "createdAt": "2026-10-11T00:54:27.258Z",
+          "url": null
+        },
+        "stagedChangeCount": 0
+      },
+      {
+        "id": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+        "name": "practical-blessing",
+        "state": "live",
+        "source": {
+          "image": null,
+          "repo": "JonathanK-N/sellers-hub-2",
+          "branch": "main"
+        },
+        "regions": [
+          "us-west2"
+        ],
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "volumeMounts": [],
+        "latestDeployment": {
+          "id": "63d6636f-035b-4596-83bc-5268ad33fd70",
+          "status": "SUCCESS",
+          "createdAt": "2026-10-11T00:58:01.538Z",
+          "url": null
+        },
+        "stagedChangeCount": 0
+      }
+    ],
+    "volumes": [
+      {
+        "id": "73f2765f-a5db-48f9-88b7-3f9a868b4842",
+        "name": "mongodb-volume",
+        "state": "live",
+        "region": "us-west2",
+        "sizeMB": 5000,
+        "mountedOn": {
+          "serviceId": "8807024a-a89f-4c55-8b4b-fb49641c58c3",
+          "serviceName": "MongoDB",
+          "mountPath": "/data/db"
+        },
+        "stagedChangeCount": 0
+      }
+    ],
+    "buckets": [],
+    "sharedVariableNames": []
+  },
+  "staging": {
+    "project": {
+      "id": "bc40e22f-b963-46fa-a64e-240f3aa954cd",
+      "name": "AFRIMARKET-STAGING-20261010",
+      "workspaceName": "Jonathan Kakesa's Projects"
+    },
+    "environment": {
+      "id": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+      "name": "staging",
+      "isEphemeral": false
+    },
+    "staged": null,
+    "region": null,
+    "services": [
+      {
+        "id": "3a11fecf-70e7-4ba3-8744-d0156b9f7e6c",
+        "name": "afrimarket-api-staging",
+        "state": "live",
+        "source": {
+          "image": null,
+          "repo": "JonathanK-N/sellers-hub-2",
+          "branch": "stabilization/afrimarket-phase-2"
+        },
+        "regions": [
+          "us-west2"
+        ],
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "volumeMounts": [],
+        "latestDeployment": {
+          "id": "4f423864-0522-43de-b150-98a9474410f4",
+          "status": "SUCCESS",
+          "createdAt": "2026-10-11T14:34:38.351Z",
+          "url": null
+        },
+        "stagedChangeCount": 0
+      },
+      {
+        "id": "80a726a8-1cd5-4387-9e5d-8cd6c9671d9e",
+        "name": "afrimarket-mongo-staging",
+        "state": "live",
+        "source": {
+          "image": "mongo:8.0",
+          "repo": null,
+          "branch": null
+        },
+        "regions": [
+          "us-west2"
+        ],
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "volumeMounts": [],
+        "latestDeployment": {
+          "id": "537379a4-f8fb-42c8-ade7-32fee56637de",
+          "status": "SUCCESS",
+          "createdAt": "2026-10-10T20:18:21.774Z",
+          "url": null
+        },
+        "stagedChangeCount": 0
+      },
+      {
+        "id": "5a36eb00-531d-4aae-be1a-f8c63f241da3",
+        "name": "afrimarket-web-staging",
+        "state": "live",
+        "source": {
+          "image": null,
+          "repo": "JonathanK-N/sellers-hub-2",
+          "branch": "stabilization/afrimarket-phase-2"
+        },
+        "regions": [
+          "us-west2"
+        ],
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "volumeMounts": [],
+        "latestDeployment": {
+          "id": "722948b5-17f9-4c95-b7e4-222957a6645a",
+          "status": "SUCCESS",
+          "createdAt": "2026-10-11T14:34:38.350Z",
+          "url": null
+        },
+        "stagedChangeCount": 0
+      }
+    ],
+    "volumes": [],
+    "buckets": [],
+    "sharedVariableNames": []
+  },
+  "historical_variables": {
+    "variableNames": [
+      "ADMIN_NAME",
+      "ADMIN_PASSWORD",
+      "ADMIN_PHONE",
+      "AT_API_KEY",
+      "AT_SENDER_ID",
+      "AT_USERNAME",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_BUCKET_KYC",
+      "AWS_BUCKET_PUBLIC",
+      "AWS_REGION",
+      "AWS_SECRET_ACCESS_KEY",
+      "CINETPAY_NOTIFY_URL",
+      "CINETPAY_RETURN_URL",
+      "CORS_ORIGINS",
+      "DB_NAME",
+      "EMERGENT_LLM_KEY",
+      "FOREXRATEAPI_KEY",
+      "JWT_SECRET",
+      "MONGO_INITDB_ROOT_PASSWORD",
+      "MONGO_INITDB_ROOT_USERNAME",
+      "MONGO_PUBLIC_URL",
+      "MONGO_URL",
+      "PAYMENT_MODE",
+      "RAILWAY_ENVIRONMENT",
+      "RAILWAY_ENVIRONMENT_ID",
+      "RAILWAY_ENVIRONMENT_NAME",
+      "RAILWAY_PRIVATE_DOMAIN",
+      "RAILWAY_PROJECT_ID",
+      "RAILWAY_PROJECT_NAME",
+      "RAILWAY_PUBLIC_DOMAIN",
+      "RAILWAY_SERVICE_ID",
+      "RAILWAY_SERVICE_NAME",
+      "RAILWAY_SERVICE_PRACTICAL_BLESSING_URL",
+      "RAILWAY_SERVICE_SELLERS_HUB_2_URL",
+      "RAILWAY_STATIC_URL",
+      "RESEND_API_KEY",
+      "SEED_DEMO"
+    ],
+    "valuesRedacted": true
+  },
+  "production_deployments": {
+    "deployments": [
+      {
+        "id": "63d6636f-035b-4596-83bc-5268ad33fd70",
+        "status": "SUCCESS",
+        "createdAt": "2026-10-11T00:58:01.538Z",
+        "updatedAt": "2026-10-11T01:00:34.656Z",
+        "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+        "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "url": null,
+        "snapshotId": "7e904604-d06d-4ed3-a762-b475dfcd00f9",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": true,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "audit: points 9/16/17 — health enrichi + PWA iOS + manifest\n\n- server.py [p9]: /health enrichi — ping MongoDB + fraîcheur FX rate + response_ms\n  → UptimeRobot peut surveiller l'état réel du système\n- index.html [p16]: splash screens iOS 4 tailles + Open Graph complet + Twitter Card\n- manifest.json [p17]: start_url '.' → '/' (absolu, requis installabilité stricte)\n  scope '.' → '/', screenshots pour stores/navigateurs, prefer_related_applications:false",
+          "commitHash": "6722492d85e0f8646ebe03c9b841c4a0e3611449",
+          "branch": "main"
+        }
+      },
+      {
+        "id": "8ebcb33c-8c54-4fc4-afb0-8a5c717f3b4b",
+        "status": "SUCCESS",
+        "createdAt": "2026-10-11T00:54:27.258Z",
+        "updatedAt": "2026-10-11T00:56:44.279Z",
+        "serviceId": "69e4d050-47d4-4e24-8d0d-d47807f4b99a",
+        "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "url": null,
+        "snapshotId": "e0bf00d2-1512-4b03-be91-bf300cfc75d5",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": true,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "audit: points 9/16/17 — health enrichi + PWA iOS + manifest\n\n- server.py [p9]: /health enrichi — ping MongoDB + fraîcheur FX rate + response_ms\n  → UptimeRobot peut surveiller l'état réel du système\n- index.html [p16]: splash screens iOS 4 tailles + Open Graph complet + Twitter Card\n- manifest.json [p17]: start_url '.' → '/' (absolu, requis installabilité stricte)\n  scope '.' → '/', screenshots pour stores/navigateurs, prefer_related_applications:false",
+          "commitHash": "6722492d85e0f8646ebe03c9b841c4a0e3611449",
+          "branch": "main"
+        }
+      },
+      {
+        "id": "03f6edbf-03a2-436f-846d-13421e778531",
+        "status": "SUCCESS",
+        "createdAt": "2026-09-17T23:41:57.509Z",
+        "updatedAt": "2026-09-17T23:42:10.023Z",
+        "serviceId": "8807024a-a89f-4c55-8b4b-fb49641c58c3",
+        "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "url": null,
+        "snapshotId": "c73f5a09-326f-469e-b360-7d1297c77018",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": true,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "redeploy",
+          "image": "mongo:8.0"
+        }
+      },
+      {
+        "id": "8e2af06c-8a30-4000-b690-f002c5a0cfef",
+        "status": "REMOVED",
+        "createdAt": "2026-09-17T23:41:44.858Z",
+        "updatedAt": "2026-10-11T01:00:38.624Z",
+        "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+        "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "url": null,
+        "snapshotId": "90a7c1cc-16b7-4e70-bda9-24e3219bffe5",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": true,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "redeploy",
+          "commitMessage": "feat: panier en tiroir lateral (facon casakonnect)\n\n- CartDrawer: glisse depuis la droite, liste des articles avec vignette,\n  quantites +/-, suppression, total et CTA commander\n- etat vide illustre avec bouton 'Parcourir les produits'\n- fermeture par croix / clic exterieur / Echap, defilement de fond bloque\n- l'etat d'ouverture vit dans CartContext, le rendu se fait via\n  CartDrawerMount a l'interieur du Router (le tiroir navigue)\n- icone panier du TopBar et onglet Panier de la barre du bas ouvrent\n  le tiroir au lieu de naviguer\n- ouverture automatique apres un ajout au panier\n- route /buyer/cart conservee (le CTA du tiroir y mene pour le paiement)",
+          "commitHash": "0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84",
+          "branch": "ui-ux"
+        }
+      },
+      {
+        "id": "edc47148-a47d-42df-9342-cdb2f2d2327e",
+        "status": "REMOVED",
+        "createdAt": "2026-09-17T23:41:42.738Z",
+        "updatedAt": "2026-10-11T00:56:48.936Z",
+        "serviceId": "69e4d050-47d4-4e24-8d0d-d47807f4b99a",
+        "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "url": null,
+        "snapshotId": "c9ab5ecb-e4c6-444f-b73f-af39eedc6937",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": true,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "redeploy",
+          "commitMessage": "audit: points 9/16/17 — health enrichi + PWA iOS + manifest\n\n- server.py [p9]: /health enrichi — ping MongoDB + fraîcheur FX rate + response_ms\n  → UptimeRobot peut surveiller l'état réel du système\n- index.html [p16]: splash screens iOS 4 tailles + Open Graph complet + Twitter Card\n- manifest.json [p17]: start_url '.' → '/' (absolu, requis installabilité stricte)\n  scope '.' → '/', screenshots pour stores/navigateurs, prefer_related_applications:false",
+          "commitHash": "6722492d85e0f8646ebe03c9b841c4a0e3611449",
+          "branch": "main"
+        }
+      },
+      {
+        "id": "2d52af99-7634-4605-81e7-fc796e285d63",
+        "status": "FAILED",
+        "createdAt": "2026-08-18T21:56:19.182Z",
+        "updatedAt": "2026-08-18T22:09:39.006Z",
+        "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+        "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "url": null,
+        "snapshotId": "1b2bfad9-b5f7-4a18-9ebe-fa819b838e79",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": false,
+        "canRedeploy": true,
+        "regions": [],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "chore: relance du deploiement (echec Railway a l'etape snapshot, incident plateforme en cours)",
+          "commitHash": "83be26533e8bca3aa4ca1b1fa84c93f686aabec0",
+          "branch": "ui-ux"
+        }
+      },
+      {
+        "id": "7f64efc8-f2b2-4092-b11b-d25eae4c1e51",
+        "status": "FAILED",
+        "createdAt": "2026-08-18T21:40:57.369Z",
+        "updatedAt": "2026-08-18T21:52:55.182Z",
+        "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+        "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "url": null,
+        "snapshotId": "c9ca0e7e-9fa1-4066-a62f-904421a9a20c",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": false,
+        "canRedeploy": true,
+        "regions": [],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "feat: defilement fluide (Lenis) + animations au scroll (React Bits)\n\nDependances\n- lenis 1.3.26 (defilement fluide) et gsap 3.15.0 (ScrollTrigger)\n- yarn.lock mis a jour : le build Railway utilise --frozen-lockfile,\n  ajouter les deps sans le lockfile aurait fait echouer le deploiement\n\nSmoothScroll\n- Lenis synchronise avec GSAP ScrollTrigger pour caler les animations\n- desactive si prefers-reduced-motion, et sur ecrans tactiles (le\n  defilement natif mobile est deja fluide, l'inertie JS le degraderait)\n- remontee en haut a chaque changement de page\n\nComposants React Bits (MIT + Commons Clause, attribution conservee)\n- FadeContent, AnimatedContent, CountUp dans components/reactbits/\n- CountUp: import 'motion/react' adapte vers 'framer-motion' deja present\n\nLanding\n- chiffres cles animes au comptage dans le hero\n- barre de confiance, section produits et CTA reveles au defilement",
+          "commitHash": "246fbfc65af897d8eca93abca71d70464906f9f9",
+          "branch": "ui-ux"
+        }
+      },
+      {
+        "id": "717398b7-ecb2-4459-8a50-89ee1ceb33bc",
+        "status": "REMOVED",
+        "createdAt": "2026-08-17T22:20:03.992Z",
+        "updatedAt": "2026-09-04T03:53:06.853Z",
+        "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+        "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "url": null,
+        "snapshotId": "80726e6d-c7d8-4f76-8ee0-f907e0a2217e",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": false,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "feat: panier en tiroir lateral (facon casakonnect)\n\n- CartDrawer: glisse depuis la droite, liste des articles avec vignette,\n  quantites +/-, suppression, total et CTA commander\n- etat vide illustre avec bouton 'Parcourir les produits'\n- fermeture par croix / clic exterieur / Echap, defilement de fond bloque\n- l'etat d'ouverture vit dans CartContext, le rendu se fait via\n  CartDrawerMount a l'interieur du Router (le tiroir navigue)\n- icone panier du TopBar et onglet Panier de la barre du bas ouvrent\n  le tiroir au lieu de naviguer\n- ouverture automatique apres un ajout au panier\n- route /buyer/cart conservee (le CTA du tiroir y mene pour le paiement)",
+          "commitHash": "0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84",
+          "branch": "ui-ux"
+        }
+      },
+      {
+        "id": "a402a471-eb46-44ff-840c-3df6c07e651d",
+        "status": "REMOVED",
+        "createdAt": "2026-08-17T22:09:32.819Z",
+        "updatedAt": "2026-08-17T22:21:44.616Z",
+        "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+        "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "url": null,
+        "snapshotId": "204d2f60-86f1-48c1-b331-5b0a446d25bf",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": false,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "feat: connexion et inscription en modal superpose (facon casakonnect)\n\n- LoginForm / RegisterForm extraits en composants reutilisables\n- AuthModal: carte centree sur fond assombri, animation scale-in,\n  fermeture par croix / clic exterieur / Echap, defilement de fond bloque\n- AuthModalContext: openAuth('login'|'register') disponible partout\n- bascule connexion <-> inscription sans rechargement, dans le modal\n- boutons Landing (en-tete, CTA, pied de page) et CTA visiteur\n  (page produit, boutique) ouvrent le modal au lieu de naviguer\n- routes /auth/login et /auth/register conservees et fonctionnelles\n  pour les liens directs, e-mails et redirections (VERIFY_REQUIRED)\n- plein ecran sur mobile, carte centree des sm:",
+          "commitHash": "a414f88ce265c16010eaaae143a1d62158507906",
+          "branch": "ui-ux"
+        }
+      },
+      {
+        "id": "4419390c-5c3c-4180-b286-aef9f50bf0f0",
+        "status": "REMOVED",
+        "createdAt": "2026-08-17T21:50:15.027Z",
+        "updatedAt": "2026-08-17T22:11:02.063Z",
+        "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+        "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "url": null,
+        "snapshotId": "3b5d005f-541d-4a6f-ba32-684e58c0cef3",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": false,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "ui: design system unifie sur toute l'application (54 fichiers)\n\nTypographie\n- Poppins partout (remplace Manrope + IBM Plex Sans), titres en 600 avec\n  interlettrage -1.5% et interligne 1.2\n\nAnimations (index.css)\n- afri-fade-up / afri-fade / afri-scale-in / afri-slide-in\n- afri-stagger: apparition en cascade des grilles produits\n- afri-skeleton: chargement avec reflet qui balaie (remplace animate-pulse)\n- afri-card: elevation au survol + zoom image 0.5s\n- afri-carousel: defilement horizontal avec accrochage, barre masquee\n- afri-btn: boutons pilule\n- prefers-reduced-motion respecte\n\nPalette (643 occurrences remplacees sur 50 fichiers)\n- boutons pleins: vert #1D9E75 -> noir #0b0b0d\n- liens/accents/focus: -> orange #f97316\n- vert fonce #085041 -> noir de marque\n- ambre #EF9F27 -> orange de marque\n- verts semantiques conserves (verifie, en stock, succes)",
+          "commitHash": "df7588eb2e465934148d1b278c5c4c614d06ac86",
+          "branch": "ui-ux"
+        }
+      }
+    ]
+  },
+  "staging_deployments": {
+    "deployments": [
+      {
+        "id": "4f423864-0522-43de-b150-98a9474410f4",
+        "status": "SUCCESS",
+        "createdAt": "2026-10-11T14:34:38.351Z",
+        "updatedAt": "2026-10-11T14:35:56.279Z",
+        "serviceId": "3a11fecf-70e7-4ba3-8744-d0156b9f7e6c",
+        "environmentId": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+        "url": null,
+        "snapshotId": "2df51273-e446-4694-98e9-0429c7947c63",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": true,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "docs: deliver phase 2 reports and verified NO-GO evidence [skip ci]",
+          "commitHash": "cd08cc50a8378db4c15d5d42c74c386982d58cc9",
+          "branch": "stabilization/afrimarket-phase-2"
+        }
+      },
+      {
+        "id": "722948b5-17f9-4c95-b7e4-222957a6645a",
+        "status": "SUCCESS",
+        "createdAt": "2026-10-11T14:34:38.350Z",
+        "updatedAt": "2026-10-11T14:36:54.309Z",
+        "serviceId": "5a36eb00-531d-4aae-be1a-f8c63f241da3",
+        "environmentId": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+        "url": null,
+        "snapshotId": "a077dae7-e9aa-4b74-b5c3-8515f81b919a",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": true,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "docs: deliver phase 2 reports and verified NO-GO evidence [skip ci]",
+          "commitHash": "cd08cc50a8378db4c15d5d42c74c386982d58cc9",
+          "branch": "stabilization/afrimarket-phase-2"
+        }
+      },
+      {
+        "id": "b92a49a7-67d7-4e4c-a9f8-955d7161f547",
+        "status": "REMOVED",
+        "createdAt": "2026-10-11T14:18:25.258Z",
+        "updatedAt": "2026-10-11T14:36:00.589Z",
+        "serviceId": "3a11fecf-70e7-4ba3-8744-d0156b9f7e6c",
+        "environmentId": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+        "url": null,
+        "snapshotId": "e2aabcd8-6b22-43af-9067-87c3c0d11eb1",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": true,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "test: bound initial WebView readiness and capture failed launches",
+          "commitHash": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+          "branch": "stabilization/afrimarket-phase-2"
+        }
+      },
+      {
+        "id": "61215711-f038-4d6b-a5fe-a446da522d22",
+        "status": "REMOVED",
+        "createdAt": "2026-10-11T14:18:25.258Z",
+        "updatedAt": "2026-10-11T14:36:57.983Z",
+        "serviceId": "5a36eb00-531d-4aae-be1a-f8c63f241da3",
+        "environmentId": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+        "url": null,
+        "snapshotId": "dc12e72f-dade-4f19-b009-d95b73e0d79a",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": true,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "test: bound initial WebView readiness and capture failed launches",
+          "commitHash": "9176e82debf2b35f7262d64416fa9cb5e983726b",
+          "branch": "stabilization/afrimarket-phase-2"
+        }
+      },
+      {
+        "id": "695594f5-d69f-4fd0-976f-38eda68d26ad",
+        "status": "REMOVED",
+        "createdAt": "2026-10-11T14:11:41.337Z",
+        "updatedAt": "2026-10-11T14:19:34.838Z",
+        "serviceId": "3a11fecf-70e7-4ba3-8744-d0156b9f7e6c",
+        "environmentId": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+        "url": null,
+        "snapshotId": "3eb48bff-2a9d-4a93-b815-9a1db37a2683",
+        "creator": {
+          "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+          "name": "Jonathan Kakesa",
+          "email": "jkakesa9@gmail.com"
+        },
+        "canRollback": true,
+        "canRedeploy": true,
+        "regions": [
+          "us-west2"
+        ],
+        "meta": {
+          "reason": "deploy",
+          "commitMessage": "test: verify Android root hardware Back and relaunch",
+          "commitHash": "2c8f7213d5e7dcac490d25429c69824c25dbad05",
+          "branch": "stabilization/afrimarket-phase-2"
+        }
+      }
+    ]
+  }
+}

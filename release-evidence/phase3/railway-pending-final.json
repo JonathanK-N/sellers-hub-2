@@ -1,0 +1,151 @@
+{
+  "project": {
+    "id": "bc40e22f-b963-46fa-a64e-240f3aa954cd",
+    "name": "AFRIMARKET-STAGING-20261010"
+  },
+  "environment": {
+    "id": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+    "name": "staging"
+  },
+  "staged": {
+    "patchId": "6d13f9a6-4924-4c69-92e3-d351404d5136",
+    "status": "STAGED",
+    "changeCount": 13,
+    "message": null,
+    "createdAt": "2026-10-11T17:53:53.883Z",
+    "updatedAt": "2026-10-11T19:13:50.605Z"
+  },
+  "destructive": false,
+  "resources": [
+    {
+      "kind": "service",
+      "id": "5a36eb00-531d-4aae-be1a-f8c63f241da3",
+      "name": "afrimarket-web-staging",
+      "action": "update",
+      "changes": [
+        {
+          "path": "services.5a36eb00-531d-4aae-be1a-f8c63f241da3.source.branch",
+          "displayName": "Branch",
+          "type": "updated",
+          "from": "stabilization/afrimarket-phase-2",
+          "to": "stabilization/afrimarket-phase-3",
+          "destructive": false
+        },
+        {
+          "path": "services.5a36eb00-531d-4aae-be1a-f8c63f241da3.source.commitSha",
+          "displayName": "Commit Sha",
+          "type": "added",
+          "from": "",
+          "to": "058b6a51bf00c4525155b20e1e1a96e939fdfad5",
+          "destructive": false
+        },
+        {
+          "path": "services.5a36eb00-531d-4aae-be1a-f8c63f241da3.source.image",
+          "displayName": "Image",
+          "type": "removed",
+          "from": "",
+          "to": "",
+          "destructive": false
+        },
+        {
+          "path": "services.5a36eb00-531d-4aae-be1a-f8c63f241da3.source.repo",
+          "displayName": "Repo",
+          "type": "updated",
+          "from": "JonathanK-N/sellers-hub-2",
+          "to": "JonathanK-N/sellers-hub-2",
+          "destructive": false
+        }
+      ]
+    },
+    {
+      "kind": "service",
+      "id": "80a726a8-1cd5-4387-9e5d-8cd6c9671d9e",
+      "name": "afrimarket-mongo-staging",
+      "action": "update",
+      "changes": [
+        {
+          "path": "services.80a726a8-1cd5-4387-9e5d-8cd6c9671d9e.source.branch",
+          "displayName": "Branch",
+          "type": "added",
+          "from": "",
+          "to": "stabilization/afrimarket-phase-3",
+          "destructive": false
+        },
+        {
+          "path": "services.80a726a8-1cd5-4387-9e5d-8cd6c9671d9e.source.commitSha",
+          "displayName": "Commit Sha",
+          "type": "added",
+          "from": "",
+          "to": "058b6a51bf00c4525155b20e1e1a96e939fdfad5",
+          "destructive": false
+        },
+        {
+          "path": "services.80a726a8-1cd5-4387-9e5d-8cd6c9671d9e.source.image",
+          "displayName": "Image",
+          "type": "removed",
+          "from": "mongo:8.0",
+          "to": "",
+          "destructive": false
+        },
+        {
+          "path": "services.80a726a8-1cd5-4387-9e5d-8cd6c9671d9e.source.repo",
+          "displayName": "Repo",
+          "type": "added",
+          "from": "",
+          "to": "JonathanK-N/sellers-hub-2",
+          "destructive": false
+        },
+        {
+          "path": "services.80a726a8-1cd5-4387-9e5d-8cd6c9671d9e.build.dockerfilePath",
+          "displayName": "Dockerfile Path",
+          "type": "added",
+          "from": "",
+          "to": "Dockerfile.mongodb-staging",
+          "destructive": false
+        },
+        {
+          "path": "services.80a726a8-1cd5-4387-9e5d-8cd6c9671d9e.volumeMounts.b0f66ec2-2328-4b12-aecb-47847c6d5733.mountPath",
+          "displayName": "Mount Path",
+          "type": "added",
+          "from": "",
+          "to": "/data/db",
+          "destructive": false
+        },
+        {
+          "path": "services.80a726a8-1cd5-4387-9e5d-8cd6c9671d9e.variables.MONGO_INITDB_ROOT_USERNAME.encryptedValue",
+          "displayName": "MONGO_INITDB_ROOT_USERNAME",
+          "type": "added",
+          "from": "",
+          "to": "<redacted>",
+          "destructive": false
+        }
+      ]
+    },
+    {
+      "kind": "volume",
+      "id": "b0f66ec2-2328-4b12-aecb-47847c6d5733",
+      "name": "afrimarket-mongo-staging-data",
+      "action": "create",
+      "changes": [
+        {
+          "path": "volumes.b0f66ec2-2328-4b12-aecb-47847c6d5733.sizeMB",
+          "displayName": "Size MB",
+          "type": "added",
+          "from": "",
+          "to": "1024",
+          "destructive": false
+        },
+        {
+          "path": "volumes.b0f66ec2-2328-4b12-aecb-47847c6d5733.isCreated",
+          "displayName": "Is Created",
+          "type": "added",
+          "from": "",
+          "to": "CREATED",
+          "destructive": false
+        }
+      ]
+    }
+  ],
+  "sharedVariables": [],
+  "privateNetworkDisabled": null
+}

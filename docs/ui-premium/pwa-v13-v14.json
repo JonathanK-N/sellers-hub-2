@@ -1,0 +1,39 @@
+{
+  "scope": "Desktop browser service worker upgrade, not an OS-installed PWA or physical device test",
+  "rows": [
+    {
+      "test": "Previous release worker controls browser",
+      "status": "PASS",
+      "cacheNames": [
+        "afrimarket-green-direct-rc4-v13",
+        "unrelated-application-v1",
+        "afrimarket-orange-v6"
+      ]
+    },
+    {
+      "test": "Old caches purged and unrelated cache preserved",
+      "status": "PASS",
+      "cacheNames": [
+        "unrelated-application-v1",
+        "afrimarket-green-ui-dynamic-v14"
+      ]
+    },
+    {
+      "test": "Visited landing renders offline",
+      "status": "PASS"
+    },
+    {
+      "test": "Offline API does not return cached success",
+      "status": "PASS",
+      "http": 503
+    },
+    {
+      "test": "Uncached lazy route has readable offline fallback",
+      "status": "PASS"
+    },
+    {
+      "test": "Reconnect recovers lazy route and login redirect",
+      "status": "PASS"
+    }
+  ]
+}

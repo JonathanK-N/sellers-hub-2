@@ -1,0 +1,8 @@
+{
+  "source": "40f8f85588aae16741df283749192c1c6ba4489e",
+  "test": "standalone Mongo fails closed for withdrawal",
+  "status": "PASS",
+  "http": 503,
+  "balanceBefore": 186,
+  "balanceAfter": 186
+}

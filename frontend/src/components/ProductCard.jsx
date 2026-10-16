@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { Star, MapPin, ShieldCheck, Crown } from "lucide-react";
+import { Star, MapPin, ShieldCheck, Crown, Heart, ShoppingCart } from "lucide-react";
 import { formatPrice, formatDistance, displayPrice, photoUrl } from "../lib/format";
 
-export default function ProductCard({ product, guest = false }) {
+export default function ProductCard({ product, guest = false, className = "" }) {
   const photo = product.photos?.[0];
   const distance = formatDistance(product.distance_km);
   const href = guest ? `/explore/product/${product.id}` : `/buyer/product/${product.id}`;
@@ -12,33 +12,45 @@ export default function ProductCard({ product, guest = false }) {
     <Link
       to={href}
       data-testid={`product-card-${product.id}`}
-      className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group hover:border-[#1D9E75] transition-colors"
+      className={`afri-card group bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden flex flex-col ${className}`}
     >
-      <div className="aspect-square bg-gray-100 relative overflow-hidden">
+      <div className="afri-card-media aspect-square bg-gray-100 relative">
         {photo ? (
           <img
             src={photoUrl(photo)}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover"
             loading="lazy"
+            decoding="async"
+            width="320"
+            height="320"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-300 text-4xl font-black font-display">
             A
           </div>
         )}
+        <button
+          type="button"
+          aria-label="Favoris temporairement indisponibles"
+          title="Favoris temporairement indisponibles"
+          disabled
+          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gray-500 shadow-xs cursor-not-allowed"
+        >
+          <Heart size={14} />
+        </button>
         {product.seller_premium && (
-          <span className="absolute top-2 left-2 flex items-center gap-1 bg-[#EF9F27] text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm">
+          <span className="absolute top-2 left-2 flex items-center gap-1 bg-afri-accent text-gray-900 px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs">
             <Crown size={11} /> Premium
           </span>
         )}
         {product.currency === "USD" && (
-          <span className="absolute bottom-2 left-2 bg-[#085041] text-white px-1.5 py-0.5 rounded text-[10px] font-bold">
+          <span className="absolute bottom-2 left-2 bg-afri-secondary text-white px-1.5 py-0.5 rounded text-[10px] font-bold">
             $USD
           </span>
         )}
         {distance && (
-          <span className="absolute top-2 right-2 flex items-center gap-1 bg-white/95 backdrop-blur text-gray-700 px-2 py-0.5 rounded-full text-[11px] font-medium shadow-sm">
+          <span className="absolute bottom-2 right-2 flex items-center gap-1 bg-white/95 backdrop-blur text-gray-700 px-2 py-0.5 rounded-full text-[11px] font-medium shadow-xs">
             <MapPin size={11} /> {distance}
           </span>
         )}
@@ -48,12 +60,12 @@ export default function ProductCard({ product, guest = false }) {
         <div className="flex items-center gap-1 text-xs text-gray-500">
           <span className="truncate">{product.seller_name || "Boutique"}</span>
           {product.seller_verified && (
-            <ShieldCheck size={12} className="text-[#1D9E75] shrink-0" />
+            <ShieldCheck size={12} className="text-afri-primary shrink-0" />
           )}
         </div>
         <div className="flex items-center justify-between mt-1">
           <div className="flex flex-col">
-            <span className="font-display font-bold text-[#085041]">
+            <span className="font-display font-bold text-afri-secondary">
               {formatPrice(amount, currency)}
             </span>
             {product.currency === "USD" && (
@@ -62,12 +74,20 @@ export default function ProductCard({ product, guest = false }) {
               </span>
             )}
           </div>
-          {product.seller_rating > 0 && (
-            <span className="flex items-center gap-0.5 text-xs text-gray-600">
-              <Star size={12} className="text-[#EF9F27] fill-[#EF9F27]" />
-              {product.seller_rating.toFixed(1)}
+          <div className="flex items-center gap-2">
+            {product.seller_rating > 0 && (
+              <span className="flex items-center gap-0.5 text-xs text-gray-600">
+                <Star size={12} className="text-afri-accent fill-afri-accent" />
+                {product.seller_rating.toFixed(1)}
+              </span>
+            )}
+            <span
+              aria-hidden="true"
+              className="w-7 h-7 rounded-full bg-afri-primary text-white flex items-center justify-center shrink-0 transition-colors group-hover:bg-afri-primary-hover"
+            >
+              <ShoppingCart size={13} />
             </span>
-          )}
+          </div>
         </div>
       </div>
     </Link>

@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "scope": "protected offline restore copy on loopback only; no production conversion",
+  "mongodb_version": "8.0.32",
+  "phases": [
+    {
+      "phase": "standalone baseline",
+      "original_collections": 23,
+      "original_documents_identical": true
+    },
+    {
+      "phase": "authenticated replica-set conversion",
+      "documents_identical": true,
+      "indexes_identical": true
+    },
+    {
+      "phase": "limited application transactions and anonymous denial",
+      "documents_identical": true,
+      "indexes_identical": true
+    },
+    {
+      "phase": "persistent replica-set restart",
+      "documents_identical": true,
+      "indexes_identical": true
+    },
+    {
+      "phase": "standalone topology rollback on copy only",
+      "documents_identical": true,
+      "indexes_identical": true
+    }
+  ],
+  "original_business_collections": 23,
+  "collections_with_additive_indexes": 33,
+  "production_downtime": "not measured",
+  "application_code_rollback": "not certified",
+  "encrypted_backup_unchanged": true
+}

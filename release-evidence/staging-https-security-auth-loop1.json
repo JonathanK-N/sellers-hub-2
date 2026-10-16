@@ -1,0 +1,41 @@
+{
+  "sourceSha": "779ec1244bb25077e639ffc4dbe64f17ce344024",
+  "scope": "Actual staging HTTPS with dedicated test roles only; no provider calls or withdrawals",
+  "rows": [
+    {
+      "test": "Courier cannot read private buyer/seller conversation",
+      "status": "PASS",
+      "httpStatus": 403
+    },
+    {
+      "test": "Seller cannot read administrator overview",
+      "status": "PASS",
+      "httpStatus": 403
+    },
+    {
+      "test": "Buyer cannot read seller wallet",
+      "status": "PASS",
+      "httpStatus": 403
+    },
+    {
+      "test": "Oversized message is rejected",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "test": "Malformed history cursor is rejected",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "test": "Integrated withdrawals remain disabled",
+      "status": "PASS",
+      "httpStatus": 503
+    },
+    {
+      "test": "Provider init for direct order stays off-platform with no verified funds",
+      "status": "PASS",
+      "httpStatus": 200
+    }
+  ]
+}

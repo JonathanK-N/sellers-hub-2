@@ -260,7 +260,7 @@ export default function BecomeDeliverer() {
 
       <div className="mobile-shell !pb-10">
         {/* HEADER */}
-        <header className="sticky top-0 z-40 bg-gradient-to-br from-[#085041] to-[#1D9E75] text-white px-4 pt-4 pb-6 shadow-lg">
+        <header className="sticky top-0 z-40 bg-linear-to-br from-afri-secondary to-afri-primary text-white px-4 pt-4 pb-6 shadow-lg">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-md bg-white/15 flex items-center justify-center font-black">A</div>
@@ -282,7 +282,7 @@ export default function BecomeDeliverer() {
           {step === "intro" && (
             <FadeStep>
               <div className="text-center" style={{ animation: "floatSlow 4s ease-in-out infinite" }}>
-                <div className="w-20 h-20 mx-auto rounded-2xl bg-[#1D9E75] flex items-center justify-center text-white shadow-xl" style={{ animation: "pulseRing 2.5s infinite" }}>
+                <div className="w-20 h-20 mx-auto rounded-2xl bg-afri-primary flex items-center justify-center text-white shadow-xl" style={{ animation: "pulseRing 2.5s infinite" }}>
                   <Truck size={36} />
                 </div>
               </div>
@@ -297,10 +297,10 @@ export default function BecomeDeliverer() {
                 {BENEFITS.map((b, i) => (
                   <div
                     key={b.title}
-                    className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-start gap-3"
+                    className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex items-start gap-3"
                     style={{ animation: `fadeSlideIn 0.4s ease-out ${i * 0.08}s both` }}
                   >
-                    <div className="w-10 h-10 rounded-lg bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-afri-soft text-afri-primary flex items-center justify-center shrink-0">
                       <b.icon size={18} />
                     </div>
                     <div>
@@ -314,7 +314,7 @@ export default function BecomeDeliverer() {
               <button
                 data-testid="start-application-btn"
                 onClick={goNext}
-                className="w-full mt-7 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-xl py-3.5 font-semibold transition-colors flex items-center justify-center gap-2 shadow-md"
+                className="w-full mt-7 bg-afri-primary hover:bg-afri-primary-hover text-white rounded-xl py-3.5 font-semibold transition-colors flex items-center justify-center gap-2 shadow-md"
               >
                 Commencer ma candidature <ChevronRight size={18} />
               </button>
@@ -335,11 +335,11 @@ export default function BecomeDeliverer() {
                   data-testid="type-afrimarket-btn"
                   onClick={() => setForm((f) => ({ ...f, application_type: "afrimarket", seller_id: null }))}
                   className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
-                    form.application_type === "afrimarket" ? "border-[#1D9E75] bg-[#E1F5EE]" : "border-gray-200 bg-white"
+                    form.application_type === "afrimarket" ? "border-afri-primary bg-afri-soft" : "border-gray-200 bg-white"
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${form.application_type === "afrimarket" ? "bg-[#1D9E75] text-white" : "bg-gray-100 text-gray-500"}`}>
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${form.application_type === "afrimarket" ? "bg-afri-primary text-white" : "bg-gray-100 text-gray-500"}`}>
                       <Globe size={18} />
                     </div>
                     <div className="flex-1">
@@ -353,11 +353,11 @@ export default function BecomeDeliverer() {
                   data-testid="type-shop-btn"
                   onClick={() => setForm((f) => ({ ...f, application_type: "shop" }))}
                   className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
-                    form.application_type === "shop" ? "border-[#1D9E75] bg-[#E1F5EE]" : "border-gray-200 bg-white"
+                    form.application_type === "shop" ? "border-afri-primary bg-afri-soft" : "border-gray-200 bg-white"
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${form.application_type === "shop" ? "bg-[#1D9E75] text-white" : "bg-gray-100 text-gray-500"}`}>
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${form.application_type === "shop" ? "bg-afri-primary text-white" : "bg-gray-100 text-gray-500"}`}>
                       <Store size={18} />
                     </div>
                     <div className="flex-1">
@@ -376,7 +376,7 @@ export default function BecomeDeliverer() {
                     value={form.seller_id || ""}
                     onChange={(e) => setForm((f) => ({ ...f, seller_id: e.target.value }))}
                     placeholder="Demandez l'ID à votre boutique partenaire"
-                    className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-[#1D9E75]"
+                    className="w-full mt-1.5 border border-gray-300 rounded-lg p-3 text-sm outline-hidden focus:ring-2 focus:ring-afri-primary"
                   />
                   <p className="text-[11px] text-gray-400 mt-1.5">Le vendeur peut vous communiquer cet identifiant depuis son tableau de bord.</p>
                 </div>
@@ -390,7 +390,7 @@ export default function BecomeDeliverer() {
                   data-testid="type-continue-btn"
                   disabled={form.application_type === "shop" && !form.seller_id}
                   onClick={goNext}
-                  className="flex-1 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
+                  className="flex-1 bg-afri-primary hover:bg-afri-primary-hover disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
                 >
                   Continuer <ChevronRight size={18} />
                 </button>
@@ -419,7 +419,7 @@ export default function BecomeDeliverer() {
                         data-testid={`vehicle-${opt.v}`}
                         onClick={() => setForm((f) => ({ ...f, vehicle: opt.v }))}
                         className={`py-2.5 rounded-lg text-sm font-semibold border transition-colors ${
-                          form.vehicle === opt.v ? "bg-[#085041] text-white border-[#085041]" : "bg-white text-gray-700 border-gray-200"
+                          form.vehicle === opt.v ? "bg-afri-secondary text-white border-afri-secondary" : "bg-white text-gray-700 border-gray-200"
                         }`}
                       >
                         {opt.l}
@@ -437,7 +437,7 @@ export default function BecomeDeliverer() {
                   data-testid="identity-continue-btn"
                   disabled={loading}
                   onClick={submitIdentity}
-                  className="flex-1 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
+                  className="flex-1 bg-afri-primary hover:bg-afri-primary-hover disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
                 >
                   {loading ? <Loader2 size={18} className="animate-spin" /> : <>Continuer <ChevronRight size={18} /></>}
                 </button>
@@ -460,7 +460,7 @@ export default function BecomeDeliverer() {
                   data-testid="send-otp-btn"
                   disabled={loading}
                   onClick={sendOtp}
-                  className="w-full mt-5 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
+                  className="w-full mt-5 bg-afri-primary hover:bg-afri-primary-hover disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
                 >
                   {loading ? <Loader2 size={18} className="animate-spin" /> : "Envoyer le code"}
                 </button>
@@ -473,7 +473,7 @@ export default function BecomeDeliverer() {
                     onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                     placeholder="6 chiffres"
                     maxLength={6}
-                    className="w-full mt-1.5 border border-gray-300 rounded-lg p-3.5 text-center text-2xl font-bold tracking-[0.4em] outline-none focus:ring-2 focus:ring-[#1D9E75]"
+                    className="w-full mt-1.5 border border-gray-300 rounded-lg p-3.5 text-center text-2xl font-bold tracking-[0.4em] outline-hidden focus:ring-2 focus:ring-afri-primary"
                   />
                   {otpDev && <p className="text-[11px] text-amber-600 text-center mt-1.5">Mode démo — code : {otpDev}</p>}
                   <button
@@ -481,7 +481,7 @@ export default function BecomeDeliverer() {
                     disabled={loading || otpCode.length !== 6}
                     onClick={verifyOtp}
                     className={`w-full mt-4 rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2 transition-colors ${
-                      otpVerified ? "bg-emerald-500 text-white" : "bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-40 text-white"
+                      otpVerified ? "bg-emerald-500 text-white" : "bg-afri-primary hover:bg-afri-primary-hover disabled:opacity-40 text-white"
                     }`}
                   >
                     {loading ? <Loader2 size={18} className="animate-spin" /> : otpVerified ? <><Check size={18} /> Vérifié</> : "Valider le code"}
@@ -512,9 +512,9 @@ export default function BecomeDeliverer() {
 
               <div className="mt-5">
                 {docs.id_document ? (
-                  <div className="relative rounded-xl overflow-hidden border-2 border-[#1D9E75]">
+                  <div className="relative rounded-xl overflow-hidden border-2 border-afri-primary">
                     <img src={docs.id_document} alt="Pièce d'identité" className="w-full h-48 object-cover" />
-                    <div className="absolute top-2 right-2 bg-[#1D9E75] text-white rounded-full p-1.5">
+                    <div className="absolute top-2 right-2 bg-afri-primary text-white rounded-full p-1.5">
                       <Check size={14} />
                     </div>
                     <label className="absolute bottom-2 right-2 bg-white/90 backdrop-blur text-xs font-semibold text-gray-700 px-3 py-1.5 rounded-full cursor-pointer">
@@ -525,9 +525,9 @@ export default function BecomeDeliverer() {
                 ) : (
                   <label
                     data-testid="upload-id-document-btn"
-                    className="flex flex-col items-center justify-center gap-2 h-48 rounded-xl border-2 border-dashed border-gray-300 hover:border-[#1D9E75] cursor-pointer transition-colors bg-white"
+                    className="flex flex-col items-center justify-center gap-2 h-48 rounded-xl border-2 border-dashed border-gray-300 hover:border-afri-primary cursor-pointer transition-colors bg-white"
                   >
-                    {loading ? <Loader2 size={28} className="text-[#1D9E75] animate-spin" /> : <FileText size={28} className="text-gray-400" />}
+                    {loading ? <Loader2 size={28} className="text-afri-primary animate-spin" /> : <FileText size={28} className="text-gray-400" />}
                     <span className="text-sm font-semibold text-gray-600">Téléverser la pièce d'identité</span>
                     <span className="text-[11px] text-gray-400">JPG, PNG — max 10 Mo</span>
                     <input type="file" accept="image/*" className="hidden" disabled={loading} onChange={(e) => e.target.files?.[0] && uploadDoc("id_document", e.target.files[0])} />
@@ -543,7 +543,7 @@ export default function BecomeDeliverer() {
                   data-testid="documents-continue-btn"
                   disabled={!docs.id_document}
                   onClick={goNext}
-                  className="flex-1 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
+                  className="flex-1 bg-afri-primary hover:bg-afri-primary-hover disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
                 >
                   Continuer <ChevronRight size={18} />
                 </button>
@@ -598,7 +598,7 @@ export default function BecomeDeliverer() {
                   checked={contractAccepted}
                   disabled={!contractScrolled}
                   onChange={(e) => setContractAccepted(e.target.checked)}
-                  className="mt-0.5 w-5 h-5 rounded accent-[#1D9E75]"
+                  className="mt-0.5 w-5 h-5 rounded accent-afri-primary"
                 />
                 <span className="text-sm text-gray-700">
                   J'ai lu et j'accepte les termes du contrat et la politique AfriMarket.
@@ -614,7 +614,7 @@ export default function BecomeDeliverer() {
                   data-testid="contract-continue-btn"
                   disabled={!contractAccepted || loading}
                   onClick={acceptContract}
-                  className="flex-1 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
+                  className="flex-1 bg-afri-primary hover:bg-afri-primary-hover disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
                 >
                   {loading ? <Loader2 size={18} className="animate-spin" /> : <>Continuer <ChevronRight size={18} /></>}
                 </button>
@@ -636,7 +636,7 @@ export default function BecomeDeliverer() {
                       ? "Notre équipe examine votre dossier. Vous recevrez une notification dès qu'une décision sera prise."
                       : "Le vendeur examine votre dossier. Vous recevrez une notification dès qu'une décision sera prise."}
                   </p>
-                  <Link to="/buyer/profile" className="inline-block mt-6 text-[#1D9E75] font-semibold text-sm">
+                  <Link to="/buyer/profile" className="inline-block mt-6 text-afri-primary font-semibold text-sm">
                     Retour à mon profil
                   </Link>
                 </div>
@@ -660,7 +660,7 @@ export default function BecomeDeliverer() {
                     data-testid="final-submit-btn"
                     disabled={loading}
                     onClick={finalSubmit}
-                    className="w-full mt-6 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2 shadow-md"
+                    className="w-full mt-6 bg-afri-primary hover:bg-afri-primary-hover disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2 shadow-md"
                   >
                     {loading ? <Loader2 size={18} className="animate-spin" /> : "Envoyer ma candidature"}
                   </button>
@@ -673,7 +673,7 @@ export default function BecomeDeliverer() {
           {step === "done" && (
             <FadeStep>
               <div className="text-center py-8">
-                <div className="w-20 h-20 mx-auto rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center" style={{ animation: "pulseRing 2.5s infinite" }}>
+                <div className="w-20 h-20 mx-auto rounded-full bg-afri-soft text-afri-primary flex items-center justify-center" style={{ animation: "pulseRing 2.5s infinite" }}>
                   <PartyPopper size={32} />
                 </div>
                 <h2 className="font-display font-bold text-2xl text-gray-900 mt-5">
@@ -686,7 +686,7 @@ export default function BecomeDeliverer() {
                 </p>
                 <Link
                   to={application?.status === "approved" ? "/livreur" : "/buyer/profile"}
-                  className="inline-block mt-6 bg-[#1D9E75] hover:bg-[#168260] text-white rounded-xl px-6 py-3 font-semibold"
+                  className="inline-block mt-6 bg-afri-primary hover:bg-afri-primary-hover text-white rounded-xl px-6 py-3 font-semibold"
                 >
                   {application?.status === "approved" ? "Aller à mon tableau de bord" : "Retour à mon profil"}
                 </Link>
@@ -712,7 +712,7 @@ function Field({ icon: Icon, label, value, onChange, placeholder, type = "text",
           disabled={disabled}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`w-full ${Icon ? "pl-10" : "pl-3"} pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm outline-none focus:ring-2 focus:ring-[#1D9E75] disabled:bg-gray-50 disabled:text-gray-400`}
+          className={`w-full ${Icon ? "pl-10" : "pl-3"} pr-3 py-3 rounded-lg border border-gray-300 bg-white text-sm outline-hidden focus:ring-2 focus:ring-afri-primary disabled:bg-gray-50 disabled:text-gray-400`}
         />
       </div>
     </div>
@@ -725,7 +725,7 @@ function ReviewRow({ label, value, verified }) {
       <span className="text-xs text-gray-500">{label}</span>
       <span className="text-sm font-medium text-gray-900 flex items-center gap-1.5">
         {value}
-        {verified && <Check size={13} className="text-[#1D9E75]" />}
+        {verified && <Check size={13} className="text-afri-primary" />}
       </span>
     </div>
   );
@@ -861,7 +861,7 @@ function SelfieCapture({ onCaptured, captured, loading, onBack, onNext }) {
               data-testid="confirm-selfie-btn"
               disabled={loading}
               onClick={onNext}
-              className="flex-1 bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
+              className="flex-1 bg-afri-primary hover:bg-afri-primary-hover disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
             >
               {loading ? <Loader2 size={18} className="animate-spin" /> : <>Continuer <ChevronRight size={18} /></>}
             </button>
@@ -871,7 +871,7 @@ function SelfieCapture({ onCaptured, captured, loading, onBack, onNext }) {
             data-testid="capture-selfie-btn"
             disabled={!cameraReady || capturing}
             onClick={capture}
-            className="w-full bg-[#1D9E75] hover:bg-[#168260] disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
+            className="w-full bg-afri-primary hover:bg-afri-primary-hover disabled:opacity-40 text-white rounded-xl py-3.5 font-semibold flex items-center justify-center gap-2"
           >
             {capturing ? <Loader2 size={18} className="animate-spin" /> : <><Camera size={18} /> Prendre la photo</>}
           </button>

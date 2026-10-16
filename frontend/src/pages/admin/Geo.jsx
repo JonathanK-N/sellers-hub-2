@@ -6,7 +6,7 @@ import api, { formatApiError, API_BASE } from "../../lib/api";
 import AdminSidebar from "../../components/AdminSidebar";
 import { formatPrice } from "../../lib/format";
 
-const COLORS = { CD: "#1D9E75", CM: "#EF9F27", CI: "#085041", SN: "#3B82F6", BJ: "#8B5CF6" };
+const COLORS = { CD: "var(--afri-primary)", CM: "var(--afri-accent)", CI: "var(--afri-secondary)", SN: "#3B82F6", BJ: "#8B5CF6" };
 
 export default function AdminGeo() {
   const [overview, setOverview] = useState([]);
@@ -57,7 +57,7 @@ export default function AdminGeo() {
       <AdminSidebar />
       <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 lg:px-10 flex justify-between items-center">
         <div>
-          <h1 className="font-display font-black text-xl lg:text-2xl text-[#085041]">Géographie</h1>
+          <h1 className="font-display font-black text-xl lg:text-2xl text-afri-secondary">Géographie</h1>
           <p className="text-xs text-gray-500 mt-0.5">Performance par pays · 5 marchés</p>
         </div>
         <div className="flex gap-2">
@@ -92,7 +92,7 @@ export default function AdminGeo() {
         {/* Country grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {overview.map((c) => (
-            <div key={c.code} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5" data-testid={`geo-country-${c.code}`}>
+            <div key={c.code} className="bg-white rounded-xl border border-gray-200 shadow-xs p-5" data-testid={`geo-country-${c.code}`}>
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-3xl">{c.flag}</span>
@@ -104,7 +104,7 @@ export default function AdminGeo() {
                 <button
                   data-testid={`toggle-country-${c.code}`}
                   onClick={() => toggle(c.code, c.is_active)}
-                  className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 ${c.is_active ? "bg-[#E1F5EE] text-[#1D9E75]" : "bg-gray-100 text-gray-500"}`}
+                  className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 ${c.is_active ? "bg-afri-soft text-afri-primary" : "bg-gray-100 text-gray-500"}`}
                 >
                   <Power size={11} /> {c.is_active ? "Actif" : "Inactif"}
                 </button>
@@ -132,7 +132,7 @@ export default function AdminGeo() {
                 </div>
                 <div className="pt-3 border-t border-gray-100 flex justify-between items-baseline">
                   <span className="text-xs text-gray-500 uppercase font-bold">Commission</span>
-                  <span className="font-display font-black text-lg text-[#085041]">{formatPrice(c.commission, c.currency)}</span>
+                  <span className="font-display font-black text-lg text-afri-secondary">{formatPrice(c.commission, c.currency)}</span>
                 </div>
               </div>
             </div>
@@ -140,7 +140,7 @@ export default function AdminGeo() {
         </section>
 
         {/* Growth chart */}
-        <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <section className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Inscriptions sur 6 mois (par pays)</h3>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">

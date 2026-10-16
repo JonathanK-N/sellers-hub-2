@@ -1,15 +1,23 @@
 """Orders + escrow + delivery confirmation."""
 import uuid
 import logging
+import hashlib
+import json
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Header
 from pydantic import BaseModel
 
 from db import get_db
+from financial_transactions import atomic_operation
+from money import money_product, commission, minor_units, record_release
+from stock import aggregate_items, reserve_stock, release_stock
 from models import OrderCreateRequest, ConfirmDeliveryRequest
 from auth import get_current_user_dep, require_role, generate_otp
 from notifications import create_notification
+from commerce_mode import legacy_checkout_enabled, integrated_payments_enabled
+from direct_orders import finish_handoff
+from whatsapp_contact import public_contact
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["orders"])
@@ -23,11 +31,8 @@ def _timeline_event(status: str, label: str) -> dict:
     return {"status": status, "label": label, "timestamp": _now()}
 
 
-import random
-
-
 def _gen_code() -> str:
-    return f"{random.randint(0, 999999):06d}"
+    return generate_otp()
 
 
 SELF_DELIVERY_FEE_TIERS = {7500, 10000, 15000, 20000}
@@ -46,7 +51,8 @@ def _resolve_item_mode(requested_mode: str, product_modes: list) -> str:
 
 
 @router.post("/orders", status_code=201)
-async def create_order(req: OrderCreateRequest, user: dict = Depends(require_role("buyer"))):
+@atomic_operation
+async def create_order(req: OrderCreateRequest, user: dict = Depends(require_role("buyer")), idempotency_key: str | None = Header(default=None, max_length=128)):
     """Create an order from the cart. Carts spanning multiple sellers are split into
     one sub-order per seller, grouped under a single order_group_id. Within a single
     seller, items are further split by delivery mode (delivery vs collect) when the
@@ -56,10 +62,28 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     split into per-order escrows.
     """
     db = get_db()
+    if not isinstance(idempotency_key, str) or not 8 <= len(idempotency_key) <= 128:
+        raise HTTPException(422, detail="Idempotency-Key requis (8 à 128 caractères)")
+    request_id = user["id"] + ":" + idempotency_key
+    request_hash = hashlib.sha256(json.dumps(req.model_dump(), sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    previous = await db.checkout_requests.find_one({"_id": request_id})
+    if previous:
+        if previous["request_hash"] != request_hash:
+            raise HTTPException(409, detail="Clé d'idempotence réutilisée pour un panier différent")
+        return previous["response"]
     if not req.items:
         raise HTTPException(status_code=400, detail="Panier vide")
+    direct = req.payment_method == "direct"
+    if not direct and not legacy_checkout_enabled():
+        raise HTTPException(409, "Choisissez le paiement direct avec le vendeur")
+    if req.payment_method not in {"direct", "cash", "mtn", "airtel", "wave", "orange"}:
+        raise HTTPException(422, "Mode de paiement invalide")
+    if req.payment_method not in {"direct", "cash"} and not integrated_payments_enabled():
+        raise HTTPException(503, "Paiements intégrés désactivés")
     if req.delivery_mode not in ("delivery", "collect"):
         raise HTTPException(status_code=400, detail="Mode de livraison invalide")
+
+    req = req.model_copy(update={"items": aggregate_items(req.items)})
 
     # Fetch all products
     product_ids = [it.product_id for it in req.items]
@@ -67,11 +91,16 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     if len(products) != len(set(product_ids)):
         raise HTTPException(status_code=400, detail="Produit introuvable dans le panier")
 
+    if len({"FC" if p["currency"] == "CDF" else p["currency"] for p in products.values()}) != 1:
+        raise HTTPException(422, detail="Les paniers multi-devises nécessitent une conversion validée")
+
     # Group requested items by (seller_id, effective_delivery_mode).
     # A seller with mixed delivery/collect-only products yields two groups → two sub-orders.
     items_by_group: dict[tuple, list] = {}
     for it in req.items:
         p = products[it.product_id]
+        if p.get("is_active") is False:
+            raise HTTPException(status_code=400, detail="Produit indisponible")
         if p["stock"] < it.quantity:
             raise HTTPException(status_code=400, detail=f"Stock insuffisant pour {p['name']}")
         effective_mode = _resolve_item_mode(req.delivery_mode, p.get("delivery_modes"))
@@ -83,136 +112,159 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
     missing = [sid for sid in seller_ids if sid not in sellers]
     if missing:
         raise HTTPException(status_code=404, detail="Vendeur introuvable")
+    for seller in sellers.values():
+        owner = await db.users.find_one({"id": seller["user_id"]})
+        if direct and (not owner or owner.get("role") != "seller"):
+            raise HTTPException(409, "Compte vendeur indisponible")
+        if owner and (owner.get("banned") or owner.get("suspended") or owner.get("is_deleted") or owner.get("is_active") is False):
+            raise HTTPException(409, "Vendeur indisponible")
 
     group_id = str(uuid.uuid4())
-    now = _now()
-    created_orders = []
-    grand_total = 0.0
-    currency = user["currency"]
+    reservations = await reserve_stock(db, req.items)
+    try:
+        now = _now()
+        created_orders = []
+        grand_total = 0.0
+        currency = user["currency"]
 
-    # Build one sub-order per (seller, effective delivery mode)
-    for (seller_id, item_mode), entries in items_by_group.items():
-        seller = sellers[seller_id]
-        items_full = []
-        sub_total = 0.0
-        for it, p in entries:
-            subtotal = p["price"] * it.quantity
-            sub_total += subtotal
-            currency = p["currency"]
-            items_full.append({
-                "product_id": p["id"],
-                "name": p["name"],
-                "price": p["price"],
-                "quantity": it.quantity,
-                "photo": p["photos"][0] if p.get("photos") else None,
-                "subtotal": subtotal,
-            })
+        # Build one sub-order per (seller, effective delivery mode)
+        for (seller_id, item_mode), entries in items_by_group.items():
+            seller = sellers[seller_id]
+            items_full = []
+            sub_total = 0.0
+            for it, p in entries:
+                subtotal = money_product(p["price"], it.quantity)
+                sub_total = (minor_units(sub_total) + minor_units(subtotal)) / 100
+                currency = p["currency"]
+                items_full.append({
+                    "product_id": p["id"],
+                    "name": p["name"],
+                    "price": p["price"],
+                    "quantity": it.quantity,
+                    "photo": p["photos"][0] if p.get("photos") else None,
+                    "subtotal": subtotal,
+                })
 
-        commission_rate = seller.get("commission_rate", 0.07)
-        commission_amount = round(sub_total * commission_rate, 2)
+            commission_rate = seller.get("commission_rate", 0.07)
+            commission_amount = 0 if direct else commission(sub_total, commission_rate)
 
-        # Frais de livraison: definis par le vendeur (palier self_delivery_fee)
-        # si livraison propre, ou fixes 16 000 FC si reseau AfriMarket. Aucun frais
-        # pour le retrait en boutique.
-        seller_delivery = seller.get("delivery_service", "self")
-        if item_mode == "delivery" and seller_delivery == "afrimarket":
-            delivery_fee = AFRIMARKET_DELIVERY_FEE
-        elif item_mode == "delivery" and seller_delivery == "self":
-            tier = seller.get("self_delivery_fee", 7500)
-            delivery_fee = float(tier if tier in SELF_DELIVERY_FEE_TIERS else 7500)
-        else:
-            delivery_fee = 0.0
-        amount_due = sub_total + delivery_fee
-        qr_token = str(uuid.uuid4()) if item_mode == "collect" else None
-        grand_total += amount_due
+            # Frais de livraison: definis par le vendeur (palier self_delivery_fee)
+            # si livraison propre, ou fixes 16 000 FC si reseau AfriMarket. Aucun frais
+            # pour le retrait en boutique.
+            seller_delivery = seller.get("delivery_service", "self")
+            if item_mode == "delivery" and seller_delivery == "afrimarket":
+                delivery_fee = AFRIMARKET_DELIVERY_FEE
+            elif item_mode == "delivery" and seller_delivery == "self":
+                tier = seller.get("self_delivery_fee", 7500)
+                delivery_fee = float(tier if tier in SELF_DELIVERY_FEE_TIERS else 7500)
+            else:
+                delivery_fee = 0.0
+            # Existing delivery tiers are denominated in CDF. Never add them as USD/XAF/XOF.
+            delivery_fee_status = "quoted"
+            if direct and item_mode == "delivery" and currency not in {"FC", "CDF"}:
+                delivery_fee = 0.0
+                delivery_fee_status = "to_arrange_with_seller"
+            amount_due = sub_total + delivery_fee
+            qr_token = str(uuid.uuid4()) if item_mode == "collect" else None
+            grand_total = (minor_units(grand_total) + minor_units(amount_due)) / 100
 
-        order = {
-            "id": str(uuid.uuid4()),
-            "order_group_id": group_id,
+            order = {
+                "id": str(uuid.uuid4()),
+                "order_group_id": group_id,
+                "buyer_id": user["id"],
+                "seller_id": seller_id,
+                "seller_name": seller.get("shop_name"),
+                "items": items_full,
+                "total_amount": sub_total,
+                "commission_amount": commission_amount,
+                "delivery_fee": delivery_fee,
+                "amount_due": amount_due,
+                "currency": currency,
+                "delivery_mode": item_mode,
+                "delivery_address": req.delivery_address if item_mode == "delivery" else None,
+                "delivery_neighborhood": req.delivery_neighborhood if item_mode == "delivery" else None,
+                "delivery_landmark": req.delivery_landmark if item_mode == "delivery" else None,
+                "pickup_slot": req.pickup_slot if item_mode == "collect" else None,
+                "payment_method": req.payment_method,
+                "checkout_currency": req.checkout_currency or "FC",
+                "status": "confirmed",
+                "escrow_status": "not_applicable" if direct else ("held" if req.payment_method == "cash" else "awaiting_payment"),
+                "payment_confirmed": False,
+                "confirmation_code": _gen_code(),
+                "qr_code": qr_token,
+                "country_code": user["country_code"],
+                "created_at": now,
+                "timeline": [_timeline_event("confirmed", "Commande confirmée")],
+            }
+            if direct:
+                order.update({"public_reference": "AF-" + order["id"].replace("-", "")[:12].upper(), "payment_status": "to_arrange", "payment_verification": "not_verified_by_platform", "funds_held_by_platform": False, "payment_history": [], "revision": 0, "commission_policy": "not_configured_no_payable_balance"})
+                order["delivery_fee_status"] = delivery_fee_status
+            await db.orders.insert_one(order)
+            order.pop("_id", None)
+            created_orders.append(order)
+
+            # Per-order escrow transaction
+            if not direct:
+                await db.transactions.insert_one({
+                "id": str(uuid.uuid4()),
+                "order_id": order["id"],
+                "order_group_id": group_id,
+                "amount": amount_due,
+                "currency": currency,
+                "payment_method": req.payment_method,
+                "payment_status": "cash_pending" if req.payment_method == "cash" else "pending",
+                "escrow_released_at": None,
+                "created_at": now,
+                })
+
+            # Notify seller of the new order
+            try:
+                await create_notification(
+                    seller["user_id"],
+                    "order_received",
+                    "Nouvelle commande",
+                    f"Vous avez reçu une commande de {sub_total:.0f} {currency}.",
+                    {"order_id": order["id"], "order_group_id": group_id},
+                )
+            except Exception as e:
+                logger.warning(f"notify seller failed: {e}")
+
+        # Record the payment group (single Mobile Money charge for the whole cart)
+        await db.order_groups.insert_one({
+            "id": group_id,
             "buyer_id": user["id"],
-            "seller_id": seller_id,
-            "seller_name": seller.get("shop_name"),
-            "items": items_full,
-            "total_amount": sub_total,
-            "commission_amount": commission_amount,
-            "delivery_fee": delivery_fee,
-            "amount_due": amount_due,
+            "order_ids": [o["id"] for o in created_orders],
+            "seller_count": len(created_orders),
+            "grand_total": grand_total,
             "currency": currency,
-            "delivery_mode": item_mode,
-            "delivery_address": req.delivery_address if item_mode == "delivery" else None,
-            "delivery_neighborhood": req.delivery_neighborhood if item_mode == "delivery" else None,
-            "delivery_landmark": req.delivery_landmark if item_mode == "delivery" else None,
-            "pickup_slot": req.pickup_slot if item_mode == "collect" else None,
             "payment_method": req.payment_method,
-            "checkout_currency": req.checkout_currency or "FC",
-            "status": "confirmed",
-            "escrow_status": "held",
-            "confirmation_code": _gen_code(),
-            "qr_code": qr_token,
+            "payment_status": "off_platform" if direct else ("cash_pending" if req.payment_method == "cash" else "unpaid"),
             "country_code": user["country_code"],
-            "created_at": now,
-            "timeline": [_timeline_event("confirmed", "Commande confirmée")],
-        }
-        await db.orders.insert_one(order)
-        order.pop("_id", None)
-        created_orders.append(order)
-
-        # Decrement stock for this seller's items
-        for it, _p in entries:
-            await db.products.update_one({"id": it.product_id}, {"$inc": {"stock": -it.quantity}})
-
-        # Per-order escrow transaction
-        await db.transactions.insert_one({
-            "id": str(uuid.uuid4()),
-            "order_id": order["id"],
-            "order_group_id": group_id,
-            "amount": amount_due,
-            "currency": currency,
-            "payment_method": req.payment_method,
-            "payment_status": "captured_in_escrow",
-            "escrow_released_at": None,
             "created_at": now,
         })
 
-        # Notify seller of the new order
+    except Exception:
         try:
-            await create_notification(
-                seller["user_id"],
-                "order_received",
-                "Nouvelle commande",
-                f"Vous avez reçu une commande de {sub_total:.0f} {currency}.",
-                {"order_id": order["id"], "order_group_id": group_id},
-            )
-        except Exception as e:
-            logger.warning(f"notify seller failed: {e}")
+            await db.orders.delete_many({"order_group_id": group_id})
+            await db.transactions.delete_many({"order_group_id": group_id})
+            await db.order_groups.delete_one({"id": group_id})
+            await release_stock(db, reservations)
+        except Exception:
+            logger.exception("Order compensation failed for group %s", group_id)
+        raise
 
-    # Record the payment group (single Mobile Money charge for the whole cart)
-    await db.order_groups.insert_one({
-        "id": group_id,
-        "buyer_id": user["id"],
-        "order_ids": [o["id"] for o in created_orders],
-        "seller_count": len(created_orders),
-        "grand_total": grand_total,
-        "currency": currency,
-        "payment_method": req.payment_method,
-        "country_code": user["country_code"],
-        "created_at": now,
-    })
+    # Schedule evaluation after commit; transaction retries must not send alerts.
+    await db.fraud_outbox.insert_one({"id": group_id, "user_id": user["id"], "status": "pending"})
 
-    # Trigger fraud evaluation for the buyer (non-blocking best-effort)
-    try:
-        from fraud import evaluate_and_log
-        await evaluate_and_log(user["id"])
-    except Exception as e:
-        logger.warning(f"fraud eval failed: {e}")
-
-    return {
+    response = {
         "order_group_id": group_id,
         "seller_count": len(created_orders),
         "grand_total": grand_total,
         "currency": currency,
         "orders": created_orders,
     }
+    await db.checkout_requests.insert_one({"_id": request_id, "request_hash": request_hash, "response": response})
+    return response
 
 
 @router.get("/orders/my")
@@ -249,6 +301,9 @@ async def my_orders(user: dict = Depends(get_current_user_dep)):
         } if order_ids else set()
 
     for o in orders:
+        if user["role"] != "buyer":
+            o.pop("confirmation_code", None)
+            o.pop("qr_code", None)
         s = sellers.get(o["seller_id"])
         if s:
             o["seller_name"] = s.get("shop_name")
@@ -274,7 +329,7 @@ async def get_order_group(group_id: str, user: dict = Depends(get_current_user_d
     group = await db.order_groups.find_one({"id": group_id}, {"_id": 0})
     if not group:
         raise HTTPException(status_code=404, detail="Groupe de commandes introuvable")
-    if user["role"] == "buyer" and group["buyer_id"] != user["id"]:
+    if user["role"] != "admin" and (user["role"] != "buyer" or group["buyer_id"] != user["id"]):
         raise HTTPException(status_code=403, detail="Accès refusé")
     orders = await db.orders.find({"order_group_id": group_id}, {"_id": 0}).to_list(50)
     for o in orders:
@@ -293,6 +348,7 @@ async def get_order(order_id: str, user: dict = Depends(get_current_user_dep)):
     buyer = await db.users.find_one({"id": o["buyer_id"]}, {"_id": 0})
     if seller:
         o["seller_name"] = seller.get("shop_name")
+        o["seller_whatsapp"] = public_contact(seller)
         o["seller_neighborhood"] = seller.get("neighborhood")
     if buyer:
         o["buyer_name"] = buyer.get("name")
@@ -304,7 +360,13 @@ async def get_order(order_id: str, user: dict = Depends(get_current_user_dep)):
         my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
         if not my_seller or my_seller["id"] != o["seller_id"]:
             raise HTTPException(status_code=403, detail="Accès refusé")
-        # Hide confirmation code from seller until delivery
+    if user["role"] == "deliverer" and o.get("deliverer_id") != user["id"]:
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    if user["role"] not in {"buyer", "seller", "deliverer", "admin"}:
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    if user["role"] not in {"buyer", "admin"}:
+        o.pop("confirmation_code", None)
+        o.pop("qr_code", None)
     return o
 
 
@@ -318,6 +380,12 @@ async def advance_order(order_id: str, user: dict = Depends(require_role("seller
     my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
     if not my_seller or my_seller["id"] != o["seller_id"]:
         raise HTTPException(status_code=403, detail="Accès refusé")
+
+    if o.get("payment_method") == "direct":
+        if o.get("payment_status") != "seller_declared_received" or o.get("dispute_status") == "open":
+            raise HTTPException(409, "Paiement hors plateforme non déclaré reçu ou commande en litige")
+    elif o.get("payment_method") not in {"cash", "direct"} and not o.get("payment_confirmed"):
+        raise HTTPException(409, detail="Paiement non confirmé")
 
     transitions = {
         "confirmed": ("preparing", "Vendeur prépare la commande"),
@@ -335,16 +403,23 @@ async def advance_order(order_id: str, user: dict = Depends(require_role("seller
         raise HTTPException(status_code=400, detail="Transition impossible")
     new_status, label = next_state
     event = _timeline_event(new_status, label)
-    await db.orders.update_one(
-        {"id": order_id},
-        {"$set": {"status": new_status}, "$push": {"timeline": event}},
-    )
+    transition_query = {"id": order_id, "status": o["status"]}
+    transition_update = {"$set": {"status": new_status}, "$push": {"timeline": event}}
+    if o.get("payment_method") == "direct":
+        transition_query.update({"revision": o.get("revision", 0), "payment_status": "seller_declared_received", "dispute_status": {"$ne": "open"}})
+        transition_update["$inc"] = {"revision": 1}
+    result = await db.orders.update_one(transition_query, transition_update)
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Commande déjà modifiée")
     o["status"] = new_status
     o["timeline"].append(event)
+    o.pop("confirmation_code", None)
+    o.pop("qr_code", None)
     return o
 
 
 @router.post("/orders/{order_id}/confirm-delivery")
+@atomic_operation
 async def confirm_delivery(order_id: str, req: ConfirmDeliveryRequest, user: dict = Depends(get_current_user_dep)):
     """Buyer/livreur enters 6-digit code -> escrow released."""
     db = get_db()
@@ -353,20 +428,34 @@ async def confirm_delivery(order_id: str, req: ConfirmDeliveryRequest, user: dic
         raise HTTPException(status_code=404, detail="Commande introuvable")
     if o["delivery_mode"] != "delivery":
         raise HTTPException(status_code=400, detail="Mode incorrect")
+    if not (user["id"] == o["buyer_id"] or
+            (user.get("role") == "deliverer" and user["id"] == o.get("deliverer_id"))):
+        raise HTTPException(status_code=403, detail="Accès refusé")
+    if o["status"] != "out_for_delivery":
+        raise HTTPException(status_code=409, detail="Commande non disponible pour livraison")
+    if o.get("payment_method") not in {"cash", "direct"} and not o.get("payment_confirmed"):
+        raise HTTPException(status_code=409, detail="Paiement non confirmé")
+    if o.get("payment_method") == "direct":
+        if o.get("confirmation_code") != req.code.strip():
+            raise HTTPException(400, "Code incorrect")
+        return await finish_handoff(db, o, user, "delivered")
     if o["escrow_status"] != "held":
         raise HTTPException(status_code=400, detail="Escrow déjà libéré")
     if o["confirmation_code"] != req.code.strip():
         raise HTTPException(status_code=400, detail="Code incorrect")
 
     event = _timeline_event("delivered", "Livré et paiement libéré")
-    await db.orders.update_one(
-        {"id": order_id},
+    result = await db.orders.update_one(
+        {"id": order_id, "status": o["status"], "escrow_status": "held"},
         {"$set": {"status": "delivered", "escrow_status": "released"}, "$push": {"timeline": event}},
     )
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Commande déjà modifiée")
     await db.transactions.update_one(
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
     )
+    await record_release(db, o)
     return {"ok": True, "status": "delivered", "escrow_status": "released"}
 
 
@@ -375,6 +464,7 @@ class ScanQrRequest(BaseModel):
 
 
 @router.post("/orders/{order_id}/confirm-collect")
+@atomic_operation
 async def confirm_collect(order_id: str, user: dict = Depends(require_role("seller"))):
     """Seller confirms cash handoff for Click & Collect — no QR needed for cash payment."""
     db = get_db()
@@ -386,6 +476,14 @@ async def confirm_collect(order_id: str, user: dict = Depends(require_role("sell
         raise HTTPException(status_code=403, detail="Accès refusé")
     if o["delivery_mode"] != "collect":
         raise HTTPException(status_code=400, detail="Cette commande n'est pas en retrait boutique")
+    if o.get("payment_method") == "direct":
+        if o.get("status") != "ready_for_pickup":
+            raise HTTPException(409, "Commande non disponible pour retrait")
+        return await finish_handoff(db, o, user, "collected")
+    if o.get("payment_method") != "cash":
+        raise HTTPException(status_code=409, detail="La remise cash exige une commande cash")
+    if o.get("escrow_status") != "held":
+        raise HTTPException(status_code=409, detail="Paiement non disponible pour remise")
     if o["status"] == "collected":
         raise HTTPException(status_code=400, detail="Commande déjà marquée comme retirée")
     allowed = {"ready_for_pickup", "confirmed", "preparing"}
@@ -396,8 +494,8 @@ async def confirm_collect(order_id: str, user: dict = Depends(require_role("sell
     event = {"status": "collected", "timestamp": now, "actor": "seller",
              "note": "Remise en main propre confirmée par le vendeur (paiement cash)"}
 
-    await db.orders.update_one(
-        {"id": order_id},
+    result = await db.orders.update_one(
+        {"id": order_id, "status": o["status"], "escrow_status": "held"},
         {"$set": {
             "status": "collected",
             "escrow_status": "released",
@@ -405,6 +503,8 @@ async def confirm_collect(order_id: str, user: dict = Depends(require_role("sell
         },
          "$push": {"timeline": event}},
     )
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Commande déjà modifiée")
     await db.transactions.update_many(
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "released_at": now}},
@@ -415,10 +515,12 @@ async def confirm_collect(order_id: str, user: dict = Depends(require_role("sell
         f"Votre commande #{order_id[:8].upper()} a été remise. Merci pour votre achat !",
         {"order_id": order_id},
     )
+    await record_release(db, o)
     return {"ok": True, "status": "collected", "order_id": order_id}
 
 
 @router.post("/orders/{order_id}/scan-qr")
+@atomic_operation
 async def scan_qr(order_id: str, req: ScanQrRequest, user: dict = Depends(require_role("seller"))):
     """Seller scans buyer's QR code -> escrow released for Click & Collect."""
     db = get_db()
@@ -430,20 +532,31 @@ async def scan_qr(order_id: str, req: ScanQrRequest, user: dict = Depends(requir
         raise HTTPException(status_code=403, detail="Accès refusé")
     if o["delivery_mode"] != "collect":
         raise HTTPException(status_code=400, detail="Cette commande n'est pas en Click & Collect")
+    if o["status"] != "ready_for_pickup":
+        raise HTTPException(status_code=409, detail="Commande non disponible pour retrait")
+    if o.get("payment_method") not in {"cash", "direct"} and not o.get("payment_confirmed"):
+        raise HTTPException(status_code=409, detail="Paiement non confirmé")
+    if o.get("payment_method") == "direct":
+        if o.get("qr_code") != req.qr_token.strip():
+            raise HTTPException(400, "QR code incorrect")
+        return await finish_handoff(db, o, user, "collected")
     if o["escrow_status"] != "held":
         raise HTTPException(status_code=400, detail="Escrow déjà libéré")
     if o.get("qr_code") != req.qr_token.strip():
         raise HTTPException(status_code=400, detail="QR code invalide")
 
     event = _timeline_event("collected", "Retiré et paiement libéré")
-    await db.orders.update_one(
-        {"id": order_id},
+    result = await db.orders.update_one(
+        {"id": order_id, "status": o["status"], "escrow_status": "held"},
         {"$set": {"status": "collected", "escrow_status": "released"}, "$push": {"timeline": event}},
     )
+    if result.modified_count != 1:
+        raise HTTPException(status_code=409, detail="Commande déjà modifiée")
     await db.transactions.update_one(
         {"order_id": order_id},
         {"$set": {"payment_status": "released", "escrow_released_at": _now()}},
     )
+    await record_release(db, o)
     return {"ok": True, "status": "collected", "escrow_status": "released"}
 
 
@@ -457,4 +570,6 @@ async def get_order_by_qr(qr_token: str, user: dict = Depends(require_role("sell
     my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0})
     if not my_seller or my_seller["id"] != o["seller_id"]:
         raise HTTPException(status_code=403, detail="Cette commande n'appartient pas à votre boutique")
+    o.pop("confirmation_code", None)
+    o.pop("qr_code", None)
     return o

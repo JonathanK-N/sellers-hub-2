@@ -1,0 +1,22 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "checkedAt": "2026-10-12T22:33:02.012Z",
+  "sourceSha": "ddbbaabc01dda497d05ee3372f41a12503f4fddd",
+  "api": {
+    "deploymentId": "591a7468-deb5-42f9-b00a-c70a64d7099f",
+    "status": "SUCCESS",
+    "version": "1.1.0-direct-rc.3",
+    "health": "ok"
+  },
+  "web": {
+    "deploymentId": "2106cce1-0d1f-4a19-8c85-0dc39e03cacd",
+    "status": "SUCCESS",
+    "mainContentSha256": "6df4e3b91d01580c69ac298851746a12f6d4fdadccf6b1a7a2e4aadf2dfa1d8b",
+    "matchesVerifiedArtifact": true
+  },
+  "mongo": {
+    "deploymentId": "a72b1bb3-5a19-4049-b1fe-e1067ae6cd3f",
+    "unchanged": true
+  },
+  "productionAccess": false
+}

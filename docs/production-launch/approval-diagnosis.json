@@ -1,0 +1,54 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "date": "2026-10-12",
+  "scope": "read-only approval diagnosis; no deploy retry and no production access",
+  "patch": {
+    "project": {
+      "id": "bc40e22f-b963-46fa-a64e-240f3aa954cd",
+      "name": "AFRIMARKET-STAGING-20261010"
+    },
+    "environment": {
+      "id": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+      "name": "staging"
+    },
+    "staged": {
+      "patchId": "6d13f9a6-4924-4c69-92e3-d351404d5136",
+      "status": "STAGED",
+      "changeCount": 24,
+      "message": null,
+      "createdAt": "2026-10-11T17:53:53.883Z",
+      "updatedAt": "2026-10-12T13:45:47.472Z"
+    },
+    "destructive": false,
+    "serviceDeletion": false,
+    "candidateSha": "c492c70126a2ec9da71844c2d313df8e675c2ffb",
+    "ephemeralMongoDataPreservation": "Not proved by destructive=false; backup or explicit regeneration decision required before manual apply"
+  },
+  "connection": {
+    "readAccess": "PASS",
+    "username": "jonathank-n",
+    "registrationStatus": "REGISTERED",
+    "writeScopes": "not exposed",
+    "workspaceRole": "not exposed"
+  },
+  "permissions": {
+    "app": "Railway",
+    "setting": "Allow read actions",
+    "description": "Railway has a custom app-specific setting. ChatGPT can read without asking, but will ask before making changes."
+  },
+  "cause": {
+    "confirmed": false,
+    "expiration": "not established",
+    "unrecordedUserApproval": "not established; textual approvals present",
+    "insufficientPermission": "not established; reads work, write scope unknown",
+    "otherClientOrConnectorApprovalFailure": "possible, unconfirmed",
+    "response": "Cancelled — the user did not approve this action. No changes were made.",
+    "approvalAuditAccess": false
+  },
+  "deployment": "Not executed; old deployments remain live",
+  "heartbeat": {
+    "id": "reprise-des-validations-afrimarket-staging",
+    "status": "ACTIVE",
+    "intervalMinutes": 10
+  }
+}

@@ -10,7 +10,7 @@ import logging
 from fastapi import FastAPI, APIRouter
 from starlette.middleware.cors import CORSMiddleware
 
-from db import init_db, close_db
+from db import init_db, close_db, get_db
 from rate_limit import limiter, rate_limit_handler
 from slowapi.errors import RateLimitExceeded
 from seed_data import seed_all
@@ -31,6 +31,8 @@ from routers.payments_router import router as payments_router
 from routers.premium_router import router as premium_router
 from routers.buyer_kyc_router import router as buyer_kyc_router
 from routers.deliverer_applications_router import router as deliverer_applications_router
+from routers.direct_payments_router import router as direct_payments_router
+from routers.whatsapp_router import router as whatsapp_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -39,6 +41,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AfriMarket API")
+APP_VERSION = "1.1.0-direct-rc.4"
 
 # Rate limiting — protège contre le spam et le brute-force
 app.state.limiter = limiter
@@ -48,7 +51,7 @@ api_router = APIRouter(prefix="/api")
 
 @api_router.get("/")
 async def root():
-    return {"message": "AfriMarket API", "version": "0.1.0"}
+    return {"message": "AfriMarket API", "version": APP_VERSION}
 
 
 @api_router.get("/health")
@@ -67,8 +70,8 @@ async def health():
         db = get_db()
         await db.command("ping")
         checks["mongodb"] = "ok"
-    except Exception as e:
-        checks["mongodb"] = f"error: {str(e)[:80]}"
+    except Exception:
+        checks["mongodb"] = "error: unavailable"
         overall = "degraded"
 
     # Check FX rate fraîcheur (si plus vieux que 7h → warning)
@@ -91,7 +94,8 @@ async def health():
         "status": overall,
         "checks": checks,
         "response_ms": elapsed_ms,
-        "version": "1.0.0",
+        "version": APP_VERSION,
+        "source_sha": os.environ.get("RAILWAY_GIT_COMMIT_SHA", "") if len(os.environ.get("RAILWAY_GIT_COMMIT_SHA", "")) == 40 else None,
     }
 
 
@@ -126,6 +130,8 @@ api_router.include_router(payments_router)
 api_router.include_router(premium_router)
 api_router.include_router(buyer_kyc_router)
 api_router.include_router(deliverer_applications_router)
+api_router.include_router(direct_payments_router)
+api_router.include_router(whatsapp_router)
 
 app.include_router(api_router)
 
@@ -141,10 +147,13 @@ app.add_middleware(
 @app.on_event("startup")
 async def on_startup():
     init_db()
-    try:
-        await seed_all()
-    except Exception as e:
-        logger.error(f"Seed failed: {e}")
+    # Production startup never creates accounts or overwrites existing business/reference data.
+    # Schema migrations run separately after backup and compatibility checks.
+    if os.environ.get("AUTH_MODE", "production").lower() == "sandbox":
+        try:
+            await seed_all()
+        except Exception:
+            logger.error("Synthetic bootstrap failed", exc_info=True)
 
     try:
         init_storage()

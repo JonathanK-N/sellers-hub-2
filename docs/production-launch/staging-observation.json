@@ -1,0 +1,36 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "observedAtUtc": "2026-10-12T16:54:05.345Z",
+  "scope": "read-only staging verification after manual application",
+  "patchStatus": "no pending patch",
+  "expectedSourceSha": "c492c70126a2ec9da71844c2d313df8e675c2ffb",
+  "configuredPinnedSha": "c492c70126a2ec9da71844c2d313df8e675c2ffb",
+  "observedDeploymentSha": "779ec1244bb25077e639ffc4dbe64f17ce344024",
+  "healthReportedCommit": "779ec1244bb25077e639ffc4dbe64f17ce344024",
+  "deployments": {
+    "api": {"id": "b7743fd7-bff2-47bf-a679-8ea25f18b748", "status": "SUCCESS"},
+    "web": {"id": "d429af96-baa2-485a-bfe8-511af949f2e4", "status": "SUCCESS"},
+    "mongo": {"id": "a72b1bb3-5a19-4049-b1fe-e1067ae6cd3f", "status": "SUCCESS"}
+  },
+  "checks": {
+    "apiHttps": 200,
+    "apiHealth": "ok",
+    "mongodbHealth": "ok",
+    "version": "1.1.0-direct-rc.1",
+    "mongoAuthenticatedBootstrapReady": true,
+    "mongoVolumeLiveMB": 1024,
+    "webHttps": 200,
+    "publicWebMetadata": "not available as JSON",
+    "directPayment": true,
+    "cinetpayEnabled": false,
+    "walletWithdrawalsEnabled": false,
+    "heldFunds": false
+  },
+  "runtimeFilesGitComparison": "No differences in backend, frontend, Dockerfile.mongodb-staging or Mongo staging bootstrap scripts between expected and observed commits",
+  "exactCandidateProvenance": "BLOCKED: configuration pin and deployed SHA disagree",
+  "stagingCertification": "not established",
+  "previousStagingDataConservation": "not verified",
+  "productionAccessOrMutation": false,
+  "deployRetryPerformed": false,
+  "notificationDelivered": true
+}

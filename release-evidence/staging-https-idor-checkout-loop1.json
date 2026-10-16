@@ -1,0 +1,29 @@
+{
+  "sourceSha": "779ec1244bb25077e639ffc4dbe64f17ce344024",
+  "scope": "Actual staging HTTPS with dedicated fixture identities, replay and cancellation; no customer data changed",
+  "rows": [
+    {
+      "test": "Public registration cannot assign admin role",
+      "status": "PASS",
+      "httpStatus": 400
+    },
+    {
+      "test": "Unrelated buyer cannot read fixture conversation",
+      "status": "PASS",
+      "httpStatus": 404
+    },
+    {
+      "test": "Unrelated buyer cannot read fixture order",
+      "status": "PASS",
+      "httpStatus": 403
+    },
+    {
+      "test": "HTTPS checkout replay returns same order and reserves stock once",
+      "status": "PASS"
+    },
+    {
+      "test": "HTTPS direct cancellation restores stock exactly once without refund",
+      "status": "PASS"
+    }
+  ]
+}

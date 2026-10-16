@@ -37,7 +37,7 @@ export default function SellerProducts() {
         <button
           data-testid="add-product-btn"
           onClick={() => nav("/seller/products/new")}
-          className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2 mb-4"
+          className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-3 font-semibold transition-colors flex items-center justify-center gap-2 mb-4"
         >
           <Plus size={18} /> Ajouter un produit
         </button>
@@ -53,22 +53,22 @@ export default function SellerProducts() {
         ) : (
           <div className="space-y-2">
             {products.map((p) => (
-              <div key={p.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 flex gap-3" data-testid={`product-row-${p.id}`}>
+              <div key={p.id} className="bg-white rounded-xl border border-gray-100 shadow-xs p-3 flex gap-3" data-testid={`product-row-${p.id}`}>
                 <div className="w-16 h-16 rounded-lg bg-gray-100 overflow-hidden shrink-0">
                   {p.photos?.[0] ? <img src={photoUrl(p.photos[0])} alt={p.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center font-black text-gray-300 font-display">A</div>}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-semibold text-gray-900 line-clamp-1">{p.name}</div>
-                  <div className="text-sm font-bold text-[#085041]">{formatPrice(p.price, p.currency)}</div>
+                  <div className="text-sm font-bold text-afri-secondary">{formatPrice(p.price, p.currency)}</div>
                   <div className="text-[10px] uppercase font-bold mt-1 text-gray-500">
-                    Stock : <span className={p.stock > 0 ? "text-[#1D9E75]" : "text-[#E24B4A]"}>{p.stock}</span>
+                    Stock : <span className={p.stock > 0 ? "text-afri-primary" : "text-[#E24B4A]"}>{p.stock}</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1 self-start">
                   <button
                     data-testid={`edit-product-${p.id}`}
                     onClick={() => nav(`/seller/products/${p.id}/edit`)}
-                    className="text-[#1D9E75] p-2 hover:bg-[#E1F5EE] rounded-lg"
+                    className="text-afri-primary p-2 hover:bg-afri-soft rounded-lg"
                   >
                     <Pencil size={16} />
                   </button>

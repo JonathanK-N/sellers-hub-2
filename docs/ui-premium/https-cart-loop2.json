@@ -1,0 +1,18 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Read-only server; browser-local state only; first list-view harness could not find detail-only action",
+  "rows": [
+    {
+      "test": "Actual HTTPS product detail adds to browser-local cart",
+      "status": "PASS"
+    },
+    {
+      "test": "Cart quantity updates total and decrement restores total",
+      "status": "PASS"
+    },
+    {
+      "test": "Cart checkout navigation only; no order submitted",
+      "status": "PASS"
+    }
+  ]
+}

@@ -27,17 +27,17 @@ function SidebarContent({ onClose }) {
   const { user, logout } = useAuth();
   const nav = useNavigate();
   return (
-    <div className="flex flex-col h-full bg-[#085041] text-white px-4 py-6">
+    <div className="flex flex-col h-full bg-afri-secondary text-white px-4 py-6">
       <div className="flex items-center justify-between mb-8 px-2">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-lg bg-[#1D9E75] flex items-center justify-center font-black text-white text-lg font-display">A</div>
+          <div className="w-10 h-10 rounded-lg bg-afri-primary flex items-center justify-center font-black text-white text-lg font-display">A</div>
           <div>
             <div className="font-display font-black text-lg leading-tight">AfriMarket</div>
             <div className="text-xs text-emerald-200/80">Admin</div>
           </div>
         </div>
         {onClose && (
-          <button onClick={onClose} className="lg:hidden p-1 hover:bg-white/10 rounded-lg">
+          <button onClick={onClose} aria-label="Fermer la navigation administrateur" className="lg:hidden p-1 hover:bg-white/10 rounded-lg">
             <X size={20} />
           </button>
         )}
@@ -50,7 +50,7 @@ function SidebarContent({ onClose }) {
             <NavLink key={it.to} to={it.to} data-testid={it.testid} onClick={onClose}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  isActive ? "bg-[#1D9E75] text-white" : "text-emerald-100 hover:bg-white/10"
+                  isActive ? "bg-afri-primary text-white" : "text-emerald-100 hover:bg-white/10"
                 }`
               }
             >
@@ -78,8 +78,8 @@ export default function AdminSidebar() {
   return (
     <>
       {/* Mobile hamburger */}
-      <button onClick={() => setOpen(true)}
-        className="lg:hidden fixed top-3 left-3 z-50 w-10 h-10 bg-[#085041] text-white rounded-lg flex items-center justify-center shadow-lg">
+      <button onClick={() => setOpen(true)} aria-label="Ouvrir la navigation administrateur"
+        className="lg:hidden fixed top-3 left-3 z-50 w-10 h-10 bg-afri-secondary text-white rounded-lg flex items-center justify-center shadow-lg">
         <Menu size={20} />
       </button>
 
@@ -94,7 +94,7 @@ export default function AdminSidebar() {
       )}
 
       {/* Desktop fixed */}
-      <aside data-testid="admin-sidebar" className="hidden lg:block bg-[#085041] text-white w-[250px] h-screen fixed top-0 left-0">
+      <aside data-testid="admin-sidebar" className="hidden lg:block bg-afri-secondary text-white w-[250px] h-screen fixed top-0 left-0">
         <SidebarContent />
       </aside>
     </>

@@ -10,6 +10,7 @@ classes call real sandbox endpoints. When keys are blank, fall back to SandboxPr
 from __future__ import annotations
 
 import os
+from decimal import Decimal
 import uuid
 import asyncio
 import logging
@@ -18,6 +19,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 import httpx
+from commerce_mode import integrated_payments_enabled
 
 logger = logging.getLogger(__name__)
 
@@ -69,7 +71,7 @@ class CinetPayProvider(BaseProvider):
     collect() creates a hosted checkout and returns a payment_url (the buyer pays on
     CinetPay's gateway). Confirmation arrives via the notify_url webhook; status can
     also be polled with check(). disburse() uses the Transfer API for seller payouts.
-    Falls back to SandboxProvider when keys are not configured.
+      Rejects operations when the required provider keys are not configured.
     """
     name = "cinetpay"
     CHECKOUT_URL = "https://api-checkout.cinetpay.com/v2/payment"
@@ -86,15 +88,26 @@ class CinetPayProvider(BaseProvider):
     def configured(self) -> bool:
         return bool(self.api_key and self.site_id)
 
+    def safe_checkout(self) -> bool:
+        # This adapter implements legacy Checkout v2. PAYMENT_MODE does not
+        # turn its production endpoint into the newer v1 sandbox endpoint.
+        return integrated_payments_enabled() and self.configured() and not is_sandbox()
+
     async def collect(self, phone: str, amount: float, currency: str, external_ref: str, description: str = "") -> PaymentResult:
-        if not self.configured():
-            return await SandboxProvider().collect(phone, amount, currency, external_ref, description)
+        if not self.safe_checkout():
+            return PaymentResult(ok=False, reference="", status="FAILED", error="CinetPay non configuré")
+        normalized_currency = "CDF" if currency == "FC" else currency
+        value = Decimal(str(amount))
+        if not value.is_finite() or value <= 0 or value != value.to_integral_value():
+            return PaymentResult(False, "", "FAILED", error="Montant incompatible avec Checkout v2")
+        if normalized_currency != "USD" and int(value) % 5:
+            return PaymentResult(False, "", "FAILED", error="Montant Checkout v2 doit être un multiple de cinq")
         payload = {
             "apikey": self.api_key,
             "site_id": self.site_id,
             "transaction_id": external_ref,
             "amount": int(amount),  # CinetPay requires integer amounts
-            "currency": currency,
+            "currency": normalized_currency,
             "description": (description or "Paiement AfriMarket")[:255],
             "notify_url": self.notify_url,
             "return_url": self.return_url,
@@ -124,8 +137,8 @@ class CinetPayProvider(BaseProvider):
 
     async def check(self, transaction_id: str) -> PaymentResult:
         """Poll CinetPay for the final status of a transaction."""
-        if not self.configured():
-            return PaymentResult(ok=True, reference=transaction_id, status="SUCCESS", raw={"sandbox": True})
+        if not integrated_payments_enabled() or not self.configured():
+            return PaymentResult(ok=False, reference=transaction_id, status="PENDING", error="CinetPay non configuré")
         payload = {"apikey": self.api_key, "site_id": self.site_id, "transaction_id": transaction_id}
         try:
             async with httpx.AsyncClient(timeout=20) as c:
@@ -133,20 +146,20 @@ class CinetPayProvider(BaseProvider):
                 body = r.json()
         except Exception as e:
             logger.warning(f"CinetPay check error: {e}")
-            return PaymentResult(ok=False, reference=transaction_id, status="FAILED", error=str(e))
+            return PaymentResult(ok=False, reference=transaction_id, status="PENDING", error="Vérification fournisseur indisponible")
 
         code = str(body.get("code"))
         data = body.get("data", {})
         cp_status = (data.get("status") or "").upper()
-        if code == "00" or cp_status == "ACCEPTED":
+        if code == "00" and cp_status == "ACCEPTED":
             return PaymentResult(ok=True, reference=transaction_id, status="SUCCESS", raw=body)
         if cp_status in ("REFUSED", "CANCELED"):
             return PaymentResult(ok=False, reference=transaction_id, status="FAILED", raw=body, error=body.get("message"))
         return PaymentResult(ok=True, reference=transaction_id, status="PENDING", raw=body)
 
     async def disburse(self, phone: str, amount: float, currency: str, external_ref: str, description: str = "") -> PaymentResult:
-        if not self.configured() or not self.transfer_token:
-            return await SandboxProvider().disburse(phone, amount, currency, external_ref, description)
+        if not integrated_payments_enabled() or is_sandbox() or not self.configured() or not self.transfer_token:
+            return PaymentResult(ok=False, reference="", status="FAILED", error="Transfert CinetPay non configuré")
         # CinetPay Transfer API: requires a separate transfer token + contact pre-registration.
         # Kept as a guarded real call; falls back gracefully on any error.
         ref = f"CP-DIS-{uuid.uuid4().hex[:12].upper()}"
@@ -283,11 +296,11 @@ class OrangeProvider(BaseProvider):
 
 
 def get_payment_mode() -> str:
-    return (os.environ.get("PAYMENT_MODE") or "sandbox").lower()
+    return (os.environ.get("PAYMENT_MODE") or "live").lower()
 
 
 def is_sandbox() -> bool:
-    return get_payment_mode() != "production"
+    return get_payment_mode() == "sandbox"
 
 
 _PROVIDERS = {
@@ -306,25 +319,30 @@ def cinetpay_configured() -> bool:
     return bool(os.environ.get("CINETPAY_API_KEY") and os.environ.get("CINETPAY_SITE_ID"))
 
 
+class UnavailableProvider(BaseProvider):
+    name = "unavailable"
+
+    async def collect(self, phone, amount, currency, external_ref, description=""):
+        return PaymentResult(ok=False, reference="", status="FAILED", error="Prestataire de paiement non configuré")
+
+    async def disburse(self, phone, amount, currency, external_ref, description=""):
+        return PaymentResult(ok=False, reference="", status="FAILED", error="Prestataire de transfert non configuré")
+
+
 def get_provider(name: str) -> BaseProvider:
     # CinetPay is an aggregator: when configured it handles every operator
     # (MTN, Orange, Moov, Wave, Airtel, cards) across all countries via one key.
-    if cinetpay_configured():
+    if integrated_payments_enabled() and cinetpay_configured():
         return CinetPayProvider()
-    # Otherwise, fall back to per-operator providers (or sandbox if no keys set).
-    if is_sandbox() and not any([os.environ.get(k) for k in ["MTN_SUBSCRIPTION_KEY", "WAVE_API_KEY", "ORANGE_API_KEY"]]):
-        return SandboxProvider()
-    cls = _PROVIDERS.get((name or "").lower())
-    if cls:
-        return cls()
-    return SandboxProvider()
+    # Local simulators are test fixtures, never certification or money adapters.
+    return UnavailableProvider()
 
 
 async def simulate_webhook(db, transaction_id: str, delay_seconds: float = 1.5, success_rate: float = 1.0):
     """In sandbox mode, simulate provider webhook arriving after a small delay."""
-    import random
+    import secrets
     await asyncio.sleep(delay_seconds)
-    success = random.random() < success_rate
+    success = secrets.randbelow(1000000) / 1000000 < success_rate
     new_status = "SUCCESS" if success else "FAILED"
     await db.transactions.update_one(
         {"id": transaction_id},

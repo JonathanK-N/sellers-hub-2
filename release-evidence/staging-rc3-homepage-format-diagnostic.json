@@ -1,0 +1,32 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Independent constructor timing until public products actually render; not Lighthouse metrics",
+  "sourceSha": "ddbbaabc01dda497d05ee3372f41a12503f4fddd",
+  "formats": [
+    {
+      "locale": "en-US",
+      "ms": 135.29999999701977
+    },
+    {
+      "locale": "en-US",
+      "ms": 0.09999999403953552
+    },
+    {
+      "locale": "fr-FR",
+      "ms": 0.19999998807907104
+    },
+    {
+      "locale": "fr-FR",
+      "ms": 0.20000000298023224
+    },
+    {
+      "locale": "fr-FR",
+      "ms": 0.10000000894069672
+    },
+    {
+      "locale": "en-US",
+      "ms": 0.09999999403953552
+    }
+  ],
+  "cards": 3
+}

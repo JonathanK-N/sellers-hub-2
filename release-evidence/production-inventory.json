@@ -1,0 +1,446 @@
+{
+  "date": "2026-10-10",
+  "inventory": {
+    "project": {
+      "id": "7cf04965-3d75-4965-9e76-cd33c3b716c5",
+      "name": "AFRIMARKET",
+      "workspaceName": "Jonathan Kakesa's Projects"
+    },
+    "environment": {
+      "id": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+      "name": "production",
+      "isEphemeral": false
+    },
+    "staged": null,
+    "region": null,
+    "services": [
+      {
+        "id": "8807024a-a89f-4c55-8b4b-fb49641c58c3",
+        "name": "MongoDB",
+        "state": "live",
+        "source": {
+          "image": "mongo:8.0",
+          "repo": null,
+          "branch": null
+        },
+        "regions": [
+          "us-west2"
+        ],
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "volumeMounts": [
+          {
+            "volumeId": "73f2765f-a5db-48f9-88b7-3f9a868b4842",
+            "volumeName": "mongodb-volume",
+            "mountPath": "/data/db"
+          }
+        ],
+        "latestDeployment": {
+          "id": "03f6edbf-03a2-436f-846d-13421e778531",
+          "status": "SUCCESS",
+          "createdAt": "2026-09-17T23:41:57.509Z",
+          "url": null
+        },
+        "stagedChangeCount": 0
+      },
+      {
+        "id": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+        "name": "practical-blessing",
+        "state": "live",
+        "source": {
+          "image": null,
+          "repo": "JonathanK-N/sellers-hub-2",
+          "branch": "ui-ux"
+        },
+        "regions": [
+          "us-west2"
+        ],
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "volumeMounts": [],
+        "latestDeployment": {
+          "id": "8e2af06c-8a30-4000-b690-f002c5a0cfef",
+          "status": "SUCCESS",
+          "createdAt": "2026-09-17T23:41:44.858Z",
+          "url": null
+        },
+        "stagedChangeCount": 0
+      },
+      {
+        "id": "69e4d050-47d4-4e24-8d0d-d47807f4b99a",
+        "name": "sellers-hub-2",
+        "state": "live",
+        "source": {
+          "image": null,
+          "repo": "JonathanK-N/sellers-hub-2",
+          "branch": "main"
+        },
+        "regions": [
+          "us-west2"
+        ],
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "volumeMounts": [],
+        "latestDeployment": {
+          "id": "edc47148-a47d-42df-9342-cdb2f2d2327e",
+          "status": "SUCCESS",
+          "createdAt": "2026-09-17T23:41:42.738Z",
+          "url": null
+        },
+        "stagedChangeCount": 0
+      }
+    ],
+    "volumes": [
+      {
+        "id": "73f2765f-a5db-48f9-88b7-3f9a868b4842",
+        "name": "mongodb-volume",
+        "state": "live",
+        "region": "us-west2",
+        "sizeMB": 5000,
+        "mountedOn": {
+          "serviceId": "8807024a-a89f-4c55-8b4b-fb49641c58c3",
+          "serviceName": "MongoDB",
+          "mountPath": "/data/db"
+        },
+        "stagedChangeCount": 0
+      }
+    ],
+    "buckets": [],
+    "sharedVariableNames": []
+  },
+  "deployments": [
+    {
+      "id": "03f6edbf-03a2-436f-846d-13421e778531",
+      "status": "SUCCESS",
+      "createdAt": "2026-09-17T23:41:57.509Z",
+      "updatedAt": "2026-09-17T23:42:10.023Z",
+      "serviceId": "8807024a-a89f-4c55-8b4b-fb49641c58c3",
+      "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+      "url": null,
+      "snapshotId": "c73f5a09-326f-469e-b360-7d1297c77018",
+      "creator": {
+        "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+        "name": "Jonathan Kakesa",
+        "email": "jkakesa9@gmail.com"
+      },
+      "canRollback": true,
+      "canRedeploy": true,
+      "regions": [
+        "us-west2"
+      ],
+      "meta": {
+        "reason": "redeploy",
+        "image": "mongo:8.0"
+      }
+    },
+    {
+      "id": "8e2af06c-8a30-4000-b690-f002c5a0cfef",
+      "status": "SUCCESS",
+      "createdAt": "2026-09-17T23:41:44.858Z",
+      "updatedAt": "2026-09-17T23:45:00.735Z",
+      "serviceId": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+      "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+      "url": null,
+      "snapshotId": "90a7c1cc-16b7-4e70-bda9-24e3219bffe5",
+      "creator": {
+        "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+        "name": "Jonathan Kakesa",
+        "email": "jkakesa9@gmail.com"
+      },
+      "canRollback": true,
+      "canRedeploy": true,
+      "regions": [
+        "us-west2"
+      ],
+      "meta": {
+        "reason": "redeploy",
+        "commitMessage": "feat: panier en tiroir lateral (facon casakonnect)\n\n- CartDrawer: glisse depuis la droite, liste des articles avec vignette,\n  quantites +/-, suppression, total et CTA commander\n- etat vide illustre avec bouton 'Parcourir les produits'\n- fermeture par croix / clic exterieur / Echap, defilement de fond bloque\n- l'etat d'ouverture vit dans CartContext, le rendu se fait via\n  CartDrawerMount a l'interieur du Router (le tiroir navigue)\n- icone panier du TopBar et onglet Panier de la barre du bas ouvrent\n  le tiroir au lieu de naviguer\n- ouverture automatique apres un ajout au panier\n- route /buyer/cart conservee (le CTA du tiroir y mene pour le paiement)",
+        "commitHash": "0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84",
+        "branch": "ui-ux"
+      }
+    },
+    {
+      "id": "edc47148-a47d-42df-9342-cdb2f2d2327e",
+      "status": "SUCCESS",
+      "createdAt": "2026-09-17T23:41:42.738Z",
+      "updatedAt": "2026-09-17T23:43:11.252Z",
+      "serviceId": "69e4d050-47d4-4e24-8d0d-d47807f4b99a",
+      "environmentId": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+      "url": null,
+      "snapshotId": "c9ab5ecb-e4c6-444f-b73f-af39eedc6937",
+      "creator": {
+        "id": "caf7568f-219b-4e60-9afc-ef8d5009da87",
+        "name": "Jonathan Kakesa",
+        "email": "jkakesa9@gmail.com"
+      },
+      "canRollback": true,
+      "canRedeploy": true,
+      "regions": [
+        "us-west2"
+      ],
+      "meta": {
+        "reason": "redeploy",
+        "commitMessage": "audit: points 9/16/17 — health enrichi + PWA iOS + manifest\n\n- server.py [p9]: /health enrichi — ping MongoDB + fraîcheur FX rate + response_ms\n  → UptimeRobot peut surveiller l'état réel du système\n- index.html [p16]: splash screens iOS 4 tailles + Open Graph complet + Twitter Card\n- manifest.json [p17]: start_url '.' → '/' (absolu, requis installabilité stricte)\n  scope '.' → '/', screenshots pour stores/navigateurs, prefer_related_applications:false",
+        "commitHash": "6722492d85e0f8646ebe03c9b841c4a0e3611449",
+        "branch": "main"
+      }
+    }
+  ],
+  "services": [
+    {
+      "service": {
+        "id": "8807024a-a89f-4c55-8b4b-fb49641c58c3",
+        "name": "MongoDB",
+        "state": "live"
+      },
+      "environment": {
+        "id": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "name": "production"
+      },
+      "staged": null,
+      "config": {
+        "source": {
+          "image": "mongo:8.0"
+        },
+        "networking": {
+          "tcpProxies": {
+            "27017": {}
+          },
+          "privateNetworkEndpoint": "mongodb"
+        },
+        "build": {
+          "builder": "RAILPACK",
+          "buildEnvironment": "V3"
+        },
+        "deploy": {
+          "startCommand": "docker-entrypoint.sh mongod --ipv6 --bind_ip ::,0.0.0.0 --setParameter diagnosticDataCollectionEnabled=false",
+          "useLegacyStacker": false,
+          "ipv6EgressEnabled": false,
+          "runtime": "V2",
+          "multiRegionConfig": {
+            "us-west2": {
+              "numReplicas": 1
+            }
+          },
+          "requiredMountPath": "/data/db"
+        },
+        "volumeMounts": {
+          "73f2765f-a5db-48f9-88b7-3f9a868b4842": {
+            "mountPath": "/data/db"
+          }
+        }
+      },
+      "stagedChanges": [],
+      "variableNames": [
+        "MONGOHOST",
+        "MONGOPASSWORD",
+        "MONGOPORT",
+        "MONGOUSER",
+        "MONGO_INITDB_ROOT_PASSWORD",
+        "MONGO_INITDB_ROOT_USERNAME",
+        "MONGO_PUBLIC_URL",
+        "MONGO_URL"
+      ],
+      "volumes": [
+        {
+          "id": "73f2765f-a5db-48f9-88b7-3f9a868b4842",
+          "name": "mongodb-volume",
+          "mountPath": "/data/db",
+          "sizeMB": 5000,
+          "region": "us-west2",
+          "state": "live"
+        }
+      ],
+      "domains": {
+        "serviceDomains": [],
+        "customDomains": []
+      },
+      "tcpProxies": [
+        {
+          "id": "81e19390-1d11-4017-b2d7-643ceef073a0",
+          "endpoint": "zephyr.proxy.rlwy.net:35998",
+          "domain": "zephyr.proxy.rlwy.net",
+          "proxyPort": 35998,
+          "applicationPort": 27017,
+          "syncStatus": "ACTIVE"
+        }
+      ],
+      "latestDeployment": {
+        "id": "03f6edbf-03a2-436f-846d-13421e778531",
+        "status": "SUCCESS",
+        "createdAt": "2026-09-17T23:41:57.509Z",
+        "url": null
+      },
+      "tracing": {
+        "tracingEnabled": false,
+        "autoInstrumentationEnabled": false,
+        "autoInstrumentationActive": false
+      }
+    },
+    {
+      "service": {
+        "id": "708bc9c5-90ae-47e7-a2ab-8c718c44b2ed",
+        "name": "practical-blessing",
+        "state": "live"
+      },
+      "environment": {
+        "id": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "name": "production"
+      },
+      "staged": null,
+      "config": {
+        "source": {
+          "repo": "JonathanK-N/sellers-hub-2",
+          "branch": "ui-ux",
+          "rootDirectory": "/frontend",
+          "checkSuites": false
+        },
+        "networking": {
+          "serviceDomains": {
+            "afrimarket.up.railway.app": {
+              "port": 8080
+            }
+          }
+        },
+        "build": {
+          "builder": "RAILPACK",
+          "buildEnvironment": "V3"
+        },
+        "deploy": {
+          "useLegacyStacker": false,
+          "ipv6EgressEnabled": false,
+          "runtime": "V2",
+          "multiRegionConfig": {
+            "us-west2": {
+              "numReplicas": 1
+            }
+          }
+        }
+      },
+      "stagedChanges": [],
+      "variableNames": [
+        "MONGO_INITDB_ROOT_PASSWORD",
+        "MONGO_INITDB_ROOT_USERNAME",
+        "MONGO_PUBLIC_URL",
+        "MONGO_URL",
+        "REACT_APP_API_URL",
+        "REACT_APP_BACKEND_URL"
+      ],
+      "volumes": [],
+      "domains": {
+        "serviceDomains": [
+          {
+            "id": "b9977fef-8f17-418a-93e8-a50a19bf135a",
+            "domain": "afrimarket.up.railway.app",
+            "targetPort": 8080
+          }
+        ],
+        "customDomains": []
+      },
+      "tcpProxies": [],
+      "latestDeployment": {
+        "id": "8e2af06c-8a30-4000-b690-f002c5a0cfef",
+        "status": "SUCCESS",
+        "createdAt": "2026-09-17T23:41:44.858Z",
+        "url": null
+      },
+      "tracing": {
+        "tracingEnabled": false,
+        "autoInstrumentationEnabled": false,
+        "autoInstrumentationActive": false
+      }
+    },
+    {
+      "service": {
+        "id": "69e4d050-47d4-4e24-8d0d-d47807f4b99a",
+        "name": "sellers-hub-2",
+        "state": "live"
+      },
+      "environment": {
+        "id": "7382f536-2e97-4ac4-ba22-ff7dd1e06ecf",
+        "name": "production"
+      },
+      "staged": null,
+      "config": {
+        "source": {
+          "repo": "JonathanK-N/sellers-hub-2",
+          "branch": "main",
+          "rootDirectory": "/backend",
+          "checkSuites": false
+        },
+        "networking": {
+          "serviceDomains": {
+            "sellers-hub-2-production.up.railway.app": {
+              "port": 8080
+            }
+          }
+        },
+        "build": {
+          "builder": "RAILPACK",
+          "buildEnvironment": "V3"
+        },
+        "deploy": {
+          "useLegacyStacker": false,
+          "ipv6EgressEnabled": false,
+          "runtime": "V2",
+          "multiRegionConfig": {
+            "us-west2": {
+              "numReplicas": 1
+            }
+          }
+        }
+      },
+      "stagedChanges": [],
+      "variableNames": [
+        "ADMIN_NAME",
+        "ADMIN_PASSWORD",
+        "ADMIN_PHONE",
+        "AT_API_KEY",
+        "AT_SENDER_ID",
+        "AT_USERNAME",
+        "AWS_ACCESS_KEY_ID",
+        "AWS_BUCKET_KYC",
+        "AWS_BUCKET_PUBLIC",
+        "AWS_REGION",
+        "AWS_SECRET_ACCESS_KEY",
+        "CINETPAY_NOTIFY_URL",
+        "CINETPAY_RETURN_URL",
+        "CORS_ORIGINS",
+        "DB_NAME",
+        "EMERGENT_LLM_KEY",
+        "FOREXRATEAPI_KEY",
+        "JWT_SECRET",
+        "MONGO_INITDB_ROOT_PASSWORD",
+        "MONGO_INITDB_ROOT_USERNAME",
+        "MONGO_PUBLIC_URL",
+        "MONGO_URL",
+        "PAYMENT_MODE",
+        "RESEND_API_KEY",
+        "SEED_DEMO"
+      ],
+      "volumes": [],
+      "domains": {
+        "serviceDomains": [
+          {
+            "id": "a61ae1a6-63d8-4a60-979b-527c5f29c6fb",
+            "domain": "sellers-hub-2-production.up.railway.app",
+            "targetPort": 8080
+          }
+        ],
+        "customDomains": []
+      },
+      "tcpProxies": [],
+      "latestDeployment": {
+        "id": "edc47148-a47d-42df-9342-cdb2f2d2327e",
+        "status": "SUCCESS",
+        "createdAt": "2026-09-17T23:41:42.738Z",
+        "url": null
+      },
+      "tracing": {
+        "tracingEnabled": false,
+        "autoInstrumentationEnabled": false,
+        "autoInstrumentationActive": false
+      }
+    }
+  ]
+}

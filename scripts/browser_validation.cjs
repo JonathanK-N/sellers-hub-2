@@ -1,0 +1,35 @@
+const fs=require('fs');
+const path=require('path');
+const out=process.argv[2]||'release-evidence';
+fs.mkdirSync(out,{recursive:true});
+const {chromium}=require('C:/Users/Djibril/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+(async()=>{
+ const browser=await chromium.launch({headless:true, channel: 'msedge'});
+ const rows=[];
+ const context=await browser.newContext();
+ const page=await context.newPage();
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ for(const width of [390,768,1440]){
+  await page.setViewportSize({width,height:900});
+  await page.goto('https://afrimarket-web-staging-staging.up.railway.app',{waitUntil:'networkidle',timeout:30000});
+  const header=page.getByTestId('guest-top-header');
+  const color=await header.evaluate(el=>getComputedStyle(el).backgroundColor);
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
+  rows.push({test:'viewport '+width,status:color==='rgb(8, 80, 65)'&&!overflow?'PASS':'FAIL',color,overflow});
+  await page.screenshot({path:path.join(out,'staging-'+width+'.png'),fullPage:true});
+  await page.getByTestId('guest-login-btn').click();
+  await page.getByTestId('auth-modal').waitFor();
+  await page.keyboard.press('Escape');
+  await page.getByTestId('auth-modal').waitFor({state:'hidden'});
+  rows.push({test:'auth modal open/escape '+width,status:'PASS'});
+ }
+ await page.goto('https://afrimarket-web-staging-staging.up.railway.app/explore/search?q=TEST-phase2-delivery',{waitUntil:'networkidle',timeout:30000});
+ const query=await page.getByTestId('search-input').inputValue();
+ const cards=page.locator('[data-testid^="product-card-"]');
+ await cards.first().waitFor();
+ const href=await cards.first().getAttribute('href');
+ rows.push({test:'guest search preserves query and public product links',status:query==='TEST-phase2-delivery'&&href.startsWith('/explore/product/')?'PASS':'FAIL'});
+ rows.push({test:'browser JS errors',status:errors.length?'FAIL':'PASS',errors});
+ fs.writeFileSync(path.join(out,'browser-validation.json'),JSON.stringify({rows},null,2));
+ console.log(JSON.stringify(rows,null,2));await browser.close();
+})().catch(e=>{console.error(e.message);process.exitCode=1;});

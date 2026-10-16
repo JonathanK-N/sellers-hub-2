@@ -2,6 +2,7 @@
 import uuid
 import math
 import logging
+import re
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -12,6 +13,7 @@ from db import get_db
 from models import ProductCreateRequest, ProductUpdateRequest
 from auth import require_role, get_current_user_dep, get_current_user_optional
 from s3_service import generate_presigned_url, BUCKET_PUBLIC, AWS_REGION
+from whatsapp_contact import public_contact
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["products"])
@@ -43,7 +45,7 @@ def _is_premium_active(seller: dict) -> bool:
 
 @router.get("/products")
 async def list_products(
-    q: Optional[str] = None,
+    q: Optional[str] = Query(default=None, max_length=100),
     category: Optional[str] = None,
     country_code: Optional[str] = None,
     lat: Optional[float] = None,
@@ -60,9 +62,15 @@ async def list_products(
     if category and category not in ("all", "Tout"):
         query["category"] = category
     if q:
+        literal = re.escape(q)
+        matching_shops = await db.sellers.find(
+            {"shop_name": {"$regex": literal, "$options": "i"}},
+            {"_id": 0, "id": 1},
+        ).to_list(500)
         query["$or"] = [
-            {"name": {"$regex": q, "$options": "i"}},
-            {"description": {"$regex": q, "$options": "i"}},
+            {"name": {"$regex": literal, "$options": "i"}},
+            {"description": {"$regex": literal, "$options": "i"}},
+            {"seller_id": {"$in": [shop["id"] for shop in matching_shops if isinstance(shop.get("id"), str)]}},
         ]
 
     products = await db.products.find(query, {"_id": 0}).to_list(500)
@@ -134,6 +142,7 @@ async def get_product(product_id: str):
     s = await db.sellers.find_one({"id": p["seller_id"]}, {"_id": 0})
     if s:
         p["seller_name"] = s.get("shop_name")
+        p["seller_whatsapp"] = public_contact(s)
         p["seller_verified"] = s.get("badge_verified", False)
         p["seller_rating"] = s.get("rating", 0.0)
         p["seller_neighborhood"] = s.get("neighborhood")

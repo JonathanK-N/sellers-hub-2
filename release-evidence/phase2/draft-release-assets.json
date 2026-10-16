@@ -1,0 +1,93 @@
+{
+  "id": 409717666,
+  "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/tag/untagged-4de041601151ea4fb469",
+  "stableOwnerUrl": "https://github.com/JonathanK-N/sellers-hub-2/releases/edit/409717666",
+  "draft": true,
+  "tag": "v1.0.1-green-rc.2",
+  "assets": [
+    {
+      "name": "AfriMarket-1.0.1-green-rc.2-staging-debug-9176e82.apk",
+      "id": 630952596,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/AfriMarket-1.0.1-green-rc.2-staging-debug-9176e82.apk",
+      "bytes": 8159834,
+      "sha256": "3449a4d8db6b3beb51a269c99f2cc46f9b322dcbc4f147c9fcade52b480c7a9d"
+    },
+    {
+      "name": "phase2-9176e82-android.zip",
+      "id": 630952181,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-android.zip",
+      "bytes": 7674688,
+      "sha256": "b1c35f2ffd374cf9d742704abdfefe611d80d6fd245499cb388f220a0d714b0b"
+    },
+    {
+      "name": "phase2-9176e82-artifact-manifest-complete.json",
+      "id": 630960375,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-artifact-manifest-complete.json",
+      "bytes": 3150,
+      "sha256": "15bb6b35942e1ac9df48f119f21c3bdbd30d00e5cf1bb88ed596eca1100be705"
+    },
+    {
+      "name": "phase2-9176e82-artifact-manifest.json",
+      "id": 630952736,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-artifact-manifest.json",
+      "bytes": 2719,
+      "sha256": "4a97d429e0fab3c619301b49da3d97f5fa8b8f78260e9a424e7bb14ea6f44e09"
+    },
+    {
+      "name": "phase2-9176e82-backend-security.zip",
+      "id": 630952288,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-backend-security.zip",
+      "bytes": 808,
+      "sha256": "8e4ba769b9147a7a0fc9f5a204f2a31548cb381a83e319711a40b9500db94e3b"
+    },
+    {
+      "name": "phase2-9176e82-emulator.zip",
+      "id": 630952312,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-emulator.zip",
+      "bytes": 371790,
+      "sha256": "8f98b0115da12fc04c38913979de0c48c2ffe889dc1eee5d978610bda426166e"
+    },
+    {
+      "name": "phase2-9176e82-full-validation-evidence.zip",
+      "id": 630960195,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-full-validation-evidence.zip",
+      "bytes": 13690385,
+      "sha256": "b12e2109f8d3efd394d742d91a71c22f302e1fd52ad333669121875f157625f3"
+    },
+    {
+      "name": "phase2-9176e82-performance.zip",
+      "id": 630952328,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-performance.zip",
+      "bytes": 2025617,
+      "sha256": "c75a4c3c0c8a5383348a3ceb4bc56d284622b6c2d38e11476b9a6845c799bc2d"
+    },
+    {
+      "name": "phase2-9176e82-report-evidence.zip",
+      "id": 630952357,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-report-evidence.zip",
+      "bytes": 4172886,
+      "sha256": "74caa34ee81566ee8abdc460d268e4f8dae85653759af211e87c664ceddb9905"
+    },
+    {
+      "name": "phase2-9176e82-source.zip",
+      "id": 630952416,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-source.zip",
+      "bytes": 4817095,
+      "sha256": "56d0fc61bc82b3aa489594614f40879c2f36a8b8e781c799c3f976d2968a4fd0"
+    },
+    {
+      "name": "phase2-9176e82-web-security.zip",
+      "id": 630952496,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-web-security.zip",
+      "bytes": 364426,
+      "sha256": "4a683bc6a52208329ec73d0fb05afaa5df8449eeeb3714a2ea4411005e5f2c27"
+    },
+    {
+      "name": "phase2-9176e82-web.zip",
+      "id": 630952515,
+      "url": "https://github.com/JonathanK-N/sellers-hub-2/releases/download/untagged-4de041601151ea4fb469/phase2-9176e82-web.zip",
+      "bytes": 3622699,
+      "sha256": "356dd3a8680a259f37c2b9f58f30b00489154948b81f808cad73979e33268013"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "cd248cacb084e357c7affb6f530f6f168274cd1d",
+  "rows": [
+    {
+      "test": "/admin/users omits password/OTP/verification fields",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/admin/sellers omits password/OTP/verification fields",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/auth/me omits password/OTP/verification fields",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "/messages requires authentication",
+      "status": "FAIL",
+      "http": 405
+    },
+    {
+      "test": "/messages/unread-count requires authentication",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "/wallet requires authentication",
+      "status": "FAIL",
+      "http": 404
+    },
+    {
+      "test": "/auth/me requires authentication",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "/orders/my requires authentication",
+      "status": "PASS",
+      "http": 401
+    },
+    {
+      "test": "Seller cannot access admin overview",
+      "status": "PASS",
+      "http": 403
+    },
+    {
+      "test": "Buyer cannot access seller wallet",
+      "status": "FAIL",
+      "http": 404
+    }
+  ],
+  "diagnostic": "Harness used unsupported /messages and /wallet routes; 405/404 do not establish authentication failure. Retained; corrected routing in loop2."
+}

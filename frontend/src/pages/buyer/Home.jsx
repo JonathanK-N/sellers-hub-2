@@ -57,15 +57,15 @@ export default function BuyerHome() {
   }, [role]);
 
   return (
-    <div className="mobile-shell">
+    <div className="mobile-shell shell-wide">
       <TopBar title="AfriMarket" />
 
       {/* Barre de recherche */}
-      <div className="px-4 pt-3">
+      <div className="px-4 md:px-8 pt-3">
         <button
           onClick={() => nav("/buyer/search")}
           data-testid="home-search-btn"
-          className="w-full bg-gray-100 hover:bg-gray-200 transition-colors rounded-full py-3 pl-10 pr-4 text-sm text-left text-gray-500 relative"
+          className="w-full bg-gray-100 hover:bg-gray-200 transition-colors rounded-full py-3 pl-10 pr-4 text-sm text-left text-gray-600 relative"
         >
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2" />
           Rechercher un produit ou vendeur…
@@ -76,7 +76,7 @@ export default function BuyerHome() {
       <BannerCarousel position="home_top" role={role} className="mx-4 mt-3" />
 
       {/* Catégories */}
-      <div className="mt-3 px-4 flex gap-2 overflow-x-auto no-scrollbar pb-1">
+      <div className="mt-3 px-4 md:px-8 flex gap-2 overflow-x-auto no-scrollbar pb-1">
         {CATEGORIES.map((c) => (
           <button
             key={c.value}
@@ -84,8 +84,8 @@ export default function BuyerHome() {
             onClick={() => setCat(c.value)}
             className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition-colors ${
               cat === c.value
-                ? "bg-[#1D9E75] text-white border-[#1D9E75]"
-                : "bg-white text-gray-700 border-gray-200 hover:border-[#1D9E75]"
+                ? "bg-afri-primary text-white border-afri-primary"
+                : "bg-white text-gray-700 border-gray-200 hover:border-afri-primary"
             }`}
           >
             {c.label}
@@ -97,7 +97,7 @@ export default function BuyerHome() {
           Priorité 1 — bannière admin home_mid si elle existe
           Priorité 2 — bloc promo fixe si visible=true
           Priorité 3 — rien */}
-      <section className="px-4 mt-3">
+      <section className="px-4 md:px-8 mt-3">
         {homeMidBanners === null ? (
           /* Chargement — afficher le promo par défaut pour éviter le saut */
           promo.visible && <PromoBlock title={promo.title} subtitle={promo.subtitle} />
@@ -109,18 +109,23 @@ export default function BuyerHome() {
       </section>
 
       {/* Produits */}
-      <section className="px-4 mt-5">
+      <section className="px-4 md:px-8 mt-5">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-display font-bold text-lg text-gray-900">
-            Produits près de vous
-          </h2>
+          <div className="flex items-center gap-2">
+            <span className="w-8 h-8 rounded-lg bg-afri-primary text-afri-primary flex items-center justify-center shrink-0">
+              <Sparkles size={16} />
+            </span>
+            <h2 className="font-display font-bold text-lg text-gray-900">
+              Produits près de vous
+            </h2>
+          </div>
           <span className="text-xs text-gray-500">{products.length} résultats</span>
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-gray-100 rounded-xl aspect-[3/4] animate-pulse" />
+              <div key={i} className="afri-skeleton rounded-xl aspect-[3/4]" />
             ))}
           </div>
         ) : products.length === 0 ? (
@@ -128,9 +133,9 @@ export default function BuyerHome() {
             Aucun produit disponible pour cette catégorie.
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 afri-stagger">
             {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p} className="afri-fade-up" />
             ))}
           </div>
         )}
@@ -143,7 +148,7 @@ export default function BuyerHome() {
 
 function PromoBlock({ title, subtitle }) {
   return (
-    <div className="rounded-xl bg-gradient-to-r from-[#085041] to-[#1D9E75] text-white p-4 flex items-center gap-3 overflow-hidden relative">
+    <div className="rounded-xl bg-linear-to-r from-afri-secondary to-afri-primary text-white p-4 flex items-center gap-3 overflow-hidden relative">
       <div className="w-12 h-12 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
         <Sparkles size={22} />
       </div>

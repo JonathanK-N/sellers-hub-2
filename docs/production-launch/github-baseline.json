@@ -1,0 +1,115 @@
+{
+  "recordedAt": "2026-10-12T04:00:20.365Z",
+  "pullRequests": [
+    {
+      "number": 1,
+      "draft": true,
+      "merged": false,
+      "base": "ui-ux",
+      "head": "fix/restore-original-green-theme",
+      "sha": "dd6d186a15abc88dfdc93702dbe0e91854639a4a"
+    },
+    {
+      "number": 2,
+      "draft": true,
+      "merged": false,
+      "base": "fix/restore-original-green-theme",
+      "head": "stabilization/afrimarket-phase-2",
+      "sha": "cd08cc50a8378db4c15d5d42c74c386982d58cc9"
+    },
+    {
+      "number": 3,
+      "draft": true,
+      "merged": false,
+      "base": "stabilization/afrimarket-phase-2",
+      "head": "stabilization/afrimarket-phase-3",
+      "sha": "b3f503b0ae91c82772f9795f39ed06a8af47040b"
+    }
+  ],
+  "releases": [
+    {
+      "id": 409870961,
+      "tag": "v1.0.1-green-rc.3",
+      "draft": true,
+      "assets": 9
+    },
+    {
+      "id": 409717666,
+      "tag": "v1.0.1-green-rc.2",
+      "draft": true,
+      "assets": 12
+    },
+    {
+      "id": 409214759,
+      "tag": "release/afrimarket-green-0.1.1-candidate-20261010",
+      "draft": true,
+      "assets": 17
+    }
+  ],
+  "branches": [
+    {
+      "name": "apk",
+      "sha": "98d3e0c6e70eb0dfc3e8d84722bdc60d5d1801eb"
+    },
+    {
+      "name": "archive/afrimarket-apk-20261010",
+      "sha": "98d3e0c6e70eb0dfc3e8d84722bdc60d5d1801eb"
+    },
+    {
+      "name": "archive/afrimarket-backup-20261010",
+      "sha": "64219d1162cf603651ad4edd2e44c0d7afd5a40c"
+    },
+    {
+      "name": "archive/afrimarket-dev-20261010",
+      "sha": "93a5ca30c5ac202e451f37b30c27d59e2ea0c912"
+    },
+    {
+      "name": "archive/afrimarket-develop-20261010",
+      "sha": "02c8ff47f00a20295ebdb9b510e1210b49dfe7b0"
+    },
+    {
+      "name": "archive/afrimarket-frontend-deployed-20261010",
+      "sha": "0e24300a3fa0cba3dcf8896e4617d9dec5fd3e84"
+    },
+    {
+      "name": "archive/afrimarket-main-20261010",
+      "sha": "6722492d85e0f8646ebe03c9b841c4a0e3611449"
+    },
+    {
+      "name": "archive/afrimarket-ui-ux-20261010",
+      "sha": "83be26533e8bca3aa4ca1b1fa84c93f686aabec0"
+    },
+    {
+      "name": "backup",
+      "sha": "64219d1162cf603651ad4edd2e44c0d7afd5a40c"
+    },
+    {
+      "name": "dev",
+      "sha": "93a5ca30c5ac202e451f37b30c27d59e2ea0c912"
+    },
+    {
+      "name": "develop",
+      "sha": "02c8ff47f00a20295ebdb9b510e1210b49dfe7b0"
+    },
+    {
+      "name": "fix/restore-original-green-theme",
+      "sha": "dd6d186a15abc88dfdc93702dbe0e91854639a4a"
+    },
+    {
+      "name": "main",
+      "sha": "6722492d85e0f8646ebe03c9b841c4a0e3611449"
+    },
+    {
+      "name": "stabilization/afrimarket-phase-2",
+      "sha": "cd08cc50a8378db4c15d5d42c74c386982d58cc9"
+    },
+    {
+      "name": "stabilization/afrimarket-phase-3",
+      "sha": "b3f503b0ae91c82772f9795f39ed06a8af47040b"
+    },
+    {
+      "name": "ui-ux",
+      "sha": "83be26533e8bca3aa4ca1b1fa84c93f686aabec0"
+    }
+  ]
+}

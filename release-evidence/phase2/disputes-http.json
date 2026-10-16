@@ -1,0 +1,35 @@
+{
+  "synthetic": true,
+  "rows": [
+    {
+      "test": "open own synthetic dispute",
+      "http": 201,
+      "status": "PASS"
+    },
+    {
+      "test": "partial refund suspended",
+      "http": 503,
+      "status": "PASS"
+    },
+    {
+      "test": "internal synthetic refund bookkeeping",
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "second resolution rejected",
+      "http": 400,
+      "status": "PASS"
+    },
+    {
+      "test": "external provider refund",
+      "status": "NOT IMPLEMENTED",
+      "detail": "No external refund executed or certified"
+    },
+    {
+      "test": "buyer cannot access admin users",
+      "http": 403,
+      "status": "PASS"
+    }
+  ]
+}

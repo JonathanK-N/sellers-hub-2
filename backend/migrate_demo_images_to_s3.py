@@ -1,8 +1,7 @@
 """One-off script: migrate demo images from the public GitHub assets repo
 (afrimarket-assets) to the AWS S3 public bucket.
 
-Uses urllib (Python stdlib) instead of requests, to avoid depending on a
-package that may not be installed in the production runtime image.
+Uses the installed HTTP client with HTTPS host validation and redirects disabled.
 
 Run this ONCE, with real AWS credentials available in the environment
 (Railway console, or locally with a .env file). After running, seed_demo.py
@@ -16,8 +15,8 @@ import os
 import sys
 import json
 import logging
-import urllib.request
-import urllib.error
+import httpx
+from urllib.parse import urlsplit
 
 sys.path.insert(0, os.path.dirname(__file__))
 from s3_service import upload_public, s3_configured  # noqa: E402
@@ -44,9 +43,12 @@ S3_PREFIX = "afrimarket/demo-products"
 
 
 def _download(url: str) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "afrimarket-migration/1.0"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return resp.read()
+    parsed = urlsplit(url)
+    if parsed.scheme != "https" or parsed.hostname != "raw.githubusercontent.com":
+        raise ValueError("Only the configured HTTPS asset host is permitted")
+    response = httpx.get(url, headers={"User-Agent": "afrimarket-migration/1.0"}, timeout=30, follow_redirects=False)
+    response.raise_for_status()
+    return response.content
 
 
 def migrate():
@@ -62,7 +64,7 @@ def migrate():
         src_url = f"{GITHUB_ASSETS_BASE}/{filename}"
         try:
             data = _download(src_url)
-        except (urllib.error.URLError, urllib.error.HTTPError) as e:
+        except httpx.HTTPError as e:
             logger.warning(f"  ✗ download failed: {filename} ({e})")
             failed.append(filename)
             continue

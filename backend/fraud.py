@@ -35,7 +35,7 @@ async def score_user(user_id: str) -> dict:
                 signals.append({"key": "young_account_big_order", "label": "Compte <24h avec grosse commande", "weight": 35})
                 score += 35
     except Exception:
-        pass
+        logger.warning("Best-effort operation failed", exc_info=True)
 
     # Signal 2: order > 10x avg basket
     orders = []

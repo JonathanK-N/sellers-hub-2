@@ -11,7 +11,7 @@ const STATUS_FLOW = {
   assigned: { label: "À récupérer", color: "bg-[#E6F1FB] text-[#0C447C]", next: "picked-up", nextLabel: "Colis récupéré" },
   picked_up: { label: "Récupéré", color: "bg-[#FAEEDA] text-[#633806]", next: "en-route", nextLabel: "Je suis en route" },
   out_for_delivery: { label: "En livraison", color: "bg-[#FAEEDA] text-[#633806]", next: "confirm", nextLabel: "Confirmer livraison" },
-  delivered: { label: "Livré", color: "bg-[#E1F5EE] text-[#085041]", next: null },
+  delivered: { label: "Livré", color: "bg-afri-soft text-afri-secondary", next: null },
 };
 
 export default function DelivererDashboard() {
@@ -83,7 +83,7 @@ export default function DelivererDashboard() {
     setBusy(orderId);
     try {
       await api.post(`/deliverer/orders/${orderId}/confirm`, { code: code.trim() });
-      toast.success("Livraison confirmée, paiement libéré");
+      toast.success(deliveries.find(order => order.id === orderId)?.payment_method === "direct" ? "Livraison confirmée — paiement hors plateforme." : "Livraison confirmée, paiement libéré");
       setCodeFor(null);
       setCode("");
       load();
@@ -131,7 +131,7 @@ export default function DelivererDashboard() {
 
   return (
     <div className="mobile-shell pb-10">
-      <header className="sticky top-0 z-40 bg-[#085041] text-white px-4 py-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-afri-secondary text-white px-4 py-3 shadow-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <button
@@ -139,20 +139,20 @@ export default function DelivererDashboard() {
               onClick={() => fileRef.current?.click()}
               disabled={uploadingPhoto}
               data-testid="upload-avatar-btn"
-              className="relative w-9 h-9 rounded-lg bg-[#1D9E75] flex items-center justify-center overflow-hidden shrink-0"
+              className="relative w-9 h-9 rounded-lg bg-afri-primary flex items-center justify-center overflow-hidden shrink-0"
             >
               {user?.profile_photo_url ? (
                 <img src={photoUrl(user.profile_photo_url)} alt="Photo de profil" className="w-full h-full object-cover" />
               ) : (
                 <Bike size={20} />
               )}
-              <span className="absolute bottom-0 right-0 w-4 h-4 bg-[#085041] rounded-full flex items-center justify-center border border-white">
+              <span className="absolute bottom-0 right-0 w-4 h-4 bg-afri-secondary rounded-full flex items-center justify-center border border-white">
                 <Camera size={9} className="text-white" />
               </span>
             </button>
             <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPickPhoto} data-testid="avatar-file-input" />
             <div>
-              <div className="font-display font-black text-lg leading-tight flex items-center gap-2">Livreur{active.length > 0 && ["assigned","picked_up","out_for_delivery"].includes(active[0]?.status) && <span className="text-[9px] bg-[#1D9E75] px-1.5 py-0.5 rounded-full font-semibold animate-pulse">GPS</span>}</div>
+              <div className="font-display font-black text-lg leading-tight flex items-center gap-2">Livreur{active.length > 0 && ["assigned","picked_up","out_for_delivery"].includes(active[0]?.status) && <span className="text-[9px] bg-afri-primary px-1.5 py-0.5 rounded-full font-semibold animate-pulse">GPS</span>}</div>
               <div className="text-xs text-emerald-200/80">{user?.name}</div>
             </div>
           </div>
@@ -165,20 +165,20 @@ export default function DelivererDashboard() {
       {earnings && (
         <div className="px-4 mt-4 grid grid-cols-3 gap-2">
           <StatMini icon={Package} label="Aujourd'hui" value={earnings.completed_today} />
-          <StatMini icon={TrendingUp} label="Gains" value={formatPrice(earnings.earnings_today, earnings.currency)} small />
+          <StatMini icon={TrendingUp} label="Estimation historique" value={formatPrice(earnings.earnings_today, earnings.currency)} small />
           <StatMini icon={CheckCircle2} label="Total" value={earnings.completed_all} />
         </div>
       )}
 
 
       {wallet && (
-        <div className="mx-4 mt-3 bg-[#085041] rounded-xl p-4 text-white">
-          <p className="text-xs text-emerald-200 uppercase tracking-wide font-semibold mb-1">Wallet — Mes gains</p>
+        <div className="mx-4 mt-3 bg-afri-secondary rounded-xl p-4 text-white">
+          <p className="text-xs text-emerald-200 uppercase tracking-wide font-semibold mb-1">Solde historique à vérifier</p>
           <p className="text-3xl font-display font-black">
             {wallet.balance?.toLocaleString("fr-FR")} <span className="text-base font-normal opacity-80">{wallet.currency || "CDF"}</span>
           </p>
           <p className="text-xs text-emerald-200 mt-1">{wallet.completed_deliveries} livraison{wallet.completed_deliveries !== 1 ? "s" : ""} effectuée{wallet.completed_deliveries !== 1 ? "s" : ""}</p>
-          <p className="text-[10px] text-emerald-300/70 mt-1">11 500 CDF par livraison AfriMarket confirmée</p>
+          <p className="text-xs text-emerald-100 mt-1">Les livraisons en paiement direct ne créditent pas ce solde. Aucun versement automatique AfriMarket n’est activé.</p>
         </div>
       )}
 
@@ -195,7 +195,7 @@ export default function DelivererDashboard() {
             {active.map((d) => {
               const flow = STATUS_FLOW[d.status] || {};
               return (
-                <div key={d.id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-testid={`delivery-${d.id}`}>
+                <div key={d.id} className="bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden" data-testid={`delivery-${d.id}`}>
                   <div className="flex items-center justify-between px-4 py-2 bg-[#F1EFE8] border-b border-gray-100">
                     <span className="text-sm font-semibold text-gray-900">#{d.id.slice(0, 8)}</span>
                     <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${flow.color}`}>{flow.label}</span>
@@ -212,7 +212,7 @@ export default function DelivererDashboard() {
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <div className="w-7 h-7 rounded-full bg-[#E1F5EE] text-[#1D9E75] flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 rounded-full #E6F1FB text-[#0C447C] flex items-center justify-center shrink-0">
                         <MapPin size={14} />
                       </div>
                       <div className="text-sm">
@@ -223,7 +223,7 @@ export default function DelivererDashboard() {
                     </div>
                     <div className="flex items-center justify-between pt-1 border-t border-gray-50">
                       <span className="text-xs text-gray-400">{timeAgo(d.created_at)}</span>
-                      <span className="font-display font-black text-[#085041]">{formatPrice(d.total_amount, d.currency)}</span>
+                      <span className="font-display font-black text-afri-secondary">{formatPrice(d.total_amount, d.currency)}</span>
                     </div>
 
                     {codeFor === d.id ? (
@@ -235,7 +235,7 @@ export default function DelivererDashboard() {
                           maxLength={6}
                           placeholder="Code à 6 chiffres du client"
                           data-testid={`confirm-code-${d.id}`}
-                          className="w-full border border-gray-300 rounded-lg p-3 text-center text-lg tracking-widest font-mono focus:ring-2 focus:ring-[#1D9E75] outline-none"
+                          className="w-full border border-gray-300 rounded-lg p-3 text-center text-lg tracking-widest font-mono focus:ring-2 focus:ring-afri-primary outline-hidden"
                         />
                         <div className="grid grid-cols-2 gap-2">
                           <button onClick={() => { setCodeFor(null); setCode(""); }} className="py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 font-semibold">
@@ -245,7 +245,7 @@ export default function DelivererDashboard() {
                             onClick={() => submitCode(d.id)}
                             disabled={busy === d.id || code.length !== 6}
                             data-testid={`submit-code-${d.id}`}
-                            className="py-2.5 rounded-lg bg-[#1D9E75] text-white text-sm font-semibold disabled:opacity-50"
+                            className="py-2.5 rounded-lg bg-afri-primary text-white text-sm font-semibold disabled:opacity-50"
                           >
                             Valider
                           </button>
@@ -256,7 +256,7 @@ export default function DelivererDashboard() {
                         onClick={() => advance(d, flow.next)}
                         disabled={busy === d.id}
                         data-testid={`advance-${d.id}`}
-                        className="w-full bg-[#1D9E75] hover:bg-[#168260] text-white rounded-lg py-2.5 font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-50"
+                        className="w-full bg-afri-primary hover:bg-afri-primary-hover text-white rounded-lg py-2.5 font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-50"
                       >
                         {flow.next === "en-route" ? <Navigation size={16} /> : flow.next === "confirm" ? <CheckCircle2 size={16} /> : <Package size={16} />}
                         {flow.nextLabel}
@@ -282,7 +282,7 @@ export default function DelivererDashboard() {
                   <span className="font-medium text-gray-900">#{d.id.slice(0, 8)}</span>
                   <span className="text-xs text-gray-500 ml-2">{d.delivery_neighborhood}</span>
                 </div>
-                <span className="text-xs text-[#1D9E75] font-medium flex items-center gap-1">
+                <span className="text-xs text-afri-primary font-medium flex items-center gap-1">
                   <CheckCircle2 size={13} /> Livré
                 </span>
               </div>
@@ -296,9 +296,9 @@ export default function DelivererDashboard() {
 
 function StatMini({ icon: Icon, label, value, small }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center">
-      <Icon size={16} className="text-[#1D9E75] mx-auto" />
-      <div className={`font-display font-black text-[#085041] mt-1 ${small ? "text-sm" : "text-xl"}`}>{value}</div>
+    <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-3 text-center">
+      <Icon size={16} className="text-afri-primary mx-auto" />
+      <div className={`font-display font-black text-afri-secondary mt-1 ${small ? "text-sm" : "text-xl"}`}>{value}</div>
       <div className="text-[10px] text-gray-500">{label}</div>
     </div>
   );

@@ -1,0 +1,37 @@
+{
+  "sourceSha": "c31788605b986a81b03f0f445cc58f19fa18cd80",
+  "buildSha": "64dfa9e03041e0dae61cd0ee9d1e7feedf0240cf",
+  "scope": "Exact compiled artifact against synthetic real loopback API/Mongo. No staging HTTPS or production business certification; scheduler disabled to prohibit outbound background calls; service workers blocked for deterministic API routing; WhatsApp links inspected without sending messages.",
+  "rows": [
+    {
+      "test": "Synthetic buyer, seller and courier registered, OTP-verified and authenticated via real HTTP",
+      "status": "PASS"
+    },
+    {
+      "test": "Buyer and seller login through actual browser forms",
+      "status": "PASS"
+    },
+    {
+      "test": "Product WhatsApp link uses verified opted-in business phone",
+      "status": "PASS"
+    },
+    {
+      "test": "Browser product/cart/checkout creates persisted direct order with native amount",
+      "status": "PASS"
+    },
+    {
+      "test": "Order WhatsApp message has public reference and no buyer phone or handoff secret",
+      "status": "PASS"
+    },
+    {
+      "test": "Seller receipt requires explicit checkbox",
+      "status": "PASS"
+    },
+    {
+      "test": "Business browser sequence",
+      "status": "FAIL",
+      "error": "locator.click: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('confirm-collect-btn')\u001b[22m\n\u001b[2m    - locator resolved to <button disabled data-testid=\"confirm-collect-btn\" class=\"w-full bg-afri-primary hover:bg-afri-primary-hover active:scale-95 text-white rounded-xl py-4 font-bold text-base transition-all disabled:opacity-60 flex items-center justify-center gap-2 shadow-md\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    37 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+      "browserErrors": []
+    }
+  ]
+}

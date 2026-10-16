@@ -1,0 +1,9 @@
+{
+  "test": "HTTP 401 clears rejected cached session",
+  "status": "FAIL",
+  "sessionState": {
+    "token": true,
+    "user": true
+  },
+  "url": "https://afrimarket-web-staging-staging.up.railway.app/buyer/home"
+}
