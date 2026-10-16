@@ -45,3 +45,11 @@ Preuves : 660-https-permissions.json, 660-https-cart.json, 660-https-session-res
 ## Nettoyage
 
 Les trois sessions GitHub Actions temporaires sont supprimées et leur absence vérifiée par GET 404 ; les trois fichiers locaux temporaires de sessions sont retirés. Aucune clé de signature ni mot de passe transféré à GitHub.
+
+## Boucle corrective supplémentaire — aucun déploiement
+
+PR12 indépendante : https://github.com/JonathanK-N/sellers-hub-2/pull/12. Le candidat eb59561399e8cf35f4032b39b16f3b35362d57b6 isole le code de l’accueil et réduit le bundle initial gzip de 95869 à 89181 octets (~7 %). Ses 28 contrôles UI passent, mais les trois LCP de prévisualisation échouent à 2711,4 / 2707,8 / 2707,3 ms. Les échecs sont conservés dans entry-budget-preview-failed.json.
+
+Le candidat suivant f80223e4d0bb946c2f556009442f59c94455e9ba attend le module public avant le premier montage sans retarder les routes privées. Artefact Web vérifié, 174 empreintes, 28 contrôles UI réussis. Ses trois LCP échouent encore à 4660,5 / 2558,2 / 2553,0 ms, TBT 972 / 30 / 30 ms (run 38848926787). Le premier essai présente un CPU benchmark nettement plus faible, mais reste comptabilisé ; aucune mesure n’est écartée. Le candidat reste NOT READY, ne doit pas être déployé et n’est pas soumis à approbation Railway. La réduction des octets n’est pas une preuve de respect du LCP.
+
+La cause complète du dépassement simulé restant n’est pas établie ; une analyse supplémentaire du chemin de chargement et du CPU est nécessaire. Le dernier staging confirmé reste 6606024 SUCCESS, les trois services en ligne et aucun patch en attente. La production reste intacte.
