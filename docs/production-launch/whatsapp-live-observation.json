@@ -1,0 +1,75 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "checkedAt": "2026-10-16T05:31:07.230Z",
+  "productionRevision": "642e368591199f6f2f3e4bf904d3de8f340fbcea",
+  "health": "ok",
+  "mongodb": "ok",
+  "corsOrigin": "https://afri-market.app",
+  "catalogProducts": 4,
+  "productContacts": [
+    {
+      "http": 200,
+      "hasContact": false,
+      "hasPhone": false
+    },
+    {
+      "http": 200,
+      "hasContact": false,
+      "hasPhone": false
+    },
+    {
+      "http": 200,
+      "hasContact": false,
+      "hasPhone": false
+    },
+    {
+      "http": 200,
+      "hasContact": false,
+      "hasPhone": false
+    }
+  ],
+  "shopContacts": [
+    {
+      "http": 200,
+      "publicContact": false,
+      "legacyPublicLink": false
+    },
+    {
+      "http": 200,
+      "publicContact": false,
+      "legacyPublicLink": false
+    }
+  ],
+  "realBrowser": {
+    "catalogProducts": 4,
+    "productWhatsAppButton": false,
+    "unavailableMessage": true,
+    "shopWhatsAppLinks": 0,
+    "errors": [],
+    "scope": "Actual public client routes, fresh isolated browser, no impersonation or message sent"
+  },
+  "anonymousPermissions": [
+    {
+      "endpoint": "/auth/me",
+      "http": 401,
+      "expected": 401
+    },
+    {
+      "endpoint": "/orders/my",
+      "http": 401,
+      "expected": 401
+    },
+    {
+      "endpoint": "/seller/me",
+      "http": 401,
+      "expected": 401
+    },
+    {
+      "endpoint": "/messages/conversations",
+      "http": 401,
+      "expected": 401
+    }
+  ],
+  "mutations": [],
+  "messagesSent": 0
+}

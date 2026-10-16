@@ -1,0 +1,547 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "candidateRevision": "39c8f6404204efa2dc17e17dda0b8e3ccefde895",
+  "run": 38856560972,
+  "conclusion": "failure",
+  "artifacts": [
+    {
+      "id": 12026898391,
+      "name": "afrimarket-web-a875ac34f07660b16aebdd4910b8d6168fa0d396",
+      "digest": "sha256:9461f794d14fa52e990aa2f7ec5243034be1ea79894b0e0ecf9b618c743f1899",
+      "verified": true
+    },
+    {
+      "id": 12027347997,
+      "name": "ui-premium-preview-a875ac34f07660b16aebdd4910b8d6168fa0d396",
+      "digest": "sha256:ab6b2c0ed10cc7dcbd260748388f8884d3ca1474d77e4c238121b5ae7bcf7be5",
+      "verified": true
+    }
+  ],
+  "metadata": {
+    "version": "1.1.0-direct-rc.4",
+    "sourceSha": "39c8f6404204efa2dc17e17dda0b8e3ccefde895",
+    "buildSha": "a875ac34f07660b16aebdd4910b8d6168fa0d396",
+    "date": "2026-10-16T05:35:56.194Z",
+    "type": "Web/PWA staging",
+    "tools": {
+      "node": "v22.23.3"
+    },
+    "api": "https://afrimarket-api-staging-staging.up.railway.app"
+  },
+  "filesVerified": 174,
+  "whatsapp": {
+    "author": "Jonathan Kakesa (JonathanK-N)",
+    "scope": "Compiled artifact against intercepted synthetic API only; no production writes, no real SMS or WhatsApp navigation",
+    "rows": [
+      {
+        "test": "Dashboard leads to the unique WhatsApp configuration",
+        "status": "PASS"
+      },
+      {
+        "test": "Legacy URL prefills only the phone, without publication or writes",
+        "status": "PASS"
+      },
+      {
+        "test": "Saved but unverified contact has no WhatsApp button",
+        "status": "PASS"
+      },
+      {
+        "test": "An unsaved changed phone cannot trigger verification of the old phone",
+        "status": "PASS"
+      },
+      {
+        "test": "Rejected verification cannot publish a link",
+        "status": "PASS"
+      },
+      {
+        "test": "Verified opted-in contact exposes the new phone in preview",
+        "status": "PASS"
+      },
+      {
+        "test": "Authenticated buyer can choose WhatsApp or internal messaging",
+        "status": "PASS"
+      },
+      {
+        "test": "Public shop offers a verified WhatsApp draft independently of internal chat",
+        "status": "PASS"
+      },
+      {
+        "test": "Product and shop use the same verified contact",
+        "status": "PASS"
+      },
+      {
+        "test": "Legacy social link cannot bypass revoked publication consent",
+        "status": "PASS"
+      },
+      {
+        "test": "No client rendering errors",
+        "status": "PASS"
+      }
+    ],
+    "syntheticWrites": [
+      {
+        "method": "PUT",
+        "path": "/api/seller/whatsapp"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/seller/whatsapp"
+      },
+      {
+        "method": "POST",
+        "path": "/api/seller/whatsapp/send-code"
+      },
+      {
+        "method": "POST",
+        "path": "/api/seller/whatsapp/verify"
+      },
+      {
+        "method": "POST",
+        "path": "/api/seller/whatsapp/verify"
+      }
+    ]
+  },
+  "generalUi": {
+    "checks": 28,
+    "unavailable": []
+  },
+  "lighthouse": {
+    "author": "Jonathan Kakesa (JonathanK-N)",
+    "sourceSha": "39c8f6404204efa2dc17e17dda0b8e3ccefde895",
+    "scope": "Local public built preview, Lighthouse 13.5 default mobile simulated throttling, fresh cold browser per iteration; API reads only; not an HTTPS staging certificate",
+    "rows": [
+      {
+        "iteration": 1,
+        "status": "FAIL",
+        "metrics": {
+          "performance": 87,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 100,
+          "lcpMs": 2834.3732499999996,
+          "tbtMs": 250.02535000000012,
+          "cls": 0
+        },
+        "diagnostics": {
+          "benchmarkIndex": 2551,
+          "mainThread": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 1107.647999999995
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 673.5359999999998
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 486.9000000000001
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 382.98399999999975
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 113.108
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 4.748
+            }
+          ],
+          "lcpSubparts": [
+            {
+              "subpart": "timeToFirstByte",
+              "label": "Time to first byte",
+              "duration": 46.677
+            },
+            {
+              "subpart": "resourceLoadDelay",
+              "label": "Resource load delay",
+              "duration": 161.948
+            },
+            {
+              "subpart": "resourceLoadDuration",
+              "label": "Resource load duration",
+              "duration": 1.299
+            },
+            {
+              "subpart": "elementRenderDelay",
+              "label": "Element render delay",
+              "duration": 1423.706
+            }
+          ],
+          "failures": [
+            {
+              "id": "first-contentful-paint",
+              "title": "First Contentful Paint",
+              "score": 0.77
+            },
+            {
+              "id": "largest-contentful-paint",
+              "title": "Largest Contentful Paint",
+              "score": 0.82
+            },
+            {
+              "id": "speed-index",
+              "title": "Speed Index",
+              "score": 0.9
+            },
+            {
+              "id": "total-blocking-time",
+              "title": "Total Blocking Time",
+              "score": 0.84
+            },
+            {
+              "id": "max-potential-fid",
+              "title": "Max Potential First Input Delay",
+              "score": 0.36
+            },
+            {
+              "id": "interactive",
+              "title": "Time to Interactive",
+              "score": 0.96
+            },
+            {
+              "id": "mainthread-work-breakdown",
+              "title": "Minimize main-thread work",
+              "score": 0
+            },
+            {
+              "id": "unused-javascript",
+              "title": "Reduce unused JavaScript",
+              "score": 0
+            },
+            {
+              "id": "cache-insight",
+              "title": "Use efficient cache lifetimes",
+              "score": 0
+            },
+            {
+              "id": "image-delivery-insight",
+              "title": "Improve image delivery",
+              "score": 0.5
+            },
+            {
+              "id": "network-dependency-tree-insight",
+              "title": "Network dependency tree",
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "iteration": 2,
+        "status": "FAIL",
+        "metrics": {
+          "performance": 95,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 100,
+          "lcpMs": 2716.36035,
+          "tbtMs": 18,
+          "cls": 0.0003860254720616117
+        },
+        "diagnostics": {
+          "benchmarkIndex": 2913.5,
+          "mainThread": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 170.0480000000004
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 164.19200000000055
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 93.88799999999999
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 22.848
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 11.847999999999995
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 4.26
+            }
+          ],
+          "lcpSubparts": [
+            {
+              "subpart": "timeToFirstByte",
+              "label": "Time to first byte",
+              "duration": 3.937
+            },
+            {
+              "subpart": "resourceLoadDelay",
+              "label": "Resource load delay",
+              "duration": 11.156
+            },
+            {
+              "subpart": "resourceLoadDuration",
+              "label": "Resource load duration",
+              "duration": 29.737
+            },
+            {
+              "subpart": "elementRenderDelay",
+              "label": "Element render delay",
+              "duration": 107.297
+            }
+          ],
+          "failures": [
+            {
+              "id": "first-contentful-paint",
+              "title": "First Contentful Paint",
+              "score": 0.85
+            },
+            {
+              "id": "largest-contentful-paint",
+              "title": "Largest Contentful Paint",
+              "score": 0.85
+            },
+            {
+              "id": "speed-index",
+              "title": "Speed Index",
+              "score": 0.99
+            },
+            {
+              "id": "max-potential-fid",
+              "title": "Max Potential First Input Delay",
+              "score": 0.99
+            },
+            {
+              "id": "interactive",
+              "title": "Time to Interactive",
+              "score": 0.97
+            },
+            {
+              "id": "unused-javascript",
+              "title": "Reduce unused JavaScript",
+              "score": 0
+            },
+            {
+              "id": "cache-insight",
+              "title": "Use efficient cache lifetimes",
+              "score": 0
+            },
+            {
+              "id": "image-delivery-insight",
+              "title": "Improve image delivery",
+              "score": 0.5
+            },
+            {
+              "id": "network-dependency-tree-insight",
+              "title": "Network dependency tree",
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "iteration": 3,
+        "status": "FAIL",
+        "metrics": {
+          "performance": 95,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 100,
+          "lcpMs": 2715.4278999999997,
+          "tbtMs": 36,
+          "cls": 0.0002226954128442866
+        },
+        "diagnostics": {
+          "benchmarkIndex": 3046,
+          "mainThread": [
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 175.07600000000082
+            },
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 169.5560000000005
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 107.25200000000002
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 39.376000000000005
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 15.039999999999992
+            },
+            {
+              "group": "garbageCollection",
+              "groupLabel": "Garbage Collection",
+              "duration": 6.207999999999998
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 4.408
+            }
+          ],
+          "lcpSubparts": [
+            {
+              "subpart": "timeToFirstByte",
+              "label": "Time to first byte",
+              "duration": 4.114
+            },
+            {
+              "subpart": "resourceLoadDelay",
+              "label": "Resource load delay",
+              "duration": 11.942
+            },
+            {
+              "subpart": "resourceLoadDuration",
+              "label": "Resource load duration",
+              "duration": 32.321
+            },
+            {
+              "subpart": "elementRenderDelay",
+              "label": "Element render delay",
+              "duration": 107.268
+            }
+          ],
+          "failures": [
+            {
+              "id": "first-contentful-paint",
+              "title": "First Contentful Paint",
+              "score": 0.85
+            },
+            {
+              "id": "largest-contentful-paint",
+              "title": "Largest Contentful Paint",
+              "score": 0.85
+            },
+            {
+              "id": "speed-index",
+              "title": "Speed Index",
+              "score": 0.99
+            },
+            {
+              "id": "max-potential-fid",
+              "title": "Max Potential First Input Delay",
+              "score": 0.98
+            },
+            {
+              "id": "interactive",
+              "title": "Time to Interactive",
+              "score": 0.97
+            },
+            {
+              "id": "unused-javascript",
+              "title": "Reduce unused JavaScript",
+              "score": 0
+            },
+            {
+              "id": "cache-insight",
+              "title": "Use efficient cache lifetimes",
+              "score": 0
+            },
+            {
+              "id": "image-delivery-insight",
+              "title": "Improve image delivery",
+              "score": 0.5
+            },
+            {
+              "id": "network-dependency-tree-insight",
+              "title": "Network dependency tree",
+              "score": 0
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "jobs": [
+    {
+      "name": "ui-premium-preview",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "name": "android",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "web",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "backend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "mongodb-recovery",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "security-secrets",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "security-web",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "security-backend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "mongodb-staging-topology",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "frontend-business-e2e",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "performance-comparison",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "android-emulator",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "previousFailure": {
+    "run": 38856129354,
+    "reason": "Synthetic seller dashboard fixture omitted recent_orders; browser timed out waiting for configuration link; fixture completed without application change"
+  }
+}
