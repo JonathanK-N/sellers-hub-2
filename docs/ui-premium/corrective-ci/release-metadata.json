@@ -1,0 +1,11 @@
+{
+  "version": "1.1.0-direct-rc.4",
+  "sourceSha": "838cc9523267be74561edd9b395d46615b2fad0a",
+  "buildSha": "6df1a1792537dfba1d29b99f7725993c824ff838",
+  "date": "2026-10-16T00:55:22.143Z",
+  "type": "Web/PWA staging",
+  "tools": {
+    "node": "v22.23.3"
+  },
+  "api": "https://afrimarket-api-staging-staging.up.railway.app"
+}

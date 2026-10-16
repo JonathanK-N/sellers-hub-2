@@ -1,0 +1,32 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Real HTTPS GET only; no order/payment/message submitted",
+  "features": {
+    "direct_payment": true,
+    "funds_held_by_platform": false,
+    "cinetpay_enabled": false,
+    "wallet_withdrawals_enabled": false,
+    "direct_refunds_automatic": false
+  },
+  "rows": [
+    {
+      "test": "Direct commerce enabled; platform holding, CinetPay, withdrawals and automatic refunds disabled",
+      "status": "PASS"
+    },
+    {
+      "test": "Existing buyer orders readable",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "Existing buyer conversation list readable",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "test": "Create order, payment declaration and message sending",
+      "status": "BLOCKED",
+      "reason": "Writes forbidden in this mission"
+    }
+  ]
+}

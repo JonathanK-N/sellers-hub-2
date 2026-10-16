@@ -1,0 +1,126 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "webSha": "4e28a3dbbc02c75747b2fa1d93b1c94c99840e1b",
+  "rows": [
+    {
+      "test": "HTTPS responsive 320",
+      "status": "PASS"
+    },
+    {
+      "test": "HTTPS responsive 390",
+      "status": "PASS"
+    },
+    {
+      "test": "HTTPS responsive 768",
+      "status": "PASS"
+    },
+    {
+      "test": "HTTPS responsive 1440",
+      "status": "PASS"
+    },
+    {
+      "test": "HTTPS PWA Dynamic v14 registration",
+      "status": "PASS",
+      "detail": {
+        "cacheNames": [
+          "afrimarket-green-ui-dynamic-v14"
+        ],
+        "controller": "https://afrimarket-web-staging-staging.up.railway.app/service-worker.js"
+      }
+    },
+    {
+      "test": "Public API responses omit credential and OTP fields",
+      "status": "PASS",
+      "responses": [
+        {
+          "path": "/api/fx/rate",
+          "status": 200,
+          "sensitive": false
+        },
+        {
+          "path": "/api/products",
+          "status": 200,
+          "sensitive": false
+        },
+        {
+          "path": "/api/seller/public/2bec095c-37d4-40ee-a375-2280cd1feb12",
+          "status": 200,
+          "sensitive": false
+        },
+        {
+          "path": "/api/seller/public/00a07b36-3008-42e8-80e0-517e7b788447",
+          "status": 200,
+          "sensitive": false
+        },
+        {
+          "path": "/api/seller/public/bb243d2a-aefe-4769-8393-bc985caecc35",
+          "status": 200,
+          "sensitive": false
+        }
+      ]
+    },
+    {
+      "test": "buyer /buyer/home",
+      "status": "PASS",
+      "actualPath": "/buyer/home",
+      "errors": []
+    },
+    {
+      "test": "No cached private data /buyer/home",
+      "status": "PASS"
+    },
+    {
+      "test": "buyer /buyer/cart",
+      "status": "PASS",
+      "actualPath": "/buyer/cart",
+      "errors": []
+    },
+    {
+      "test": "No cached private data /buyer/cart",
+      "status": "PASS"
+    },
+    {
+      "test": "buyer /buyer/orders",
+      "status": "PASS",
+      "actualPath": "/buyer/orders",
+      "errors": []
+    },
+    {
+      "test": "No cached private data /buyer/orders",
+      "status": "PASS"
+    },
+    {
+      "test": "buyer /messages",
+      "status": "PASS",
+      "actualPath": "/messages",
+      "errors": []
+    },
+    {
+      "test": "No cached private data /messages",
+      "status": "PASS"
+    },
+    {
+      "test": "seller /seller/dashboard",
+      "status": "PASS",
+      "actualPath": "/seller/dashboard",
+      "errors": []
+    },
+    {
+      "test": "No cached private data /seller/dashboard",
+      "status": "PASS"
+    },
+    {
+      "test": "admin /admin/overview",
+      "status": "PASS",
+      "actualPath": "/admin/overview",
+      "errors": []
+    },
+    {
+      "test": "No cached private data /admin/overview",
+      "status": "PASS"
+    }
+  ],
+  "blockedMutations": [],
+  "browserErrors": [],
+  "backendRevision": "2806d719bf0edbdc31ebd32ab0887e1fb4dc40cb"
+}

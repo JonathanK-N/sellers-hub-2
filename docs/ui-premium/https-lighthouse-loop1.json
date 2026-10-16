@@ -1,0 +1,188 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "sourceSha": "2806d719bf0edbdc31ebd32ab0887e1fb4dc40cb",
+  "webSourceSha": "4e28a3dbbc02c75747b2fa1d93b1c94c99840e1b",
+  "blockedMutations": [],
+  "partialDiagnostic": false,
+  "scope": "Actual Railway staging HTTPS, Lighthouse 13.5 default mobile simulated throttling; fresh isolated browser per page, authentication initialized on robots.txt without warming application resources; raw authenticated reports private outside Git",
+  "rows": [
+    {
+      "page": "accueil",
+      "route": "/",
+      "finalPath": "/",
+      "pageVerified": true,
+      "seoPolicy": "public SEO >=95",
+      "status": "FAIL",
+      "metrics": {
+        "performance": 69,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100,
+        "lcpMs": 2034.978,
+        "tbtMs": 1542.5,
+        "cls": 0.0001710877000703807
+      },
+      "failures": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.87
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.97
+        },
+        {
+          "id": "speed-index",
+          "title": "Speed Index",
+          "score": 0.7
+        },
+        {
+          "id": "total-blocking-time",
+          "title": "Total Blocking Time",
+          "score": 0.13
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.88
+        },
+        {
+          "id": "mainthread-work-breakdown",
+          "title": "Minimize main-thread work",
+          "score": 0
+        },
+        {
+          "id": "bootup-time",
+          "title": "Reduce JavaScript execution time",
+          "score": 0
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "score": 0.5
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0
+        }
+      ],
+      "diagnostics": {
+        "benchmarkIndex": 248.5,
+        "mainThread": [
+          {
+            "group": "other",
+            "durationMs": 16386.656000000003
+          },
+          {
+            "group": "scriptEvaluation",
+            "durationMs": 1541.1199999999951
+          },
+          {
+            "group": "styleLayout",
+            "durationMs": 1489.588
+          },
+          {
+            "group": "paintCompositeRender",
+            "durationMs": 173.72400000000002
+          },
+          {
+            "group": "parseHTML",
+            "durationMs": 143.90800000000002
+          },
+          {
+            "group": "garbageCollection",
+            "durationMs": 35.259999999999984
+          },
+          {
+            "group": "scriptParseCompile",
+            "durationMs": 14.535999999999998
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "part": "timeToFirstByte",
+            "durationMs": 274.756
+          },
+          {
+            "part": "resourceLoadDelay",
+            "durationMs": 138.735
+          },
+          {
+            "part": "resourceLoadDuration",
+            "durationMs": 478.304
+          },
+          {
+            "part": "elementRenderDelay",
+            "durationMs": 1552.81
+          }
+        ],
+        "lcpElementTag": "img",
+        "staticResources": [
+          {
+            "path": "/fonts/poppins-400-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8013,
+            "startMs": 548.9330000001937,
+            "endMs": 704.4469999996945
+          },
+          {
+            "path": "/fonts/poppins-800-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7961,
+            "startMs": 549.6399999996647,
+            "endMs": 701.1239999998361
+          },
+          {
+            "path": "/assets/index-C91aEWm7.js",
+            "type": "Script",
+            "transferBytes": 95996,
+            "startMs": 571.4539999999106,
+            "endMs": 858.4060000004247
+          },
+          {
+            "path": "/assets/jsx-runtime-BEnyrngo.js",
+            "type": "Script",
+            "transferBytes": 4610,
+            "startMs": 572.4270000001416,
+            "endMs": 703.5870000002906
+          },
+          {
+            "path": "/images/market-hero-800.avif",
+            "type": "Image",
+            "transferBytes": 47223,
+            "startMs": 621.793000000529,
+            "endMs": 854.2770000007004
+          },
+          {
+            "path": "/fonts/poppins-700-latin.woff2",
+            "type": "Font",
+            "transferBytes": 7945,
+            "startMs": 1820.536000000313,
+            "endMs": 1980.4879999998957
+          },
+          {
+            "path": "/fonts/poppins-600-latin.woff2",
+            "type": "Font",
+            "transferBytes": 8128,
+            "startMs": 1821.9449999993667,
+            "endMs": 1979.9629999995232
+          }
+        ],
+        "cpuFrames": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "note": "Loop1 included incorrect /orders and /payments/features URLs; preserved as harness failures, corrected against router source.",
+  "rows": [
+    {
+      "test": "GET /orders/my buyer",
+      "expected": 200,
+      "http": 200,
+      "status": "PASS"
+    },
+    {
+      "test": "GET /orders/my anonymous",
+      "expected": 401,
+      "http": 401,
+      "status": "PASS"
+    },
+    {
+      "test": "GET /admin/overview buyer",
+      "expected": 403,
+      "http": 403,
+      "status": "PASS"
+    },
+    {
+      "test": "GET /seller/me buyer",
+      "expected": 403,
+      "http": 403,
+      "status": "PASS"
+    }
+  ]
+}
