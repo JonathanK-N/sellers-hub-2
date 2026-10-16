@@ -1,0 +1,8 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Actual HTTPS diagnostic: auth response held locally until page module downloaded; no backend mutation; no performance pass inferred",
+  "deployedRevision": "584f0c463ee53e65be790526cb38819eb8d6dd83",
+  "moduleReadyBeforeAuth": true,
+  "authenticatedDataRequestDelayMs": 401,
+  "privateRequestBeforeAuth": false
+}

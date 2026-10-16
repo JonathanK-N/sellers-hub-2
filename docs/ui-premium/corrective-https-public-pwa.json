@@ -1,0 +1,40 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "deployedRevision": "584f0c463ee53e65be790526cb38819eb8d6dd83",
+  "scope": "Actual HTTPS; stale shell injected only into test-browser cache; no hosting or data change",
+  "responsive": [
+    {
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "overflow": false
+    }
+  ],
+  "rows": [
+    {
+      "test": "Network-first worker replaces deliberately stale cached shell",
+      "status": "PASS"
+    },
+    {
+      "test": "No API path cached",
+      "status": "PASS"
+    },
+    {
+      "test": "Offline API does not return cached success",
+      "status": "PASS",
+      "http": 503
+    }
+  ],
+  "browserErrors": [],
+  "blockedMutations": []
+}

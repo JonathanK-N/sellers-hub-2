@@ -1,0 +1,38 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "checkedAt": "2026-10-16T03:11:16.724Z",
+  "project": "bc40e22f-b963-46fa-a64e-240f3aa954cd",
+  "environment": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+  "staged": null,
+  "web": {
+    "deployment": "ce6b813b-f779-41f9-b8e9-e4564b8bd127",
+    "status": "SUCCESS",
+    "configuredRevision": "838cc9523267be74561edd9b395d46615b2fad0a",
+    "executedRevision": "584f0c463ee53e65be790526cb38819eb8d6dd83"
+  },
+  "backend": {
+    "deployment": "1a774143-96db-4cb8-a0be-19116988a51f",
+    "status": "SUCCESS",
+    "executedRevision": "2806d719bf0edbdc31ebd32ab0887e1fb4dc40cb"
+  },
+  "mongo": {
+    "deployment": "a72b1bb3-5a19-4049-b1fe-e1067ae6cd3f",
+    "status": "SUCCESS",
+    "volume": "b0f66ec2-2328-4b12-aecb-47847c6d5733",
+    "sizeMB": 1024,
+    "mount": "/data/db"
+  },
+  "mutationsPerformed": [],
+  "productionAccess": false,
+  "healthcheck": {
+    "httpStatus": 200,
+    "status": "ok",
+    "checks": {
+      "mongodb": "ok",
+      "fx_rate": "no_data"
+    },
+    "response_ms": 8,
+    "version": "1.1.0-direct-rc.4",
+    "source_sha": "2806d719bf0edbdc31ebd32ab0887e1fb4dc40cb"
+  }
+}
