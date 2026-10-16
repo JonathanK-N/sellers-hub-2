@@ -4,14 +4,17 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
+import { routeResourceHints } from './build-tools/route_resource_hints.mjs';
 
-function inlineEntryStyles() {
+function inlineEntryStyles(backendUrl) {
   return {
     name: 'afrimarket-entry-styles',
     transformIndexHtml: {
       order: 'post',
       handler(html, context) {
         if (!context.bundle) return html;
+        const hints = routeResourceHints(context.bundle, backendUrl);
+        html = html.replace(/<meta charset="utf-8"\s*\/?>/i, tag => tag + hints);
         const fonts = readFileSync(new URL('./public/fonts/poppins.css', import.meta.url), 'utf8');
         html = html.replace('<link rel="stylesheet" href="/fonts/poppins.css" />', `<style data-afrimarket-fonts>${fonts}</style>`);
         return html.replace(/<link\b[^>]*rel="stylesheet"[^>]*>/g, tag => {
@@ -31,7 +34,7 @@ export default defineConfig(({ mode }) => {
   const publicKeys = ['REACT_APP_BACKEND_URL', 'REACT_APP_FCM_VAPID_KEY', 'REACT_APP_FIREBASE_CONFIG'];
   const define = Object.fromEntries(publicKeys.map(key => ['process.env.' + key, JSON.stringify(env[key] || '')]));
   return {
-    plugins: [react(), tailwindcss(), inlineEntryStyles()],
+    plugins: [react(), tailwindcss(), inlineEntryStyles(env.REACT_APP_BACKEND_URL || '')],
     resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
     define,
     build: { outDir: 'build', sourcemap: false },
