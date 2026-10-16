@@ -13,6 +13,7 @@ export default function SellerSetup() {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [configureWhatsApp, setConfigureWhatsApp] = useState(false);
   const logoRef = useRef();
 
   const [form, setForm] = useState({
@@ -20,7 +21,7 @@ export default function SellerSetup() {
     category: "Général", product_specialties: [],
     address: "", neighborhood: "", opening_hours: "08:00-18:00",
     latitude: 0, longitude: 0, shop_logo_url: null, shop_banner_url: null,
-    social_links: { facebook: "", tiktok: "", whatsapp_business: "", instagram: "" },
+    social_links: { facebook: "", tiktok: "", instagram: "" },
   });
   const [specialty, setSpecialty] = useState("");
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
@@ -58,7 +59,7 @@ export default function SellerSetup() {
       Object.entries(form.social_links).forEach(([k, v]) => { if (v.trim()) social[k] = v.trim(); });
       await api.post("/seller/setup", { ...form, social_links: Object.keys(social).length ? social : null });
       toast.success("Boutique créée !");
-      nav("/seller/dashboard");
+      nav(configureWhatsApp ? "/seller/edit-profile#whatsapp" : "/seller/dashboard");
     } catch (e) { toast.error(formatApiError(e.response?.data?.detail)); }
     finally { setLoading(false); }
   };
@@ -177,7 +178,6 @@ export default function SellerSetup() {
               {[
                 { key: "facebook", icon: <Facebook size={18} className="text-blue-600" />, label: "Page Facebook", placeholder: "https://facebook.com/maboutique" },
                 { key: "tiktok", icon: <span className="text-lg font-bold text-gray-800">TK</span>, label: "Compte TikTok", placeholder: "https://tiktok.com/@maboutique" },
-                { key: "whatsapp_business", icon: <Phone size={18} className="text-green-600" />, label: "WhatsApp Business", placeholder: "+243812345678" },
                 { key: "instagram", icon: <Globe size={18} className="text-pink-500" />, label: "Instagram", placeholder: "https://instagram.com/maboutique" },
               ].map(({ key, icon, label, placeholder }) => (
                 <div key={key} className="flex items-center gap-3">
@@ -192,6 +192,10 @@ export default function SellerSetup() {
             <div className="bg-afri-soft rounded-lg p-3">
               <p className="text-xs text-afri-secondary">Ces liens apparaîtront sur votre page boutique publique et permettront aux clients de vous contacter directement.</p>
             </div>
+            <label className="flex items-start gap-2 text-sm text-afri-secondary">
+              <input type="checkbox" checked={configureWhatsApp} onChange={e => setConfigureWhatsApp(e.target.checked)} />
+              Configurer WhatsApp après la création de ma boutique : je choisirai le numéro, autoriserai sa publication et le vérifierai dans mon profil.
+            </label>
           </div>
         )}
       </div>

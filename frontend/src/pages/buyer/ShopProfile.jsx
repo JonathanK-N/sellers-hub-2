@@ -7,6 +7,7 @@ import api from "../../lib/api";
 import { photoUrl, timeAgo } from "../../lib/format";
 import { useAuth } from "../../context/AuthContext";
 import ProductCard from "../../components/ProductCard";
+import WhatsAppContact from "../../components/WhatsAppContact";
 
 export default function ShopProfile({ guest = false }) {
   const { openAuth } = useAuthModal();
@@ -28,7 +29,7 @@ export default function ShopProfile({ guest = false }) {
 
   const { seller, products, reviews } = data;
   const social = seller.social_links || {};
-  const hasSocial = social.facebook || social.tiktok || social.whatsapp_business || social.instagram;
+  const hasSocial = social.facebook || social.tiktok || social.instagram;
   const isGuestView = guest || !user;
   const backLink = isGuestView ? "/" : "/buyer/home";
 
@@ -105,8 +106,9 @@ export default function ShopProfile({ guest = false }) {
           onClick={handleContact}
           className="w-full mt-4 bg-white border border-afri-primary text-afri-primary hover:bg-afri-soft rounded-lg py-2.5 font-semibold flex items-center justify-center gap-2 text-sm transition-colors"
         >
-          <MessageSquare size={16} /> {isGuestView ? "Se connecter pour contacter ce vendeur" : "Contacter le vendeur"}
+          <MessageSquare size={16} /> {isGuestView ? "Se connecter pour écrire dans AfriMarket" : "Écrire dans AfriMarket"}
         </button>
+        <div className="mt-3"><WhatsAppContact contact={seller.whatsapp_contact} /></div>
 
         {/* DESCRIPTION LONGUE */}
         {seller.long_description && (
@@ -129,11 +131,6 @@ export default function ShopProfile({ guest = false }) {
               {social.tiktok && (
                 <a href={social.tiktok} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium">
                   <span className="font-bold text-xs">TK</span> TikTok
-                </a>
-              )}
-              {social.whatsapp_business && (
-                <a href={`https://wa.me/${social.whatsapp_business.replace(/[^0-9]/g,"")}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg text-sm font-medium">
-                  <Phone size={15} /> WhatsApp
                 </a>
               )}
               {social.instagram && (

@@ -45,6 +45,10 @@ export default function SellerDashboard() {
         )}
 
         {/* Profile quick actions */}
+        <Link to="/seller/edit-profile#whatsapp" data-testid="configure-whatsapp" className="block rounded-xl border border-afri-primary p-3 text-sm font-semibold text-afri-secondary">
+          Configurer mon contact WhatsApp
+          <span className="block mt-1 text-xs font-normal text-gray-600">Autorisez sa publication et vérifiez le numéro pour que les clients puissent vous écrire directement.</span>
+        </Link>
         <div className="flex gap-2">
           <Link to="/seller/edit-profile" className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-xl py-2.5 text-sm font-medium text-afri-secondary shadow-xs">
             <Pencil size={15} /> Modifier le profil
