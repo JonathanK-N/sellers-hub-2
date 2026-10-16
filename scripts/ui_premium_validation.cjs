@@ -139,7 +139,11 @@ const { chromium, firefox, webkit } = require(
               },
               products: [],
             };
-          } else if (url.pathname.endsWith("/fx/rate")) body = { rate: 2800 };
+          } else if (url.pathname.endsWith("/admin/banners/public")) body = [];
+          else if (url.pathname.endsWith("/admin/config/promo-banner/public"))
+            body = { visible: false };
+          else if (url.pathname.endsWith("/unread-count")) body = { count: 0 };
+          else if (url.pathname.endsWith("/fx/rate")) body = { rate: 2800 };
           else if (url.pathname.endsWith("/countries"))
             body = [{ code: "CD", dial_code: "+243", name: "RD Congo" }];
           else if (url.pathname.endsWith("/auth/me")) {
