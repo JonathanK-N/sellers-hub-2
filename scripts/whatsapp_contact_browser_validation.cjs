@@ -19,6 +19,7 @@ const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/.c
   const browser = await chromium.launch({headless:true, ...(process.platform === 'win32' ? {executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'} : {})});
   const rows = [], writes = [], errors = [];
   let contact = null;
+  let authRole = 'seller';
   const legacy = 'https://wa.me/243810000001?text=commande123456';
   const seller = () => ({id:'WA_SHOP', user_id:'WA_SELLER', shop_name:'Boutique de test', country_code:'CD', currency:'FC', category:'Général', social_links:{whatsapp_business:legacy}, whatsapp_contact:contact});
   const publicContact = () => contact?.verified && contact?.visible ? contact : null;
@@ -31,7 +32,7 @@ const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/.c
       let body = {}, status = 200;
       if (method === 'OPTIONS') return route.fulfill({status:204});
       if (method !== 'GET') writes.push({method, path:url.pathname});
-      if (url.pathname === '/api/auth/me') body = {id:'WA_SELLER', name:'Synthetic seller', role:'seller', phone:'+243810000001', phone_verified:false, country_code:'CD', currency:'FC'};
+      if (url.pathname === '/api/auth/me') body = {id:authRole === 'seller' ? 'WA_SELLER' : 'WA_BUYER', name:'Synthetic account', role:authRole, phone:'+243810000001', phone_verified:false, country_code:'CD', currency:'FC'};
       else if (url.pathname === '/api/seller/me') body = seller();
       else if (url.pathname === '/api/seller/dashboard') body = {shop:seller(), revenue:0, orders_total:0, orders_pending:0, products_active:1, rating:0, recent_orders:[]};
       else if (url.pathname === '/api/premium/plan') body = {active:false};
@@ -45,6 +46,7 @@ const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/.c
         else { contact.verified = true; body = {verified:true}; }
       } else if (url.pathname === '/api/seller/public/WA_SHOP') body = {seller:{...seller(), whatsapp_contact:publicContact()}, products:[product()], reviews:[]};
       else if (url.pathname === '/api/products/WA_PRODUCT') body = product();
+      else if (url.pathname === '/api/products/WA_PRODUCT/reviews') body = [];
       else if (url.pathname === '/api/products' || url.pathname === '/api/admin/banners/public') body = [];
       else if (url.pathname.endsWith('/unread-count')) body = {count:0};
       else if (url.pathname === '/api/fx/rate') body = {rate:2800};
@@ -80,6 +82,10 @@ const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/.c
     await page.getByRole('button',{name:'Valider le numéro',exact:true}).click();
     await page.getByTestId('whatsapp-seller-btn').waitFor();
     check('Verified opted-in contact exposes the new phone in preview', new URL(await page.getByTestId('whatsapp-seller-btn').getAttribute('href')).pathname === '/243810000002');
+    authRole = 'buyer';
+    await page.goto(origin + '/shop/WA_SHOP');
+    await page.getByTestId('whatsapp-seller-btn').waitFor();
+    check('Authenticated buyer can choose WhatsApp or internal messaging', await page.getByTestId('contact-seller-btn').textContent() === ' Écrire dans AfriMarket' && new URL(await page.getByTestId('whatsapp-seller-btn').getAttribute('href')).pathname === '/243810000002');
     await page.goto(origin + '/explore/shop/WA_SHOP');
     await page.getByTestId('whatsapp-seller-btn').waitFor();
     const link = new URL(await page.getByTestId('whatsapp-seller-btn').getAttribute('href'));
