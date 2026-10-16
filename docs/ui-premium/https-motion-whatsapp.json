@@ -1,0 +1,23 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Actual HTTPS app; GET only. Consent-disabled response modified only inside test browser; no seller data changed; no WhatsApp navigation.",
+  "rows": [
+    {
+      "test": "Reduced-motion preference honored without smooth scrolling or running animations",
+      "status": "PASS",
+      "detail": {
+        "requested": true,
+        "scrollBehavior": "auto",
+        "animations": 0
+      }
+    },
+    {
+      "test": "Actual consent-enabled product offers WhatsApp link without sending",
+      "status": "PASS"
+    },
+    {
+      "test": "WhatsApp hidden when consent and verification disabled in browser-only response",
+      "status": "PASS"
+    }
+  ]
+}

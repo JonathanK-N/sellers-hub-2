@@ -1,0 +1,15 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Real HTTPS existing test buyer, browser-local cart only, no checkout or mutation",
+  "rows": [
+    {
+      "test": "Authenticated cart add",
+      "status": "BLOCKED",
+      "reason": "Product action unavailable"
+    },
+    {
+      "test": "Invalid session removed and admin route denied",
+      "status": "PASS"
+    }
+  ]
+}

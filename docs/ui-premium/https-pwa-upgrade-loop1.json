@@ -1,0 +1,14 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Actual HTTPS origin; old worker served only through local browser interception; new worker bytes fetched from HTTPS; no hosting changes",
+  "rows": [
+    {
+      "test": "v13 installed on actual HTTPS origin via local browser interception",
+      "status": "PASS"
+    },
+    {
+      "test": "HTTPS-delivered v14 replaces v13 and retains unrelated cache",
+      "status": "FAIL"
+    }
+  ]
+}

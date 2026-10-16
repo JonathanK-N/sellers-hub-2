@@ -400,6 +400,30 @@ const { chromium, firefox, webkit } = require(
             test: "Expired private session cleared before private API access",
             status: "PASS",
           });
+          let releasePrivateClient;
+          const privateClientGate = new Promise(resolve => { releasePrivateClient = resolve; });
+          let privateClientRequested = false;
+          await context.route("**/assets/api-*.js", async route => {
+            privateClientRequested = true;
+            await privateClientGate;
+            await route.continue();
+          });
+          await context.route("**/api/auth/me", route => route.fulfill({
+            status: 200, contentType: "application/json",
+            body: JSON.stringify({id: "UI_VERIFIED", role: "buyer", name: "Verified buyer fixture", country_code: "CD", currency: "FC"}),
+          }));
+          await page.evaluate(() => {
+            localStorage.setItem("afri_token", "valid-ui-fixture");
+            localStorage.setItem("afri_user", JSON.stringify({id: "UI_VERIFIED", role: "buyer", name: "Pending fixture"}));
+          });
+          try {
+            await page.goto(origin + "/buyer/home", {waitUntil: "domcontentloaded"});
+            await page.waitForFunction(() => JSON.parse(localStorage.getItem("afri_user") || "{}").name === "Verified buyer fixture", undefined, {timeout: 10000});
+            assert.equal(privateClientRequested, true);
+            rows.push({test: "Session verified while private Axios chunk remains blocked", status: "PASS"});
+          } finally {
+            releasePrivateClient();
+          }
         }
         assert.ok(requests.every((r) => r.method === "GET"));
         await context.close();

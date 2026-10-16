@@ -1,7 +1,7 @@
 name: AfriMarket release validation
 on:
   pull_request:
-    branches: [main, ui-ux, fix/restore-original-green-theme, stabilization/afrimarket-phase-2, codex/afrimarket-rc3-validation]
+    branches: [main, ui-ux, fix/restore-original-green-theme, stabilization/afrimarket-phase-2, codex/afrimarket-rc3-validation, feature/afrimarket-ui-dynamic-premium]
   workflow_dispatch:
 permissions:
   contents: read
@@ -422,6 +422,8 @@ jobs:
         run: |
           npm install --prefix "$RUNNER_TEMP/ui-tools" playwright@1.60.0 lighthouse@13.5.0
           "$RUNNER_TEMP/ui-tools/node_modules/.bin/playwright" install --with-deps chromium firefox webkit
+      - name: Validate native session transport without network access
+        run: node scripts/test_session_transport.cjs
       - name: Validate responsive and business UI states without database writes
         run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/ui_premium_validation.cjs frontend/build ui-preview-evidence
       - name: Build read-only API preview configuration

@@ -1,0 +1,18 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "webSource": "4e28a3dbbc02c75747b2fa1d93b1c94c99840e1b",
+  "ciRun": 38831072948,
+  "toolSource": "fa148041668973dfb9e4862213bfcdbd9a20380f",
+  "artifact": {
+    "id": 12016764731,
+    "name": "staging-https-summary-38831072948",
+    "digest": "sha256:b3b7d1be7db1b8262c690f36edc9599e6f3e7b83d700602d806dd510877ceffc",
+    "verified": true
+  },
+  "temporaryGithubSessions": "Three secrets removed after measurements",
+  "webBundle": {
+    "path": "/assets/index-C91aEWm7.js",
+    "sha256": "b385ef5261630b8d46e484d49fa3b9f1058a873eb399bb14b378b466b88e4bd9"
+  },
+  "backendRevision": "2806d719bf0edbdc31ebd32ab0887e1fb4dc40cb"
+}

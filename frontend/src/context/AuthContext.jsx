@@ -6,6 +6,8 @@ import {
   useCallback,
 } from "react";
 
+import { verifySession } from "../lib/session_api";
+
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
@@ -34,8 +36,7 @@ export function AuthProvider({ children }) {
       return;
     }
     try {
-      const { default: api } = await import("../lib/api");
-      const { data } = await api.get("/auth/me");
+      const data = await verifySession(token);
       setUser(data);
       localStorage.setItem("afri_user", JSON.stringify(data));
     } catch (error) {

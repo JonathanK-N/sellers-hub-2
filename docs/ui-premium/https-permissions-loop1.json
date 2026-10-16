@@ -1,0 +1,45 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "scope": "Actual staging HTTPS GET only; HTTP404 is untested endpoint, not permission PASS",
+  "rows": [
+    {
+      "test": "Buyer GET /admin/overview",
+      "http": 403,
+      "noSecretFields": true
+    },
+    {
+      "test": "Buyer GET /seller/me",
+      "http": 403,
+      "noSecretFields": true
+    },
+    {
+      "test": "Buyer GET /orders",
+      "http": 405,
+      "noSecretFields": true
+    },
+    {
+      "test": "Buyer GET /messages/conversations",
+      "http": 200,
+      "noSecretFields": true
+    },
+    {
+      "test": "Buyer GET /auth/me",
+      "http": 200,
+      "noSecretFields": true
+    },
+    {
+      "test": "Buyer GET /payments/features",
+      "http": 404,
+      "noSecretFields": true
+    },
+    {
+      "test": "Anonymous orders denied",
+      "status": "FAIL",
+      "http": 405
+    },
+    {
+      "test": "Buyer cannot display admin route",
+      "status": "PASS"
+    }
+  ]
+}

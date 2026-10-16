@@ -1,0 +1,108 @@
+{
+  "project": {
+    "id": "bc40e22f-b963-46fa-a64e-240f3aa954cd",
+    "name": "AFRIMARKET-STAGING-20261010",
+    "workspaceName": "Jonathan Kakesa's Projects"
+  },
+  "environment": {
+    "id": "0fea37a0-e334-4963-952e-d99ca7523ffd",
+    "name": "staging",
+    "isEphemeral": false
+  },
+  "staged": null,
+  "region": null,
+  "services": [
+    {
+      "id": "5a36eb00-531d-4aae-be1a-f8c63f241da3",
+      "name": "afrimarket-web-staging",
+      "state": "live",
+      "source": {
+        "image": null,
+        "repo": "JonathanK-N/sellers-hub-2",
+        "branch": "feature/afrimarket-ui-dynamic-premium"
+      },
+      "regions": [
+        "us-west2"
+      ],
+      "numReplicas": 1,
+      "cronSchedule": null,
+      "volumeMounts": [],
+      "latestDeployment": {
+        "id": "ca57bfd3-da83-46f9-b84a-46d1b4cf8577",
+        "status": "SUCCESS",
+        "createdAt": "2026-10-16T00:02:37.993Z",
+        "url": null
+      },
+      "stagedChangeCount": 0
+    },
+    {
+      "id": "80a726a8-1cd5-4387-9e5d-8cd6c9671d9e",
+      "name": "afrimarket-mongo-staging",
+      "state": "live",
+      "source": {
+        "image": null,
+        "repo": "JonathanK-N/sellers-hub-2",
+        "branch": "release/afrimarket-production-launch"
+      },
+      "regions": [
+        "us-west2"
+      ],
+      "numReplicas": 1,
+      "cronSchedule": null,
+      "volumeMounts": [
+        {
+          "volumeId": "b0f66ec2-2328-4b12-aecb-47847c6d5733",
+          "volumeName": "afrimarket-mongo-staging-data",
+          "mountPath": "/data/db"
+        }
+      ],
+      "latestDeployment": {
+        "id": "a72b1bb3-5a19-4049-b1fe-e1067ae6cd3f",
+        "status": "SUCCESS",
+        "createdAt": "2026-10-12T16:45:18.438Z",
+        "url": null
+      },
+      "stagedChangeCount": 0
+    },
+    {
+      "id": "3a11fecf-70e7-4ba3-8744-d0156b9f7e6c",
+      "name": "afrimarket-api-staging",
+      "state": "live",
+      "source": {
+        "image": null,
+        "repo": "JonathanK-N/sellers-hub-2",
+        "branch": "codex/afrimarket-rc3-validation"
+      },
+      "regions": [
+        "us-west2"
+      ],
+      "numReplicas": 1,
+      "cronSchedule": null,
+      "volumeMounts": [],
+      "latestDeployment": {
+        "id": "1a774143-96db-4cb8-a0be-19116988a51f",
+        "status": "SUCCESS",
+        "createdAt": "2026-10-12T23:37:24.133Z",
+        "url": null
+      },
+      "stagedChangeCount": 0
+    }
+  ],
+  "volumes": [
+    {
+      "id": "b0f66ec2-2328-4b12-aecb-47847c6d5733",
+      "name": "afrimarket-mongo-staging-data",
+      "state": "live",
+      "region": "us-west2",
+      "sizeMB": 1024,
+      "mountedOn": {
+        "serviceId": "80a726a8-1cd5-4387-9e5d-8cd6c9671d9e",
+        "serviceName": "afrimarket-mongo-staging",
+        "mountPath": "/data/db"
+      },
+      "stagedChangeCount": 0
+    }
+  ],
+  "buckets": [],
+  "sharedVariableNames": []
+}
