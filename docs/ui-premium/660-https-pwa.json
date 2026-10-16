@@ -1,0 +1,14 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "webRevision": "6606024e027ed163e697100ed83b8ff3475785ac",
+  "scope": "Old v13 worker intercepted only in test browser on actual HTTPS; v14 bytes from staging; zero server mutations",
+  "oldCache": "afrimarket-green-direct-rc4-v13",
+  "keys": [
+    "unrelated-validation-cache",
+    "afrimarket-green-ui-dynamic-v14"
+  ],
+  "apiEntries": [],
+  "oldCacheRemoved": true,
+  "unrelatedCachePreserved": true,
+  "offlineApiHttp": 503
+}

@@ -1,0 +1,80 @@
+{
+  "author": "Jonathan Kakesa (JonathanK-N)",
+  "webRevision": "6606024e027ed163e697100ed83b8ff3475785ac",
+  "backendRevision": "2806d719bf0edbdc31ebd32ab0887e1fb4dc40cb",
+  "databaseWrites": 0,
+  "checks": [
+    {
+      "role": "anonymous",
+      "path": "/orders/my",
+      "http": 401,
+      "expected": 401,
+      "secretFieldsExposed": false,
+      "status": "PASS"
+    },
+    {
+      "role": "buyer",
+      "path": "/orders/my",
+      "http": 200,
+      "expected": 200,
+      "secretFieldsExposed": false,
+      "status": "PASS"
+    },
+    {
+      "role": "buyer",
+      "path": "/admin/overview",
+      "http": 403,
+      "expected": 403,
+      "secretFieldsExposed": false,
+      "status": "PASS"
+    },
+    {
+      "role": "buyer",
+      "path": "/seller/me",
+      "http": 403,
+      "expected": 403,
+      "secretFieldsExposed": false,
+      "status": "PASS"
+    },
+    {
+      "role": "buyer",
+      "path": "/messages/conversations",
+      "http": 200,
+      "expected": 200,
+      "secretFieldsExposed": false,
+      "status": "PASS"
+    },
+    {
+      "role": "seller",
+      "path": "/seller/me",
+      "http": 200,
+      "expected": 200,
+      "secretFieldsExposed": false,
+      "status": "PASS"
+    },
+    {
+      "role": "admin",
+      "path": "/admin/overview",
+      "http": 200,
+      "expected": 200,
+      "secretFieldsExposed": false,
+      "status": "PASS"
+    },
+    {
+      "role": "anonymous",
+      "path": "/commerce/features",
+      "http": 200,
+      "expected": 200,
+      "secretFieldsExposed": false,
+      "status": "PASS"
+    },
+    {
+      "role": "anonymous",
+      "path": "/products",
+      "http": 200,
+      "expected": 200,
+      "secretFieldsExposed": false,
+      "status": "PASS"
+    }
+  ]
+}
