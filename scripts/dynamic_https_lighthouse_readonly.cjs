@@ -27,9 +27,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/Djibril/.cache
   if(pageFilter&&pageFilter!=='accueil')throw Error('Unsupported diagnostic filter');
   const sourceHtml=await(await fetch(origin)).text();
   const mainPath=sourceHtml.match(/src="(\/assets\/index-[^"]+\.js)"/)[1];
-  if(mainPath!=="/assets/index-DAc0oo52.js")throw Error('Unexpected Web bundle');
+  if(mainPath!=="/assets/index-D1sBFCvN.js")throw Error('Unexpected Web bundle');
   const bundleHash=require('node:crypto').createHash('sha256').update(Buffer.from(await(await fetch(origin+mainPath)).arrayBuffer())).digest('hex');
-  if(bundleHash!=="f45aaa1d7ca8981ae27fa2d6e50ba500262e1c1ab833f4fe5d867eb7e38368e5")throw Error('Web bundle changed');
+  if(bundleHash!=="2e2dcaaaa36345cb2250d9e2b35cdea78e90da2e1cd4245393112ade4927d4d1")throw Error('Web bundle changed');
   const rows=[];
   const blocked=[];
   for(const target of pages){ console.log('Audit start '+target.name);
@@ -96,7 +96,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/Djibril/.cache
       console.log(JSON.stringify({page:target.name,status:passed?'PASS':'FAIL',metrics}));
     }catch{rows.push({page:target.name,route:target.route,status:'FAIL',diagnostic:'Measurement unavailable; protected details withheld'});process.exitCode=1;}
     finally{if(browser)await browser.close().catch(()=>{});if(chrome){try{await chrome.kill();}catch{}}}
-    fs.writeFileSync(summaryOutput,JSON.stringify({author:'Jonathan Kakesa (JonathanK-N)',sourceSha:expectedSha,webSourceSha:'584f0c463ee53e65be790526cb38819eb8d6dd83',blockedMutations:blocked,partialDiagnostic:Boolean(pageFilter),scope:'Actual Railway staging HTTPS, Lighthouse 13.5 default mobile simulated throttling; fresh isolated browser per page, authentication initialized on robots.txt without warming application resources; raw authenticated reports private outside Git',rows},null,2));
+    fs.writeFileSync(summaryOutput,JSON.stringify({author:'Jonathan Kakesa (JonathanK-N)',sourceSha:expectedSha,webSourceSha:'6606024e027ed163e697100ed83b8ff3475785ac',blockedMutations:blocked,partialDiagnostic:Boolean(pageFilter),scope:'Actual Railway staging HTTPS, Lighthouse 13.5 default mobile simulated throttling; fresh isolated browser per page, authentication initialized on robots.txt without warming application resources; raw authenticated reports private outside Git',rows},null,2));
   }
   if(rows.some(r=>r.status!=='PASS'))process.exitCode=1;
 })().catch(()=>{console.error('Staging performance runner failed; details withheld');process.exitCode=1;});

@@ -11,6 +11,7 @@ const pages = {
   "/messages": "src/pages/Messages.jsx",
   "/seller/dashboard": "src/pages/seller/Dashboard.jsx",
   "/admin/overview": "src/pages/admin/Overview.jsx",
+  "/": "src/pages/Landing.jsx",
 };
 function evaluate(html, pathname) {
   const code = html.match(/<script data-afrimarket-route-hints>([\s\S]*?)<\/script>/)?.[1];
@@ -39,9 +40,9 @@ function evaluate(html, pathname) {
   assert.equal(selected[0].rel, "preconnect");
   assert.equal(selected[0].href, "https://service.invalid");
   assert.deepEqual(selected.filter(link => link.rel === "modulepreload").map(link => link.href), ["/assets/page-0.js", "/assets/shared.js", "/assets/index.js"]);
-  assert.equal(evaluate(html, "/").filter(link => link.rel === "modulepreload").length, 0);
-  assert.equal(evaluate(routeResourceHints(bundle, ""), "/").length, 0);
-  assert.equal(evaluate(routeResourceHints(bundle, "javascript:invalid"), "/").length, 0);
+  assert.deepEqual(evaluate(html, "/").filter(link => link.rel === "modulepreload").map(link => link.href), ["/assets/page-6.js", "/assets/shared.js", "/assets/index.js"]);
+  assert.equal(evaluate(routeResourceHints(bundle, ""), "/unknown").length, 0);
+  assert.equal(evaluate(routeResourceHints(bundle, "javascript:invalid"), "/unknown").length, 0);
   assert.equal(routeResourceHints(null, ""), "");
   assert.throws(() => routeResourceHints({}, ""), /entry missing/);
   if (process.argv[2]) {
@@ -56,7 +57,11 @@ function evaluate(html, pathname) {
         assert.ok(fs.statSync(target).isFile());
       }
     }
-    assert.equal(evaluate(builtHtml, "/").filter(link => link.rel === "modulepreload").length, 0);
+    const homeFiles = evaluate(builtHtml, "/").filter(link => link.rel === "modulepreload").map(link => link.href);
+    assert.ok(homeFiles.some(file => /Landing-/.test(file)));
+    assert.ok(!homeFiles.some(file => /(?:Cart|Dashboard|Overview|Messages)-/.test(file)), "Public hints must not include private screens");
+    const cartFiles = evaluate(builtHtml, "/buyer/cart").filter(link => link.rel === "modulepreload").map(link => link.href);
+    assert.ok(!cartFiles.some(file => /Landing-/.test(file)), "Private routes must not load the public marketplace");
   }
-  console.log("PASS: requested route graph only, dependencies deduplicated, no API/session access, public homepage unchanged, compiled targets exist");
+  console.log("PASS: requested route graph only, dependencies deduplicated, no API/session access, public/private screen code isolated, compiled targets exist");
 })().catch(error => { console.error(error.stack); process.exitCode = 1; });
