@@ -139,7 +139,11 @@ const { chromium, firefox, webkit } = require(
               },
               products: [],
             };
-          } else if (url.pathname.endsWith("/fx/rate")) body = { rate: 2800 };
+          } else if (url.pathname.endsWith("/admin/banners/public")) body = [];
+          else if (url.pathname.endsWith("/admin/config/promo-banner/public"))
+            body = { visible: false };
+          else if (url.pathname.endsWith("/unread-count")) body = { count: 0 };
+          else if (url.pathname.endsWith("/fx/rate")) body = { rate: 2800 };
           else if (url.pathname.endsWith("/countries"))
             body = [{ code: "CD", dial_code: "+243", name: "RD Congo" }];
           else if (url.pathname.endsWith("/auth/me")) {
@@ -424,6 +428,17 @@ const { chromium, firefox, webkit } = require(
           } finally {
             releasePrivateClient();
           }
+          const selectedCategory = page.getByTestId("category-Électronique");
+          await selectedCategory.waitFor();
+          await selectedCategory.click();
+          assert.ok((await selectedCategory.getAttribute("class")).includes("bg-afri-primary"));
+          await page.evaluate(() => {
+            history.pushState({}, "", "/buyer/home?route-state-check=1");
+            dispatchEvent(new PopStateEvent("popstate"));
+          });
+          await page.waitForTimeout(100);
+          assert.ok((await selectedCategory.getAttribute("class")).includes("bg-afri-primary"));
+          rows.push({test: "Slow preloaded screen preserves category state on router rerender", status: "PASS"});
         }
         assert.ok(requests.every((r) => r.method === "GET"));
         await context.close();

@@ -11,6 +11,7 @@ import SmoothScroll from "./components/SmoothScroll";
 import PageBoundary from "./components/PageBoundary";
 import { CartProvider } from "./context/CartContext";
 
+import { preloadableScreen } from "./lib/preloadable_screen.mjs";
 import Landing from "./pages/Landing";
 const Register = lazy(() => import("./pages/auth/Register"));
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -18,12 +19,12 @@ const VerifyOtp = lazy(() => import("./pages/auth/VerifyOtp"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 
-const BuyerHome = lazy(() => import("./pages/buyer/Home"));
+const BuyerHome = preloadableScreen(() => import("./pages/buyer/Home"));
 const SearchPage = lazy(() => import("./pages/buyer/Search"));
 const ProductDetail = lazy(() => import("./pages/buyer/ProductDetail"));
-const Cart = lazy(() => import("./pages/buyer/Cart"));
+const Cart = preloadableScreen(() => import("./pages/buyer/Cart"));
 const Checkout = lazy(() => import("./pages/buyer/Checkout"));
-const BuyerOrders = lazy(() => import("./pages/buyer/Orders"));
+const BuyerOrders = preloadableScreen(() => import("./pages/buyer/Orders"));
 const OrderDetail = lazy(() => import("./pages/buyer/OrderDetail"));
 const OrderGroup = lazy(() => import("./pages/buyer/OrderGroup"));
 const Profile = lazy(() => import("./pages/buyer/Profile"));
@@ -35,7 +36,7 @@ const AdminDelivererApplications = lazy(() => import("./pages/admin/DelivererApp
 const SellerDelivererApplications = lazy(() => import("./pages/seller/DelivererApplications"));
 
 const SellerSetup = lazy(() => import("./pages/seller/Setup"));
-const SellerDashboard = lazy(() => import("./pages/seller/Dashboard"));
+const SellerDashboard = preloadableScreen(() => import("./pages/seller/Dashboard"));
 const SellerProducts = lazy(() => import("./pages/seller/Products"));
 const SellerAddProduct = lazy(() => import("./pages/seller/AddProduct"));
 const SellerEditProduct = lazy(() => import("./pages/seller/EditProduct"));
@@ -48,7 +49,7 @@ const EditProfile = lazy(() => import("./pages/seller/EditProfile"));
 const BuyerProfile = lazy(() => import("./pages/seller/BuyerProfile"));
 const ShopProfile = lazy(() => import("./pages/buyer/ShopProfile"));
 
-const AdminOverview = lazy(() => import("./pages/admin/Overview"));
+const AdminOverview = preloadableScreen(() => import("./pages/admin/Overview"));
 const AdminUsers = lazy(() => import("./pages/admin/Users"));
 const AdminSellers = lazy(() => import("./pages/admin/Sellers"));
 const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
@@ -61,7 +62,7 @@ const AdminBuyerKyc = lazy(() => import("./pages/admin/BuyerKyc"));
 const AdminProducts = lazy(() => import("./pages/admin/Products"));
 const AdminBanners = lazy(() => import("./pages/admin/Banners"));
 
-const Messages = lazy(() => import("./pages/Messages"));
+const Messages = preloadableScreen(() => import("./pages/Messages"));
 const ChatThread = lazy(() => import("./pages/ChatThread"));
 const OpenDispute = lazy(() => import("./pages/buyer/OpenDispute"));
 const DelivererDashboard = lazy(() => import("./pages/deliverer/Dashboard"));
@@ -70,12 +71,12 @@ const Notifications = lazy(() => import("./pages/Notifications"));
 // Fetch the requested screen in parallel with session verification, without rendering it.
 // Route guards still decide whether the user may see or load private data.
 const initialScreenImports = {
-  "/buyer/home": () => import("./pages/buyer/Home"),
-  "/buyer/cart": () => import("./pages/buyer/Cart"),
-  "/buyer/orders": () => import("./pages/buyer/Orders"),
-  "/messages": () => import("./pages/Messages"),
-  "/seller/dashboard": () => import("./pages/seller/Dashboard"),
-  "/admin/overview": () => import("./pages/admin/Overview"),
+  "/buyer/home": BuyerHome.preload,
+  "/buyer/cart": Cart.preload,
+  "/buyer/orders": BuyerOrders.preload,
+  "/messages": Messages.preload,
+  "/seller/dashboard": SellerDashboard.preload,
+  "/admin/overview": AdminOverview.preload,
 };
 initialScreenImports[window.location.pathname]?.().catch(() => {});
 import { useParams as useQrParams } from "react-router-dom";

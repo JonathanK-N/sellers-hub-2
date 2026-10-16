@@ -1,0 +1,34 @@
+// Author: Jonathan Kakesa (JonathanK-N). No HTTP, accounts or database writes.
+const assert = require("node:assert/strict");
+const path = require("node:path");
+const { createRequire } = require("node:module");
+const { pathToFileURL } = require("node:url");
+const frontend = createRequire(path.join(__dirname, "../frontend/package.json"));
+const { createElement, Suspense, lazy } = frontend("react");
+const { renderToString } = frontend("react-dom/server");
+(async () => {
+  const { preloadableScreen } = await import(pathToFileURL(path.join(__dirname, "../frontend/src/lib/preloadable_screen.mjs")).href);
+  let release;
+  let loads = 0;
+  let renders = 0;
+  const module = { default: props => { renders++; return createElement("p", null, props.label); } };
+  const promise = new Promise(resolve => { release = resolve; });
+  const Screen = preloadableScreen(() => { loads++; return promise; });
+  const render = Component => renderToString(createElement(Suspense, {fallback: "Pending route"}, createElement(Component, {label: "Authorized screen"})));
+  assert.ok(render(Screen).includes("Pending route"));
+  assert.equal(renders, 0);
+  const pending = Screen.preload();
+  release(module);
+  await pending;
+  assert.equal(loads, 1);
+  assert.equal(renders, 0, "Downloading a screen must not execute it");
+  const html = render(Screen);
+  assert.ok(html.includes("Authorized screen"));
+  assert.ok(!html.includes("Pending route"), "A ready module must render without a second Suspense fallback");
+  assert.equal(renders, 1);
+  const previousApproach = lazy(() => Promise.resolve(module));
+  assert.ok(render(previousApproach).includes("Pending route"), "Control reproduces the old cached-import fallback");
+  const broken = preloadableScreen(() => Promise.reject(new Error("Chunk unavailable")));
+  await assert.rejects(broken.preload(), /Chunk unavailable/);
+  console.log("PASS: one module load, zero component executions during preload, ready screen without second fallback, props preserved, import errors visible");
+})().catch(error => { console.error(error.stack); process.exitCode = 1; });
