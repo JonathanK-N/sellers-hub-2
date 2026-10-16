@@ -33,7 +33,7 @@ const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/.c
       if (method !== 'GET') writes.push({method, path:url.pathname});
       if (url.pathname === '/api/auth/me') body = {id:'WA_SELLER', name:'Synthetic seller', role:'seller', phone:'+243810000001', phone_verified:false, country_code:'CD', currency:'FC'};
       else if (url.pathname === '/api/seller/me') body = seller();
-      else if (url.pathname === '/api/seller/dashboard') body = {shop:seller(), revenue:0, orders_total:0, orders_pending:0, products_active:1, rating:0};
+      else if (url.pathname === '/api/seller/dashboard') body = {shop:seller(), revenue:0, orders_total:0, orders_pending:0, products_active:1, rating:0, recent_orders:[]};
       else if (url.pathname === '/api/premium/plan') body = {active:false};
       else if (url.pathname === '/api/seller/whatsapp' && method === 'PUT') {
         const draft = request.postDataJSON();
