@@ -67,6 +67,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/Djibril/.cache
         } catch {return null;}
       };
       const diagnostics={
+        apiResources:(lhr.audits['network-requests']?.details?.items||[]).flatMap(item=>{try{const u=new URL(item.url);if(u.origin!=='https://afrimarket-api-staging-staging.up.railway.app')return [];const allowed=['/api/auth/me','/api/fx/rate','/api/products','/api/seller/dashboard','/api/messages/conversations','/api/orders/my','/api/admin/overview','/api/notifications'];return [{path:allowed.includes(u.pathname)?u.pathname:'/api/[private]',startMs:item.networkRequestTime,endMs:item.networkEndTime,http:item.statusCode}]}catch{return []}}),
+        lcpElementClasses:(lhr.audits['lcp-breakdown-insight']?.details?.items||[]).find(item=>item.type==='node')?.snippet?.match(/class="([^"]*)"/)?.[1]||null,
         benchmarkIndex:lhr.environment?.benchmarkIndex,
         mainThread:(lhr.audits['mainthread-work-breakdown']?.details?.items||[]).map(x=>({group:x.group,durationMs:x.duration})),
         lcpSubparts:(lhr.audits['lcp-breakdown-insight']?.details?.items||[]).filter(x=>x.type==='table').flatMap(x=>x.items.map(y=>({part:y.subpart,durationMs:y.duration}))),
