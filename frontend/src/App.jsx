@@ -80,7 +80,7 @@ const initialScreenImports = {
   "/seller/dashboard": SellerDashboard.preload,
   "/admin/overview": AdminOverview.preload,
 };
-initialScreenImports[window.location.pathname]?.().catch(() => {});
+export const initialScreenReady = initialScreenImports[window.location.pathname]?.().catch(() => {});
 import { useParams as useQrParams } from "react-router-dom";
 
 // Gestion du scan QR Click & Collect.
