@@ -424,6 +424,17 @@ const { chromium, firefox, webkit } = require(
           } finally {
             releasePrivateClient();
           }
+          const selectedCategory = page.getByTestId("category-Électronique");
+          await selectedCategory.waitFor();
+          await selectedCategory.click();
+          assert.ok((await selectedCategory.getAttribute("class")).includes("bg-afri-primary"));
+          await page.evaluate(() => {
+            history.pushState({}, "", "/buyer/home?route-state-check=1");
+            dispatchEvent(new PopStateEvent("popstate"));
+          });
+          await page.waitForTimeout(100);
+          assert.ok((await selectedCategory.getAttribute("class")).includes("bg-afri-primary"));
+          rows.push({test: "Slow preloaded screen preserves category state on router rerender", status: "PASS"});
         }
         assert.ok(requests.every((r) => r.method === "GET"));
         await context.close();

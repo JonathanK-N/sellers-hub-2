@@ -1,5 +1,5 @@
 // Author: Jonathan Kakesa (JonathanK-N). Preload code without mounting private screens.
-import { createElement, lazy } from "react";
+import { createElement, lazy, useRef } from "react";
 
 export function preloadableScreen(load) {
   let loaded;
@@ -15,7 +15,8 @@ export function preloadableScreen(load) {
   };
   const LazyScreen = lazy(preload);
   function Screen(props) {
-    return createElement(loaded || LazyScreen, props);
+    const component = useRef(loaded || LazyScreen).current;
+    return createElement(component, props);
   }
   Screen.preload = preload;
   return Screen;
