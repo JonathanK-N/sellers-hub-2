@@ -316,7 +316,6 @@ export default function EditProfile() {
           {[
             { key: "facebook", icon: <Facebook size={18} className="text-blue-600" />, label: "Page Facebook", placeholder: "https://facebook.com/..." },
             { key: "tiktok", icon: <span className="text-sm font-bold text-gray-800">TK</span>, label: "TikTok", placeholder: "https://tiktok.com/@..." },
-            { key: "whatsapp_business", icon: <Phone size={18} className="text-green-600" />, label: "WhatsApp Business", placeholder: "+243..." },
             { key: "instagram", icon: <Globe size={18} className="text-pink-500" />, label: "Instagram", placeholder: "https://instagram.com/..." },
           ].map(({ key, icon, label, placeholder }) => (
             <div key={key} className="flex items-center gap-3 mb-3">

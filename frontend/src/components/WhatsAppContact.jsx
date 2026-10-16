@@ -1,11 +1,6 @@
 // Author: Jonathan Kakesa (JonathanK-N).
-export function whatsappLink(contact, reference) {
-  if (!contact?.verified || !contact?.visible || !/^\+[1-9][0-9]{8,14}$/.test(contact.phone || "")) return null;
-  const message = reference
-    ? "Bonjour, je vous contacte depuis AfriMarket concernant ma commande " + reference + ". Je souhaite convenir avec vous du moyen de paiement et de la livraison."
-    : "Bonjour, je vous contacte depuis AfriMarket pour convenir du moyen de paiement et de la livraison d’un produit.";
-  return "https://wa.me/" + contact.phone.slice(1) + "?text=" + encodeURIComponent(message);
-}
+import { whatsappLink } from "../lib/whatsapp_contact.mjs";
+export { whatsappLink } from "../lib/whatsapp_contact.mjs";
 
 export default function WhatsAppContact({ contact, reference }) {
   const href = whatsappLink(contact, reference);
