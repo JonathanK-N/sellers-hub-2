@@ -1,5 +1,6 @@
 // Author: Jonathan Kakesa (JonathanK-N). Hints fetch code, never private data.
 const screens = {
+  "/": "src/pages/Landing.jsx",
   "/buyer/home": "src/pages/buyer/Home.jsx",
   "/buyer/cart": "src/pages/buyer/Cart.jsx",
   "/buyer/orders": "src/pages/buyer/Orders.jsx",

@@ -12,7 +12,8 @@ import PageBoundary from "./components/PageBoundary";
 import { CartProvider } from "./context/CartContext";
 
 import { preloadableScreen } from "./lib/preloadable_screen.mjs";
-import Landing from "./pages/Landing";
+import "./components/marketplace-premium.css";
+const Landing = preloadableScreen(() => import("./pages/Landing"));
 const Register = lazy(() => import("./pages/auth/Register"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const VerifyOtp = lazy(() => import("./pages/auth/VerifyOtp"));
@@ -71,6 +72,7 @@ const Notifications = lazy(() => import("./pages/Notifications"));
 // Fetch the requested screen in parallel with session verification, without rendering it.
 // Route guards still decide whether the user may see or load private data.
 const initialScreenImports = {
+  "/": Landing.preload,
   "/buyer/home": BuyerHome.preload,
   "/buyer/cart": Cart.preload,
   "/buyer/orders": BuyerOrders.preload,
