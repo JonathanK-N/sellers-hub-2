@@ -1,0 +1,40 @@
+{
+  "readOnly": true,
+  "domain": "afri-market.app",
+  "status": "partially_verified",
+  "capabilities": {
+    "sending": "enabled",
+    "receiving": "enabled"
+  },
+  "records": [
+    {
+      "type": "TXT",
+      "record": "DKIM",
+      "status": "verified"
+    },
+    {
+      "type": "CNAME",
+      "record": "SPF",
+      "status": "verified"
+    },
+    {
+      "type": "CNAME",
+      "record": "SPF",
+      "status": "verified"
+    },
+    {
+      "type": "MX",
+      "record": "Receiving",
+      "status": "pending"
+    }
+  ],
+  "activeKeyCount": 1,
+  "oldKeyRevocationProven": false,
+  "logo": {
+    "status": 200,
+    "type": "text/html; charset=utf-8",
+    "url": "https://afri-market.app/assets/email/afrimarket-official.png",
+    "officialFilePresent": true,
+    "matchesOfficial": false
+  }
+}

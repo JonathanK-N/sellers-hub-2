@@ -29,6 +29,7 @@ from auth import (
     OTP_EXPIRY_MINUTES,
 )
 from sms import send_otp_sms, is_sms_configured
+from communications.events import notify_event
 from s3_service import upload_public
 
 APP_NAME = "afrimarket"
@@ -146,7 +147,7 @@ async def verify_otp(request: Request, req: VerifyOtpRequest):
     await db.users.update_one({"phone": phone}, {"$set": {"phone_verified": True}})
     user["phone_verified"] = True
 
-    token = create_access_token(user["id"], user["role"])
+    token = create_access_token(user["id"], user["role"], user.get("auth_version", 0))
     return {
         "access_token": token,
         "token_type": TOKEN_SCHEME,
@@ -175,7 +176,7 @@ async def login(request: Request, req: LoginRequest):
         await send_otp_sms(phone, code)
         raise HTTPException(status_code=403, detail="VERIFY_REQUIRED")
 
-    token = create_access_token(user["id"], user["role"])
+    token = create_access_token(user["id"], user["role"], user.get("auth_version", 0))
     return {"access_token": token, "token_type": TOKEN_SCHEME, "user": _strip_user(user)}
 
 
@@ -206,7 +207,7 @@ async def admin_login(request: Request, req: AdminLoginRequest):
     if not ok:
         raise HTTPException(status_code=401, detail="Identifiants administrateur invalides")
 
-    token = create_access_token(user["id"], "admin")
+    token = create_access_token(user["id"], "admin", user.get("auth_version", 0))
     return {"access_token": token, "token_type": TOKEN_SCHEME, "user": _strip_user(user)}
 
 
@@ -230,9 +231,12 @@ async def reset_password(req: SetPasswordRequest):
     user = await db.users.find_one({"phone": phone})
     if not user:
         raise HTTPException(status_code=404, detail="Utilisateur introuvable")
-    await db.users.update_one({"phone": phone}, {"$set": {"password_hash": hash_password(req.new_password), "phone_verified": True}})
+    await db.users.update_one({"phone": phone}, {"$set": {"password_hash": hash_password(req.new_password), "phone_verified": True}, "$inc": {"auth_version": 1}})
+    user["auth_version"] = user.get("auth_version", 0) + 1
     await db.otp_codes.delete_one({"phone": phone})
-    token = create_access_token(user["id"], user["role"])
+    await notify_event(db, "password_changed", user["id"] + "/phone/" + str(user["auth_version"]),
+                       user["id"], path="/auth/login")
+    token = create_access_token(user["id"], user["role"], user.get("auth_version", 0))
     return {"access_token": token, "token_type": TOKEN_SCHEME, "user": _strip_user({**user, "phone_verified": True})}
 
 

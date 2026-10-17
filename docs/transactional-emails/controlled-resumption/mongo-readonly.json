@@ -1,0 +1,20 @@
+{
+  "read_only": true,
+  "document_values_disclosed": false,
+  "replica_set": false,
+  "mongos": false,
+  "transactions_supported": false,
+  "deliverer_profiles": 3,
+  "affiliations": [
+    {
+      "affiliation": "missing",
+      "active": true,
+      "count": 3
+    }
+  ],
+  "dangling_shop_profiles": 0,
+  "duplicate_user_profiles": 0,
+  "deliverer_accounts_without_profile": 0,
+  "email_outbox_count": 0,
+  "email_tokens_count": 0
+}

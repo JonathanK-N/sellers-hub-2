@@ -22,3 +22,5 @@ pytest==9.0.3
 pillow==12.3.0
 google-auth==2.53.0
 pyasn1==0.6.4
+Jinja2==3.1.6
+cryptography==50.0.2

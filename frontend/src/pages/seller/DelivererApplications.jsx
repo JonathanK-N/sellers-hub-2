@@ -73,6 +73,7 @@ export default function SellerDelivererApplications() {
           </Link>
         )}
         <h1 className="font-display font-black text-lg">Candidatures livreurs</h1>
+<Link className="my-3 block text-emerald-700 underline" to="/seller/email-invitations">Inviter un livreur par e-mail</Link>
       </header>
 
       <div className="px-4 mt-4">

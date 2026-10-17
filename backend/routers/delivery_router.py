@@ -12,6 +12,8 @@ from db import get_db
 from financial_transactions import atomic_operation
 from auth import require_role, get_current_user_dep
 from notifications import create_notification
+from communications.affiliation import can_assign
+from communications.business import best_effort_order
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["delivery"])
@@ -46,7 +48,7 @@ async def available_deliverers(user: dict = Depends(require_role("seller"))):
         {"_id": 0, "id": 1, "name": 1, "phone": 1},
     ):
         prof = await db.deliverers.find_one({"user_id": u["id"]}, {"_id": 0}) or {}
-        if prof.get("is_active", True):
+        if can_assign(prof, seller.get("id") if seller else None):
             u["vehicle"] = prof.get("vehicle", "moto")
             u["active_deliveries"] = await db.orders.count_documents(
                 {"deliverer_id": u["id"], "status": {"$in": ["assigned", "picked_up", "out_for_delivery"]}}
@@ -77,6 +79,10 @@ async def assign_deliverer(order_id: str, req: AssignRequest, user: dict = Depen
         raise HTTPException(409, "Paiement direct non déclaré reçu ou commande en litige")
     if deliverer.get("banned") or deliverer.get("suspended") or deliverer.get("country_code") != o.get("country_code"):
         raise HTTPException(409, "Livreur indisponible pour cette commande")
+
+    profile = await db.deliverers.find_one({"user_id": req.deliverer_id})
+    if not can_assign(profile, o["seller_id"]):
+        raise HTTPException(409, "Affiliation livreur incompatible avec cette boutique")
 
     event = _timeline_event("assigned", f"Livreur assigné : {deliverer['name']}")
     assignment_filter = {"id": order_id, "status": o["status"], "dispute_status": {"$ne": "open"}}
@@ -173,6 +179,7 @@ async def mark_picked_up(order_id: str, user: dict = Depends(require_role("deliv
     result = await db.orders.update_one({"id": order_id, "status": o["status"], "dispute_status": {"$ne": "open"}}, {"$set": {"status": "picked_up"}, "$push": {"timeline": event}})
     if result.modified_count != 1:
         raise HTTPException(409, "Commande déjà modifiée")
+    await best_effort_order(db, order_id)
     return {"ok": True, "status": "picked_up"}
 
 

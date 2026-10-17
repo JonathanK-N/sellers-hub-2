@@ -1,0 +1,734 @@
+{
+  "synthetic": true,
+  "logoServedFromLocalFixture": true,
+  "checks": [
+    {
+      "name": "welcome",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "verify_email",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "password_reset",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "deliverer_invitation",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_confirmed",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_cancelled",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "payment_confirmed",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_assigned",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_collected",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_in_transit",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_completed",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "refund_completed",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "password_changed",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "suspicious_login",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "invitation_accepted",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "invitation_expired_or_cancelled",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "application_received",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "application_approved_or_rejected",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "seller_new_order",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_preparing",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "cancellation_requested",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_failed",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "payment_failed",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "refund_initiated",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "dispute_opened",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "dispute_resolved",
+      "width": 320,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "welcome",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "verify_email",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "password_reset",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "deliverer_invitation",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_confirmed",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_cancelled",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "payment_confirmed",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_assigned",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_collected",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_in_transit",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_completed",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "refund_completed",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "password_changed",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "suspicious_login",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "invitation_accepted",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "invitation_expired_or_cancelled",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "application_received",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "application_approved_or_rejected",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "seller_new_order",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_preparing",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "cancellation_requested",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_failed",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "payment_failed",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "refund_initiated",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "dispute_opened",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "dispute_resolved",
+      "width": 390,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "welcome",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "verify_email",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "password_reset",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "deliverer_invitation",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_confirmed",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_cancelled",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "payment_confirmed",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_assigned",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_collected",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_in_transit",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_completed",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "refund_completed",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "password_changed",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "suspicious_login",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "invitation_accepted",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "invitation_expired_or_cancelled",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "application_received",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "application_approved_or_rejected",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "seller_new_order",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_preparing",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "cancellation_requested",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_failed",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "payment_failed",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "refund_initiated",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "dispute_opened",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "dispute_resolved",
+      "width": 768,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "welcome",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "verify_email",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "password_reset",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "deliverer_invitation",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_confirmed",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_cancelled",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "payment_confirmed",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_assigned",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_collected",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_in_transit",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_completed",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "refund_completed",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "password_changed",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "suspicious_login",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "invitation_accepted",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "invitation_expired_or_cancelled",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "application_received",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "application_approved_or_rejected",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "seller_new_order",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "order_preparing",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "cancellation_requested",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "delivery_failed",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "payment_failed",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "refund_initiated",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "dispute_opened",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    },
+    {
+      "name": "dispute_resolved",
+      "width": 1200,
+      "overflow": false,
+      "logoLoaded": true,
+      "cta": true
+    }
+  ]
+}

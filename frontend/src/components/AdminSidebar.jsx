@@ -3,11 +3,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Users, Store, Package, ShoppingBag,
   ShieldCheck, UserCheck, AlertTriangle, ShieldAlert, Globe2,
-  Bike, Truck, LogOut, Menu, X, Image,
+  Bike, Truck, LogOut, Menu, X, Image, Mail,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const items = [
+  { to: "/admin/email-templates", icon: Mail, label: "Modèles d’e-mails", testid: "admin-nav-email-templates" },
   { to: "/admin/overview",               icon: LayoutDashboard, label: "Vue d'ensemble",       testid: "admin-nav-overview" },
   { to: "/admin/users",                  icon: Users,           label: "Utilisateurs",          testid: "admin-nav-users" },
   { to: "/admin/sellers",                icon: Store,           label: "Vendeurs & Boutiques",  testid: "admin-nav-sellers" },

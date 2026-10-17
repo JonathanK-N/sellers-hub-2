@@ -6,6 +6,7 @@ from auth import get_current_user_dep
 from db import get_db
 from financial_transactions import atomic_operation
 from notifications import create_notification
+from communications.business import best_effort_order
 from commerce_mode import integrated_payments_enabled, legacy_financial_actions_enabled
 from direct_orders import open_direct_dispute
 
@@ -95,4 +96,5 @@ async def cancel_direct(order_id: str, user: dict = Depends(get_current_user_dep
         raise HTTPException(409, "Commande déjà modifiée")
     for item in order["items"]:
         await db.products.update_one({"id": item["product_id"]}, {"$inc": {"stock": item["quantity"]}})
+    await best_effort_order(db, order_id)
     return {"ok": True, "status": "cancelled", "automatic_refund": False}

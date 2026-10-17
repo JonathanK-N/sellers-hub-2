@@ -1,0 +1,35 @@
+{
+  "mockedApi": true,
+  "serviceWorkerBlockedForApiMocking": true,
+  "realMessagesSent": 0,
+  "checks": [
+    {
+      "check": "fragment removed from URL",
+      "pass": true
+    },
+    {
+      "check": "token sent in POST body only",
+      "pass": true
+    },
+    {
+      "check": "password reset request form",
+      "pass": true
+    },
+    {
+      "check": "authenticated email settings",
+      "pass": true
+    },
+    {
+      "check": "buyer cannot open admin previews",
+      "pass": true
+    },
+    {
+      "check": "seller invitation form",
+      "pass": true
+    },
+    {
+      "check": "admin preview catalog available",
+      "pass": true
+    }
+  ]
+}

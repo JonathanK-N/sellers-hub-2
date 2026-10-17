@@ -49,6 +49,16 @@ async def create_notification(user_id: str, ntype: str, title: str, body: str, d
     }
     await db.notifications.insert_one(notif)
 
+    from communications.business import from_notification
+    from financial_transactions import active_database
+    if active_database.get() is not None:
+        await from_notification(db, user_id, ntype, title, data or {})
+    else:
+        try:
+            await from_notification(db, user_id, ntype, title, data or {})
+        except Exception:
+            logger.warning("Transactional notification email unavailable")
+
     # Financial callbacks may be retried. Persist the notification atomically;
     # external push is left pending for delivery after the commit.
     from financial_transactions import active_database

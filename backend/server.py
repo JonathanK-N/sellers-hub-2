@@ -33,6 +33,8 @@ from routers.buyer_kyc_router import router as buyer_kyc_router
 from routers.deliverer_applications_router import router as deliverer_applications_router
 from routers.direct_payments_router import router as direct_payments_router
 from routers.whatsapp_router import router as whatsapp_router
+from communications.router import router as communications_router
+import communications.invitations
 
 logging.basicConfig(
     level=logging.INFO,
@@ -115,6 +117,7 @@ async def fx_rate():
 
 
 api_router.include_router(auth_router)
+api_router.include_router(communications_router)
 api_router.include_router(countries_router)
 api_router.include_router(sellers_router)
 api_router.include_router(products_router)

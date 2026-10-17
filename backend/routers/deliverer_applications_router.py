@@ -24,7 +24,9 @@ from auth import get_current_user_dep, require_role, generate_otp, OTP_EXPIRY_MI
 from models import DelivererApplicationRequest, DelivererApplicationReject
 from s3_service import upload_private, generate_presigned_url
 from notifications import create_notification
-from email_service import deliverer_application_approved_email, deliverer_application_rejected_email, send_email
+from communications.affiliation import compatible
+from financial_transactions import atomic_operation
+from communications.events import notify_event
 from sms import send_otp_sms, is_sms_configured
 from pydantic import BaseModel
 from datetime import timedelta
@@ -245,6 +247,7 @@ async def finalize_submission(application_id: str, user: dict = Depends(get_curr
         {"$set": {"status": "pending", "submitted_at": _now()}},
     )
     updated = await db.deliverer_applications.find_one({"id": application_id}, {"_id": 0})
+    await notify_event(db, "application_received", application_id, user["id"], path="/become-deliverer")
     return updated
 
 
@@ -303,6 +306,8 @@ async def _activate_deliverer(db, application: dict, reviewer_id: str):
         )
 
     existing = await db.deliverers.find_one({"user_id": user_id}, {"_id": 0})
+    if not compatible(existing, affiliation, application.get("seller_id")):
+        raise HTTPException(409, "Affiliation livreur incompatible")
     profile = {
         "user_id": user_id,
         "vehicle": application.get("vehicle", "moto"),
@@ -334,14 +339,12 @@ async def _activate_deliverer(db, application: dict, reviewer_id: str):
     except Exception:
         logger.warning("Best-effort operation failed", exc_info=True)
 
-    applicant = await db.users.find_one({"id": user_id}, {"_id": 0, "email": 1})
-    applicant_email = application.get("email") or (applicant or {}).get("email")
-    if applicant_email:
-        subject, html = deliverer_application_approved_email(application.get("full_name", "Livreur"))
-        await send_email(applicant_email, subject, html)
+    await notify_event(db, "application_approved_or_rejected", application["id"] + "/approved", user_id,
+        {"message": "Votre candidature a été approuvée."}, path="/livreur")
 
 
 @router.post("/admin/deliverer-applications/{application_id}/approve")
+@atomic_operation
 async def admin_approve_application(application_id: str, user: dict = Depends(require_role("admin"))):
     db = get_db()
     app_doc = await db.deliverer_applications.find_one(
@@ -357,6 +360,7 @@ async def admin_approve_application(application_id: str, user: dict = Depends(re
 
 
 @router.post("/admin/deliverer-applications/{application_id}/reject")
+@atomic_operation
 async def admin_reject_application(application_id: str, req: DelivererApplicationReject, user: dict = Depends(require_role("admin"))):
     db = get_db()
     app_doc = await db.deliverer_applications.find_one(
@@ -364,6 +368,9 @@ async def admin_reject_application(application_id: str, req: DelivererApplicatio
     )
     if not app_doc:
         raise HTTPException(status_code=404, detail="Candidature introuvable")
+
+    if app_doc["status"] != "pending":
+        raise HTTPException(409, "Cette candidature n’est plus en attente")
 
     await db.deliverer_applications.update_one(
         {"id": application_id},
@@ -378,11 +385,8 @@ async def admin_reject_application(application_id: str, req: DelivererApplicatio
     except Exception:
         logger.warning("Best-effort operation failed", exc_info=True)
 
-    applicant = await db.users.find_one({"id": app_doc["user_id"]}, {"_id": 0, "email": 1})
-    applicant_email = app_doc.get("email") or (applicant or {}).get("email")
-    if applicant_email:
-        subject, html = deliverer_application_rejected_email(app_doc.get("full_name", "Candidat"), req.reason)
-        await send_email(applicant_email, subject, html)
+    await notify_event(db, "application_approved_or_rejected", app_doc["id"] + "/rejected", app_doc["user_id"],
+        {"message": "Votre candidature n’a pas été retenue. " + req.reason}, path="/become-deliverer")
     return {"ok": True}
 
 
@@ -426,6 +430,7 @@ async def seller_get_application(application_id: str, user: dict = Depends(requi
 
 
 @router.post("/seller/deliverer-applications/{application_id}/approve")
+@atomic_operation
 async def seller_approve_application(application_id: str, user: dict = Depends(require_role("seller"))):
     db = get_db()
     my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0, "id": 1})
@@ -442,6 +447,7 @@ async def seller_approve_application(application_id: str, user: dict = Depends(r
 
 
 @router.post("/seller/deliverer-applications/{application_id}/reject")
+@atomic_operation
 async def seller_reject_application(application_id: str, req: DelivererApplicationReject, user: dict = Depends(require_role("seller"))):
     db = get_db()
     my_seller = await db.sellers.find_one({"user_id": user["id"]}, {"_id": 0, "id": 1})
@@ -450,6 +456,9 @@ async def seller_reject_application(application_id: str, req: DelivererApplicati
     )
     if not app_doc or not my_seller or app_doc.get("seller_id") != my_seller["id"]:
         raise HTTPException(status_code=404, detail="Candidature introuvable")
+
+    if app_doc["status"] != "pending":
+        raise HTTPException(409, "Cette candidature n’est plus en attente")
 
     await db.deliverer_applications.update_one(
         {"id": application_id},
@@ -464,9 +473,6 @@ async def seller_reject_application(application_id: str, req: DelivererApplicati
     except Exception:
         logger.warning("Best-effort operation failed", exc_info=True)
 
-    applicant = await db.users.find_one({"id": app_doc["user_id"]}, {"_id": 0, "email": 1})
-    applicant_email = app_doc.get("email") or (applicant or {}).get("email")
-    if applicant_email:
-        subject, html = deliverer_application_rejected_email(app_doc.get("full_name", "Candidat"), req.reason)
-        await send_email(applicant_email, subject, html)
+    await notify_event(db, "application_approved_or_rejected", app_doc["id"] + "/rejected", app_doc["user_id"],
+        {"message": "Votre candidature n’a pas été retenue. " + req.reason}, path="/become-deliverer")
     return {"ok": True}

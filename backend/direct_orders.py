@@ -2,6 +2,7 @@
 from datetime import datetime, timezone
 from fastapi import HTTPException
 import uuid
+from communications.business import best_effort_order, dispute_event
 
 
 async def open_direct_dispute(db, order, actor, reason):
@@ -13,6 +14,7 @@ async def open_direct_dispute(db, order, actor, reason):
     if result.modified_count != 1:
         raise HTTPException(409, "Commande déjà modifiée")
     await db.disputes.insert_one(dispute)
+    await dispute_event(db, dispute["id"], "dispute_opened")
     dispute.pop("_id", None)
     return dispute
 
@@ -29,4 +31,5 @@ async def finish_handoff(db, order, actor, status):
     result = await db.orders.update_one({"id": order["id"], "status": order["status"], "payment_method": "direct", "payment_status": "seller_declared_received", "escrow_status": "not_applicable", "revision": order.get("revision", 0)}, {"$set": {"status": status, "delivered_at": now}, "$inc": {"revision": 1}, "$push": {"timeline": event}})
     if result.modified_count != 1:
         raise HTTPException(409, "Commande déjà modifiée")
+    await best_effort_order(db, order["id"])
     return {"ok": True, "status": status, "payment_status": "seller_declared_received", "payment_verified_by_platform": False, "escrow_status": "not_applicable"}

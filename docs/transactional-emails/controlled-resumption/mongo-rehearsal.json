@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "scope": "fresh authenticated loopback synthetic databases only",
+  "conversion_preserves_documents_and_indexes": true,
+  "transaction_commit_and_abort": true,
+  "encrypted_backup_restored_exactly": true,
+  "standalone_rollback_preserves_post_conversion_writes": true,
+  "explicit_synthetic_affiliations_checked": true,
+  "unapproved_affiliation_unchanged_and_assignment_denied": true,
+  "production_read_or_written": false,
+  "existing_directories_used": false
+}

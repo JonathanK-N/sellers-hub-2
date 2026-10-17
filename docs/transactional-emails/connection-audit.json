@@ -1,0 +1,53 @@
+{
+  "observedAt": "2026-10-17T02:34:19.774Z",
+  "readOnly": true,
+  "resendHttpStatus": 200,
+  "domains": [
+    {
+      "name": "cognito-inc.ca",
+      "status": "verified"
+    }
+  ],
+  "approvedDomain": "afri-market.app",
+  "approvedDomainRegistered": false,
+  "variables": {
+    "RESEND_API_KEY": {
+      "present": true
+    },
+    "EMAIL_FROM": {
+      "present": false
+    },
+    "EMAIL_REPLY_TO": {
+      "present": false
+    },
+    "FRONTEND_URL": {
+      "present": false
+    },
+    "EMAIL_LOGO_URL": {
+      "present": false
+    },
+    "EMAIL_OUTBOX_KEY": {
+      "present": false
+    },
+    "RESEND_WEBHOOK_SECRET": {
+      "present": false
+    },
+    "EMAIL_MODE": {
+      "present": false
+    }
+  },
+  "dns": {
+    "resend._domainkey.afri-market.app": {
+      "txtPresent": true
+    },
+    "send.afri-market.app": {
+      "txtPresent": true
+    },
+    "_dmarc.afri-market.app": {
+      "txtPresent": false,
+      "dnsCode": "ENOTFOUND"
+    }
+  },
+  "messagesSent": 0,
+  "productionHealthSha": "34096b1e9eba13681b84e8d1f44d3264571bb6e8"
+}

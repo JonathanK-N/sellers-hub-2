@@ -1,0 +1,6 @@
+{
+  "status": "FAIL",
+  "scope": "synthetic loopback only",
+  "cause": "Uninitialized replica set bootstrap connection requires directConnection=true; corrected local bootstrap",
+  "productionTouched": false
+}

@@ -15,6 +15,7 @@ from stock import aggregate_items, reserve_stock, release_stock
 from models import OrderCreateRequest, ConfirmDeliveryRequest
 from auth import get_current_user_dep, require_role, generate_otp
 from notifications import create_notification
+from communications.business import best_effort_order
 from commerce_mode import legacy_checkout_enabled, integrated_payments_enabled
 from direct_orders import finish_handoff
 from whatsapp_contact import public_contact
@@ -411,6 +412,7 @@ async def advance_order(order_id: str, user: dict = Depends(require_role("seller
     result = await db.orders.update_one(transition_query, transition_update)
     if result.modified_count != 1:
         raise HTTPException(status_code=409, detail="Commande déjà modifiée")
+    await best_effort_order(db, order_id)
     o["status"] = new_status
     o["timeline"].append(event)
     o.pop("confirmation_code", None)

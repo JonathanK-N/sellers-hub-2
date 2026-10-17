@@ -1,0 +1,240 @@
+{
+  "welcome": {
+    "subject": "Bienvenue sur AfriMarket !",
+    "required": [
+      "logo_url",
+      "prenom",
+      "email",
+      "lien_action"
+    ]
+  },
+  "verify_email": {
+    "subject": "Confirmez votre adresse e-mail",
+    "required": [
+      "logo_url",
+      "prenom",
+      "email",
+      "lien_action"
+    ]
+  },
+  "password_reset": {
+    "subject": "Réinitialisez votre mot de passe",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "deliverer_invitation": {
+    "subject": "Vous êtes invité à rejoindre l’équipe",
+    "required": [
+      "logo_url",
+      "prenom",
+      "boutique",
+      "vendeur",
+      "lien_action"
+    ]
+  },
+  "order_confirmed": {
+    "subject": "Votre commande est confirmée",
+    "required": [
+      "logo_url",
+      "prenom",
+      "commande",
+      "boutique",
+      "montant",
+      "lien_action"
+    ]
+  },
+  "order_cancelled": {
+    "subject": "Votre commande a été annulée",
+    "required": [
+      "logo_url",
+      "prenom",
+      "commande",
+      "motif",
+      "statut_remboursement",
+      "lien_action"
+    ]
+  },
+  "payment_confirmed": {
+    "subject": "Votre paiement est confirmé",
+    "required": [
+      "logo_url",
+      "prenom",
+      "commande",
+      "montant",
+      "methode",
+      "reference",
+      "lien_action"
+    ]
+  },
+  "delivery_assigned": {
+    "subject": "Un livreur vous a été assigné",
+    "required": [
+      "logo_url",
+      "prenom",
+      "commande",
+      "livreur",
+      "telephone_livreur",
+      "lien_action"
+    ]
+  },
+  "delivery_collected": {
+    "subject": "Votre colis a été récupéré",
+    "required": [
+      "logo_url",
+      "prenom",
+      "boutique",
+      "commande",
+      "livreur",
+      "lien_action"
+    ]
+  },
+  "delivery_in_transit": {
+    "subject": "Votre commande est en route",
+    "required": [
+      "logo_url",
+      "prenom",
+      "commande",
+      "livreur",
+      "lien_action"
+    ]
+  },
+  "delivery_completed": {
+    "subject": "Votre commande a été livrée",
+    "required": [
+      "logo_url",
+      "prenom",
+      "commande",
+      "boutique",
+      "date_livraison",
+      "lien_action"
+    ]
+  },
+  "refund_completed": {
+    "subject": "Votre remboursement a été effectué",
+    "required": [
+      "logo_url",
+      "prenom",
+      "commande",
+      "montant",
+      "reference",
+      "date_remboursement",
+      "lien_action"
+    ]
+  },
+  "password_changed": {
+    "subject": "Votre mot de passe a été modifié",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "suspicious_login": {
+    "subject": "Connexion inhabituelle",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "invitation_accepted": {
+    "subject": "Invitation acceptée",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "invitation_expired_or_cancelled": {
+    "subject": "Invitation indisponible",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "application_received": {
+    "subject": "Candidature reçue",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "application_approved_or_rejected": {
+    "subject": "Décision sur votre candidature",
+    "required": [
+      "logo_url",
+      "prenom",
+      "message",
+      "lien_action"
+    ]
+  },
+  "seller_new_order": {
+    "subject": "Nouvelle commande",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "order_preparing": {
+    "subject": "Votre commande est en préparation",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "cancellation_requested": {
+    "subject": "Demande d’annulation reçue",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "delivery_failed": {
+    "subject": "Livraison non effectuée",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "payment_failed": {
+    "subject": "Paiement non confirmé",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "refund_initiated": {
+    "subject": "Demande de remboursement en cours",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "dispute_opened": {
+    "subject": "Litige ouvert",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  },
+  "dispute_resolved": {
+    "subject": "Litige clôturé",
+    "required": [
+      "logo_url",
+      "prenom",
+      "lien_action"
+    ]
+  }
+}
