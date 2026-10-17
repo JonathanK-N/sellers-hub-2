@@ -35,7 +35,7 @@ Restaurer une archive seulement dans un volume neuf isolé ; validation avant ba
 
 ## Répétition synthétique
 
-scripts/rehearse_email_mongo_topology.py accepte uniquement des chemins d’outils et un répertoire privé. Il construit lui-même des URI loopback et des bases afrimarket_test ; aucune URI production acceptée. Données fraîches, sauvegarde Fernet chiffrée avant disque, restauration dans un autre répertoire, conversion authentifiée en place et conservation des empreintes/index. Les résultats et les deux premiers échecs sont conservés séparément. Les répertoires précédents ne sont ni écrasés ni supprimés.
+scripts/rehearse_email_mongo_topology.py accepte uniquement des chemins d’outils et un répertoire privé. Il construit lui-même des URI loopback et des bases afrimarket_test ; aucune URI production acceptée. Données fraîches, sauvegarde Fernet chiffrée avant disque, restauration dans un autre répertoire, conversion authentifiée en place et conservation des empreintes/index. Les résultats et les premiers échecs sont conservés séparément. Les répertoires précédents ne sont ni écrasés ni supprimés.
 
 Le test backend test_delivery_assignments_after_explicit_synthetic_affiliation_migration appelle la vraie fonction d’assignation : absence d’affiliation refusée sans changement de commande ; réseau et boutique exacte autorisés ; autre boutique et profil inactif refusés. Les notifications y sont simulées ; aucun message réel.
 

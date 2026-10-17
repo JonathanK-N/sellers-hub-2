@@ -82,6 +82,10 @@ const fs = require("node:fs"),
           metrics.cls < 0.1;
         const diagnostics = {
           benchmarkIndex: r.environment.benchmarkIndex,
+          entryScripts: (r.audits["network-requests"]?.details?.items || [])
+            .filter(item => item.resourceType === "Script" && item.url.startsWith(origin + "/assets/"))
+            .map(item => ({ path: new URL(item.url).pathname,
+              transferBytes: item.transferSize, resourceBytes: item.resourceSize })),
           mainThread: r.audits["mainthread-work-breakdown"]?.details?.items,
           lcpSubparts: r.audits["lcp-breakdown-insight"]?.details?.items
             .filter((x) => x.type === "table")

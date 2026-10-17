@@ -35,3 +35,13 @@ La première série locale utilisait par erreur le build pointant directement ve
 NO-GO production. Aucun déploiement, envoi réel, DNS, migration ou modification de variables/données production. La prochaine validation HTTPS et les tests Resend nécessitent des approbations séparées. La nouvelle CI doit être relue intégralement avant de proposer le SHA comme candidat staging. La PR reste en brouillon et non fusionnée.
 
 Procédures : configuration-plan.md, mongo-affiliation-plan.md et ../final-readiness/staging-approval-plan.md.
+
+## Complément — regroupement sélectif
+
+Le cycle CI de 0da48ac échoue encore sur sa première série (2551,037 ms) ; les deux suivantes passent (2423,8505 / 2417,9917 ms). Ces résultats ne sont pas remplacés par une moyenne. Le regroupement est limité ensuite aux icônes réellement utilisées par l’accueil et la bannière d’installation : les icônes privées restent différées. L’instrumentation Lighthouse publie aussi le nombre, les chemins et les tailles des scripts locaux ; aucun seuil ni throttling modifié. Le dernier candidat reste à valider intégralement.
+
+## Revalidation aa71468 et priorité réseau
+
+Le deuxième cycle CI, SHA aa71468fc13cf5c086a3b0abdde3f7907876ed52, passe ses trois séries : LCP 2253,83505 / 2262,4764 / 2412,4901 ms ; TBT 64 / 10,5 / 22,5 ms ; performance 97 aux trois passages. La première CI en échec et les mesures locales restent conservées.
+
+Le candidat suivant réduit encore le chunk partagé de 10,10 à 5,65 Ko gzip en excluant les icônes des écrans privés. La découverte de l’image hero est placée avant le graphe de modules : auparavant les indices JavaScript étaient injectés avant son preload. Un contrôle du build vérifie cet ordre tout en conservant le graphe propre à chaque route. Aucun nouveau contenu, changement de rendu ou de seuil. Build et contrôles de graphe/notifications PASS ; la CI du nouveau SHA doit être relue avant conclusion.

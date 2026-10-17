@@ -1,0 +1,18 @@
+{
+  "syntheticOnly": true,
+  "externalRequests": 0,
+  "checks": [
+    {
+      "name": "No notification renderer on public landing",
+      "status": "PASS"
+    },
+    {
+      "name": "Authentication loads notification renderer",
+      "status": "PASS"
+    },
+    {
+      "name": "Authentication error notification remains visible",
+      "status": "PASS"
+    }
+  ]
+}
