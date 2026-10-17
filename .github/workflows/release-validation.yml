@@ -6,6 +6,40 @@ on:
 permissions:
   contents: read
 jobs:
+  controlled-https-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {page: accueil, token: NONE}
+          - {page: produits, token: STAGING_QA_TOKEN_BUYER}
+          - {page: panier, token: STAGING_QA_TOKEN_BUYER}
+          - {page: commandes, token: STAGING_QA_TOKEN_BUYER}
+          - {page: messagerie, token: STAGING_QA_TOKEN_BUYER}
+          - {page: vendeur, token: STAGING_QA_TOKEN_SELLER}
+          - {page: administrateur, token: STAGING_QA_TOKEN_ADMIN}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned audit tools
+        run: npm install --prefix /tmp/staging-audits lighthouse@13.5.0 playwright@1.60.0
+      - name: Measure deployed page three times with authorized temporary session
+        run: node scripts/staging_controlled_page.cjs
+        env:
+          LIGHTHOUSE_PACKAGE: /tmp/staging-audits/node_modules/lighthouse/package.json
+          PLAYWRIGHT_MODULE: /tmp/staging-audits/node_modules/playwright
+          STAGING_QA_SOURCE_SHA: ${{ vars.STAGING_QA_SOURCE_SHA }}
+          QA_PAGE: ${{ matrix.page }}
+          QA_TOKEN: ${{ secrets[matrix.token] }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: controlled-https-${{ matrix.page }}-${{ github.sha }}
+          path: controlled-https
   mongodb-staging-topology:
     runs-on: ubuntu-latest
     timeout-minutes: 10

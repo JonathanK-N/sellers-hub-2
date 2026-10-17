@@ -190,6 +190,22 @@ def test_outbox_duplicate_acceptance_delivery_complaint_and_suppression():
     asyncio.run(isolated(run))
 
 
+def test_unrelated_webhook_never_persists_before_local_acceptance():
+    async def run(db):
+        payload = {"type": "email.delivered", "data": {"email_id": "other-environment"}}
+        assert await webhooks.handle(db, "external-event", payload) == {"ok": False}
+        assert await db.email_webhooks.count_documents({}) == 0
+        assert await db.email_suppressions.count_documents({}) == 0
+        for invalid in (None, [], "invalid"):
+            assert await webhooks.handle(db, "invalid-data", {"type": "email.delivered", "data": invalid}) == {"ok": True, "ignored": True}
+        # A provider event arriving before acceptance can retry after the local commit.
+        await db.email_outbox.insert_one({"_id": "local-message", "provider_id": "other-environment", "status": "accepted"})
+        assert await webhooks.handle(db, "external-event", payload) == {"ok": True}
+        assert (await db.email_outbox.find_one({"_id": "local-message"}))["status"] == "delivered"
+        assert await db.email_webhooks.count_documents({}) == 1
+    asyncio.run(isolated(run))
+
+
 def test_retry_reuses_frozen_payload_and_stops_after_window():
     async def run(db):
         item = await outbox.enqueue(db, "retry/fixture", "delivered@resend.dev", "Fixture", "<p>Fixture</p>", "Fixture")

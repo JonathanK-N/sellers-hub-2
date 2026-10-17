@@ -34,19 +34,21 @@ async def handle(db, event_id, payload):
               "email.bounced": "bounced", "email.complained": "complained",
               "email.delivery_delayed": "delayed", "email.failed": "failed",
               "email.suppressed": "suppressed"}.get(kind)
-    message_id = payload.get("data", {}).get("email_id")
+    data = payload.get("data")
+    message_id = data.get("email_id") if isinstance(data, dict) else None
     if not status or not isinstance(message_id, str):
         return {"ok": True, "ignored": True}
-    # Store only non-sensitive facts. Replaying a partially handled event resumes it.
+    # Shared provider accounts can report messages belonging to another environment.
+    # Do not persist their identifiers. A local acceptance race remains retryable.
+    item = await db.email_outbox.find_one({"provider_id": message_id})
+    if not item:
+        return {"ok": False}
+    # Store only local, non-sensitive facts. Replaying a partial event resumes it.
     await db.email_webhooks.update_one({"_id": event_id}, {"$setOnInsert": {
         "provider_id": message_id, "type": kind, "status": "pending"}}, upsert=True)
     event = await db.email_webhooks.find_one({"_id": event_id})
     if event.get("status") == "completed":
         return {"ok": True}
-    item = await db.email_outbox.find_one({"provider_id": message_id})
-    if not item:
-        # Acceptance may not yet be committed; return retryable status at the HTTP boundary.
-        return {"ok": False}
     if status in ("bounced", "complained", "suppressed"):
         await db.email_suppressions.update_one({"_id": item["recipient_hash"]},
             {"$set": {"reason": status}}, upsert=True)
