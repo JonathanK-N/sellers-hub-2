@@ -207,8 +207,9 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
     await buyer.page.getByRole('button',{name:'Messages précédents',exact:true}).click();
     await buyer.page.waitForFunction(()=>document.querySelectorAll('[data-testid="chat-messages"] time').length===100);
     await buyer.page.getByRole('button',{name:'Messages précédents',exact:true}).click();
-    await buyer.page.waitForFunction(()=>document.querySelectorAll('[data-testid="chat-messages"] time').length===127);
-    check('125 historical fixtures paginate without loss or duplicate alongside two real sent messages',await buyer.page.getByTestId('chat-messages').locator('time').count()===127);
+    const expectedHistoryRows=125+proof.messages;
+    await buyer.page.waitForFunction(expected=>document.querySelectorAll('[data-testid="chat-messages"] time').length===expected,expectedHistoryRows);
+    check('125 historical fixtures paginate without loss or duplicate alongside every real sent fixture message',await buyer.page.getByTestId('chat-messages').locator('time').count()===expectedHistoryRows);
     await buyer.page.getByTestId('chat-messages').evaluate(element=>{element.scrollTop=0;});
     const readingPosition=await buyer.page.getByTestId('chat-messages').evaluate(element=>element.scrollTop);
     await merchant.page.getByTestId('chat-input').fill('TEST tail while reading');
