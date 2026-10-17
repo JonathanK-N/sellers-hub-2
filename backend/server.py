@@ -8,6 +8,7 @@ load_dotenv(ROOT_DIR / ".env")
 import os
 import logging
 from fastapi import FastAPI, APIRouter
+from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
 
 from db import init_db, close_db, get_db
@@ -147,8 +148,27 @@ app.add_middleware(
 )
 
 
+def maintenance_enabled():
+    mode = os.getenv("MAINTENANCE_MODE", "false")
+    if mode not in ("true", "false"):
+        raise ValueError("MAINTENANCE_MODE must be true or false")
+    return mode == "true"
+
+
+@app.middleware("http")
+async def maintenance_gate(request, call_next):
+    if maintenance_enabled():
+        return JSONResponse({"status": "maintenance", "emails": "disabled"},
+                            status_code=200 if request.url.path == "/api/health" else 503,
+                            headers={"Cache-Control": "no-store", "Retry-After": "300"})
+    return await call_next(request)
+
+
 @app.on_event("startup")
 async def on_startup():
+    if maintenance_enabled():
+        logger.warning("API maintenance enabled; application writers are not started")
+        return
     init_db()
     # Production startup never creates accounts or overwrites existing business/reference data.
     # Schema migrations run separately after backup and compatibility checks.
