@@ -3,6 +3,12 @@ on:
   pull_request:
     branches: [main, ui-ux, fix/restore-original-green-theme, stabilization/afrimarket-phase-2, codex/afrimarket-rc3-validation, feature/afrimarket-ui-dynamic-premium, codex/afrimarket-dynamic-https-evidence]
   workflow_dispatch:
+    inputs:
+      validation_scope:
+        description: Full validation, controlled HTTPS only, or both
+        type: choice
+        default: full
+        options: [full, https, full_https]
 permissions:
   contents: read
 jobs:
