@@ -18,6 +18,9 @@ const Register = lazy(() => import("./pages/auth/Register"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const VerifyOtp = lazy(() => import("./pages/auth/VerifyOtp"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
+const EmailCommunication = lazy(() => import("./pages/EmailCommunication"));
+const EmailTemplates = lazy(() => import("./pages/admin/EmailTemplates"));
+const EmailInvitations = lazy(() => import("./pages/seller/EmailInvitations"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 
 const BuyerHome = preloadableScreen(() => import("./pages/buyer/Home"));
@@ -157,7 +160,13 @@ function App() {
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/verify" element={<VerifyOtp />} />
             <Route path="/auth/forgot" element={<ForgotPassword />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/email/forgot" element={<EmailCommunication mode="forgot" />} />
+<Route path="/email/reset" element={<EmailCommunication mode="reset" />} />
+<Route path="/email/verify" element={<EmailCommunication mode="verify" />} />
+<Route path="/email/invitation" element={<EmailCommunication mode="invitation" />} />
+<Route path="/email/settings" element={<ProtectedRoute><EmailCommunication mode="settings" /></ProtectedRoute>} />
+<Route path="/seller/email-invitations" element={<ProtectedRoute roles={["seller"]}><EmailInvitations /></ProtectedRoute>} />
+<Route path="/admin/login" element={<AdminLogin />} />
 
             {/* ---- Visiteur (sans compte) : exploration publique ---- */}
             <Route path="/explore/search" element={<SearchPage guest />} />
@@ -200,7 +209,8 @@ function App() {
             <Route path="/livreur" element={<ProtectedRoute roles={["deliverer"]}><DelivererDashboard /></ProtectedRoute>} />
             <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
 
-            <Route path="/admin/overview" element={<ProtectedRoute roles={["admin"]}><AdminOverview /></ProtectedRoute>} />
+            <Route path="/admin/email-templates" element={<ProtectedRoute roles={["admin"]}><EmailTemplates /></ProtectedRoute>} />
+<Route path="/admin/overview" element={<ProtectedRoute roles={["admin"]}><AdminOverview /></ProtectedRoute>} />
             <Route path="/admin/users" element={<ProtectedRoute roles={["admin"]}><AdminUsers /></ProtectedRoute>} />
             <Route path="/admin/sellers" element={<ProtectedRoute roles={["admin"]}><AdminSellers /></ProtectedRoute>} />
             <Route path="/admin/orders" element={<ProtectedRoute roles={["admin"]}><AdminOrders /></ProtectedRoute>} />

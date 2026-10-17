@@ -42,13 +42,14 @@ def generate_otp() -> str:
     return f"{secrets.randbelow(1000000):06d}"
 
 
-def create_access_token(user_id: str, role: str) -> str:
+def create_access_token(user_id: str, role: str, auth_version: int = 0) -> str:
     payload = {
         "sub": user_id,
         "role": role,
         "exp": datetime.now(timezone.utc) + timedelta(days=ACCESS_TOKEN_DAYS),
         "iat": datetime.now(timezone.utc),
         "type": "access",
+        "av": auth_version,
     }
     return jwt.encode(payload, get_jwt_secret(), algorithm=JWT_ALGORITHM)
 
@@ -92,6 +93,8 @@ async def get_current_user_dep(request: Request):
     user = await db.users.find_one({"id": payload["sub"]}, dict.fromkeys(("_id", "otp_code", "otp_expires_at", "password_hash"), 0))
     if not user:
         raise HTTPException(status_code=401, detail="Utilisateur introuvable")
+    if payload.get("av", 0) != user.get("auth_version", 0):
+        raise HTTPException(401, "Session expirée")
     # Bloquer les comptes suspendus/bannis — même avec un token encore valide
     if user.get("banned"):
         raise HTTPException(status_code=403, detail="Votre compte a été banni. Contactez le support.")
@@ -130,7 +133,7 @@ async def get_current_user_optional(request: Request):
 
     db = get_db()
     user = await db.users.find_one({"id": payload["sub"]}, dict.fromkeys(("_id", "otp_code", "otp_expires_at", "password_hash"), 0))
-    if user and (user.get("banned") or user.get("suspended")):
+    if user and (payload.get("av", 0) != user.get("auth_version", 0) or user.get("banned") or user.get("suspended") or user.get("deleted") or user.get("is_deleted") or user.get("is_active") is False):
         return None
     return user
 

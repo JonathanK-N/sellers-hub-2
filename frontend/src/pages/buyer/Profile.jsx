@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { LogOut, User, MapPin, Phone, Store, LayoutDashboard, Camera, ShieldCheck, ChevronRight, Truck } from "lucide-react";
 import TopBar from "../../components/TopBar";
@@ -42,6 +42,7 @@ export default function Profile() {
   return (
     <div className="mobile-shell">
       <TopBar title="Mon profil" showCart={false} />
+<Link to="/email/settings" className="m-4 block text-emerald-700 underline">Vérifier mon adresse e-mail</Link>
 
       <div className="px-4 mt-4 space-y-3">
         <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex items-center gap-3">

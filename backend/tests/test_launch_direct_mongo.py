@@ -220,6 +220,13 @@ def test_direct_courier_delivery_and_dispute_gates_never_credit_a_wallet():
         await db.users.insert_one(courier)
         order = await checkout("delivery")
         await direct.declare_payment(order["id"], direct.DeclarationRequest(action="seller_received"), SELLER)
+        with pytest.raises(HTTPException) as missing_affiliation:
+            await delivery.assign_deliverer(order["id"], delivery.AssignRequest(deliverer_id="courier"), SELLER)
+        assert missing_affiliation.value.status_code == 409
+        await db.deliverers.insert_one({"user_id": "courier", "is_active": True, "affiliation": "shop", "seller_id": "another-shop"})
+        with pytest.raises(HTTPException):
+            await delivery.assign_deliverer(order["id"], delivery.AssignRequest(deliverer_id="courier"), SELLER)
+        await db.deliverers.update_one({"user_id": "courier"}, {"$set": {"seller_id": "shop"}})
         await delivery.assign_deliverer(order["id"], delivery.AssignRequest(deliverer_id="courier"), SELLER)
         await delivery.mark_picked_up(order["id"], courier)
         dispute = await direct.dispute_direct(order["id"], direct.DirectDisputeRequest(reason="TEST held shipment"), BUYER)

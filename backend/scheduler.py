@@ -95,12 +95,23 @@ async def refresh_fx_rate():
         logger.warning(f"[CRON] Échec refresh taux FX : {e}")
 
 
+async def process_email_outbox():
+    from communications.outbox import process_one
+    from communications.invitations import expire_invitations
+    try:
+        await expire_invitations(get_db())
+        await process_one(get_db())
+    except Exception:
+        logger.warning("Transactional email worker unavailable")
+
+
 def start_scheduler():
     global _scheduler
     if _scheduler:
         return
     _scheduler = AsyncIOScheduler(timezone="UTC")
     _scheduler.add_job(process_pending_withdrawals, "interval", minutes=1, id="withdrawals")
+    _scheduler.add_job(process_email_outbox, "interval", seconds=2, id="email_outbox", max_instances=1)
     _scheduler.add_job(process_financial_outbox, "interval", seconds=30, id="financial_outbox")
     _scheduler.add_job(expire_premium_subscriptions, "interval", hours=6, id="premium_expiry")
     _scheduler.add_job(refresh_fx_rate, "interval", hours=6, id="fx_rate_refresh")

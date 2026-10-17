@@ -47,8 +47,8 @@ export default function BecomeDeliverer() {
   const [sellerQuery, setSellerQuery] = useState("");
 
   const [form, setForm] = useState({
-    application_type: "afrimarket",
-    seller_id: null,
+    application_type: new URLSearchParams(window.location.search).has("shop") ? "shop" : "afrimarket",
+    seller_id: new URLSearchParams(window.location.search).get("shop"),
     full_name: user?.name || "",
     date_of_birth: "",
     address: "",

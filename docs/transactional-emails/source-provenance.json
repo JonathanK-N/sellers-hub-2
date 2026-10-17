@@ -1,0 +1,21 @@
+{
+  "sourceFile": "AfriMarket_modeles_emails.html",
+  "sourceSha256": "dcf044dfe08baffa3885eab5c51d55df1e26cd12d43dedb56f8dbdecfa5b79eb",
+  "logoFile": "Logo AfriMarket avec sac végétal.png",
+  "logoSha256": "b1e69de1ce89fbefc40d6e5fde787cfaaaa1671bd54eba9a8457af3bd6736598",
+  "officialTemplates": [
+    "welcome",
+    "verify_email",
+    "password_reset",
+    "deliverer_invitation",
+    "order_confirmed",
+    "order_cancelled",
+    "payment_confirmed",
+    "delivery_assigned",
+    "delivery_collected",
+    "delivery_in_transit",
+    "delivery_completed",
+    "refund_completed"
+  ],
+  "transformation": "Only inline image data URI replaced by required logo_url variable; official HTML structure retained."
+}

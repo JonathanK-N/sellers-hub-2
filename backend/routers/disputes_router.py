@@ -1,3 +1,4 @@
+from communications.business import dispute_event
 """Disputes management."""
 import uuid
 import logging
@@ -76,6 +77,7 @@ async def open_dispute(req: DisputeRequest, user: dict = Depends(require_role("b
         {"id": req.order_id},
         {"$set": {"escrow_status": "frozen"}, "$push": {"timeline": {"status": "dispute_opened", "label": "Litige ouvert", "timestamp": _now()}}},
     )
+    await dispute_event(db, dispute["id"], "dispute_opened")
     dispute.pop("_id", None)
     return dispute
 
@@ -134,6 +136,7 @@ async def admin_resolve(dispute_id: str, req: ResolveRequest, _: dict = Depends(
         if result.modified_count != 1:
             raise HTTPException(409, "Litige déjà résolu")
         await db.orders.update_one({"id": order["id"]}, {"$set": {"dispute_status": "resolved"}, "$inc": {"revision": 1}, "$push": {"timeline": {"status": "dispute_resolved", "label": "Litige clôturé — aucun mouvement de fonds AfriMarket", "timestamp": now}}})
+        await dispute_event(db, dispute_id, "dispute_resolved")
         return {"ok": True, "decision": "close_direct", "escrow_status": "not_applicable", "automatic_refund": False}
 
     if order.get("escrow_status") != "frozen":
@@ -173,4 +176,5 @@ async def admin_resolve(dispute_id: str, req: ResolveRequest, _: dict = Depends(
     )
     if new_escrow == "released":
         await record_release(db, order)
+    await dispute_event(db, dispute_id, "dispute_resolved")
     return {"ok": True, "decision": req.decision, "escrow_status": new_escrow}

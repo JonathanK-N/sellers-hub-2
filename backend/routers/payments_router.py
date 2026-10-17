@@ -9,6 +9,7 @@ from auth import require_role
 from payments.service import get_provider, cinetpay_configured, CinetPayProvider, is_sandbox
 from payments.webhook_security import authenticate
 from commerce_mode import integrated_payments_enabled
+from communications.business import verified_payment
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 
@@ -104,6 +105,7 @@ async def apply_verified_payment(tx, transaction_id, verified):
         await tx.order_groups.update_one({"id":transaction_id}, {"$set":{"payment_status":"failed"}})
         await tx.orders.update_many({"order_group_id":transaction_id}, {"$set":{"status":"cancelled","escrow_status":"payment_failed"}})
         await tx.transactions.update_many({"order_group_id":transaction_id}, {"$set":{"payment_status":"failed"}})
+    await verified_payment(tx, group, verified.status, transaction_id)
     return {"ok":True}
 
 
