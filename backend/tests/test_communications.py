@@ -83,6 +83,45 @@ def test_affiliation_is_exclusive():
     assert not compatible({"affiliation": "afrimarket"}, "shop", "a")
 
 
+def test_delivery_assignments_after_explicit_synthetic_affiliation_migration():
+    async def run(db):
+        import db as database_module
+        from routers import delivery_router as delivery
+        from unittest.mock import AsyncMock
+        owner = {"id": "synthetic-owner", "role": "seller"}
+        await db.sellers.insert_one({"id": "synthetic-shop", "user_id": owner["id"]})
+        await db.users.insert_one({"id": "synthetic-driver", "role": "deliverer",
+                                  "name": "Synthetic driver", "country_code": "CD"})
+        await db.deliverers.insert_one({"user_id": "synthetic-driver", "is_active": True})
+        def order(identifier):
+            return {"id": identifier, "seller_id": "synthetic-shop", "country_code": "CD",
+                    "delivery_mode": "delivery", "status": "confirmed", "payment_method": "direct",
+                    "payment_status": "seller_declared_received", "revision": 0}
+        await db.orders.insert_many([order("unapproved"), order("network"), order("own-shop"),
+                                     order("other-shop"), order("inactive")])
+        request = delivery.AssignRequest(deliverer_id="synthetic-driver")
+        with patch.object(database_module, "_db", db), patch.object(delivery, "create_notification", new_callable=AsyncMock):
+            with pytest.raises(HTTPException) as failure:
+                await delivery.assign_deliverer("unapproved", request, owner)
+            assert failure.value.status_code == 409
+            assert (await db.orders.find_one({"id": "unapproved"}))["status"] == "confirmed"
+            # Explicit decisions apply to this fixture only; no inference from an account's role.
+            await db.deliverers.update_one({"user_id": "synthetic-driver"}, {"$set": {"affiliation": "afrimarket"}})
+            assert (await delivery.assign_deliverer("network", request, owner))["status"] == "assigned"
+            await db.deliverers.update_one({"user_id": "synthetic-driver"},
+                {"$set": {"affiliation": "shop", "seller_id": "synthetic-shop"}})
+            assert (await delivery.assign_deliverer("own-shop", request, owner))["status"] == "assigned"
+            await db.deliverers.update_one({"user_id": "synthetic-driver"}, {"$set": {"seller_id": "synthetic-other"}})
+            with pytest.raises(HTTPException):
+                await delivery.assign_deliverer("other-shop", request, owner)
+            await db.deliverers.update_one({"user_id": "synthetic-driver"},
+                {"$set": {"affiliation": "afrimarket", "is_active": False}})
+            with pytest.raises(HTTPException):
+                await delivery.assign_deliverer("inactive", request, owner)
+            assert await db.orders.count_documents({"status": "assigned"}) == 2
+    asyncio.run(isolated(run))
+
+
 def test_preview_requires_admin():
     app = FastAPI()
     app.include_router(router)

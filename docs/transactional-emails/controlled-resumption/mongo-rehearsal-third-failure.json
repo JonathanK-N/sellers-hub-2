@@ -1,0 +1,6 @@
+{
+  "status": "FAIL",
+  "scope": "synthetic loopback only",
+  "cause": "ConfigurationError after bootstrap topology cached as standalone; refresh client after PRIMARY before starting sessions",
+  "productionTouched": false
+}

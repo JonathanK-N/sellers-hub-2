@@ -1,0 +1,6 @@
+{
+  "status": "FAIL",
+  "scope": "synthetic loopback only",
+  "cause": "Mongo member key must use standard base64, not base64url; corrected generator",
+  "productionTouched": false
+}

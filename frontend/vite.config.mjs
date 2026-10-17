@@ -37,7 +37,15 @@ export default defineConfig(({ mode }) => {
     plugins: [react(), tailwindcss(), inlineEntryStyles(env.REACT_APP_BACKEND_URL || '')],
     resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
     define,
-    build: { outDir: 'build', sourcemap: false },
+    build: {
+      outDir: 'build', sourcemap: false,
+      rollupOptions: { output: {
+        // Shared icons otherwise create many tiny requests on the public entry path.
+        manualChunks(id) {
+          if (id.replaceAll('\\', '/').includes('/node_modules/lucide-react/')) return 'icons';
+        },
+      } },
+    },
     server: { host: '127.0.0.1' },
   };
 });

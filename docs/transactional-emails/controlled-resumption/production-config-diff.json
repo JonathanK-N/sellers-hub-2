@@ -1,0 +1,39 @@
+{
+  "applied": false,
+  "requiresSeparateProductionApproval": true,
+  "service": "sellers-hub-2",
+  "project": "AFRIMARKET",
+  "changes": [
+    {
+      "name": "EMAIL_FROM",
+      "current": "\"AfriMarket <notifications@afri-market.app>\",",
+      "proposed": "AfriMarket <notifications@afri-market.app>",
+      "changed": true
+    },
+    {
+      "name": "EMAIL_REPLY_TO",
+      "current": "\"support@afri-market.app\",",
+      "proposed": "support@afri-market.app",
+      "changed": true
+    },
+    {
+      "name": "FRONTEND_URL",
+      "current": "\"https://afri-market.app\",",
+      "proposed": "https://afri-market.app",
+      "changed": true
+    },
+    {
+      "name": "EMAIL_LOGO_URL",
+      "current": "\"https://afri-market.app/assets/email/afrimarket-official.png\",",
+      "proposed": "https://afri-market.app/assets/email/afrimarket-official.png",
+      "changed": true
+    },
+    {
+      "name": "EMAIL_MODE",
+      "current": "\"disabled\",",
+      "proposed": "disabled",
+      "changed": true
+    }
+  ],
+  "transportWarning": "Deployed legacy backend ignores EMAIL_MODE; effective transport shutdown required before correcting sender."
+}
