@@ -146,4 +146,10 @@ def test_converted_seller_accepts_messages_and_direct_checkout():
             assert order["buyer_id"] == BUYER["id"] and order["seller_id"] == "shop"
             assert (await _participants(db, "buyer__shop", BUYER, writing=True))[0] == BUYER["id"]
             assert (await _participants(db, "buyer__shop", SELLER, writing=True))[1] == "shop"
+            from models import OrderCreateRequest
+            from routers.orders_router import create_order
+            with pytest.raises(HTTPException) as own_shop:
+                await create_order(OrderCreateRequest(items=[{"product_id": "product", "quantity": 1}],
+                    delivery_mode="collect", payment_method="direct"), {**SELLER, "role": "buyer"}, "own-shop-fixture")
+            assert own_shop.value.status_code == 400
     asyncio.run(commerce(run))

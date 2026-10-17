@@ -115,6 +115,8 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
         raise HTTPException(status_code=404, detail="Vendeur introuvable")
     for seller in sellers.values():
         owner = await db.users.find_one({"id": seller["user_id"]})
+        if seller["user_id"] == user["id"]:
+            raise HTTPException(400, "Vous ne pouvez pas acheter les produits de votre propre boutique")
         if direct and not seller_account(owner):
             raise HTTPException(409, "Compte vendeur indisponible")
         if owner and (owner.get("banned") or owner.get("suspended") or owner.get("is_deleted") or owner.get("is_active") is False):
