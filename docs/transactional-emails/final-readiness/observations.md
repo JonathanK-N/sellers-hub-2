@@ -52,3 +52,15 @@ NO-GO production. Restent : résultats CI du nouveau candidat, budget Lighthouse
 Le plan staging-approval-plan.md prépare les étapes isolées et les autorisations séparées. Aucun envoi réel, déploiement ou changement de production n’est autorisé par la seule présence des nouvelles variables.
 
 Références : [domaine Resend](https://resend.com/docs/api-reference/domains/get-domain), [webhooks Resend](https://resend.com/docs/api-reference/webhooks/list-webhooks), [suppression des e-mails](https://resend.com/changelog/email-suppression-visibility).
+
+## Complément du 17 octobre — seconde correction du chargement initial
+
+La CI du SHA 661b467ffecaa70f66df127c385f526265285cd4 confirme encore trois échecs publics LCP : 2745,37 / 2803,15 / 2797,85 ms ; le premier TBT vaut aussi 597,86 ms. La simple séparation de Toaster ne suffit pas : il était encore demandé au montage de l’accueil, alors que cette page utilise ses propres notices et n’émet aucun toast initial.
+
+Le rendu de Toaster est maintenant limité aux pages qui en ont besoin et à l’ouverture de l’authentification sur l’accueil. Aucun timer, masquage du hero, donnée fictive publique ou modification de seuil. La boîte de connexion conserve ses notifications d’erreur. Un test sur le Web compilé vérifie l’absence de téléchargement avant interaction, son chargement à l’ouverture de l’authentification et l’affichage réel d’une erreur de connexion synthétique. Ce test est ajouté à la CI.
+
+Un premier test attendait à tort un conteneur Sonner vide : la bibliothèque ne le rend qu’après le premier toast. Cette attente a été corrigée pour vérifier le message effectivement affiché, sans modifier l’application pour satisfaire le test. Les essais exploratoires mobiles interrompus ne sont pas présentés comme des réussites. Le test reproductible final réussit ; notification-entry-results.json conserve les trois assertions.
+
+Les sept parcours e-mail et trois contrôles de tiroir panier ont aussi été rejoués avec API simulée ; browser-email-results.json. Ces fichiers ne représentent pas des envois réels.
+
+Lecture supplémentaire de connectionStatus sur la connexion Mongo publique auditée : un utilisateur authentifié ; l’URI contient des identifiants. L’audit ne démontre donc pas une lecture anonyme. Aucun identifiant ou nom d’utilisateur n’est publié ; mongo-transport-readonly.json ne contient que des nombres et booléens.

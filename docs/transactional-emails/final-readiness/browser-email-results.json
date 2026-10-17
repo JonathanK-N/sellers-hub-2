@@ -1,0 +1,47 @@
+{
+  "sourceSha": "661b467ffecaa70f66df127c385f526265285cd4",
+  "mockedApi": true,
+  "realMessagesSent": 0,
+  "checks": [
+    {
+      "name": "fragment removed",
+      "pass": true
+    },
+    {
+      "name": "token in POST body only",
+      "pass": true
+    },
+    {
+      "name": "reset request",
+      "pass": true
+    },
+    {
+      "name": "authenticated settings",
+      "pass": true
+    },
+    {
+      "name": "buyer forbidden admin preview",
+      "pass": true
+    },
+    {
+      "name": "seller invitation",
+      "pass": true
+    },
+    {
+      "name": "admin preview catalog",
+      "pass": true
+    },
+    {
+      "name": "cart chunk absent before opening",
+      "pass": true
+    },
+    {
+      "name": "lazy cart opens with visible content",
+      "pass": true
+    },
+    {
+      "name": "lazy cart closes",
+      "pass": true
+    }
+  ]
+}

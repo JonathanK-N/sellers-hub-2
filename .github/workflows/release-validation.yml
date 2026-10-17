@@ -430,6 +430,8 @@ jobs:
           node scripts/test_route_resource_hints.cjs frontend/build
       - name: Validate responsive and business UI states without database writes
         run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/ui_premium_validation.cjs frontend/build ui-preview-evidence
+      - name: Validate notification loading and authentication feedback
+        run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/test_notification_entry.cjs frontend/build ui-preview-evidence/notification-entry.json
       - name: Validate WhatsApp configuration and customer links without external messages
         run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/whatsapp_contact_browser_validation.cjs frontend/build ui-preview-evidence/whatsapp.json
       - name: Build read-only API preview configuration

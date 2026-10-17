@@ -1,10 +1,10 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import InstallPrompt from "./components/InstallPrompt";
 import "./App.css";
 
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import { AuthModalProvider } from "./context/AuthModalContext";
+import { AuthModalProvider, useAuthModal } from "./context/AuthModalContext";
 import CartDrawerMount from "./components/cart/CartDrawerMount";
 import SmoothScroll from "./components/SmoothScroll";
 import PageBoundary from "./components/PageBoundary";
@@ -22,6 +22,14 @@ const EmailTemplates = lazy(() => import("./pages/admin/EmailTemplates"));
 const EmailInvitations = lazy(() => import("./pages/seller/EmailInvitations"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const Toaster = lazy(() => import("sonner").then(module => ({ default: module.Toaster })));
+
+function RouteToaster() {
+  const { pathname } = useLocation();
+  const { mode } = useAuthModal();
+  // The public landing uses its own inline notices; auth and other screens use toast.
+  if (pathname === "/" && !mode) return null;
+  return <Suspense fallback={null}><Toaster position="top-center" richColors /></Suspense>;
+}
 
 const BuyerHome = preloadableScreen(() => import("./pages/buyer/Home"));
 const SearchPage = lazy(() => import("./pages/buyer/Search"));
@@ -148,7 +156,7 @@ function App() {
       <CartProvider>
         <BrowserRouter>
           <AuthModalProvider>
-          <Suspense fallback={null}><Toaster position="top-center" richColors /></Suspense>
+          <RouteToaster />
           <InstallPrompt />
           <SmoothScroll />
           <CartDrawerMount />
