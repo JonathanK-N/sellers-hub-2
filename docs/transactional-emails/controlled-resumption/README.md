@@ -45,3 +45,7 @@ Le cycle CI de 0da48ac échoue encore sur sa première série (2551,037 ms) ; le
 Le deuxième cycle CI, SHA aa71468fc13cf5c086a3b0abdde3f7907876ed52, passe ses trois séries : LCP 2253,83505 / 2262,4764 / 2412,4901 ms ; TBT 64 / 10,5 / 22,5 ms ; performance 97 aux trois passages. La première CI en échec et les mesures locales restent conservées.
 
 Le candidat suivant réduit encore le chunk partagé de 10,10 à 5,65 Ko gzip en excluant les icônes des écrans privés. La découverte de l’image hero est placée avant le graphe de modules : auparavant les indices JavaScript étaient injectés avant son preload. Un contrôle du build vérifie cet ordre tout en conservant le graphe propre à chaque route. Aucun nouveau contenu, changement de rendu ou de seuil. Build et contrôles de graphe/notifications PASS ; la CI du nouveau SHA doit être relue avant conclusion.
+
+## Vérification du candidat 5f410ed — ajustement non retenu
+
+La CI 39012629426 donne LCP 2566,567 / 2408,4224 / 2406,8253 ms et TBT 132 / 12,5 / 6,5 ms. La première série échoue : le candidat reste NO-GO malgré cinq requêtes JS. On ne peut pas attribuer avec certitude la différence à un seul changement plutôt qu’à la variabilité des exécutions. Le regroupement sélectif et le déplacement du preload ne sont pas retenus ; les quatre fichiers frontend/instrumentation sont restaurés depuis aa71468, dont les 12 jobs ont réussi. Ce retour ne supprime aucune preuve de l’essai. Le nouveau SHA devra repasser toute la CI.

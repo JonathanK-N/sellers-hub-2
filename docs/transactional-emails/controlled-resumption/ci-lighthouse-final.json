@@ -1,0 +1,443 @@
+{
+  "sourceSha": "5f410ed9f6b86d92bf4efb007c5c31e1a7c756cf",
+  "url": "https://github.com/JonathanK-N/sellers-hub-2/actions/runs/39012629426",
+  "rows": [
+    {
+      "iteration": 1,
+      "status": "FAIL",
+      "metrics": {
+        "performance": 94,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100,
+        "lcpMs": 2566.567,
+        "tbtMs": 132,
+        "cls": 0
+      },
+      "diagnostics": {
+        "benchmarkIndex": 2893.5,
+        "entryScripts": [
+          {
+            "path": "/assets/index-BROtawON.js",
+            "transferBytes": 79881,
+            "resourceBytes": 250182
+          },
+          {
+            "path": "/assets/rolldown-runtime-hePW80VL.js",
+            "transferBytes": 637,
+            "resourceBytes": 716
+          },
+          {
+            "path": "/assets/entry-icons-WZAfmBnI.js",
+            "transferBytes": 5845,
+            "resourceBytes": 14099
+          },
+          {
+            "path": "/assets/Landing-1K4ETTRn.js",
+            "transferBytes": 6019,
+            "resourceBytes": 19769
+          },
+          {
+            "path": "/assets/format-bzPNH_gv.js",
+            "transferBytes": 714,
+            "resourceBytes": 878
+          }
+        ],
+        "mainThread": [
+          {
+            "group": "other",
+            "groupLabel": "Other",
+            "duration": 872.0599999999994
+          },
+          {
+            "group": "scriptEvaluation",
+            "groupLabel": "Script Evaluation",
+            "duration": 531.0520000000015
+          },
+          {
+            "group": "styleLayout",
+            "groupLabel": "Style & Layout",
+            "duration": 339.36
+          },
+          {
+            "group": "parseHTML",
+            "groupLabel": "Parse HTML & CSS",
+            "duration": 314.00399999999996
+          },
+          {
+            "group": "paintCompositeRender",
+            "groupLabel": "Rendering",
+            "duration": 145.82800000000006
+          },
+          {
+            "group": "scriptParseCompile",
+            "groupLabel": "Script Parsing & Compilation",
+            "duration": 3.9960000000000004
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "subpart": "timeToFirstByte",
+            "label": "Time to first byte",
+            "duration": 71.695
+          },
+          {
+            "subpart": "resourceLoadDelay",
+            "label": "Resource load delay",
+            "duration": 179.065
+          },
+          {
+            "subpart": "resourceLoadDuration",
+            "label": "Resource load duration",
+            "duration": 2.112
+          },
+          {
+            "subpart": "elementRenderDelay",
+            "label": "Element render delay",
+            "duration": 1245.419
+          }
+        ],
+        "failures": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.85
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.88
+          },
+          {
+            "id": "speed-index",
+            "title": "Speed Index",
+            "score": 0.94
+          },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.96
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.96
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.98
+          },
+          {
+            "id": "mainthread-work-breakdown",
+            "title": "Minimize main-thread work",
+            "score": 0
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "cache-insight",
+            "title": "Use efficient cache lifetimes",
+            "score": 0
+          },
+          {
+            "id": "image-delivery-insight",
+            "title": "Improve image delivery",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 2,
+      "status": "PASS",
+      "metrics": {
+        "performance": 97,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100,
+        "lcpMs": 2408.4224,
+        "tbtMs": 12.5,
+        "cls": 0.0002226954128442866
+      },
+      "diagnostics": {
+        "benchmarkIndex": 4443.5,
+        "entryScripts": [
+          {
+            "path": "/assets/index-BROtawON.js",
+            "transferBytes": 79881,
+            "resourceBytes": 250182
+          },
+          {
+            "path": "/assets/rolldown-runtime-hePW80VL.js",
+            "transferBytes": 637,
+            "resourceBytes": 716
+          },
+          {
+            "path": "/assets/entry-icons-WZAfmBnI.js",
+            "transferBytes": 5845,
+            "resourceBytes": 14099
+          },
+          {
+            "path": "/assets/Landing-1K4ETTRn.js",
+            "transferBytes": 6019,
+            "resourceBytes": 19769
+          },
+          {
+            "path": "/assets/format-bzPNH_gv.js",
+            "transferBytes": 714,
+            "resourceBytes": 878
+          }
+        ],
+        "mainThread": [
+          {
+            "group": "other",
+            "groupLabel": "Other",
+            "duration": 377.93200000000024
+          },
+          {
+            "group": "scriptEvaluation",
+            "groupLabel": "Script Evaluation",
+            "duration": 173.71200000000024
+          },
+          {
+            "group": "styleLayout",
+            "groupLabel": "Style & Layout",
+            "duration": 105.45199999999998
+          },
+          {
+            "group": "parseHTML",
+            "groupLabel": "Parse HTML & CSS",
+            "duration": 18.883999999999997
+          },
+          {
+            "group": "paintCompositeRender",
+            "groupLabel": "Rendering",
+            "duration": 18.31999999999999
+          },
+          {
+            "group": "garbageCollection",
+            "groupLabel": "Garbage Collection",
+            "duration": 9.587999999999996
+          },
+          {
+            "group": "scriptParseCompile",
+            "groupLabel": "Script Parsing & Compilation",
+            "duration": 4.064
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "subpart": "timeToFirstByte",
+            "label": "Time to first byte",
+            "duration": 3.911
+          },
+          {
+            "subpart": "resourceLoadDelay",
+            "label": "Resource load delay",
+            "duration": 10.702
+          },
+          {
+            "subpart": "resourceLoadDuration",
+            "label": "Resource load duration",
+            "duration": 15.879
+          },
+          {
+            "subpart": "elementRenderDelay",
+            "label": "Element render delay",
+            "duration": 84.753
+          }
+        ],
+        "failures": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.89
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.91
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.99
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.98
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "cache-insight",
+            "title": "Use efficient cache lifetimes",
+            "score": 0
+          },
+          {
+            "id": "image-delivery-insight",
+            "title": "Improve image delivery",
+            "score": 0
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 3,
+      "status": "PASS",
+      "metrics": {
+        "performance": 97,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100,
+        "lcpMs": 2406.8252999999995,
+        "tbtMs": 6.5,
+        "cls": 0.0002226954128442866
+      },
+      "diagnostics": {
+        "benchmarkIndex": 4395,
+        "entryScripts": [
+          {
+            "path": "/assets/index-BROtawON.js",
+            "transferBytes": 79881,
+            "resourceBytes": 250182
+          },
+          {
+            "path": "/assets/rolldown-runtime-hePW80VL.js",
+            "transferBytes": 637,
+            "resourceBytes": 716
+          },
+          {
+            "path": "/assets/entry-icons-WZAfmBnI.js",
+            "transferBytes": 5845,
+            "resourceBytes": 14099
+          },
+          {
+            "path": "/assets/Landing-1K4ETTRn.js",
+            "transferBytes": 6019,
+            "resourceBytes": 19769
+          },
+          {
+            "path": "/assets/format-bzPNH_gv.js",
+            "transferBytes": 714,
+            "resourceBytes": 878
+          }
+        ],
+        "mainThread": [
+          {
+            "group": "scriptEvaluation",
+            "groupLabel": "Script Evaluation",
+            "duration": 165.04000000000022
+          },
+          {
+            "group": "other",
+            "groupLabel": "Other",
+            "duration": 150.32000000000008
+          },
+          {
+            "group": "styleLayout",
+            "groupLabel": "Style & Layout",
+            "duration": 107.792
+          },
+          {
+            "group": "parseHTML",
+            "groupLabel": "Parse HTML & CSS",
+            "duration": 18.984
+          },
+          {
+            "group": "paintCompositeRender",
+            "groupLabel": "Rendering",
+            "duration": 16.639999999999997
+          },
+          {
+            "group": "garbageCollection",
+            "groupLabel": "Garbage Collection",
+            "duration": 6.755999999999997
+          },
+          {
+            "group": "scriptParseCompile",
+            "groupLabel": "Script Parsing & Compilation",
+            "duration": 3.66
+          }
+        ],
+        "lcpSubparts": [
+          {
+            "subpart": "timeToFirstByte",
+            "label": "Time to first byte",
+            "duration": 4.099000000029802
+          },
+          {
+            "subpart": "resourceLoadDelay",
+            "label": "Resource load delay",
+            "duration": 9.554999999970198
+          },
+          {
+            "subpart": "resourceLoadDuration",
+            "label": "Resource load duration",
+            "duration": 20.835
+          },
+          {
+            "subpart": "elementRenderDelay",
+            "label": "Element render delay",
+            "duration": 88.322
+          }
+        ],
+        "failures": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.89
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.91
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.98
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "cache-insight",
+            "title": "Use efficient cache lifetimes",
+            "score": 0
+          },
+          {
+            "id": "image-delivery-insight",
+            "title": "Improve image delivery",
+            "score": 0
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          }
+        ]
+      }
+    }
+  ]
+}

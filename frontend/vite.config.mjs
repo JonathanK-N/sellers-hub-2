@@ -6,14 +6,6 @@ import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
 import { routeResourceHints } from './build-tools/route_resource_hints.mjs';
 
-// Coalesce the landing/installation icons without pulling private-screen icons into entry.
-const entryIcons = new Set([
-  'menu', 'x', 'search', 'shopping-cart', 'heart', 'user-round', 'arrow-right',
-  'chevron-right', 'store', 'shield-check', 'truck', 'wallet', 'smartphone',
-  'shirt', 'utensils-crossed', 'armchair', 'sun', 'sprout', 'layout-grid',
-  'flame', 'map-pin', 'star', 'download',
-]);
-
 function inlineEntryStyles(backendUrl) {
   return {
     name: 'afrimarket-entry-styles',
@@ -22,9 +14,7 @@ function inlineEntryStyles(backendUrl) {
       handler(html, context) {
         if (!context.bundle) return html;
         const hints = routeResourceHints(context.bundle, backendUrl);
-        // Discover the high-priority hero before scheduling the route's module graph.
-        if (!html.includes('<!-- Entry route hints -->')) throw new Error('Entry route hint marker missing');
-        html = html.replace('<!-- Entry route hints -->', hints);
+        html = html.replace(/<meta charset="utf-8"\s*\/?>/i, tag => tag + hints);
         const fonts = readFileSync(new URL('./public/fonts/poppins.css', import.meta.url), 'utf8');
         html = html.replace('<link rel="stylesheet" href="/fonts/poppins.css" />', `<style data-afrimarket-fonts>${fonts}</style>`);
         return html.replace(/<link\b[^>]*rel="stylesheet"[^>]*>/g, tag => {
@@ -50,10 +40,9 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'build', sourcemap: false,
       rollupOptions: { output: {
-        // Shared entry icons otherwise create many tiny requests on the public path.
+        // Shared icons otherwise create many tiny requests on the public entry path.
         manualChunks(id) {
-          const icon = id.replaceAll('\\', '/').match(/\/node_modules\/lucide-react\/dist\/esm\/icons\/([^/]+)\.js$/)?.[1];
-          if (entryIcons.has(icon)) return 'entry-icons';
+          if (id.replaceAll('\\', '/').includes('/node_modules/lucide-react/')) return 'icons';
         },
       } },
     },

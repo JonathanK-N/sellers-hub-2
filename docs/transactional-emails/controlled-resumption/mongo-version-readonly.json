@@ -1,0 +1,11 @@
+{
+  "read_only": true,
+  "version": "8.0.32",
+  "max_wire_version": 25,
+  "replica_set": false,
+  "logical_session_timeout_minutes": 30,
+  "fcv": "8.0",
+  "db_path": null,
+  "authentication_configured": true,
+  "member_keyfile_configured": false
+}

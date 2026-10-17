@@ -48,9 +48,6 @@ function evaluate(html, pathname) {
   if (process.argv[2]) {
     const build = path.resolve(process.argv[2]);
     const builtHtml = fs.readFileSync(path.join(build, "index.html"), "utf8");
-    const heroPreload = builtHtml.indexOf('hero.fetchPriority = "high"');
-    assert.ok(heroPreload >= 0 && heroPreload < builtHtml.indexOf('data-afrimarket-route-hints'),
-      "High-priority landing image must be discovered before the route module graph");
     for (const route of Object.keys(pages)) {
       const files = evaluate(builtHtml, route).filter(link => link.rel === "modulepreload").map(link => link.href);
       assert.ok(files.length > 0);

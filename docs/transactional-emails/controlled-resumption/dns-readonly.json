@@ -1,0 +1,10 @@
+{
+  "_dmarc.afri-market.app": {
+    "present": false,
+    "code": "ENOTFOUND"
+  },
+  "afri-market.app": {
+    "present": false,
+    "code": "ENODATA"
+  }
+}
