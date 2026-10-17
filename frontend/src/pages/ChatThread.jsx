@@ -53,10 +53,11 @@ export default function ChatThread() {
     try { pending.current = JSON.parse(sessionStorage.getItem(storageKey)); } catch { pending.current = null; }
     setText(pending.current?.text || "");
     load(true);
-    const timer = setInterval(() => { if (document.visibilityState === "visible") load(); }, 3000);
+    const timer = setInterval(() => { if (document.visibilityState === "visible") load(); }, 30000);
     const reconnect = () => load();
     window.addEventListener("online", reconnect);
-    return () => { generation.current += 1; clearInterval(timer); window.removeEventListener("online", reconnect); };
+    window.addEventListener("afri-notifications-changed", reconnect);
+    return () => { generation.current += 1; clearInterval(timer); window.removeEventListener("online", reconnect); window.removeEventListener("afri-notifications-changed", reconnect); };
   }, [conversationId, user?.id]);
   useEffect(() => {
     const anchor = prependAnchor.current;

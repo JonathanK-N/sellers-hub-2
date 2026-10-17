@@ -48,6 +48,7 @@ const BecomeDeliverer = lazy(() => import("./pages/BecomeDeliverer"));
 const AdminDelivererApplications = lazy(() => import("./pages/admin/DelivererApplications"));
 const SellerDelivererApplications = lazy(() => import("./pages/seller/DelivererApplications"));
 
+const BecomeSeller = lazy(() => import("./pages/BecomeSeller"));
 const SellerSetup = lazy(() => import("./pages/seller/Setup"));
 const SellerDashboard = preloadableScreen(() => import("./pages/seller/Dashboard"));
 const SellerProducts = lazy(() => import("./pages/seller/Products"));
@@ -171,11 +172,11 @@ function App() {
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/verify" element={<VerifyOtp />} />
             <Route path="/auth/forgot" element={<ForgotPassword />} />
-            <Route path="/email/forgot" element={<EmailCommunication mode="forgot" />} />
-<Route path="/email/reset" element={<EmailCommunication mode="reset" />} />
-<Route path="/email/verify" element={<EmailCommunication mode="verify" />} />
-<Route path="/email/invitation" element={<EmailCommunication mode="invitation" />} />
-<Route path="/email/settings" element={<ProtectedRoute><EmailCommunication mode="settings" /></ProtectedRoute>} />
+            <Route path="/email/forgot" element={<EmailCommunication key="forgot" mode="forgot" />} />
+<Route path="/email/reset" element={<EmailCommunication key="reset" mode="reset" />} />
+<Route path="/email/verify" element={<EmailCommunication key="verify" mode="verify" />} />
+<Route path="/email/invitation" element={<EmailCommunication key="invitation" mode="invitation" />} />
+<Route path="/email/settings" element={<ProtectedRoute><EmailCommunication key="settings" mode="settings" /></ProtectedRoute>} />
 <Route path="/seller/email-invitations" element={<ProtectedRoute roles={["seller"]}><EmailInvitations /></ProtectedRoute>} />
 <Route path="/admin/login" element={<AdminLogin />} />
 
@@ -198,6 +199,7 @@ function App() {
             <Route path="/payment/success" element={<ProtectedRoute roles={["buyer"]}><PaymentSuccess /></ProtectedRoute>} />
             <Route path="/payment/failed" element={<ProtectedRoute roles={["buyer"]}><PaymentFailed /></ProtectedRoute>} />
 
+            <Route path="/become-seller" element={<ProtectedRoute roles={["buyer", "seller"]}><BecomeSeller /></ProtectedRoute>} />
             <Route path="/seller/setup" element={<ProtectedRoute roles={["seller"]}><SellerSetup /></ProtectedRoute>} />
             <Route path="/seller/dashboard" element={<ProtectedRoute roles={["seller"]}><SellerDashboard /></ProtectedRoute>} />
             <Route path="/seller/products" element={<ProtectedRoute roles={["seller"]}><SellerProducts /></ProtectedRoute>} />

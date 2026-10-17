@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
   useCallback,
+  useRef,
 } from "react";
 
 import { verifySession } from "../lib/session_api";
@@ -11,6 +12,7 @@ import { verifySession } from "../lib/session_api";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+  const revision = useRef(0);
   const [user, setUser] = useState(() => {
     try {
       if (!localStorage.getItem("afri_token")) return null;
@@ -31,6 +33,7 @@ export function AuthProvider({ children }) {
   const [sessionUnavailable, setSessionUnavailable] = useState(false);
 
   const refresh = useCallback(async () => {
+    const current = ++revision.current;
     setLoading(true);
     setSessionUnavailable(false);
     const token = localStorage.getItem("afri_token");
@@ -41,9 +44,11 @@ export function AuthProvider({ children }) {
     }
     try {
       const data = await verifySession(token);
+      if (current !== revision.current) return;
       setUser(data);
       localStorage.setItem("afri_user", JSON.stringify(data));
     } catch (error) {
+      if (current !== revision.current) return;
       setUser(null);
       localStorage.removeItem("afri_user");
       if (error.response?.status === 401 || error.response?.status === 403) {
@@ -52,7 +57,7 @@ export function AuthProvider({ children }) {
         setSessionUnavailable(true);
       }
     } finally {
-      setLoading(false);
+      if (current === revision.current) setLoading(false);
     }
   }, []);
 
@@ -62,6 +67,9 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const expired = () => {
+      revision.current++;
+      localStorage.removeItem("afri_token");
+      localStorage.removeItem("afri_user");
       setSessionUnavailable(false);
       setUser(null);
       setLoading(false);
@@ -69,6 +77,12 @@ export function AuthProvider({ children }) {
     window.addEventListener("afri-session-expired", expired);
     return () => window.removeEventListener("afri-session-expired", expired);
   }, []);
+
+  useEffect(() => {
+    const changed = event => { if (event.key === "afri_token" || event.key === null) refresh(); };
+    window.addEventListener("storage", changed);
+    return () => window.removeEventListener("storage", changed);
+  }, [refresh]);
 
   useEffect(() => {
     if (!user) return;
@@ -84,7 +98,20 @@ export function AuthProvider({ children }) {
       .catch(() => {});
   }, [user]);
 
+  useEffect(() => {
+    if (!user || loading || sessionUnavailable) return;
+    let disposed = false;
+    let stop;
+    const token = localStorage.getItem("afri_token");
+    import("../lib/notification_stream").then(({ startNotificationStream }) => {
+      if (!disposed && token) stop = startNotificationStream(token);
+    });
+    return () => { disposed = true; stop?.(); };
+  }, [user, loading, sessionUnavailable]);
+
   const setSession = (token, userObj) => {
+    revision.current++;
+    setLoading(false);
     setSessionUnavailable(false);
     localStorage.setItem("afri_token", token);
     localStorage.setItem("afri_user", JSON.stringify(userObj));
@@ -92,6 +119,8 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
+    revision.current++;
+    setLoading(false);
     setSessionUnavailable(false);
     import("../lib/push")
       .then(({ disablePushNotifications }) => {

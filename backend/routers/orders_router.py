@@ -13,7 +13,7 @@ from financial_transactions import atomic_operation
 from money import money_product, commission, minor_units, record_release
 from stock import aggregate_items, reserve_stock, release_stock
 from models import OrderCreateRequest, ConfirmDeliveryRequest
-from auth import get_current_user_dep, require_role, generate_otp
+from auth import get_current_user_dep, require_role, generate_otp, seller_account
 from notifications import create_notification
 from communications.business import best_effort_order
 from commerce_mode import legacy_checkout_enabled, integrated_payments_enabled
@@ -115,7 +115,7 @@ async def create_order(req: OrderCreateRequest, user: dict = Depends(require_rol
         raise HTTPException(status_code=404, detail="Vendeur introuvable")
     for seller in sellers.values():
         owner = await db.users.find_one({"id": seller["user_id"]})
-        if direct and (not owner or owner.get("role") != "seller"):
+        if direct and not seller_account(owner):
             raise HTTPException(409, "Compte vendeur indisponible")
         if owner and (owner.get("banned") or owner.get("suspended") or owner.get("is_deleted") or owner.get("is_active") is False):
             raise HTTPException(409, "Vendeur indisponible")

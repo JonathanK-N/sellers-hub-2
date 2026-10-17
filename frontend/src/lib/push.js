@@ -27,9 +27,7 @@ async function registerToken(token) {
 
 async function getFirebaseToken() {
   if (!isFirebaseConfigured()) {
-    let t = localStorage.getItem(DEVICE_TOKEN_KEY);
-    if (!t) t = `sim-${Math.random().toString(36).slice(2)}-${Date.now()}`;
-    return t;
+    return null;
   }
   try {
     // Indirect dynamic import so the bundler doesn't hard-require firebase at
@@ -60,6 +58,7 @@ export async function enablePushNotifications() {
   if (typeof Notification === "undefined") {
     return { ok: false, reason: "unsupported" };
   }
+  if (!isFirebaseConfigured()) return { ok: false, reason: "not_configured" };
   let permission = Notification.permission;
   if (permission === "default") {
     permission = await Notification.requestPermission();
@@ -70,7 +69,7 @@ export async function enablePushNotifications() {
   const token = await getFirebaseToken();
   if (!token) return { ok: false, reason: "token_failed" };
   const saved = await registerToken(token);
-  return { ok: saved, simulated: !isFirebaseConfigured() };
+  return { ok: saved };
 }
 
 export async function disablePushNotifications() {
@@ -87,5 +86,5 @@ export async function disablePushNotifications() {
 }
 
 export function hasRegisteredToken() {
-  return Boolean(localStorage.getItem(DEVICE_TOKEN_KEY));
+  return isFirebaseConfigured() && Boolean(localStorage.getItem(DEVICE_TOKEN_KEY)) && !localStorage.getItem(DEVICE_TOKEN_KEY).startsWith("sim-");
 }

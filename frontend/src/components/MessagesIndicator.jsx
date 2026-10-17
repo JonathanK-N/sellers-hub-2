@@ -23,8 +23,9 @@ export default function MessagesIndicator() {
       } catch {}
     };
     poll();
-    const t = setInterval(poll, 5000);
-    return () => { cancelled = true; clearInterval(t); };
+    window.addEventListener("afri-notifications-changed", poll);
+    const t = setInterval(poll, 30000);
+    return () => { cancelled = true; clearInterval(t); window.removeEventListener("afri-notifications-changed", poll); };
   }, [user]);
 
   return (

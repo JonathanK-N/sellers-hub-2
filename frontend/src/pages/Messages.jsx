@@ -28,8 +28,9 @@ export default function ConversationsList() {
         }
       }).catch(() => { if (!cancelled) setError("Connexion interrompue. Nouvelle tentative automatique."); }).finally(() => { if (!cancelled) setLoading(false); });
     load();
-    const t = setInterval(load, 5000);
-    return () => { cancelled = true; clearInterval(t); };
+    window.addEventListener("afri-notifications-changed", load);
+    const t = setInterval(load, 30000);
+    return () => { cancelled = true; clearInterval(t); window.removeEventListener("afri-notifications-changed", load); };
   }, []);
 
   return (

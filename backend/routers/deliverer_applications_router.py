@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
 
 from db import get_db
-from auth import get_current_user_dep, require_role, generate_otp, OTP_EXPIRY_MINUTES, otp_sandbox_enabled, require_otp_delivery
+from auth import get_current_user_dep, require_role, generate_otp, OTP_EXPIRY_MINUTES, otp_sandbox_enabled, require_otp_delivery, seller_account
 from models import DelivererApplicationRequest, DelivererApplicationReject
 from s3_service import upload_private, generate_presigned_url
 from notifications import create_notification
@@ -112,7 +112,7 @@ async def verify_application_otp(req: ApplicationOtpVerifyRequest, user: dict = 
 async def submit_application(req: DelivererApplicationRequest, user: dict = Depends(get_current_user_dep)):
     db = get_db()
 
-    if user["role"] == "seller":
+    if seller_account(user):
         raise HTTPException(
             status_code=403,
             detail="Les vendeurs ne peuvent pas devenir livreurs. Cette fonctionnalité est réservée aux acheteurs.",
@@ -298,8 +298,8 @@ async def _activate_deliverer(db, application: dict, reviewer_id: str):
     user_id = application["user_id"]
     affiliation = "afrimarket" if application["application_type"] == "afrimarket" else "shop"
 
-    applicant_user = await db.users.find_one({"id": user_id}, {"_id": 0, "role": 1})
-    if applicant_user and applicant_user.get("role") == "seller":
+    applicant_user = await db.users.find_one({"id": user_id}, {"_id": 0, "role": 1, "seller_enabled": 1})
+    if seller_account(applicant_user):
         raise HTTPException(
             status_code=409,
             detail="Ce candidat est désormais vendeur et ne peut pas être activé comme livreur",

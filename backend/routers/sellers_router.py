@@ -11,6 +11,7 @@ from models import SellerSetupRequest
 from auth import require_role
 from s3_service import upload_public, upload_private
 from whatsapp_contact import public_seller, owner_seller
+from pymongo.errors import DuplicateKeyError
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/seller", tags=["seller"])
@@ -56,6 +57,7 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
         return owner_seller(seller)
 
     seller = {
+        "_id": "seller/" + user["id"],
         "id": str(uuid.uuid4()),
         "user_id": user["id"],
         "kyc_status": "level1",
@@ -65,7 +67,13 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
         "created_at": datetime.now(timezone.utc).isoformat(),
         **payload,
     }
-    await db.sellers.insert_one(seller)
+    try:
+        await db.sellers.insert_one(seller)
+    except DuplicateKeyError:
+        existing = await db.sellers.find_one({"_id": seller["_id"], "user_id": user["id"]}, {"_id": 0})
+        if existing:
+            return owner_seller(existing)
+        raise
     seller.pop("_id", None)
     return owner_seller(seller)
 

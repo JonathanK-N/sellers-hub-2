@@ -11,7 +11,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from db import get_db
-from auth import require_role
+from auth import require_role, seller_account
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -608,7 +608,7 @@ async def user_action(user_id: str, req: UserActionRequest, _: dict = Depends(re
         # Annuler toutes les commandes actives liées à cet utilisateur (en tant qu'acheteur ou vendeur)
         active_statuses = ["confirmed", "preparing", "ready_for_pickup", "out_for_delivery"]
         cancel_update = {"$set": {"status": "cancelled", "cancel_reason": f"Compte banni : {req.motif}", "cancelled_at": now}}
-        if user.get("role") == "seller":
+        if seller_account(user):
             # Trouver le seller_id associé
             seller_doc = await db.sellers.find_one({"user_id": user_id}, {"_id": 0, "id": 1})
             if seller_doc:

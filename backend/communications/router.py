@@ -3,7 +3,7 @@ import os
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from pydantic import BaseModel, Field
-from auth import get_current_user_dep, require_role, hash_password
+from auth import get_current_user_dep, get_current_user_optional, require_role, hash_password
 from db import get_db
 from financial_transactions import run_transaction
 from .config import configuration, mailbox
@@ -44,7 +44,12 @@ def enabled():
 
 def address(value):
     try:
-        return mailbox(value)
+        result = mailbox(value)
+        # Account addresses are mailboxes, never display-name headers.
+        domain = result.rsplit("@", 1)[1]
+        if value.strip().lower() != result or "." not in domain or domain.startswith(".") or domain.endswith("."):
+            raise ValueError("Invalid account email")
+        return result
     except ValueError:
         raise HTTPException(422, "Adresse e-mail invalide")
 
@@ -65,26 +70,34 @@ async def request_verification(req: Address, user=Depends(get_current_user_dep))
     enabled()
     db = get_db()
     target = address(req.email)
+    if user.get("email_verified") and user.get("email") == target:
+        return {"ok": True, "verified": True, "message": "Cette adresse e-mail est déjà vérifiée."}
     if not await allow_request(db, "verify", user["id"]):
         raise HTTPException(429, "Veuillez patienter avant de réessayer")
     async def operation(bound):
+        # Serialize requests per account and keep only the newest link usable.
+        await bound.users.update_one({"id": user["id"]}, {"$inc": {"email_verification_version": 1}})
+        await bound.email_tokens.update_many({"user_id": user["id"], "purpose": "verify_email", "used": False},
+                                             {"$set": {"used": True}})
         await send_link(bound, "verify_email", user, target, 24 * 60)
     await run_transaction(db, operation)
-    return {"ok": True}
+    return {"ok": True, "message": "Un lien de vérification valable 24 heures a été demandé. Seul le dernier lien reçu est utilisable."}
 
 
 @router.post("/email/verify")
-async def verify_email(req: Token):
+async def verify_email(req: Token, current=Depends(get_current_user_optional)):
     enabled()
     async def operation(db):
         row = await consume(db, req.token, "verify_email")
+        if isinstance(current, dict) and current["id"] != row["user_id"]:
+            raise HTTPException(409, "Ce lien appartient à un autre compte. Déconnectez-vous avant de continuer.")
         owner = await db.email_accounts.find_one({"_id": row["email"]})
         if owner and owner["user_id"] != row["user_id"]:
             raise HTTPException(409, "Adresse e-mail indisponible")
         await db.email_accounts.update_one({"_id": row["email"]},
             {"$setOnInsert": {"user_id": row["user_id"]}}, upsert=True)
         user = await db.users.find_one({"id": row["user_id"]})
-        if not user or user.get("deleted") or user.get("banned"):
+        if not user or user.get("is_active") is False or any(user.get(k) for k in ("deleted", "is_deleted", "banned", "suspended")):
             raise HTTPException(400, "Lien invalide ou expiré")
         old = user.get("email")
         await db.users.update_one({"id": user["id"]},
@@ -94,7 +107,7 @@ async def verify_email(req: Token):
         await emit(db, "welcome", user["id"], {**user, "email": row["email"], "email_verified": True},
                    {"email": row["email"]}, path="/buyer/home")
     await run_transaction(get_db(), operation)
-    return {"ok": True}
+    return {"ok": True, "message": "Votre adresse e-mail est vérifiée."}
 
 
 @router.post("/password/request-reset", status_code=202)

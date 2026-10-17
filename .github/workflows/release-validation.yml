@@ -401,7 +401,7 @@ jobs:
           docker exec wallet-mongo mongosh --quiet --eval 'rs.initiate({_id:"test-rs",members:[{_id:0,host:"localhost:27017"}]})'
           for attempt in $(seq 1 30); do docker exec wallet-mongo mongosh --quiet --eval 'if(!db.hello().isWritablePrimary) quit(1)' && break; sleep 1; done
       - run: python -m compileall -q backend
-      - run: python -m pytest backend/tests/test_communications.py backend/tests/test_health_unit.py backend/tests/test_models_unit.py backend/tests/test_payment_security_unit.py backend/tests/test_stock_unit.py backend/tests/test_commerce_mongo.py backend/tests/test_order_handoff_unit.py backend/tests/test_financial_inputs_unit.py backend/tests/test_uploads_unit.py backend/tests/test_withdrawal_mongo.py backend/tests/test_auth_security_unit.py backend/tests/test_order_privacy_unit.py backend/tests/test_financial_transactions_mongo.py backend/tests/test_phase3_payment_security.py backend/tests/test_launch_messages_mongo.py backend/tests/test_launch_direct_mongo.py backend/tests/test_launch_whatsapp_mongo.py backend/tests/test_ui_shop_search_mongo.py --junitxml=backend-test-results.xml -q
+      - run: python -m pytest backend/tests/test_communications.py backend/tests/test_realtime_onboarding.py backend/tests/test_health_unit.py backend/tests/test_models_unit.py backend/tests/test_payment_security_unit.py backend/tests/test_stock_unit.py backend/tests/test_commerce_mongo.py backend/tests/test_order_handoff_unit.py backend/tests/test_financial_inputs_unit.py backend/tests/test_uploads_unit.py backend/tests/test_withdrawal_mongo.py backend/tests/test_auth_security_unit.py backend/tests/test_order_privacy_unit.py backend/tests/test_financial_transactions_mongo.py backend/tests/test_phase3_payment_security.py backend/tests/test_launch_messages_mongo.py backend/tests/test_launch_direct_mongo.py backend/tests/test_launch_whatsapp_mongo.py backend/tests/test_ui_shop_search_mongo.py --junitxml=backend-test-results.xml -q
         env:
           PYTHONPATH: backend
           TEST_MONGO_URL: mongodb://127.0.0.1:27017
@@ -480,6 +480,7 @@ jobs:
       - name: Validate session transport and route preload without network access
         run: |
           node scripts/test_session_transport.cjs
+          node scripts/test_notification_stream.cjs
           node scripts/test_early_session.cjs
           node scripts/test_preloadable_screen.cjs
           node scripts/test_whatsapp_contact.cjs
@@ -488,6 +489,8 @@ jobs:
         run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/ui_premium_validation.cjs frontend/build ui-preview-evidence
       - name: Validate verified roles and fail-closed session errors
         run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" REACT_APP_BACKEND_URL=http://127.0.0.1:4179 node scripts/test_session_role_guard.cjs ui-preview-evidence/session-role-guard.json
+      - name: Validate real-time notifications and buyer seller transitions
+        run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" REACT_APP_BACKEND_URL=http://127.0.0.1:4179 node scripts/test_realtime_onboarding_ui.cjs ui-preview-evidence/realtime-onboarding.json
       - name: Validate notification loading and authentication feedback
         run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/test_notification_entry.cjs frontend/build ui-preview-evidence/notification-entry.json
       - name: Validate email template selector and sandboxed preview at four viewport widths

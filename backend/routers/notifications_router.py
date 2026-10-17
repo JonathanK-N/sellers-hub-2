@@ -1,9 +1,12 @@
 """In-app notifications feed + FCM device token registration + preferences."""
 import uuid
 import logging
+import asyncio
+import time
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from db import get_db
@@ -19,6 +22,42 @@ def _now() -> str:
 
 
 # ---------- Feed ----------
+@router.get("/stream")
+async def notification_stream(request: Request, user: dict = Depends(get_current_user_dep)):
+    """Committed, user-scoped invalidations; private content stays in the feed API."""
+    pipeline = [{"$match": {"fullDocument.user_id": user["id"]}}]
+
+    async def events():
+        try:
+            async with get_db().notifications.watch(
+                pipeline, full_document="updateLookup", max_await_time_ms=1000
+            ) as stream:
+                yield "event: changed\ndata: {}\n\n"
+                checked = heartbeat = time.monotonic()
+                while not await request.is_disconnected():
+                    if time.monotonic() - checked >= 15:
+                        await get_current_user_dep(request)
+                        checked = time.monotonic()
+                    change = await stream.try_next()
+                    if not stream.alive:
+                        raise RuntimeError("Notification cursor closed")
+                    if change:
+                        yield "event: changed\ndata: {}\n\n"
+                    if time.monotonic() - heartbeat >= 15:
+                        yield ": heartbeat\n\n"
+                        heartbeat = time.monotonic()
+        except asyncio.CancelledError:
+            raise
+        except HTTPException:
+            yield "event: expired\ndata: {}\n\n"
+        except Exception:
+            logger.warning("Notification stream interrupted")
+            yield "event: unavailable\ndata: {}\n\n"
+
+    return StreamingResponse(events(), media_type="text/event-stream", headers={
+        "Cache-Control": "no-store", "X-Accel-Buffering": "no", "Referrer-Policy": "no-referrer"})
+
+
 @router.get("")
 async def list_notifications(user: dict = Depends(get_current_user_dep)):
     db = get_db()

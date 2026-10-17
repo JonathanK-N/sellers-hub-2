@@ -21,8 +21,8 @@ export default function TopBar({ title = "AfriMarket", showCart = true }) {
       } catch {}
     };
     poll();
-    const t = setInterval(poll, 8000);
-    return () => { cancelled = true; clearInterval(t); };
+    window.addEventListener("afri-notifications-changed", poll);
+    return () => { cancelled = true; window.removeEventListener("afri-notifications-changed", poll); };
   }, [user]);
 
   return (

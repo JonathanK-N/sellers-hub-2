@@ -42,8 +42,9 @@ export default function Profile() {
   return (
     <div className="mobile-shell">
       <TopBar title="Mon profil" showCart={false} />
-<Link to="/email/settings" className="m-4 block text-emerald-700 underline">Vérifier mon adresse e-mail</Link>
+<Link to="/email/settings" className="m-4 block text-emerald-700 underline">{user.email_verified ? "Adresse e-mail vérifiée · Gérer" : "Vérifier mon adresse e-mail"}</Link>
 
+      {(user.role === "buyer" || user.account_role === "buyer") && <Link to="/become-seller" className="m-4 block rounded-lg bg-emerald-700 p-3 text-center font-semibold text-white">{user.role === "seller" ? "Revenir à mon espace acheteur" : user.seller_enabled ? "Ouvrir mon espace vendeur" : "Devenir vendeur"}</Link>}
       <div className="px-4 mt-4 space-y-3">
         <section className="bg-white rounded-xl border border-gray-100 shadow-xs p-4 flex items-center gap-3">
           <button

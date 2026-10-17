@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Bell, BellOff, Check, CheckCheck } from "lucide-react";
 import api, { formatApiError } from "../lib/api";
 import { timeAgo } from "../lib/format";
+import { getNotificationStatus } from "../lib/notification_stream";
 import { enablePushNotifications, disablePushNotifications, notificationPermission, hasRegisteredToken } from "../lib/push";
 
 export default function Notifications() {
@@ -12,25 +13,40 @@ export default function Notifications() {
   const [loading, setLoading] = useState(true);
   const [pushOn, setPushOn] = useState(hasRegisteredToken());
   const [showPrefs, setShowPrefs] = useState(false);
+  const [error, setError] = useState("");
+  const [connection, setConnection] = useState(getNotificationStatus);
 
   const load = () => {
-    api.get("/notifications").then(({ data }) => setItems(data)).catch(() => {}).finally(() => setLoading(false));
+    api.get("/notifications").then(({ data }) => { setItems(data); setError(""); })
+      .catch(() => setError("Notifications temporairement indisponibles. Réessayez."))
+      .finally(() => setLoading(false));
   };
   const loadPrefs = () => api.get("/notifications/preferences").then(({ data }) => setPrefs(data)).catch(() => {});
 
-  useEffect(() => { load(); loadPrefs(); }, []);
+  useEffect(() => {
+    load(); loadPrefs();
+    window.addEventListener("afri-notifications-changed", load);
+    const changed = event => setConnection(event.detail);
+    window.addEventListener("afri-notifications-status", changed);
+    return () => {
+      window.removeEventListener("afri-notifications-changed", load);
+      window.removeEventListener("afri-notifications-status", changed);
+    };
+  }, []);
 
   const markRead = async (id) => {
     try {
       await api.post(`/notifications/${id}/read`);
       setItems((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
-    } catch {}
+      window.dispatchEvent(new Event("afri-notifications-changed"));
+    } catch (e) { toast.error(formatApiError(e.response?.data?.detail)); }
   };
 
   const markAllRead = async () => {
     try {
       await api.post("/notifications/read-all");
       setItems((prev) => prev.map((n) => ({ ...n, read: true })));
+      window.dispatchEvent(new Event("afri-notifications-changed"));
       toast.success("Tout marqué comme lu");
     } catch (e) {
       toast.error(formatApiError(e.response?.data?.detail));
@@ -46,9 +62,11 @@ export default function Notifications() {
       const res = await enablePushNotifications();
       if (res.ok) {
         setPushOn(true);
-        toast.success(res.simulated ? "Notifications activées (mode démo)" : "Notifications push activées");
+        toast.success("Notifications push activées");
       } else {
         const msgs = {
+          not_configured: "Les alertes hors application ne sont pas configurées. Vos notifications restent accessibles dans AfriMarket.",
+          not_configured: "Les alertes hors application ne sont pas configurées. Les notifications restent disponibles dans AfriMarket.",
           unsupported: "Votre navigateur ne supporte pas les notifications",
           denied: "Permission refusée. Activez les notifications dans les réglages du navigateur.",
           token_failed: "Impossible d'obtenir le jeton de notification",
@@ -86,6 +104,8 @@ export default function Notifications() {
       </header>
 
       <div className="px-4 mt-4">
+        <p className="mb-3 text-sm text-gray-600" aria-live="polite">{connection === "connected" ? "Notifications en temps réel connectées" : "Connexion aux notifications en cours. Reconnexion automatique si nécessaire."}</p>
+        {error && <div role="alert" className="mb-4 rounded-lg bg-amber-50 p-3">{error} <button onClick={load} className="underline">Réessayer</button></div>}
         <div className="bg-white rounded-xl border border-gray-100 shadow-xs p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">

@@ -30,6 +30,8 @@ from auth import (
 )
 from sms import send_otp_sms, is_sms_configured
 from communications.events import notify_event
+from pydantic import BaseModel
+from typing import Literal
 from s3_service import upload_public
 
 APP_NAME = "afrimarket"
@@ -40,6 +42,48 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 def _strip_user(user: dict) -> dict:
     return {k: v for k, v in user.items() if k not in {"_id", "otp_code", "otp_expires_at", "password_hash"}}
+
+
+class WorkspaceRequest(BaseModel):
+    role: Literal["buyer", "seller"]
+
+
+def workspace_session(user, role):
+    public = {**_strip_user(user), "role": role}
+    if user.get("role") == "buyer":
+        public["account_role"] = "buyer"
+    return {"token": create_access_token(user["id"], role, user.get("auth_version", 0)), "user": public}
+
+
+@router.post("/become-seller")
+async def become_seller(user=Depends(get_current_user_dep)):
+    db = get_db()
+    # Keep the buyer's identity, history and primary role unchanged.
+    query = {"id": user["id"], "role": "buyer", "phone_verified": True,
+             "auth_version": user.get("auth_version", 0)}
+    if user.get("auth_version", 0) == 0:
+        query["auth_version"] = {"$in": [0, None]}
+    for flag in ("banned", "suspended", "deleted", "is_deleted"):
+        query[flag] = {"$ne": True}
+    query["is_active"] = {"$ne": False}
+    from pymongo import ReturnDocument
+    account = await db.users.find_one_and_update(query, {"$set": {"seller_enabled": True}},
+                                               return_document=ReturnDocument.AFTER)
+    if not account:
+        raise HTTPException(403, "Un compte acheteur actif avec téléphone vérifié est requis")
+    return workspace_session(account, "seller")
+
+
+@router.post("/switch-role")
+async def switch_role(req: WorkspaceRequest, user=Depends(get_current_user_dep)):
+    account = await get_db().users.find_one({"id": user["id"]})
+    if not account or account.get("role") != "buyer" or account.get("seller_enabled") is not True:
+        raise HTTPException(403, "Cet espace n’est pas disponible pour votre compte")
+    if account.get("auth_version", 0) != user.get("auth_version", 0) or account.get("is_active") is False or any(
+        account.get(flag) for flag in ("banned", "suspended", "deleted", "is_deleted")
+    ):
+        raise HTTPException(403, "Session ou compte désactivé")
+    return workspace_session(account, req.role)
 
 
 @router.post("/register")

@@ -102,7 +102,7 @@ async def get_current_user_dep(request: Request):
         raise HTTPException(status_code=403, detail="Votre compte est temporairement suspendu. Contactez le support.")
     if user.get("is_deleted") or user.get("deleted") or user.get("is_active") is False:
         raise HTTPException(403, "Compte désactivé")
-    return user
+    return active_workspace(user, payload)
 
 
 def require_role(*roles: str):
@@ -135,7 +135,20 @@ async def get_current_user_optional(request: Request):
     user = await db.users.find_one({"id": payload["sub"]}, dict.fromkeys(("_id", "otp_code", "otp_expires_at", "password_hash"), 0))
     if user and (payload.get("av", 0) != user.get("auth_version", 0) or user.get("banned") or user.get("suspended") or user.get("deleted") or user.get("is_deleted") or user.get("is_active") is False):
         return None
+    return active_workspace(user, payload) if user else None
+
+
+def active_workspace(user, payload):
+    """Only a database-granted seller capability can select a seller session."""
+    if user.get("role") == "buyer" and user.get("seller_enabled") is True:
+        return {**user, "account_role": "buyer",
+                "role": "seller" if payload.get("role") == "seller" else "buyer"}
     return user
+
+
+def seller_account(user):
+    return bool(user and (user.get("role") == "seller" or
+                         (user.get("role") == "buyer" and user.get("seller_enabled") is True)))
 
 
 def otp_sandbox_enabled():

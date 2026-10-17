@@ -10,7 +10,7 @@ from fastapi import APIRouter, HTTPException, Depends, Query
 from pydantic import BaseModel, Field
 from pymongo import ReturnDocument
 from db import get_db
-from auth import get_current_user_dep
+from auth import get_current_user_dep, seller_account
 
 router = APIRouter(prefix="/messages", tags=["messages"])
 ID_PATTERN = r"^[A-Za-z0-9_-]{1,128}$"
@@ -50,7 +50,9 @@ async def _participants(db, conversation_id, user, writing=False):
     if user["role"] == "seller" and (not seller or seller.get("user_id") != user["id"]):
         raise HTTPException(404, "Conversation introuvable")
     buyer = await db.users.find_one({"id": buyer_id, "role": "buyer"})
-    seller_user = await db.users.find_one({"id": seller["user_id"], "role": "seller"}) if seller else None
+    seller_user = await db.users.find_one({"id": seller["user_id"]}) if seller else None
+    if not seller_account(seller_user):
+        seller_user = None
     if writing:
         if not _active(buyer) or not _active(seller_user) or not _active(seller):
             raise HTTPException(409, "Un participant n’est plus disponible")
