@@ -275,6 +275,23 @@ def test_disabled_transport_never_reads_database_or_sends():
     asyncio.run(run())
 
 
+def test_malformed_mode_blocks_email_without_breaking_business_notification():
+    async def run():
+        from communications.events import emit
+        from communications.business import from_notification, verified_payment
+        with patch.dict(os.environ, {"EMAIL_MODE": '"disabled",'}):
+            with pytest.raises(ValueError):
+                configuration()
+            assert await emit(None, "welcome", "fixture", {}) is None
+            assert await from_notification(None, "fixture", "order_received", "Nouvelle commande", {}) is None
+            assert await verified_payment(None, {}, "SUCCESS", "fixture") is None
+            from communications.router import enabled
+            with pytest.raises(HTTPException) as unavailable:
+                enabled()
+            assert unavailable.value.status_code == 503
+    asyncio.run(run())
+
+
 def test_expired_link_never_reaches_transport():
     async def run(db):
         item = await outbox.enqueue(db, "expired/fixture", "delivered@resend.dev", "Fixture", "Fixture", "Fixture",
@@ -284,6 +301,20 @@ def test_expired_link_never_reaches_transport():
         async with httpx.AsyncClient(transport=httpx.MockTransport(forbidden)) as client:
             await outbox.process_one(db, client)
         assert (await db.email_outbox.find_one({"_id": item}))["status"] == "expired"
+    asyncio.run(isolated(run))
+
+
+def test_provider_suppression_is_persistent_and_blocks_next_message():
+    async def run(db):
+        first = await outbox.enqueue(db, "provider-suppressed/first", "delivered@resend.dev", "Fixture", "Fixture", "Fixture")
+        await db.email_outbox.update_one({"_id": first}, {"$set": {"provider_id": "suppressed-fixture", "status": "accepted"}})
+        result = await webhooks.handle(db, "suppressed-event", {"type": "email.suppressed", "data": {"email_id": "suppressed-fixture"}})
+        assert result["ok"] is True
+        assert (await db.email_outbox.find_one({"_id": first}))["status"] == "suppressed"
+        second = await outbox.enqueue(db, "provider-suppressed/next", "delivered@resend.dev", "Fixture", "Fixture", "Fixture")
+        await outbox.process_one(db)
+        assert (await db.email_outbox.find_one({"_id": second}))["status"] == "suppressed"
+        assert await db.email_suppressions.count_documents({}) == 1
     asyncio.run(isolated(run))
 
 

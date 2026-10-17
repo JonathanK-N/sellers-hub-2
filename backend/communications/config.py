@@ -1,7 +1,19 @@
 """Explicit configuration; no shared sender and no implicit live sends."""
 import os
+import logging
 from email.utils import parseaddr
 from .render import https_url
+
+logger = logging.getLogger(__name__)
+
+
+def sending_enabled():
+    """Fail closed before business hooks; readiness validation still rejects invalid modes."""
+    mode = os.getenv("EMAIL_MODE", "disabled")
+    if mode not in ("disabled", "test", "live"):
+        logger.warning("Email disabled: invalid EMAIL_MODE syntax")
+        return False
+    return mode != "disabled"
 
 
 def mailbox(value):

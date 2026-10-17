@@ -34,7 +34,11 @@ class Reset(Token):
 
 
 def enabled():
-    if configuration()["mode"] == "disabled":
+    try:
+        mode = configuration()["mode"]
+    except ValueError:
+        raise HTTPException(503, "Configuration e-mail indisponible")
+    if mode == "disabled":
         raise HTTPException(503, "Le service e-mail n’est pas activé")
 
 

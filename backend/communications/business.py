@@ -1,10 +1,10 @@
 """Map persisted business states to email events without inferring financial success."""
 from .events import emit
-from .config import configuration
+from .config import sending_enabled
 
 
 async def order_snapshot(db, order_id):
-    if configuration()["mode"] == "disabled":
+    if not sending_enabled():
         return
     order = await db.orders.find_one({"id": order_id})
     if not order:
@@ -32,7 +32,7 @@ async def order_snapshot(db, order_id):
 
 
 async def from_notification(db, user_id, kind, title, data):
-    if configuration()["mode"] == "disabled":
+    if not sending_enabled():
         return
     if kind in ("order_received", "order_shipped", "order_ready", "order_delivered"):
         # order_received is also reused for direct-payment declarations; never reinterpret it.
@@ -57,7 +57,7 @@ async def best_effort_order(db, order_id):
 
 
 async def verified_payment(db, group, status, reference):
-    if configuration()["mode"] == "disabled" or group.get("payment_method") in ("direct", "cash"):
+    if not sending_enabled() or group.get("payment_method") in ("direct", "cash"):
         return
     buyer = await db.users.find_one({"id": group["buyer_id"]}) or {}
     if status == "SUCCESS":
@@ -69,7 +69,7 @@ async def verified_payment(db, group, status, reference):
 
 
 async def dispute_event(db, dispute_id, event):
-    if configuration()["mode"] == "disabled":
+    if not sending_enabled():
         return
     dispute = await db.disputes.find_one({"id": dispute_id})
     if not dispute:

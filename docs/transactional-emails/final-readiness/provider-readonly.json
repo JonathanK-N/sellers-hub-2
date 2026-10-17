@@ -1,0 +1,189 @@
+{
+  "observedAt": "2026-10-17T03:40:22.253Z",
+  "readOnly": true,
+  "variables": {
+    "RESEND_API_KEY": {
+      "present": true
+    },
+    "EMAIL_FROM": {
+      "present": true
+    },
+    "EMAIL_REPLY_TO": {
+      "present": true
+    },
+    "FRONTEND_URL": {
+      "present": true
+    },
+    "EMAIL_LOGO_URL": {
+      "present": true
+    },
+    "EMAIL_OUTBOX_KEY": {
+      "present": true
+    },
+    "RESEND_WEBHOOK_SECRET": {
+      "present": true
+    },
+    "EMAIL_MODE": {
+      "present": true
+    }
+  },
+  "syntax": {
+    "RESEND_API_KEY": {
+      "wrappedInJsonSyntax": false,
+      "containsLineBreak": false
+    },
+    "EMAIL_FROM": {
+      "wrappedInJsonSyntax": true,
+      "containsLineBreak": false
+    },
+    "EMAIL_REPLY_TO": {
+      "wrappedInJsonSyntax": true,
+      "containsLineBreak": false
+    },
+    "FRONTEND_URL": {
+      "wrappedInJsonSyntax": true,
+      "containsLineBreak": false
+    },
+    "EMAIL_LOGO_URL": {
+      "wrappedInJsonSyntax": true,
+      "containsLineBreak": false
+    },
+    "EMAIL_OUTBOX_KEY": {
+      "wrappedInJsonSyntax": false,
+      "containsLineBreak": false
+    },
+    "RESEND_WEBHOOK_SECRET": {
+      "wrappedInJsonSyntax": false,
+      "containsLineBreak": false
+    },
+    "EMAIL_MODE": {
+      "wrappedInJsonSyntax": true,
+      "containsLineBreak": false
+    }
+  },
+  "rawModeValid": false,
+  "domain": {
+    "httpStatus": 200,
+    "name": "afri-market.app",
+    "status": "partially_verified",
+    "capabilities": {
+      "sending": "enabled",
+      "receiving": "enabled"
+    },
+    "records": [
+      {
+        "record": "DKIM",
+        "name": "resend._domainkey",
+        "type": "TXT",
+        "status": "verified"
+      },
+      {
+        "record": "SPF",
+        "name": "rsend",
+        "type": "CNAME",
+        "status": "verified"
+      },
+      {
+        "record": "SPF",
+        "name": "send",
+        "type": "CNAME",
+        "status": "verified"
+      },
+      {
+        "record": "Receiving",
+        "name": "",
+        "type": "MX",
+        "status": "pending"
+      }
+    ]
+  },
+  "webhooks": {
+    "httpStatus": 200,
+    "items": [
+      {
+        "id": "e891e777-37b6-40be-9560-a183c6eeb1a2",
+        "status": "enabled",
+        "endpointHost": "sellers-hub-2-production.up.railway.app",
+        "endpointPath": "/api/communications/resend/webhook",
+        "events": [
+          "contact.created",
+          "contact.deleted",
+          "contact.topics.updated",
+          "contact.updated",
+          "domain.created",
+          "domain.deleted",
+          "domain.updated",
+          "email.bounced",
+          "email.clicked",
+          "email.complained",
+          "email.delivered",
+          "email.delivery_delayed",
+          "email.failed",
+          "email.opened",
+          "email.received",
+          "email.scheduled",
+          "email.sent",
+          "email.suppressed",
+          "suppression.added",
+          "suppression.removed",
+          "topic.created",
+          "topic.deleted",
+          "topic.updated"
+        ]
+      }
+    ]
+  },
+  "keyInventory": {
+    "httpStatus": 200,
+    "count": 1,
+    "createdAt": [
+      "2026-10-17 03:08:17.189529+00"
+    ],
+    "revocationOfExposedKey": "unproven_without_identifier_and_account_scope"
+  },
+  "webhookSecret": {
+    "readStatus": 200,
+    "secretReturned": true,
+    "matchesConfigured": true,
+    "localValidation": {
+      "localSignatureCompatibility": true,
+      "networkRequests": 0,
+      "databaseWrites": 0
+    }
+  },
+  "encryption": {
+    "valid": true
+  },
+  "urls": [
+    {
+      "variable": "FRONTEND_URL",
+      "origin": "https://afri-market.app",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "variable": "EMAIL_LOGO_URL",
+      "origin": "https://afri-market.app",
+      "path": "/assets/email/afrimarket-official.png",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "officialLogoMatches": false
+    }
+  ],
+  "production": {
+    "health": "ok",
+    "sha": "34096b1e9eba13681b84e8d1f44d3264571bb6e8",
+    "webhookOptionsStatus": 404
+  },
+  "dns": {
+    "afri-market.app": {
+      "present": false,
+      "dnsCode": "ENODATA"
+    },
+    "_dmarc.afri-market.app": {
+      "present": false,
+      "dnsCode": "ENOTFOUND"
+    }
+  }
+}

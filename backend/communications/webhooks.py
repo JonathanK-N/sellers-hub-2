@@ -32,7 +32,8 @@ async def handle(db, event_id, payload):
     kind = payload.get("type")
     status = {"email.sent": "accepted", "email.delivered": "delivered",
               "email.bounced": "bounced", "email.complained": "complained",
-              "email.delivery_delayed": "delayed", "email.failed": "failed"}.get(kind)
+              "email.delivery_delayed": "delayed", "email.failed": "failed",
+              "email.suppressed": "suppressed"}.get(kind)
     message_id = payload.get("data", {}).get("email_id")
     if not status or not isinstance(message_id, str):
         return {"ok": True, "ignored": True}
@@ -46,10 +47,11 @@ async def handle(db, event_id, payload):
     if not item:
         # Acceptance may not yet be committed; return retryable status at the HTTP boundary.
         return {"ok": False}
-    if status in ("bounced", "complained"):
+    if status in ("bounced", "complained", "suppressed"):
         await db.email_suppressions.update_one({"_id": item["recipient_hash"]},
             {"$set": {"reason": status}}, upsert=True)
-    rank = {"sending": 0, "accepted": 1, "delayed": 2, "delivered": 3, "failed": 4, "bounced": 5, "complained": 6}
+    rank = {"sending": 0, "accepted": 1, "delayed": 2, "delivered": 3, "failed": 4,
+            "suppressed": 5, "bounced": 6, "complained": 7}
     allowed = [state for state, value in rank.items() if value <= rank[status]]
     await db.email_outbox.update_one({"_id": item["_id"], "status": {"$in": allowed}},
                                    {"$set": {"status": status}})

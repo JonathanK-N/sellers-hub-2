@@ -1,6 +1,5 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Toaster } from "sonner";
 import InstallPrompt from "./components/InstallPrompt";
 import "./App.css";
 
@@ -22,6 +21,7 @@ const EmailCommunication = lazy(() => import("./pages/EmailCommunication"));
 const EmailTemplates = lazy(() => import("./pages/admin/EmailTemplates"));
 const EmailInvitations = lazy(() => import("./pages/seller/EmailInvitations"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
+const Toaster = lazy(() => import("sonner").then(module => ({ default: module.Toaster })));
 
 const BuyerHome = preloadableScreen(() => import("./pages/buyer/Home"));
 const SearchPage = lazy(() => import("./pages/buyer/Search"));
@@ -148,7 +148,7 @@ function App() {
       <CartProvider>
         <BrowserRouter>
           <AuthModalProvider>
-          <Toaster position="top-center" richColors />
+          <Suspense fallback={null}><Toaster position="top-center" richColors /></Suspense>
           <InstallPrompt />
           <SmoothScroll />
           <CartDrawerMount />

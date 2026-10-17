@@ -1,6 +1,6 @@
 """Central event renderer; callers supply proven business facts and stable identities."""
 import logging
-from .config import configuration
+from .config import configuration, sending_enabled
 from .render import render
 from .outbox import enqueue
 
@@ -8,6 +8,8 @@ logger = logging.getLogger(__name__)
 
 
 async def emit(db, event, entity_id, user, context=None, path="/buyer/orders"):
+    if not sending_enabled():
+        return None
     config = configuration()
     if config["mode"] == "disabled" or not user.get("email_verified") or not user.get("email"):
         return None
