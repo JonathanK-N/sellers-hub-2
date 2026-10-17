@@ -3,11 +3,13 @@
   "build": {
     "builder": "NIXPACKS",
     "nixpacksPlan": {
-      "providers": ["python"]
+      "providers": [
+        "python"
+      ]
     }
   },
   "deploy": {
-    "startCommand": "uvicorn server:app --host 0.0.0.0 --port $PORT",
+    "startCommand": "python runtime_entry.py",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 5
   }
