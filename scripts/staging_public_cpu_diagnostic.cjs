@@ -1,5 +1,6 @@
 // Author: Jonathan Kakesa. Additional profiler run, excluded from acceptance measurements.
 const fs = require('node:fs');
+const crypto = require('node:crypto');
 const path = require('node:path');
 const {createRequire} = require('node:module');
 const {pathToFileURL} = require('node:url');
@@ -11,9 +12,11 @@ const {pathToFileURL} = require('node:url');
   const launcher = await import(pathToFileURL(dependency.resolve('chrome-launcher')).href);
   const {CpuProfileModel} = await import(pathToFileURL(path.join(path.dirname(dependency.resolve('lighthouse')), 'lib/tracehouse/cpu-profile-model.js')).href);
   const health = await (await fetch('https://afrimarket-api-staging-staging.up.railway.app/api/health')).json();
-  if (health.source_sha !== '6e83f69f95abc0f72d5fb24c70f171155ef3f53f') throw Error('Unexpected deployed API');
+  if (health.status !== 'ok' || health.source_sha !== 'c38a75d81470c62fbb878f979752ff0a85af2649') throw Error('Unexpected deployed API');
   const html = await (await fetch(origin)).text();
-  if (!html.includes('/assets/index-DvLEhIRo.js')) throw Error('Unexpected deployed Web');
+  if (!html.includes('/assets/index-DtniLwOj.js')) throw Error('Unexpected deployed Web');
+  const entryBytes = Buffer.from(await (await fetch(origin + '/assets/index-DtniLwOj.js')).arrayBuffer());
+  if (crypto.createHash('sha256').update(entryBytes).digest('hex') !== '7933184a0af85631036863b956823b85c2a96fefd6058636a25a23a724734096') throw Error('Unexpected deployed Web artifact');
   const chrome = await launcher.launch({chromeFlags:['--headless','--no-sandbox'], logLevel:'silent'});
   try {
     const result = await lighthouse(origin, {port:chrome.port, logLevel:'silent', output:'json', onlyCategories:['performance'], additionalTraceCategories:['disabled-by-default-v8.cpu_profiler']});
