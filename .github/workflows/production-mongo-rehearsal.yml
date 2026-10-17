@@ -1,0 +1,20 @@
+name: Production Mongo isolated rehearsal
+on:
+  push:
+    branches: [test/afrimarket-production-mongo-conversion]
+permissions:
+  contents: read
+jobs:
+  isolated-linux-bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test exact bootstrap on synthetic persistent volume
+        run: bash scripts/test_production_mongo_bootstrap.sh 'mongo@sha256:d0d926f94df099bff534b7ee5b5986458131a22489dfff8664509af0c1e2ca9c' docs/transactional-emails/production-email-activation/mongodb-production-start.proposed.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: production-mongo-bootstrap-proof
+          path: bootstrap-proof.json
+          if-no-files-found: warn
