@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import InstallPrompt from "./components/InstallPrompt";
+import SessionUnavailable from "./components/SessionUnavailable";
 import "./App.css";
 
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -119,7 +120,7 @@ function QrCollectRedirect() {
 }
 
 function ProtectedRoute({ children, roles }) {
-  const { user, loading } = useAuth();
+  const { user, loading, sessionUnavailable } = useAuth();
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-500">
@@ -127,6 +128,7 @@ function ProtectedRoute({ children, roles }) {
       </div>
     );
   }
+  if (sessionUnavailable) return <SessionUnavailable />;
   if (!user) return <Navigate to="/auth/login" replace />;
   if (roles && !roles.includes(user.role))
     return <Navigate to="/" replace />;
@@ -135,7 +137,7 @@ function ProtectedRoute({ children, roles }) {
 }
 
 function RoleRedirect() {
-  const { user, loading } = useAuth();
+  const { user, loading, sessionUnavailable } = useAuth();
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-500">
@@ -143,6 +145,7 @@ function RoleRedirect() {
       </div>
     );
   }
+  if (sessionUnavailable) return <SessionUnavailable />;
   if (!user) return <Landing />;
   if (user.role === "admin") return <Navigate to="/admin/overview" replace />;
   if (user.role === "seller") return <Navigate to="/seller/dashboard" replace />;

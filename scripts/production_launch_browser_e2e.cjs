@@ -171,9 +171,12 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
     await buyer.page.getByTestId('chat-send-btn').click();
     await buyer.page.getByRole('alert').waitFor();
     await buyer.page.reload();
-    await buyer.page.getByTestId('chat-input').waitFor();
-    check('Uncertain message draft survives reload',await buyer.page.getByTestId('chat-input').inputValue()==='TEST uncertain response');
+    await buyer.page.getByTestId('session-unavailable').waitFor();
+    check('Offline reload gates the private conversation and preserves its pending draft',await buyer.page.getByTestId('chat-input').count()===0&&await buyer.page.evaluate(()=>!!localStorage.getItem('afri_token')&&Object.keys(sessionStorage).some(key=>key.startsWith('afri_chat_pending:')&&JSON.parse(sessionStorage.getItem(key))?.text==='TEST uncertain response')));
     buyer.network.down=false;
+    await buyer.page.getByTestId('session-retry').click();
+    await buyer.page.getByTestId('chat-input').waitFor();
+    check('Uncertain message draft survives reload and session re-verification',await buyer.page.getByTestId('chat-input').inputValue()==='TEST uncertain response');
     await buyer.page.getByTestId('chat-send-btn').click();
     await buyer.page.getByTestId('chat-messages').getByText('TEST uncertain response',{exact:false}).waitFor();
     await merchant.page.goto(origin+'/messages/'+conversation);

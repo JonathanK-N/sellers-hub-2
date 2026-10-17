@@ -28,7 +28,11 @@ export function AuthProvider({ children }) {
     }
   });
 
+  const [sessionUnavailable, setSessionUnavailable] = useState(false);
+
   const refresh = useCallback(async () => {
+    setLoading(true);
+    setSessionUnavailable(false);
     const token = localStorage.getItem("afri_token");
     if (!token) {
       setUser(null);
@@ -44,6 +48,8 @@ export function AuthProvider({ children }) {
       localStorage.removeItem("afri_user");
       if (error.response?.status === 401 || error.response?.status === 403) {
         localStorage.removeItem("afri_token");
+      } else {
+        setSessionUnavailable(true);
       }
     } finally {
       setLoading(false);
@@ -56,6 +62,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const expired = () => {
+      setSessionUnavailable(false);
       setUser(null);
       setLoading(false);
     };
@@ -78,12 +85,14 @@ export function AuthProvider({ children }) {
   }, [user]);
 
   const setSession = (token, userObj) => {
+    setSessionUnavailable(false);
     localStorage.setItem("afri_token", token);
     localStorage.setItem("afri_user", JSON.stringify(userObj));
     setUser(userObj);
   };
 
   const logout = () => {
+    setSessionUnavailable(false);
     import("../lib/push")
       .then(({ disablePushNotifications }) => {
         disablePushNotifications().catch(() => {});
@@ -96,7 +105,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, setSession, logout, refresh }}
+      value={{ user, loading, sessionUnavailable, setSession, logout, refresh }}
     >
       {children}
     </AuthContext.Provider>
