@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
 import { routeResourceHints } from './build-tools/route_resource_hints.mjs';
+import { earlySessionScript } from './build-tools/early_session.mjs';
 
 function inlineEntryStyles(backendUrl) {
   return {
@@ -14,7 +15,7 @@ function inlineEntryStyles(backendUrl) {
       handler(html, context) {
         if (!context.bundle) return html;
         const hints = routeResourceHints(context.bundle, backendUrl);
-        html = html.replace(/<meta charset="utf-8"\s*\/?>/i, tag => tag + hints);
+        html = html.replace(/<meta charset="utf-8"\s*\/?>/i, tag => tag + earlySessionScript(backendUrl) + hints);
         const fonts = readFileSync(new URL('./public/fonts/poppins.css', import.meta.url), 'utf8');
         html = html.replace('<link rel="stylesheet" href="/fonts/poppins.css" />', `<style data-afrimarket-fonts>${fonts}</style>`);
         return html.replace(/<link\b[^>]*rel="stylesheet"[^>]*>/g, tag => {

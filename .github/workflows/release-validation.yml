@@ -480,6 +480,7 @@ jobs:
       - name: Validate session transport and route preload without network access
         run: |
           node scripts/test_session_transport.cjs
+          node scripts/test_early_session.cjs
           node scripts/test_preloadable_screen.cjs
           node scripts/test_whatsapp_contact.cjs
           node scripts/test_route_resource_hints.cjs frontend/build
