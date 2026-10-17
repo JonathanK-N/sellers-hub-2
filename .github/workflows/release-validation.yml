@@ -165,6 +165,8 @@ jobs:
           node -e "require('fs').writeFileSync('performance-evidence/context.json',JSON.stringify({baselineSha:'9176e82debf2b35f7262d64416fa9cb5e983726b',sourceSha:process.env.SOURCE_SHA,runner:process.env.RUNNER_OS,profile:'Lighthouse 13.5 default mobile; same runner; sequential; 3 pairs; local static hosts; staging API'},null,2));"
         env:
           SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Profile deployed public entry separately from acceptance measurements
+        run: LIGHTHOUSE_PACKAGE=/tmp/perf-tools/node_modules/lighthouse/package.json node scripts/staging_public_cpu_diagnostic.cjs performance-evidence/staging-cpu-diagnostic.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -432,6 +434,8 @@ jobs:
         run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/ui_premium_validation.cjs frontend/build ui-preview-evidence
       - name: Validate notification loading and authentication feedback
         run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/test_notification_entry.cjs frontend/build ui-preview-evidence/notification-entry.json
+      - name: Validate email template selector and sandboxed preview at four viewport widths
+        run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/test_email_templates_responsive.cjs frontend/build
       - name: Validate WhatsApp configuration and customer links without external messages
         run: PLAYWRIGHT_MODULE="$RUNNER_TEMP/ui-tools/node_modules/playwright" node scripts/whatsapp_contact_browser_validation.cjs frontend/build ui-preview-evidence/whatsapp.json
       - name: Build read-only API preview configuration
