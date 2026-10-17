@@ -98,8 +98,20 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
       context.setDefaultNavigationTimeout(30000);
       contexts.push(context);
       const network={down:false,loseMessageResponse:false};
+      // route.fetch buffers the body; an SSE response intentionally never ends.
+      // Send this transport directly to the isolated API so it remains streaming.
+      await context.addInitScript(({apiOrigin})=>{
+        const nativeFetch=window.fetch.bind(window);
+        window.fetch=(input,init)=>{
+          const url=new URL(typeof input==='string'?input:input.url,location.href);
+          return nativeFetch(url.pathname==='/api/notifications/stream'?apiOrigin+url.pathname:input,init);
+        };
+      },{apiOrigin});
       await context.route('**/*',async route=>{
         const request=route.request();const url=new URL(request.url());
+        if(url.origin===apiOrigin&&url.pathname==='/api/notifications/stream'){
+          return network.down?route.abort('internetdisconnected'):route.continue();
+        }
         if(url.origin===new URL(metadata.api).origin){
           if(network.down)return route.abort('internetdisconnected');
           let response;
