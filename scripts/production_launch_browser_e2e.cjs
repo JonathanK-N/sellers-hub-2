@@ -74,6 +74,11 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Djibril/
     check('Synthetic buyer, seller and courier registered, OTP-verified and authenticated via real HTTP',true);
     identities.admin=await api('POST','/auth/admin/login',{phone:'+243000000099',password});
     const seller=await api('POST','/seller/setup',{shop_name:'TEST browser shop',address:'TEST collection point'},identities.seller.access_token);
+    const beforeApproval=await api('GET','/deliverers/available',undefined,identities.seller.access_token);
+    check('Unapproved courier cannot be assigned',!beforeApproval.some(row=>row.id===identities.deliverer.user.id));
+    fixturePython("import sys,json\nfrom pymongo import MongoClient\ns=json.load(sys.stdin); assert s['database'].startswith('afrimarket_test_launch_browser_'); c=MongoClient('mongodb://127.0.0.1:27018/?replicaSet=phase3-test'); d=c[s['database']]; d.deliverers.update_one({'user_id':s['courier']},{'$set':{'id':'TEST-approved-'+s['courier'],'is_active':True,'affiliation':'shop','seller_id':s['shop'],'country_code':'CD','vehicle':'moto'}},upsert=True); c.close()",{database,courier:identities.deliverer.user.id,shop:seller.id});
+    const approvedCouriers=await api('GET','/deliverers/available',undefined,identities.seller.access_token);
+    check('Synthetic approved shop courier is available to the owning shop',approvedCouriers.some(row=>row.id===identities.deliverer.user.id));
     await api('PUT','/seller/whatsapp',{phone:identities.seller.user.phone,visible:true},identities.seller.access_token);
     const product=await api('POST','/products',{name:'TEST browser product',price:1200,currency:'FC',stock:8,photos:[],delivery_modes:['collect','delivery']},identities.seller.access_token);
     staticServer=http.createServer((req,res)=>{

@@ -20,6 +20,14 @@ Intégration préparée sur feature/afrimarket-transactional-emails, sans fusion
 
 Ces contrôles ne prouvent pas un envoi réel, une livraison en boîte, un rendu Gmail/Outlook, des performances HTTPS déployées ou une validation production.
 
+## Première exécution GitHub
+
+[Exécution 38995619500](https://github.com/JonathanK-N/sellers-hub-2/actions/runs/38995619500), candidat fe2a827ccb91e96749d2f8c571ab5b8b57ed6f11 : backend et audits de sécurité réussis. Le job frontend-business-e2e échoue sur l’assignation d’un livreur synthétique sans affiliation approuvée. Sa fixture est corrigée sans assouplir l’application : vérifier le refus avant approbation, préparer un profil boutique approuvé dans la seule base de test isolée, puis vérifier sa disponibilité et reprendre le parcours complet.
+
+Le contrôle ui-premium-preview conserve trois échecs LCP : **2752,68 / 2558,03 / 2555,97 ms**, seuil 2500 ms inchangé. Performances : **94 / 95 / 95** ; accessibilité, bonnes pratiques et SEO : **100**. Il s’agit d’une prévisualisation publique utilisant les lectures staging, pas d’un déploiement HTTPS de cette branche. Ces mesures interdisent de déclarer la CI entière verte ou GO production. Le comparatif avec main doit être lu séparément ; l’origine préexistante ou régressive de ces dépassements ne doit pas être supposée.
+
+Le contrôle d’affiliation s’applique même lorsque les e-mails sont désactivés. Avant tout déploiement futur, inventorier en lecture seule les profils existants sans affiliation approuvée et vérifier la topologie Mongo requise par les approbations transactionnelles. Aucun profil n’est migré automatiquement.
+
 ## Échecs et corrections conservés
 
 1. Premier appel pytest depuis la racine sans PYTHONPATH : collecte impossible du paquet communications. Correction de la commande pour utiliser le même PYTHONPATH que la CI.
