@@ -6,7 +6,7 @@ Base publiée vérifiée : 4464a789abf5f8ac64ee6cbef649820d1616f5c7, feature/afr
 
 ## Résultats locaux
 
-- 48 tests e-mail PASS, dont les 26 rendus HTML/texte. Le nouveau test appelle la vraie assignation après décisions d’affiliation synthétiques : réseau/boutique exacte autorisés, manquante/autre boutique/inactive refusés. Une première collecte sans PYTHONPATH a échoué ; email-tests-environment-failure.log est conservé. Aucun test ignoré dans la reprise réussie.
+- 51 tests e-mail PASS, dont les 26 rendus HTML/texte. Le nouveau test appelle la vraie assignation après décisions d’affiliation synthétiques : réseau/boutique exacte autorisés, manquante/autre boutique/inactive refusés. Une première collecte sans PYTHONPATH a échoué ; email-tests-environment-failure.log est conservé. Aucun test ignoré dans la reprise réussie.
 - Répétition Mongo complète PASS : standalone authentifié vers replica set sur même dbPath, empreintes/index conservés, transaction commit/abort, sauvegarde chiffrée avant disque et restauration exacte dans un nouveau répertoire, retour standalone conservant un commit post-conversion. Aucun accès production par ce script. Trois premiers échecs du harnais sont conservés : format keyfile base64url incorrect, découverte d’un replica set non initialisé sans directConnection, puis client conservant la topologie bootstrap avant élection. Les corrections visent le harnais, pas les données production.
 - Variables : cinq valeurs toujours mal saisies. Diff exact dans production-config-diff.json, appliqué=false. Voir configuration-plan.md pour l’ordre sûr et les approbations.
 - Nouvel audit Mongo production en lecture seule : standalone, trois profils actifs sans affiliation, aucun doublon ou boutique orpheline. Aucun identifiant personnel publié.
@@ -15,6 +15,8 @@ Base publiée vérifiée : 4464a789abf5f8ac64ee6cbef649820d1616f5c7, feature/afr
 ## Diagnostic performance et correction ciblée
 
 Le graphe initial contenait 16 requêtes JavaScript, notamment de nombreux très petits modules d’icônes partagés. Regrouper les modules lucide-react dans un chunk partagé conserve les icônes, fonctions et CSS, et réduit les requêtes observées à cinq. Le build réussit ; le test de graphe de routes passe. Le budget et le profil Lighthouse sont inchangés.
+
+La préparation du staging a aussi identifié des écritures au démarrage par le scheduler, indépendantes du seed. BACKGROUND_JOBS_ENABLED=false empêche son lancement, y compris refresh FX immédiat et expiration des invitations. Trois tests vérifient que false et des valeurs mal formées ne démarrent aucun job. Le comportement par défaut true des autres environnements est conservé. Aucun paramètre Railway modifié.
 
 Les trois mesures locales avec aperçu valide restent FAIL :
 

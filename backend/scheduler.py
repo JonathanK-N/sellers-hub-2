@@ -107,6 +107,10 @@ async def process_email_outbox():
 
 def start_scheduler():
     global _scheduler
+    # A validation deployment can inspect existing data without starting write jobs.
+    if os.getenv("BACKGROUND_JOBS_ENABLED", "true") != "true":
+        logger.info("Background jobs disabled by configuration")
+        return
     if _scheduler:
         return
     _scheduler = AsyncIOScheduler(timezone="UTC")

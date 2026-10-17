@@ -83,6 +83,16 @@ def test_affiliation_is_exclusive():
     assert not compatible({"affiliation": "afrimarket"}, "shop", "a")
 
 
+@pytest.mark.parametrize("mode", ["false", '"false",', "invalid"])
+def test_readonly_validation_does_not_start_background_writers(mode):
+    import scheduler
+    with patch.dict(os.environ, {"BACKGROUND_JOBS_ENABLED": mode}), \
+         patch.object(scheduler, "_scheduler", None), \
+         patch.object(scheduler, "AsyncIOScheduler", side_effect=AssertionError("No write jobs during validation")):
+        scheduler.start_scheduler()
+        assert scheduler._scheduler is None
+
+
 def test_delivery_assignments_after_explicit_synthetic_affiliation_migration():
     async def run(db):
         import db as database_module
