@@ -127,7 +127,7 @@ def test_realtime_stream_is_private_committed_and_rechecks_session():
             event = await asyncio.wait_for(anext(stream), 5)
             assert event == "event: changed\ndata: {}\n\n" and "private" not in event
             await db.users.update_one({"id": "fixture"}, {"$set": {"banned": True}})
-            with patch("routers.notifications_router.time.monotonic", return_value=10**12):
+            with patch("routers.notifications_router.monotonic", return_value=10**12):
                 event = await asyncio.wait_for(anext(stream), 5)
                 if event.startswith(": heartbeat"):
                     event = await asyncio.wait_for(anext(stream), 5)

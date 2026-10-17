@@ -2,7 +2,7 @@
 import uuid
 import logging
 import asyncio
-import time
+from time import monotonic
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException, Depends, Request
@@ -33,19 +33,19 @@ async def notification_stream(request: Request, user: dict = Depends(get_current
                 pipeline, full_document="updateLookup", max_await_time_ms=1000
             ) as stream:
                 yield "event: changed\ndata: {}\n\n"
-                checked = heartbeat = time.monotonic()
+                checked = heartbeat = monotonic()
                 while not await request.is_disconnected():
-                    if time.monotonic() - checked >= 15:
+                    if monotonic() - checked >= 15:
                         await get_current_user_dep(request)
-                        checked = time.monotonic()
+                        checked = monotonic()
                     change = await stream.try_next()
                     if not stream.alive:
                         raise RuntimeError("Notification cursor closed")
                     if change:
                         yield "event: changed\ndata: {}\n\n"
-                    if time.monotonic() - heartbeat >= 15:
+                    if monotonic() - heartbeat >= 15:
                         yield ": heartbeat\n\n"
-                        heartbeat = time.monotonic()
+                        heartbeat = monotonic()
         except asyncio.CancelledError:
             raise
         except HTTPException:
