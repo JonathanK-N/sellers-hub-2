@@ -11,7 +11,15 @@ import { verifySession } from "../lib/session_api";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      if (!localStorage.getItem("afri_token")) return null;
+      const raw = localStorage.getItem("afri_user");
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
   const [loading, setLoading] = useState(() => {
     try {
       return Boolean(localStorage.getItem("afri_token"));
