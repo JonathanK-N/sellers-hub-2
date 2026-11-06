@@ -48,3 +48,171 @@ def test_explicit_cors_origins_keep_credentials_for_listed_origins_only(monkeypa
     assert allowed.headers.get("access-control-allow-credentials") == "true"
     denied = client.get("/api/", headers={"Origin": "https://evil.example"})
     assert "access-control-allow-origin" not in denied.headers
+
+
+# ---------------------------------------------------------------------------
+# Base Mongo minimale en mémoire pour les compteurs anti-abus
+# ---------------------------------------------------------------------------
+import asyncio
+import copy
+from datetime import datetime, timezone, timedelta
+from types import SimpleNamespace
+from unittest.mock import AsyncMock, patch
+
+from fastapi import HTTPException
+
+
+def _matches(doc, query):
+    return all(doc.get(k) == v for k, v in query.items())
+
+
+class FakeCollection:
+    def __init__(self, docs=None):
+        self.docs = [dict(d) for d in (docs or [])]
+
+    async def find_one(self, query, projection=None, **_):
+        for doc in self.docs:
+            if _matches(doc, query):
+                return copy.deepcopy(doc)
+        return None
+
+    async def find_one_and_update(self, query, update, upsert=False, return_document=None, projection=None, **_):
+        target = next((d for d in self.docs if _matches(d, query)), None)
+        if target is None:
+            if not upsert:
+                return None
+            target = dict(query)
+            target.update(update.get("$setOnInsert", {}))
+            self.docs.append(target)
+        for key, value in update.get("$inc", {}).items():
+            target[key] = target.get(key, 0) + value
+        target.update(update.get("$set", {}))
+        return copy.deepcopy(target)
+
+    async def update_one(self, query, update, upsert=False, **_):
+        target = next((d for d in self.docs if _matches(d, query)), None)
+        if target is None and upsert:
+            target = dict(query)
+            self.docs.append(target)
+        if target is not None:
+            for key, value in update.get("$inc", {}).items():
+                target[key] = target.get(key, 0) + value
+            target.update(update.get("$set", {}))
+        return SimpleNamespace(matched_count=int(target is not None), modified_count=int(target is not None))
+
+    async def delete_one(self, query):
+        for doc in self.docs:
+            if _matches(doc, query):
+                self.docs.remove(doc)
+                return SimpleNamespace(deleted_count=1)
+        return SimpleNamespace(deleted_count=0)
+
+
+class FakeDb:
+    def __init__(self, **collections):
+        self._collections = {name: FakeCollection(docs) for name, docs in collections.items()}
+
+    def __getattr__(self, name):
+        if name.startswith("_"):
+            raise AttributeError(name)
+        return self._collections.setdefault(name, FakeCollection())
+
+
+PHONE = "+243810000000"
+
+
+def otp_db(code="123456"):
+    future = datetime.now(timezone.utc) + timedelta(minutes=5)
+    return FakeDb(
+        users=[{"id": "u1", "phone": PHONE, "role": "buyer", "name": "Test", "auth_version": 0}],
+        otp_codes=[{"phone": PHONE, "code": code, "expires_at": future}],
+    )
+
+
+def test_phone_otp_is_invalidated_after_five_wrong_attempts(monkeypatch):
+    from routers import auth_router
+    from models import VerifyOtpRequest
+    monkeypatch.setenv("JWT_SECRET", "synthetic-unit-test-secret-with-sufficient-length")
+    db = otp_db()
+    verify = auth_router.verify_otp.__wrapped__
+    with patch.object(auth_router, "get_db", return_value=db):
+        statuses = []
+        for _ in range(5):
+            with pytest.raises(HTTPException) as error:
+                asyncio.run(verify(None, VerifyOtpRequest(phone=PHONE, code="000000")))
+            statuses.append(error.value.status_code)
+        assert statuses == [400, 400, 400, 400, 429]
+        assert db.otp_codes.docs == []
+        with pytest.raises(HTTPException) as error:
+            asyncio.run(verify(None, VerifyOtpRequest(phone=PHONE, code="123456")))
+        assert error.value.status_code == 400
+
+
+def test_phone_otp_still_accepts_the_right_code(monkeypatch):
+    from routers import auth_router
+    from models import VerifyOtpRequest
+    monkeypatch.setenv("JWT_SECRET", "synthetic-unit-test-secret-with-sufficient-length")
+    db = otp_db()
+    with patch.object(auth_router, "get_db", return_value=db):
+        with pytest.raises(HTTPException):
+            asyncio.run(auth_router.verify_otp.__wrapped__(None, VerifyOtpRequest(phone=PHONE, code="999999")))
+        result = asyncio.run(auth_router.verify_otp.__wrapped__(None, VerifyOtpRequest(phone=PHONE, code=" 123456 ")))
+    assert result["access_token"]
+    assert "password_hash" not in result["user"]
+
+
+def test_password_reset_otp_cannot_be_brute_forced():
+    from routers import auth_router
+    from models import SetPasswordRequest
+    db = otp_db()
+    with patch.object(auth_router, "get_db", return_value=db):
+        last = None
+        for _ in range(5):
+            with pytest.raises(HTTPException) as error:
+                asyncio.run(auth_router.reset_password(SetPasswordRequest(phone=PHONE, code="000000", new_password="nouveau-secret")))
+            last = error.value.status_code
+        assert last == 429
+        assert db.otp_codes.docs == []
+        assert "password_hash" not in db.users.docs[0]
+
+
+def test_send_otp_is_capped_per_phone_number():
+    from routers import auth_router
+    from models import SendOtpRequest
+    db = otp_db()
+    with patch.object(auth_router, "get_db", return_value=db), \
+            patch.object(auth_router, "require_otp_delivery"), \
+            patch.object(auth_router, "send_otp_sms", AsyncMock(return_value=True)) as sms:
+        for _ in range(5):
+            asyncio.run(auth_router.send_otp.__wrapped__(None, SendOtpRequest(phone=PHONE)))
+        with pytest.raises(HTTPException) as error:
+            asyncio.run(auth_router.send_otp.__wrapped__(None, SendOtpRequest(phone=PHONE)))
+    assert error.value.status_code == 429
+    assert sms.await_count == 5
+    assert db.otp_codes.docs[0]["attempts"] == 0
+
+
+def test_application_otp_send_is_capped_against_sms_bombing():
+    from routers import deliverer_applications_router as routes
+    db = FakeDb()
+    user = {"id": "candidate", "role": "buyer"}
+    with patch.object(routes, "get_db", return_value=db), \
+            patch.object(routes, "send_otp_sms", AsyncMock(return_value=True)) as sms:
+        for _ in range(5):
+            asyncio.run(routes.send_application_otp(routes.ApplicationOtpSendRequest(phone="+243990000000"), user))
+        with pytest.raises(HTTPException) as error:
+            asyncio.run(routes.send_application_otp(routes.ApplicationOtpSendRequest(phone="+243990000000"), user))
+    assert error.value.status_code == 429
+    assert sms.await_count == 5
+
+
+def test_application_otp_is_invalidated_after_five_wrong_attempts():
+    from routers import deliverer_applications_router as routes
+    future = datetime.now(timezone.utc) + timedelta(minutes=5)
+    db = FakeDb(application_otp_codes=[{"phone": PHONE, "user_id": "candidate", "code": "123456", "expires_at": future}])
+    user = {"id": "candidate", "role": "buyer"}
+    with patch.object(routes, "get_db", return_value=db):
+        for _ in range(5):
+            with pytest.raises(HTTPException):
+                asyncio.run(routes.verify_application_otp(routes.ApplicationOtpVerifyRequest(phone=PHONE, code="000000"), user))
+    assert db.application_otp_codes.docs == []
