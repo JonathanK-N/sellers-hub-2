@@ -266,3 +266,33 @@ def test_handoff_failures_survive_financial_transaction_rollback():
     raw = FakeDb()
     assert _unbound(SessionDatabase(raw, session=object())) is raw
     assert _unbound(raw) is raw
+
+
+def test_admin_buyer_kyc_queue_never_returns_password_hash():
+    from unittest.mock import MagicMock
+    from routers import admin_router
+    db = MagicMock()
+    db.users.find.return_value.sort.return_value.to_list = AsyncMock(return_value=[])
+    with patch.object(admin_router, "get_db", return_value=db):
+        asyncio.run(admin_router.buyer_kyc_pending({"id": "admin", "role": "admin"}))
+    projection = db.users.find.call_args.args[1]
+    assert projection["password_hash"] == 0 and projection["otp_code"] == 0
+
+
+def test_admin_deliverer_list_never_returns_password_hash():
+    from unittest.mock import MagicMock
+    from routers import delivery_router
+
+    class Cursor:
+        def __aiter__(self):
+            async def gen():
+                for doc in []:
+                    yield doc
+            return gen()
+
+    db = MagicMock()
+    db.users.find.return_value = Cursor()
+    with patch.object(delivery_router, "get_db", return_value=db):
+        asyncio.run(delivery_router.admin_list_deliverers({"id": "admin", "role": "admin"}))
+    projection = db.users.find.call_args.args[1]
+    assert projection["password_hash"] == 0

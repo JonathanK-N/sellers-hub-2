@@ -320,7 +320,7 @@ async def get_tracking(order_id: str, user: dict = Depends(get_current_user_dep)
 async def admin_list_deliverers(_: dict = Depends(require_role("admin"))):
     db = get_db()
     rows = []
-    async for u in db.users.find({"role": "deliverer"}, {"_id": 0, "otp_code": 0}):
+    async for u in db.users.find({"role": "deliverer"}, dict.fromkeys(("_id", "password_hash", "otp_code", "otp_expires_at"), 0)):
         prof = await db.deliverers.find_one({"user_id": u["id"]}, {"_id": 0}) or {}
         u["vehicle"] = prof.get("vehicle", "moto")
         u["is_active"] = prof.get("is_active", True)
