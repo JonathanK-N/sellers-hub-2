@@ -1,6 +1,7 @@
 from uploads import read_upload
 """Admin panel endpoints."""
 import io
+import os
 import csv
 import logging
 from collections import defaultdict
@@ -721,8 +722,11 @@ async def delete_banner(banner_id: str, _: dict = Depends(require_role("admin"))
 @router.delete("/cleanup-demo")
 async def cleanup_demo_data(_: dict = Depends(require_role("admin"))):
     """Supprime toutes les données marquées demo:True en base.
-    À appeler une seule fois avant la mise en production.
+    Opération destructrice et ponctuelle : désactivée sauf si
+    ENABLE_DEMO_CLEANUP=true est défini temporairement.
     """
+    if os.environ.get("ENABLE_DEMO_CLEANUP", "false").strip().lower() != "true":
+        raise HTTPException(status_code=404, detail="Not Found")
     db = get_db()
     collections = [
         "users", "sellers", "products", "orders", "order_groups",

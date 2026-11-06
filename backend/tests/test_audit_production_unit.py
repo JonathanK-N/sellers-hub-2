@@ -325,3 +325,14 @@ def MagicMock_db():
     db.files.insert_one = AsyncMock()
     db.users.update_one = AsyncMock()
     return db
+
+
+def test_demo_cleanup_is_disabled_unless_explicitly_enabled(monkeypatch):
+    from unittest.mock import MagicMock
+    from routers import admin_router
+    monkeypatch.delenv("ENABLE_DEMO_CLEANUP", raising=False)
+    db = MagicMock()
+    with patch.object(admin_router, "get_db", return_value=db), pytest.raises(HTTPException) as error:
+        asyncio.run(admin_router.cleanup_demo_data({"id": "admin", "role": "admin"}))
+    assert error.value.status_code == 404
+    db.__getitem__.assert_not_called()
