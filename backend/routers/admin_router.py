@@ -1,6 +1,7 @@
 from uploads import read_upload
 """Admin panel endpoints."""
 import io
+import os
 import csv
 import logging
 from collections import defaultdict
@@ -15,6 +16,8 @@ from auth import require_role, seller_account
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/admin", tags=["admin"])
+# Champs jamais renvoyés, même à un administrateur.
+PRIVATE_USER_FIELDS = ("_id", "password_hash", "otp_code", "otp_expires_at")
 
 
 class KycRejectRequest(BaseModel):
@@ -101,8 +104,7 @@ async def overview(_: dict = Depends(require_role("admin"))):
 @router.get("/users")
 async def list_users(_: dict = Depends(require_role("admin"))):
     db = get_db()
-    private_fields = ("_id", "password_hash", "otp_code", "otp_expires_at")
-    users = await db.users.find({}, dict.fromkeys(private_fields, 0)).sort("created_at", -1).to_list(500)
+    users = await db.users.find({}, dict.fromkeys(PRIVATE_USER_FIELDS, 0)).sort("created_at", -1).to_list(500)
     return users
 
 
@@ -194,7 +196,7 @@ async def kyc_reject(seller_id: str, req: KycRejectRequest, _: dict = Depends(re
 async def buyer_kyc_pending(_: dict = Depends(require_role("admin"))):
     db = get_db()
     users = await db.users.find(
-        {"role": "buyer", "buyer_kyc_status": "pending_review"}, {"_id": 0, "otp_code": 0}
+        {"role": "buyer", "buyer_kyc_status": "pending_review"}, dict.fromkeys(PRIVATE_USER_FIELDS, 0)
     ).sort("buyer_kyc_submitted_at", -1).to_list(200)
     return users
 
@@ -425,7 +427,7 @@ async def fraud_alerts(_: dict = Depends(require_role("admin"))):
     db = get_db()
     alerts = await db.fraud_alerts.find({}, {"_id": 0}).sort("score", -1).to_list(200)
     user_ids = list({a["user_id"] for a in alerts})
-    users = {u["id"]: u async for u in db.users.find({"id": {"$in": user_ids}}, {"_id": 0, "otp_code": 0})}
+    users = {u["id"]: u async for u in db.users.find({"id": {"$in": user_ids}}, dict.fromkeys(PRIVATE_USER_FIELDS, 0))}
     for a in alerts:
         u = users.get(a["user_id"]) or {}
         a["user_name"] = u.get("name")
@@ -720,8 +722,11 @@ async def delete_banner(banner_id: str, _: dict = Depends(require_role("admin"))
 @router.delete("/cleanup-demo")
 async def cleanup_demo_data(_: dict = Depends(require_role("admin"))):
     """Supprime toutes les données marquées demo:True en base.
-    À appeler une seule fois avant la mise en production.
+    Opération destructrice et ponctuelle : désactivée sauf si
+    ENABLE_DEMO_CLEANUP=true est défini temporairement.
     """
+    if os.environ.get("ENABLE_DEMO_CLEANUP", "false").strip().lower() != "true":
+        raise HTTPException(status_code=404, detail="Not Found")
     db = get_db()
     collections = [
         "users", "sellers", "products", "orders", "order_groups",

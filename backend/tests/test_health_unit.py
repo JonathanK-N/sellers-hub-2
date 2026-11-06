@@ -32,6 +32,6 @@ def test_startup_seeds_only_explicit_synthetic_sandbox(monkeypatch, mode, seed_e
         monkeypatch.delenv('AUTH_MODE', raising=False)
     else:
         monkeypatch.setenv('AUTH_MODE', mode)
-    with patch.object(server, 'init_db'), patch.object(server, 'seed_all', new_callable=AsyncMock) as seed, patch.object(server, 'init_storage'), patch('scheduler.start_scheduler'):
+    with patch.object(server, 'init_db'), patch.object(server, 'seed_all', new_callable=AsyncMock) as seed, patch('scheduler.start_scheduler'):
         asyncio.run(server.on_startup())
     assert seed.await_count == int(seed_expected)

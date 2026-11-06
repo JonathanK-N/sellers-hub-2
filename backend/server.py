@@ -15,7 +15,6 @@ from db import init_db, close_db, get_db
 from rate_limit import limiter, rate_limit_handler
 from slowapi.errors import RateLimitExceeded
 from seed_data import seed_all
-from storage import init_storage
 from routers.auth_router import router as auth_router
 from routers.countries_router import router as countries_router
 from routers.sellers_router import router as sellers_router
@@ -43,7 +42,18 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="AfriMarket API")
+def api_docs_enabled() -> bool:
+    """Swagger, ReDoc et openapi.json ne sont exposés que si ENABLE_API_DOCS=true (dev)."""
+    return os.environ.get("ENABLE_API_DOCS", "false").strip().lower() == "true"
+
+
+_docs = api_docs_enabled()
+app = FastAPI(
+    title="AfriMarket API",
+    docs_url="/docs" if _docs else None,
+    redoc_url="/redoc" if _docs else None,
+    openapi_url="/openapi.json" if _docs else None,
+)
 APP_VERSION = "1.1.0-direct-rc.4"
 
 # Rate limiting — protège contre le spam et le brute-force
@@ -139,10 +149,23 @@ api_router.include_router(whatsapp_router)
 
 app.include_router(api_router)
 
+def cors_settings():
+    """Origines CORS autorisées. Avec le joker "*", les credentials (cookies)
+    ne sont jamais autorisés : Starlette refléterait sinon l'origine de
+    n'importe quel site. Le frontend s'authentifie par en-tête Bearer."""
+    origins = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o.strip()]
+    if not origins or "*" in origins:
+        return ["*"], False
+    return origins, True
+
+
+_cors_origins, _cors_credentials = cors_settings()
+if _cors_origins == ["*"]:
+    logger.warning("CORS_ORIGINS non restreint : toutes les origines sont acceptées sans credentials")
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get("CORS_ORIGINS", "*").split(","),
+    allow_credentials=_cors_credentials,
+    allow_origins=_cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -170,6 +193,8 @@ async def on_startup():
         logger.warning("API maintenance enabled; application writers are not started")
         return
     init_db()
+    if len(os.environ.get("JWT_SECRET", "")) < 32:
+        logger.warning("JWT_SECRET absent ou trop court (< 32 caractères) : générer une valeur aléatoire longue")
     # Production startup never creates accounts or overwrites existing business/reference data.
     # Schema migrations run separately after backup and compatibility checks.
     if os.environ.get("AUTH_MODE", "production").lower() == "sandbox":
@@ -178,10 +203,6 @@ async def on_startup():
         except Exception:
             logger.error("Synthetic bootstrap failed", exc_info=True)
 
-    try:
-        init_storage()
-    except Exception as e:
-        logger.error(f"Storage init failed: {e}")
     try:
         from scheduler import start_scheduler
         start_scheduler()

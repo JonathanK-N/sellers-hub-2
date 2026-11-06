@@ -13,7 +13,7 @@ permissions:
 jobs:
   staging-https-pages:
     if: github.event_name == 'workflow_dispatch' || ((github.event.label.name == 'staging-https-audit' || github.event.label.name == 'staging-https-home-diagnostic') && github.event.pull_request.head.repo.full_name == github.repository)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       STAGING_QA_SOURCE_SHA: '2806d719bf0edbdc31ebd32ab0887e1fb4dc40cb'

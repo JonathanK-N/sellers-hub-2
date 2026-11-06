@@ -3,6 +3,7 @@ from fastapi.security import HTTPBearer
 TOKEN_SCHEME = HTTPBearer().model.scheme
 from uploads import read_upload
 """Auth routes: register, OTP verification, password login, admin login."""
+import hmac
 import os
 import uuid
 
@@ -33,6 +34,7 @@ from communications.events import notify_event
 from pydantic import BaseModel
 from typing import Literal
 from s3_service import upload_public
+from abuse_limits import check_otp, consume_quota, OTP_SEND_PER_HOUR
 
 APP_NAME = "afrimarket"
 
@@ -126,7 +128,7 @@ async def register(request: Request, req: RegisterRequest):
     expires = datetime.now(timezone.utc) + timedelta(minutes=OTP_EXPIRY_MINUTES)
     await db.otp_codes.update_one(
         {"phone": phone},
-        {"$set": {"phone": phone, "code": code, "expires_at": expires}},
+        {"$set": {"phone": phone, "code": code, "expires_at": expires, "attempts": 0}},
         upsert=True,
     )
     if not await send_otp_sms(phone, code):
@@ -143,6 +145,8 @@ async def send_otp(request: Request, req: SendOtpRequest):
     require_otp_delivery()
     db = get_db()
     phone = normalize_phone(req.phone)
+    await consume_quota(db, "otp-send", phone, OTP_SEND_PER_HOUR, 3600,
+                        "Trop de codes demandés pour ce numéro. Réessayez plus tard.")
     user = await db.users.find_one({"phone": phone})
     if not user:
         raise HTTPException(status_code=404, detail="Aucun compte trouvé pour ce numéro")
@@ -151,7 +155,7 @@ async def send_otp(request: Request, req: SendOtpRequest):
     expires = datetime.now(timezone.utc) + timedelta(minutes=OTP_EXPIRY_MINUTES)
     await db.otp_codes.update_one(
         {"phone": phone},
-        {"$set": {"phone": phone, "code": code, "expires_at": expires}},
+        {"$set": {"phone": phone, "code": code, "expires_at": expires, "attempts": 0}},
         upsert=True,
     )
     if not await send_otp_sms(phone, code):
@@ -179,8 +183,7 @@ async def verify_otp(request: Request, req: VerifyOtpRequest):
     if expires and expires < datetime.now(timezone.utc):
         raise HTTPException(status_code=400, detail="Code expiré")
 
-    if otp_doc["code"] != req.code.strip():
-        raise HTTPException(status_code=400, detail="Code incorrect")
+    await check_otp(db.otp_codes, {"phone": phone}, otp_doc, req.code)
 
     user = await db.users.find_one({"phone": phone})
     if not user:
@@ -216,7 +219,7 @@ async def login(request: Request, req: LoginRequest):
         # Phone never verified: re-issue an OTP and ask the user to verify
         code = generate_otp()
         expires = datetime.now(timezone.utc) + timedelta(minutes=OTP_EXPIRY_MINUTES)
-        await db.otp_codes.update_one({"phone": phone}, {"$set": {"phone": phone, "code": code, "expires_at": expires}}, upsert=True)
+        await db.otp_codes.update_one({"phone": phone}, {"$set": {"phone": phone, "code": code, "expires_at": expires, "attempts": 0}}, upsert=True)
         await send_otp_sms(phone, code)
         raise HTTPException(status_code=403, detail="VERIFY_REQUIRED")
 
@@ -247,7 +250,7 @@ async def admin_login(request: Request, req: AdminLoginRequest):
     if user.get("password_hash"):
         ok = verify_password(req.password, user["password_hash"])
     elif admin_password:
-        ok = (req.password == admin_password)
+        ok = hmac.compare_digest(admin_password.encode("utf-8"), (req.password or "").encode("utf-8"))
     if not ok:
         raise HTTPException(status_code=401, detail="Identifiants administrateur invalides")
 
@@ -263,8 +266,9 @@ async def reset_password(req: SetPasswordRequest):
     if len(req.new_password or "") < 6:
         raise HTTPException(status_code=400, detail="Le mot de passe doit contenir au moins 6 caractères")
     otp_doc = await db.otp_codes.find_one({"phone": phone})
-    if not otp_doc or otp_doc.get("code") != req.code.strip():
+    if not otp_doc:
         raise HTTPException(status_code=400, detail="Code incorrect")
+    await check_otp(db.otp_codes, {"phone": phone}, otp_doc, req.code)
     expires = otp_doc.get("expires_at")
     if isinstance(expires, str):
         expires = datetime.fromisoformat(expires)

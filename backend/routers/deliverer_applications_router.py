@@ -1,4 +1,4 @@
-from uploads import read_upload
+from uploads import read_upload, extension_for
 """Deliverer applications: candidacy workflow before becoming an active
 deliverer. Two distinct tracks:
 
@@ -28,6 +28,7 @@ from communications.affiliation import compatible
 from financial_transactions import atomic_operation
 from communications.events import notify_event
 from sms import send_otp_sms, is_sms_configured
+from abuse_limits import check_otp, consume_quota, OTP_SEND_PER_HOUR
 from pydantic import BaseModel
 from datetime import timedelta
 
@@ -61,11 +62,16 @@ async def send_application_otp(req: ApplicationOtpSendRequest, user: dict = Depe
     from auth import normalize_phone
     db = get_db()
     phone = normalize_phone(req.phone)
+    # Ce point d'envoi accepte n'importe quel numéro : quotas par compte et par
+    # numéro pour empêcher le bombardement SMS et la consommation de crédit.
+    limited = "Trop de codes demandés. Réessayez plus tard."
+    await consume_quota(db, "app-otp-user", user["id"], OTP_SEND_PER_HOUR, 3600, limited)
+    await consume_quota(db, "app-otp-phone", phone, OTP_SEND_PER_HOUR, 3600, limited)
     code = generate_otp()
     expires = datetime.now(timezone.utc) + timedelta(minutes=OTP_EXPIRY_MINUTES)
     await db.application_otp_codes.update_one(
         {"phone": phone, "user_id": user["id"]},
-        {"$set": {"phone": phone, "user_id": user["id"], "code": code, "expires_at": expires}},
+        {"$set": {"phone": phone, "user_id": user["id"], "code": code, "expires_at": expires, "attempts": 0}},
         upsert=True,
     )
     await send_otp_sms(phone, code)
@@ -91,8 +97,7 @@ async def verify_application_otp(req: ApplicationOtpVerifyRequest, user: dict = 
         expires = expires.replace(tzinfo=timezone.utc)
     if expires and expires < datetime.now(timezone.utc):
         raise HTTPException(status_code=400, detail="Code expiré")
-    if otp_doc["code"] != req.code.strip():
-        raise HTTPException(status_code=400, detail="Code incorrect")
+    await check_otp(db.application_otp_codes, {"phone": phone, "user_id": user["id"]}, otp_doc, req.code)
 
     await db.application_otp_codes.delete_one({"phone": phone, "user_id": user["id"]})
 
@@ -179,11 +184,9 @@ async def upload_document(
     if app_doc["status"] not in ("draft", "rejected"):
         raise HTTPException(status_code=400, detail="Cette candidature ne peut plus être modifiée")
 
-    ext = "jpg"
-    if file.filename and "." in file.filename:
-        ext = file.filename.rsplit(".", 1)[-1].lower()
-    path = f"{APP_NAME}/deliverer_applications/{application_id}/{doc_type}_{uuid.uuid4()}.{ext}"
     data = await read_upload(file, allow_pdf=True)
+    ext = extension_for(file.content_type)
+    path = f"{APP_NAME}/deliverer_applications/{application_id}/{doc_type}_{uuid.uuid4()}.{ext}"
     try:
         result = upload_private(path, data, file.content_type or "image/jpeg")
     except Exception as e:
