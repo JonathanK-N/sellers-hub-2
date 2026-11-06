@@ -14,7 +14,7 @@ permissions:
 jobs:
   controlled-https-pages:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.validation_scope != 'full' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -49,7 +49,7 @@ jobs:
           path: controlled-https
   mongodb-staging-topology:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -99,7 +99,7 @@ jobs:
           docker volume rm phase3-staging-data || true
   security-secrets:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -120,7 +120,7 @@ jobs:
           path: secrets-redacted.json
   mongodb-recovery:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -170,7 +170,7 @@ jobs:
   performance-comparison:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
     needs: web
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -220,7 +220,7 @@ jobs:
   frontend-business-e2e:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
     needs: web
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -258,7 +258,7 @@ jobs:
   android-emulator:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
     needs: android
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -302,7 +302,7 @@ jobs:
             emulator.log
   security-backend:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -326,7 +326,7 @@ jobs:
             backend-sast.json
   security-web:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -347,7 +347,7 @@ jobs:
             frontend/yarn.lock
   web:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -380,7 +380,7 @@ jobs:
           path: frontend/build
   backend:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     services:
       mongodb:
         image: mongo:8.0.32
@@ -418,7 +418,7 @@ jobs:
           path: backend-test-results.xml
   android:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -459,7 +459,7 @@ jobs:
 
   ui-premium-preview:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.validation_scope != 'https' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
