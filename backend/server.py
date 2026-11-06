@@ -43,7 +43,18 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="AfriMarket API")
+def api_docs_enabled() -> bool:
+    """Swagger, ReDoc et openapi.json ne sont exposés que si ENABLE_API_DOCS=true (dev)."""
+    return os.environ.get("ENABLE_API_DOCS", "false").strip().lower() == "true"
+
+
+_docs = api_docs_enabled()
+app = FastAPI(
+    title="AfriMarket API",
+    docs_url="/docs" if _docs else None,
+    redoc_url="/redoc" if _docs else None,
+    openapi_url="/openapi.json" if _docs else None,
+)
 APP_VERSION = "1.1.0-direct-rc.4"
 
 # Rate limiting — protège contre le spam et le brute-force
