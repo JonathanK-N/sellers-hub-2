@@ -216,3 +216,53 @@ def test_application_otp_is_invalidated_after_five_wrong_attempts():
             with pytest.raises(HTTPException):
                 asyncio.run(routes.verify_application_otp(routes.ApplicationOtpVerifyRequest(phone=PHONE, code="000000"), user))
     assert db.application_otp_codes.docs == []
+
+
+def handoff_db(**changes):
+    order = {"id": "order", "buyer_id": "buyer", "seller_id": "seller", "deliverer_id": "courier",
+             "delivery_mode": "delivery", "status": "out_for_delivery", "escrow_status": "held",
+             "payment_method": "cash", "confirmation_code": "123456", **changes}
+    return FakeDb(orders=[order])
+
+
+def test_delivery_code_is_locked_after_repeated_wrong_guesses():
+    from routers import delivery_router
+    db = handoff_db()
+    confirm = delivery_router.deliverer_confirm.__wrapped__
+    courier = {"id": "courier", "role": "deliverer"}
+    with patch.object(delivery_router, "get_db", return_value=db):
+        for _ in range(10):
+            with pytest.raises(HTTPException) as error:
+                asyncio.run(confirm("order", delivery_router.ConfirmCodeRequest(code="000000"), courier))
+            assert error.value.status_code == 400
+        assert db.orders.docs[0]["handoff_locked_until"]
+        # Même le bon code est refusé pendant le blocage : la force brute ne peut plus aboutir.
+        with pytest.raises(HTTPException) as error:
+            asyncio.run(confirm("order", delivery_router.ConfirmCodeRequest(code="123456"), courier))
+        assert error.value.status_code == 429
+    assert db.orders.docs[0]["escrow_status"] == "held"
+
+
+def test_buyer_delivery_confirmation_counts_wrong_codes():
+    from routers import orders_router
+    db = handoff_db(payment_method="direct", payment_status="seller_declared_received")
+    with patch.object(orders_router, "get_db", return_value=db), pytest.raises(HTTPException) as error:
+        asyncio.run(orders_router.confirm_delivery.__wrapped__("order", orders_router.ConfirmDeliveryRequest(code="000000"), {"id": "buyer", "role": "buyer"}))
+    assert error.value.status_code == 400
+    assert db.orders.docs[0]["handoff_code_failures"] == 1
+
+
+def test_expired_handoff_lock_lets_the_right_code_through():
+    from abuse_limits import verify_handoff_code
+    past = (datetime.now(timezone.utc) - timedelta(minutes=1)).isoformat()
+    db = handoff_db(handoff_locked_until=past)
+    order = db.orders.docs[0]
+    asyncio.run(verify_handoff_code(db, order, "order", "123456"))
+
+
+def test_handoff_failures_survive_financial_transaction_rollback():
+    from abuse_limits import _unbound
+    from financial_transactions import SessionDatabase
+    raw = FakeDb()
+    assert _unbound(SessionDatabase(raw, session=object())) is raw
+    assert _unbound(raw) is raw

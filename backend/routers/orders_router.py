@@ -19,6 +19,7 @@ from communications.business import best_effort_order
 from commerce_mode import legacy_checkout_enabled, integrated_payments_enabled
 from direct_orders import finish_handoff
 from whatsapp_contact import public_contact
+from abuse_limits import verify_handoff_code
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["orders"])
@@ -440,13 +441,11 @@ async def confirm_delivery(order_id: str, req: ConfirmDeliveryRequest, user: dic
     if o.get("payment_method") not in {"cash", "direct"} and not o.get("payment_confirmed"):
         raise HTTPException(status_code=409, detail="Paiement non confirmé")
     if o.get("payment_method") == "direct":
-        if o.get("confirmation_code") != req.code.strip():
-            raise HTTPException(400, "Code incorrect")
+        await verify_handoff_code(db, o, order_id, req.code)
         return await finish_handoff(db, o, user, "delivered")
     if o["escrow_status"] != "held":
         raise HTTPException(status_code=400, detail="Escrow déjà libéré")
-    if o["confirmation_code"] != req.code.strip():
-        raise HTTPException(status_code=400, detail="Code incorrect")
+    await verify_handoff_code(db, o, order_id, req.code)
 
     event = _timeline_event("delivered", "Livré et paiement libéré")
     result = await db.orders.update_one(

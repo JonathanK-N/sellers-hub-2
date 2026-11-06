@@ -14,6 +14,7 @@ from auth import require_role, get_current_user_dep
 from notifications import create_notification
 from communications.affiliation import can_assign
 from communications.business import best_effort_order
+from abuse_limits import verify_handoff_code
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["delivery"])
@@ -218,15 +219,13 @@ async def deliverer_confirm(order_id: str, req: ConfirmCodeRequest, user: dict =
     if o.get("delivery_mode") != "delivery" or o.get("status") != "out_for_delivery":
         raise HTTPException(status_code=409, detail="Livraison non disponible pour confirmation")
     if o.get("payment_method") == "direct":
-        if o.get("confirmation_code") != req.code.strip():
-            raise HTTPException(400, "Code incorrect")
+        await verify_handoff_code(db, o, order_id, req.code)
         return await finish_handoff(db, o, user, "delivered")
     if o.get("payment_method") != "cash" and not o.get("payment_confirmed"):
         raise HTTPException(status_code=409, detail="Paiement non confirmé")
     if o["escrow_status"] != "held":
         raise HTTPException(status_code=400, detail="Escrow déjà libéré")
-    if o.get("confirmation_code") != req.code.strip():
-        raise HTTPException(status_code=400, detail="Code incorrect")
+    await verify_handoff_code(db, o, order_id, req.code)
 
     event = _timeline_event("delivered", "Livré et paiement libéré")
     result = await db.orders.update_one(
