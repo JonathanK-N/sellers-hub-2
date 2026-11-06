@@ -15,7 +15,6 @@ from db import init_db, close_db, get_db
 from rate_limit import limiter, rate_limit_handler
 from slowapi.errors import RateLimitExceeded
 from seed_data import seed_all
-from storage import init_storage
 from routers.auth_router import router as auth_router
 from routers.countries_router import router as countries_router
 from routers.sellers_router import router as sellers_router
@@ -202,10 +201,6 @@ async def on_startup():
         except Exception:
             logger.error("Synthetic bootstrap failed", exc_info=True)
 
-    try:
-        init_storage()
-    except Exception as e:
-        logger.error(f"Storage init failed: {e}")
     try:
         from scheduler import start_scheduler
         start_scheduler()

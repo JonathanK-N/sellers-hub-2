@@ -24,7 +24,7 @@ def test_malformed_mode_refuses_startup(mode, monkeypatch):
 
 def test_maintenance_blocks_business_routes_and_initialization(monkeypatch):
     monkeypatch.setenv("MAINTENANCE_MODE", "true")
-    with patch.object(server, "init_db") as database, patch.object(server, "init_storage") as storage, patch("scheduler.start_scheduler") as scheduler:
+    with patch.object(server, "init_db") as database, patch("scheduler.start_scheduler") as scheduler:
         with TestClient(server.app) as client:
             for method, path, expected in [("GET", "/api/health", 200), ("GET", "/api/products", 503), ("POST", "/api/orders", 503), ("PATCH", "/api/profile", 503), ("DELETE", "/api/orders/fixture", 503), ("OPTIONS", "/api/orders", 503), ("HEAD", "/api/products", 503)]:
                 response = client.request(method, path)
@@ -33,7 +33,6 @@ def test_maintenance_blocks_business_routes_and_initialization(monkeypatch):
                 assert response.headers["Retry-After"] == "300"
             assert client.get("/api/health").json()["status"] == "maintenance"
     database.assert_not_called()
-    storage.assert_not_called()
     scheduler.assert_not_called()
 
 

@@ -1,11 +1,11 @@
 """AWS S3 storage service for AfriMarket.
 
-Replaces storage.py (third-party emergentagent.com proxy). Two buckets:
+Two buckets:
 - AWS_BUCKET_PUBLIC ("afrimarket"): product photos, shop logos/banners,
   user avatars. Publicly readable — returns direct S3 URLs.
 - AWS_BUCKET_KYC ("afrimarket-kyc-private"): KYC documents (ID cards,
   selfies, address proofs). Block Public Access enabled — only ever
-  accessed via short-lived presigned URLs, never a direct public URL. testahah
+  accessed via short-lived presigned URLs, never a direct public URL.
 """
 import os
 import logging

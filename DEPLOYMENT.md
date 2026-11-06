@@ -36,7 +36,9 @@ L'architecture se compose de **3 services** dans un même projet Railway :
 
    Variables optionnelles (production) : `CINETPAY_API_KEY`, `CINETPAY_SITE_ID`,
    `CINETPAY_NOTIFY_URL`, `CINETPAY_RETURN_URL`, `CINETPAY_TRANSFER_TOKEN`,
-   `FIREBASE_PROJECT_ID`, `FIREBASE_SA_JSON`, `EMERGENT_LLM_KEY`.
+   `FIREBASE_PROJECT_ID`, `FIREBASE_SA_JSON`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`,
+   `AWS_REGION`, `AWS_BUCKET_PUBLIC`, `AWS_BUCKET_KYC`. `ENABLE_API_DOCS=true` réactive
+   Swagger/ReDoc (développement uniquement).
 
 4. Dans **Settings → Networking**, clique **Generate Domain** pour obtenir l'URL publique
    du backend (ex : `https://afrimarket-backend.up.railway.app`).
@@ -82,5 +84,5 @@ Redeploy le backend.
   + clés CinetPay pour les vrais paiements Mobile Money.
 - **Tâches planifiées** : le scheduler (retraits, expiration Premium) démarre automatiquement
   avec le backend.
-- **Stockage des photos** : nécessite `EMERGENT_LLM_KEY`. Sans cette clé, l'upload d'images
-  est désactivé mais le reste de l'app fonctionne.
+- **Stockage des photos et documents KYC** : AWS S3 (bucket public pour les images,
+  bucket privé pour le KYC, lu uniquement via URL signées de 5 minutes).
