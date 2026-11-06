@@ -193,6 +193,8 @@ async def on_startup():
         logger.warning("API maintenance enabled; application writers are not started")
         return
     init_db()
+    if len(os.environ.get("JWT_SECRET", "")) < 32:
+        logger.warning("JWT_SECRET absent ou trop court (< 32 caractères) : générer une valeur aléatoire longue")
     # Production startup never creates accounts or overwrites existing business/reference data.
     # Schema migrations run separately after backup and compatibility checks.
     if os.environ.get("AUTH_MODE", "production").lower() == "sandbox":
