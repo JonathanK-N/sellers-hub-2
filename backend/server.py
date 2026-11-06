@@ -150,10 +150,23 @@ api_router.include_router(whatsapp_router)
 
 app.include_router(api_router)
 
+def cors_settings():
+    """Origines CORS autorisées. Avec le joker "*", les credentials (cookies)
+    ne sont jamais autorisés : Starlette refléterait sinon l'origine de
+    n'importe quel site. Le frontend s'authentifie par en-tête Bearer."""
+    origins = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o.strip()]
+    if not origins or "*" in origins:
+        return ["*"], False
+    return origins, True
+
+
+_cors_origins, _cors_credentials = cors_settings()
+if _cors_origins == ["*"]:
+    logger.warning("CORS_ORIGINS non restreint : toutes les origines sont acceptées sans credentials")
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get("CORS_ORIGINS", "*").split(","),
+    allow_credentials=_cors_credentials,
+    allow_origins=_cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
