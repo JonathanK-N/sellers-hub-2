@@ -7,6 +7,12 @@ from PIL import Image, UnidentifiedImageError
 MAX_UPLOAD_BYTES = 8 * 1024 * 1024
 MAX_IMAGE_PIXELS = 20_000_000
 IMAGE_TYPES = {"JPEG":"image/jpeg", "PNG":"image/png", "WEBP":"image/webp", "GIF":"image/gif"}
+EXTENSIONS = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif", "application/pdf": "pdf"}
+
+
+def extension_for(content_type) -> str:
+    """Extension de clé S3 dérivée du type validé, jamais du nom de fichier client."""
+    return EXTENSIONS.get((content_type or "").split(";", 1)[0].strip().lower(), "bin")
 
 
 async def read_upload(file: UploadFile, allow_pdf: bool = False) -> bytes:

@@ -296,3 +296,32 @@ def test_admin_deliverer_list_never_returns_password_hash():
         asyncio.run(delivery_router.admin_list_deliverers({"id": "admin", "role": "admin"}))
     projection = db.users.find.call_args.args[1]
     assert projection["password_hash"] == 0
+
+
+def test_private_kyc_key_ignores_client_filename_extension():
+    import io as _io
+    from PIL import Image
+    from fastapi import UploadFile
+    from starlette.datastructures import Headers
+    from routers import buyer_kyc_router
+    from uploads import extension_for
+    buf = _io.BytesIO()
+    Image.new("RGB", (4, 4)).save(buf, "PNG")
+    upload = UploadFile(_io.BytesIO(buf.getvalue()), filename="id./../../evil.html", headers=Headers({"content-type": "image/png"}))
+    db = MagicMock_db()
+    with patch.object(buyer_kyc_router, "get_db", return_value=db), \
+            patch.object(buyer_kyc_router, "upload_private", return_value={"path": "p", "size": 1}) as upload_private:
+        asyncio.run(buyer_kyc_router.upload_buyer_kyc_doc(upload, "id", {"id": "u1", "role": "buyer"}))
+    key = upload_private.call_args.args[0]
+    assert key.startswith("afrimarket/buyer_kyc/u1/id_") and key.endswith(".png")
+    assert ".." not in key and "html" not in key
+    assert extension_for("application/pdf") == "pdf"
+    assert extension_for("text/html") == "bin"
+
+
+def MagicMock_db():
+    from unittest.mock import MagicMock
+    db = MagicMock()
+    db.files.insert_one = AsyncMock()
+    db.users.update_one = AsyncMock()
+    return db

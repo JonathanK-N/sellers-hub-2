@@ -1,4 +1,4 @@
-from uploads import read_upload
+from uploads import read_upload, extension_for
 """Seller boutique + profile management."""
 import uuid
 import logging
@@ -162,11 +162,9 @@ async def upload_kyc_doc(
     """Upload a KYC document to private folder."""
     if doc_type not in {"id", "selfie", "address"}:
         raise HTTPException(status_code=400, detail="Type de document invalide")
-    ext = "jpg"
-    if file.filename and "." in file.filename:
-        ext = file.filename.rsplit(".", 1)[-1].lower()
-    path = f"{APP_NAME}/kyc/{user['id']}/{doc_type}_{uuid.uuid4()}.{ext}"
     data = await read_upload(file, allow_pdf=True)
+    ext = extension_for(file.content_type)
+    path = f"{APP_NAME}/kyc/{user['id']}/{doc_type}_{uuid.uuid4()}.{ext}"
     try:
         result = upload_private(path, data, file.content_type or "image/jpeg")
     except Exception as e:
