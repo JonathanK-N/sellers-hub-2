@@ -26,10 +26,37 @@ def public_contact(seller):
     return {"phone": phone, "verified": True, "visible": True, "link": "https://wa.me/" + phone[1:]}
 
 
+PRIVATE_SELLER_FIELDS = {
+    "_id", "kyc_docs", "whatsapp_contact", "whatsapp_verification", "commission_rate",
+    "kyc_reject_reason", "kyc_requested_level", "kyc_submitted_at", "premium_auto_renew",
+}
+_SCHEME = re.compile(r"^([A-Za-z][A-Za-z0-9+.-]*):")
+_IGNORED_BY_BROWSERS = re.compile(r"[\x00-\x20\x7f]")
+
+
+def safe_link(value):
+    """Lien social affichable : http(s) ou sans schéma ; javascript:, data:… sont refusés.
+    Les navigateurs ignorent espaces et caractères de contrôle dans le schéma
+    ("java\tscript:"), ils sont donc retirés avant la détection."""
+    if not isinstance(value, str):
+        return None
+    if not value.strip():
+        return value
+    match = _SCHEME.match(_IGNORED_BY_BROWSERS.sub("", value))
+    if match and match.group(1).lower() not in {"http", "https"}:
+        return None
+    return value.strip()
+
+
+def safe_links(links):
+    if not isinstance(links, dict):
+        return {}
+    return {key: safe_link(value) for key, value in links.items() if isinstance(key, str)}
+
+
 def public_seller(seller):
-    out = {key: value for key, value in seller.items() if key not in {"_id", "kyc_docs", "whatsapp_contact", "whatsapp_verification", "commission_rate"}}
-    legacy_links = seller.get("social_links")
-    links = dict(legacy_links) if isinstance(legacy_links, dict) else {}
+    out = {key: value for key, value in seller.items() if key not in PRIVATE_SELLER_FIELDS}
+    links = safe_links(seller.get("social_links"))
     links.pop("whatsapp_business", None)
     contact = public_contact(seller)
     if contact:

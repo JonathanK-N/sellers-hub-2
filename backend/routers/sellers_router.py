@@ -10,7 +10,7 @@ from db import get_db
 from models import SellerSetupRequest
 from auth import require_role
 from s3_service import upload_public, upload_private
-from whatsapp_contact import public_seller, owner_seller
+from whatsapp_contact import public_seller, owner_seller, safe_links
 from pymongo.errors import DuplicateKeyError
 
 logger = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ async def setup_boutique(req: SellerSetupRequest, user: dict = Depends(require_r
         "opening_hours": req.opening_hours,
         "shop_logo_url": req.shop_logo_url,
         "shop_banner_url": req.shop_banner_url,
-        "social_links": req.social_links.model_dump() if req.social_links else {},
+        "social_links": safe_links(req.social_links.model_dump()) if req.social_links else {},
         "delivery_service": req.delivery_service,
         "self_delivery_fee": req.self_delivery_fee if req.self_delivery_fee in (7500, 10000, 15000, 20000) else 7500,
         "country_code": user["country_code"],

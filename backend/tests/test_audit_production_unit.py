@@ -336,3 +336,35 @@ def test_demo_cleanup_is_disabled_unless_explicitly_enabled(monkeypatch):
         asyncio.run(admin_router.cleanup_demo_data({"id": "admin", "role": "admin"}))
     assert error.value.status_code == 404
     db.__getitem__.assert_not_called()
+
+
+@pytest.mark.parametrize("value,expected", [
+    ("https://facebook.com/shop", "https://facebook.com/shop"),
+    ("facebook.com/shop", "facebook.com/shop"),
+    ("@boutique", "@boutique"),
+    ("", ""),
+    ("javascript:alert(1)", None),
+    (" JavaScript:alert(1)", None),
+    ("java\tscript:alert(1)", None),
+    ("java\nscript:alert(1)", None),
+    ("data:text/html,<script>", None),
+    ("vbscript:msgbox", None),
+])
+def test_social_links_reject_script_schemes(value, expected):
+    from whatsapp_contact import safe_link
+    assert safe_link(value) == expected
+
+
+def test_public_shop_profile_hides_internal_kyc_and_billing_fields():
+    from whatsapp_contact import public_seller
+    seller = {"id": "s", "user_id": "u", "shop_name": "Shop", "kyc_status": "rejected",
+              "kyc_reject_reason": "Pièce d'identité illisible", "kyc_requested_level": 3,
+              "kyc_submitted_at": "2026-01-01", "kyc_docs": {"id": {"file_id": "f"}},
+              "commission_rate": 0.07, "premium_auto_renew": True,
+              "social_links": {"facebook": "javascript:alert(document.cookie)", "instagram": "https://instagram.com/x"}}
+    public = public_seller(seller)
+    for field in ("kyc_reject_reason", "kyc_requested_level", "kyc_submitted_at", "kyc_docs", "commission_rate", "premium_auto_renew"):
+        assert field not in public
+    assert public["social_links"]["facebook"] is None
+    assert public["social_links"]["instagram"] == "https://instagram.com/x"
+    assert public["shop_name"] == "Shop"
